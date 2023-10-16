@@ -96,19 +96,19 @@ for i=1, 128 do
 end
 
 if not keyboard then
-	error("No keyboard was found")
+	print("No keyboard was found")
 end
 
 if not screen then
-	error("No screen was found")
+	print("No screen was found")
 end
 
 if not speaker then
-	error("No speaker was found")
+	print("No speaker was found")
 end
 
 if not disk then
-	error("No disk was found")
+	print("No disk was found")
 end
 
 
