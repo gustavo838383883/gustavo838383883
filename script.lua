@@ -255,12 +255,12 @@ local function woshtmlfile(txt, screen)
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 10, 0)})
 	filegui:AddChild(scrollingframe)
-	StringToGui(screen, txt, scrollingframe)
 	filegui:AddChild(closebutton)
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
 		filegui = nil
 	end)
+	StringToGui(screen, txt, scrollingframe)
 
 end
 
@@ -272,9 +272,6 @@ local function readfile(txt, nameondisk)
 	local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = txt})
 	
-	if string.find(string.lower(txt), "<woshtml>") then
-		woshtmlfile(txt,  screen)
-	end
 
 	
 	filegui:AddChild(disktext)
@@ -296,6 +293,10 @@ local function readfile(txt, nameondisk)
 		filegui:Destroy()
 		filegui = nil
 	end)
+	
+	if string.find(string.lower(txt), "<woshtml>") then
+		woshtmlfile(txt,  screen)
+	end
 end
 
 local function loaddisk(screen, disk)
