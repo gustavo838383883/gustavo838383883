@@ -488,6 +488,10 @@ local function mediaplayer(screen, disk, speaker)
 			holderframe:AddChild(closebutton)
 			local imageframe = screen>CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, Image = "rbxassetid://"..data})
 			holderframe:AddChild(imageframe)
+			closebutton.MouseButton1Down:Connect(function()
+				holderframe:Destroy()
+				holderframe = nil
+			end)
 		end
 	end)
 end
