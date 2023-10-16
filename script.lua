@@ -60,18 +60,26 @@ local screen = nil
 local keyboard = nil
 local speaker = nil
 
-for i=0, 128, 1 do
-	if GetPartFromPort(i, "Disk") then
-		disk = GetPartFromPort(i, "Disk")
+for i=1, 128 do
+	if not disk then
+		if GetPartFromPort(i, "Disk") then
+			disk = GetPartFromPort(i, "Disk")
+		end
 	end
-	if GetPartFromPort(i, "Speaker") then
-		speaker = GetPartFromPort(i, "Speaker")
+	if not speaker then
+		if GetPartFromPort(i, "Speaker") then
+			speaker = GetPartFromPort(i, "Speaker")
+		end
 	end
-	if GetPartFromPort(i, "screen") then
-		screen = GetPartFromPort(i, "Screen")
+	if not screen then
+		if GetPartFromPort(i, "screen") then
+			screen = GetPartFromPort(i, "Screen")
+		end
 	end
-	if GetPartFromPort(i, "Keyboard") then
-		keyboard = GetPartFromPort(i, "Keyboard")
+	if not keyboard then
+		if GetPartFromPort(i, "Keyboard") then
+			keyboard = GetPartFromPort(i, "Keyboard")
+		end
 	end
 end
 
