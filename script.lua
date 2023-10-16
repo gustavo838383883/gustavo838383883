@@ -64,25 +64,33 @@ for i=1, 128 do
 	if not disk then
 		success, error = pcall(GetPartFromPort, i, "Disk")
 		if success then
-			disk = GetPartFromPort(i, "Disk")
+			if GetPartFromPort(i, "Disk") then
+				disk = GetPartFromPort(i, "Disk")
+			end
 		end
 	end
 	if not speaker then
 		success, error = pcall(GetPartFromPort, i, "Speaker")
 		if success then
-			speaker = GetPartFromPort(i, "Speaker")
+			if GetPartFromPort(i, "Speaker") then
+				speaker = GetPartFromPort(i, "Speaker")
+			end
 		end
 	end
 	if not screen then
 		success, error = pcall(GetPartFromPort, i, "Screen")
 		if success then
-			screen = GetPartFromPort(i, "Screen")
+			if GetPartFromPort(i, "Screen") then
+				screen = GetPartFromPort(i, "Screen")
+			end
 		end
 	end
 	if not keyboard then
 		success, error = pcall(GetPartFromPort, i, "Keyboard")
 		if success then
-			keyboard = GetPartFromPort(i, "Keyboard")
+			if GetPartFromPort(i, "Keyboard") then
+				keyboard = GetPartFromPort(i, "Keyboard")
+			end
 		end
 	end
 end
