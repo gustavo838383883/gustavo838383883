@@ -70,8 +70,8 @@ for i=0, 128, 1 do
 	if GetPartFromPort(i, "screen") then
 		screen = GetPartFromPort(i, "Screen")
 	end
-		if GetPartFromPort(i, "Disk") then
-		disk = GetPartFromPort(i, "Disk")
+	if GetPartFromPort(i, "Keyboard") then
+		keyboard = GetPartFromPort(i, "Keyboard")
 	end
 end
 
