@@ -60,7 +60,7 @@ local screen = nil
 local keyboard = nil
 local speaker = nil
 
-for i=1, 128 do
+for i=1, 20 do
 	if not disk then
 		if GetPartFromPort(i, "Disk") then
 			disk = GetPartFromPort(i, "Disk")
