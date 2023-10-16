@@ -60,34 +60,29 @@ local screen = nil
 local keyboard = nil
 local speaker = nil
 
-local disktable = {GetPartFromPort(1, "Disk"), GetPartFromPort(2, "Disk"), GetPartFromPort(3, "Disk"), GetPartFromPort(4, "Disk"), GetPartFromPort(5, "Disk"), GetPartFromPort(6, "Disk"), GetPartFromPort(7, "Disk"), GetPartFromPort(8, "Disk"), GetPartFromPort(9, "Disk"), GetPartFromPort(10, "Disk")}
-local screentable = {GetPartFromPort(1, "Screen"), GetPartFromPort(2, "Screen"), GetPartFromPort(3, "Screen"), GetPartFromPort(4, "Screen"), GetPartFromPort(5, "Screen"), GetPartFromPort(6, "Screen"), GetPartFromPort(7, "Screen"), GetPartFromPort(8, "Screen"), GetPartFromPort(9, "Screen"), GetPartFromPort(10, "Screen")}
-local keyboardtable = {GetPartFromPort(1, "Keyboard"), GetPartFromPort(2, "Keyboard"), GetPartFromPort(3, "Keyboard"), GetPartFromPort(4, "Keyboard"), GetPartFromPort(5, "Keyboard"), GetPartFromPort(6, "Keyboard"), GetPartFromPort(7, "Keyboard"), GetPartFromPort(8, "Keyboard"), GetPartFromPort(9, "Keyboard"), GetPartFromPort(10, "Keyboard")}
-local speakertable = {GetPartFromPort(1, "Speaker"), GetPartFromPort(2, "Speaker"), GetPartFromPort(3, "Speaker"), GetPartFromPort(4, "Speaker"), GetPartFromPort(5, "Speaker"), GetPartFromPort(6, "Speaker"), GetPartFromPort(7, "Speaker"), GetPartFromPort(8, "Speaker"), GetPartFromPort(9, "Speaker"), GetPartFromPort(10, "Speaker")}
-
-for i, v in pairs(disktable) do
-	if v then
-		disk = v
+for i=1, 128 do
+	if not disk then
+		if pcall(GetPartFromPort, i, "Disk") then
+			disk = GetPartFromPort(i, "Disk")
+		end
+	end
+	if not speaker then
+		if pcall(GetPartFromPort, i, "Speaker") then
+			speaker = GetPartFromPort(i, "Speaker")
+		end
+	end
+	if not screen then
+		if pcall(GetPartFromPort, i, "Screen") then
+			screen = GetPartFromPort(i, "Screen")
+		end
+	end
+	if not keyboard then
+		if pcall(GetPartFromPort, i, "Keyboard") then
+			keyboard = GetPartFromPort(i, "Keyboard")
+		end
 	end
 end
 
-for i, v in pairs(screentable) do
-	if v then
-		screen = v
-	end
-end
-
-for i, v in pairs(speakertable) do
-	if v then
-		speaker = v
-	end
-end
-
-for i, v in pairs(keyboardtable) do
-	if v then
-		keyboard = v
-	end
-end
 
 local color = disk:Read("Color")
 if color then
