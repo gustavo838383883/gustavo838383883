@@ -250,13 +250,12 @@ local function StringToGui(screen, text, parent)
 	end
 end
 
-local function woshtmlfile(txt, nameondisk)
-	local alldata = disk:ReadEntireDisk()
+local function woshtmlfile(txt, screen)
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 10, 0)})
 	filegui:AddChild(scrollingframe)
-	StringToGui(screen, data, scrollingframe)
+	StringToGui(screen, txt, scrollingframe)
 	filegui:AddChild(closebutton)
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
