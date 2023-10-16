@@ -55,6 +55,8 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 	return sound
 end
 
+
+
 local disk = GetPartFromPort(1, "Disk")
 local screen = GetPartFromPort(2, "Screen")
 local keyboard = GetPartFromPort(7, "Keyboard")
