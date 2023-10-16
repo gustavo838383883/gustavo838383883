@@ -67,10 +67,10 @@ for i=1, 128 do
 			if GetPartFromPort(i, "Disk") then
 				disk = GetPartFromPort(i, "Disk")
 			else
-				error("No disk was found.")
+				print("No disk was found.")
 			end
 		else
-			error("No disk was found.")
+			print("No disk was found.")
 		end
 	end
 	if not speaker then
@@ -79,10 +79,10 @@ for i=1, 128 do
 			if GetPartFromPort(i, "Speaker") then
 				speaker = GetPartFromPort(i, "Speaker")
 			else
-				warn("No speaker was found.")
+				print("No speaker was found.")
 			end
 		else
-			warn("No speaker was found.")
+			print("No speaker was found.")
 		end
 	end
 	if not screen then
@@ -91,10 +91,10 @@ for i=1, 128 do
 			if GetPartFromPort(i, "Screen") then
 				screen = GetPartFromPort(i, "Screen")
 			else
-				warn("No screen was found.")
+				print("No screen was found.")
 			end
 		else
-			warn("No screen was found.")
+			print("No screen was found.")
 		end
 	end
 	if not keyboard then
@@ -103,10 +103,10 @@ for i=1, 128 do
 			if GetPartFromPort(i, "Keyboard") then
 				keyboard = GetPartFromPort(i, "Keyboard")
 			else
-				warn("No keyboard was found.")
+				print("No keyboard was found.")
 			end
 		else
-			warn("No keyboard was found.")
+			print("No keyboard was found.")
 		end
 	end
 end
