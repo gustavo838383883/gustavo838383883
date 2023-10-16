@@ -272,7 +272,7 @@ local function readfile(txt, nameondisk)
 	local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = txt})
 	
-	if string.find(string.lower(data), "<woshtml>") then
+	if string.find(string.lower(txt), "<woshtml>") then
 		woshtmlfile(txt,  screen)
 	end
 
