@@ -117,8 +117,6 @@ local backgroundframe = nil
 speaker:ClearSounds()
 screen:ClearElements()
 
-local screen = GetPartFromPort(2, "Screen")
-
 local function StringToGui(screen, text, parent)
 	local start = UDim2.new(0,0,0,0)
 	local source = string.lower(text)
