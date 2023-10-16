@@ -79,10 +79,10 @@ for i=1, 128 do
 			if GetPartFromPort(i, "Speaker") then
 				speaker = GetPartFromPort(i, "Speaker")
 			else
-				error("No speaker was found.")
+				warn("No speaker was found.")
 			end
 		else
-			error("No speaker was found.")
+			warn("No speaker was found.")
 		end
 	end
 	if not screen then
@@ -91,10 +91,10 @@ for i=1, 128 do
 			if GetPartFromPort(i, "Screen") then
 				screen = GetPartFromPort(i, "Screen")
 			else
-				error("No screen was found.")
+				warn("No screen was found.")
 			end
 		else
-			error("No screen was found.")
+			warn("No screen was found.")
 		end
 	end
 	if not keyboard then
@@ -103,10 +103,10 @@ for i=1, 128 do
 			if GetPartFromPort(i, "Keyboard") then
 				keyboard = GetPartFromPort(i, "Keyboard")
 			else
-				error("No keyboard was found.")
+				warn("No keyboard was found.")
 			end
 		else
-			error("No keyboard was found.")
+			warn("No keyboard was found.")
 		end
 	end
 end
