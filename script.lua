@@ -68,7 +68,7 @@ if color then
 	color = string.split(color, ",")
 	color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
 else
-	color = Color3.new(0, 0, 0)
+	color = Color3.new(0, 128/255, 218/255)
 end
 
 local keyboardinput = nil
