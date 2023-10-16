@@ -97,8 +97,10 @@ for i=1, 128 do
 			if GetPartFromPort(i, "Keyboard") then
 				keyboard = GetPartFromPort(i, "Keyboard")
 			else
-				error("No keyboard was found")
+				print("No keyboard was found")
 			end
+		else
+			print("No keyboard was found")
 		end
 	end
 end
