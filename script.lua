@@ -95,23 +95,6 @@ for i=1, 128 do
 	end
 end
 
-if not keyboard then
-	print("No keyboard was found")
-end
-
-if not screen then
-	print("No screen was found")
-end
-
-if not speaker then
-	print("No speaker was found")
-end
-
-if not disk then
-	print("No disk was found")
-end
-
-
 local color = disk:Read("Color")
 if color then
 	color = string.split(color, ",")
