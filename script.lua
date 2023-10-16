@@ -273,7 +273,7 @@ local function readfile(txt, nameondisk)
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = txt})
 	
 	if string.find(string.lower(data), "<woshtml>") then
-		woshtmlfile(data,  screen)
+		woshtmlfile(txt,  screen)
 	end
 
 	
