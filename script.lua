@@ -94,7 +94,11 @@ if color then
 	if color then
 		if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
 			color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+		else
+			color = Color3.new(0, 128/255, 218/255)
 		end
+	else
+		color = Color3.new(0, 128/255, 218/255)
 	end
 else
 	color = Color3.new(0, 128/255, 218/255)
@@ -430,9 +434,13 @@ local function changecolor(screen, disk)
 	changecolorbutton.MouseButton1Down:Connect(function()
 		if color.Text ~= "RGB (Click to update)" then
 			disk:Write("Color", data)
-			local colordata = string.split(data, ",");
-			backgroundframe.BackgroundColor3 = Color3.new(tonumber(colordata[1])/255, tonumber(colordata[2])/255, tonumber(colordata[3])/255)
-			changecolorbutton.Text = "Success"
+			local colordata = string.split(data, ",")
+			if colordata then
+				if tonumber(colordata[1]) and tonumber(colordata[2]) and tonumber(colordata[3]) then
+					backgroundframe.BackgroundColor3 = Color3.new(tonumber(colordata[1])/255, tonumber(colordata[2])/255, tonumber(colordata[3])/255)
+					changecolorbutton.Text = "Success"
+				end
+			end
 		end
 	end)
 end
