@@ -62,24 +62,24 @@ local speaker = nil
 
 for i=1, 128 do
 	if not disk then
-		if pcall(GetPartFromPort, i, "Disk") then
+		success, error = pcall(function()
 			disk = GetPartFromPort(i, "Disk")
-		end
+		end)
 	end
 	if not speaker then
-		if pcall(GetPartFromPort, i, "Speaker") then
+		success, error = pcall(function()
 			speaker = GetPartFromPort(i, "Speaker")
-		end
+		end)
 	end
 	if not screen then
-		if pcall(GetPartFromPort, i, "Screen") then
+		success, error = pcall(function()
 			screen = GetPartFromPort(i, "Screen")
-		end
+		end)
 	end
 	if not keyboard then
-		if pcall(GetPartFromPort, i, "Keyboard") then
+		success, error = pcall(function()
 			keyboard = GetPartFromPort(i, "Keyboard")
-		end
+		end)
 	end
 end
 
