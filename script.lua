@@ -91,7 +91,11 @@ end
 local color = disk:Read("Color")
 if color then
 	color = string.split(color, ",")
-	color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+	if color then
+		if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
+			color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+		end
+	end
 else
 	color = Color3.new(0, 128/255, 218/255)
 end
