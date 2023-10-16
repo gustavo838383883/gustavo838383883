@@ -55,12 +55,25 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 	return sound
 end
 
+local disk = nil
+local screen = nil
+local keyboard = nil
+local speaker = nil
 
-
-local disk = GetPartFromPort(1, "Disk")
-local screen = GetPartFromPort(2, "Screen")
-local keyboard = GetPartFromPort(7, "Keyboard")
-local speaker = GetPartFromPort(2, "Speaker")
+for i=0, 128, 1 do
+	if GetPartFromPort(i, "Disk") then
+		disk = GetPartFromPort(i, "Disk")
+	end
+	if GetPartFromPort(i, "Speaker") then
+		speaker = GetPartFromPort(i, "Speaker")
+	end
+	if GetPartFromPort(i, "screen") then
+		screen = GetPartFromPort(i, "Screen")
+	end
+		if GetPartFromPort(i, "Disk") then
+		disk = GetPartFromPort(i, "Disk")
+	end
+end
 
 
 local color = disk:Read("Color")
