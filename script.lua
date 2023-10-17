@@ -104,19 +104,25 @@ for i=1, 128 do
 end
 
 local color = disk:Read("Color")
-if color then
-	color = string.split(color, ",")
+
+local success, error = pcall(disk:Read, "Color")
+if success then
+	
+	local color = disk:Read("Color")
 	if color then
-		if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
-			color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+		color = string.split(color, ",")
+		if color then
+			if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
+				color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+			else
+				color = Color3.new(0, 128/255, 218/255)
+			end
 		else
 			color = Color3.new(0, 128/255, 218/255)
 		end
 	else
 		color = Color3.new(0, 128/255, 218/255)
 	end
-else
-	color = Color3.new(0, 128/255, 218/255)
 end
 
 local keyboardinput = nil
