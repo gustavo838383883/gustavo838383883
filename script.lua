@@ -103,7 +103,8 @@ for i=1, 128 do
 	end
 end
 
-	
+local success, error = pcall(disk:Read(), "Color")
+if success then
 	local color = disk:Read("Color")
 	if color then
 		color = string.split(color, ",")
@@ -119,7 +120,7 @@ end
 	else
 		color = Color3.new(0, 128/255, 218/255)
 	end
-
+end
 
 local keyboardinput = nil
 local backgroundframe = nil
