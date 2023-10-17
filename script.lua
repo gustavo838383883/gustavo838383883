@@ -627,7 +627,8 @@ if screen then
 else
 	print("No screen was found.")
 end
-
-keyboard:Connect("TextInputted", function(text)
-	keyboardinput = text
-end)
+if keyboard then
+	keyboard:Connect("TextInputted", function(text)
+		keyboardinput = text
+	end)
+end
