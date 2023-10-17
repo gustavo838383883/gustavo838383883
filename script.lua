@@ -105,7 +105,7 @@ end
 
 local color = disk:Read("Color")
 
-local success, error = pcall(disk:Read, "Color")
+local success, error = pcall(disk:Read)
 if success then
 	
 	local color = disk:Read("Color")
