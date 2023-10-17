@@ -103,6 +103,7 @@ for i=1, 128 do
 	end
 end
 
+if disk then
 local color = disk:Read("Color")
 if color then
 	color = string.split(color, ",")
@@ -117,6 +118,7 @@ if color then
 	end
 else
 	color = Color3.new(0, 128/255, 218/255)
+end
 end
 
 local keyboardinput = nil
