@@ -1,4 +1,3 @@
-
 local SpeakerHandler = {
 	_LoopedSounds = {},
 	_ChatCooldowns = {}, -- Cooldowns of Speaker:Chat
@@ -62,7 +61,7 @@ local speaker = nil
 
 for i=1, 128 do
 	if not disk then
-		success, error = pcall(GetPartFromPort, i, "Disk")
+		success, Error = pcall(GetPartFromPort, i, "Disk")
 		if success then
 			if GetPartFromPort(i, "Disk") then
 				disk = GetPartFromPort(i, "Disk")
@@ -70,7 +69,7 @@ for i=1, 128 do
 		end
 	end
 	if not speaker then
-		success, error = pcall(GetPartFromPort, i, "Speaker")
+		success, Error = pcall(GetPartFromPort, i, "Speaker")
 		if success then
 			if GetPartFromPort(i, "Speaker") then
 				speaker = GetPartFromPort(i, "Speaker")
@@ -78,7 +77,7 @@ for i=1, 128 do
 		end
 	end
 	if not screen then
-		success, error = pcall(GetPartFromPort, i, "Screen")
+		success, Error = pcall(GetPartFromPort, i, "Screen")
 		if success then
 			if GetPartFromPort(i, "Screen") then
 				screen = GetPartFromPort(i, "Screen")
@@ -86,7 +85,7 @@ for i=1, 128 do
 		end
 	end
 	if not screen then
-		success, error = pcall(GetPartFromPort, i, "TouchScreen")
+		success, Error = pcall(GetPartFromPort, i, "TouchScreen")
 		if success then
 			if GetPartFromPort(i, "TouchScreen") then
 				screen = GetPartFromPort(i, "TouchScreen")
@@ -94,7 +93,7 @@ for i=1, 128 do
 		end
 	end
 	if not keyboard then
-		success, error = pcall(GetPartFromPort, i, "Keyboard")
+		success, Error = pcall(GetPartFromPort, i, "Keyboard")
 		if success then
 			if GetPartFromPort(i, "Keyboard") then
 				keyboard = GetPartFromPort(i, "Keyboard")
@@ -137,7 +136,7 @@ end
 local function StringToGui(screen, text, parent)
 	local start = UDim2.new(0,0,0,0)
 	local source = string.lower(text)
-	
+
 	for name, value in source:gmatch('<backimg(.-)(.-)>') do
 		local link = nil
 		if (string.find(value, 'src="')) then
@@ -166,7 +165,7 @@ local function StringToGui(screen, text, parent)
 					text = string.sub(text, 1, string.find(text, '"') - 1)
 					url.ImageTransparency = tonumber(text)
 				end
-				
+
 				parent:AddChild(url)
 			end
 		end
@@ -326,13 +325,13 @@ local function readfile(txt, nameondisk)
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = txt})
-	
 
-	
+
+
 	filegui:AddChild(disktext)
 	filegui:AddChild(closebutton)
 	filegui:AddChild(deletebutton)
-	
+
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
 		filegui = nil
@@ -348,7 +347,7 @@ local function readfile(txt, nameondisk)
 		filegui:Destroy()
 		filegui = nil
 	end)
-	
+
 	if string.find(string.lower(txt), "<woshtml>") then
 		woshtmlfile(txt,  screen)
 	end
@@ -561,10 +560,10 @@ local function loadmenu(screen, disk)
 	local startui = nil
 	local opendiskreader = nil
 	local opencreatefile = nil
-	
+
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0,50,0,25), Position = UDim2.new(0, 0, 1, -25)})
-	
+
 	backgroundframe:AddChild(startmenu)
 
 	startmenu.MouseButton1Down:Connect(function()
@@ -578,8 +577,8 @@ local function loadmenu(screen, disk)
 			startui = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, -25)})
 			opendiskreader = screen:CreateElement("TextButton", {Text = "Files", TextScaled = true, Size = UDim2.new(1, 0, 0, 25)})
 			opencreatefile = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 25)})
-			openchangecolor = screen:CreateElement("TextButton", {Text = "Change Background Color", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 50)})
-			openmediaplayer = screen:CreateElement("TextButton", {Text = "Media Player", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 75)})
+			local openchangecolor = screen:CreateElement("TextButton", {Text = "Change Background Color", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 50)})
+			local openmediaplayer = screen:CreateElement("TextButton", {Text = "Media Player", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 75)})
 			startui:AddChild(opendiskreader)
 			startui:AddChild(opencreatefile)
 			startui:AddChild(openchangecolor)
@@ -619,7 +618,7 @@ end
 
 if screen then
 	if disk then
-		
+
 		if speaker then
 			if keyboard then
 				loadmenu(screen, disk)
