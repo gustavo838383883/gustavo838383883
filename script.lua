@@ -105,7 +105,7 @@ end
 
 local color = disk:Read("Color")
 
-local success, error = pcall(disk:Read())
+local success, error = pcall(disk:Read, "Color")
 if success then
 	
 	local color = disk:Read("Color")
@@ -128,15 +128,12 @@ end
 local keyboardinput = nil
 local backgroundframe = nil
 
-local success, error = pcall(speaker:ClearSounds())
 
-if success then
+if speaker then
 	speaker:ClearSounds()
 end
 
-local success, error = pcall(screen:ClearElements)
-
-if success then
+if screen then
 	screen:ClearElements()
 end
 
