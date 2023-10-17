@@ -85,6 +85,14 @@ for i=1, 128 do
 			end
 		end
 	end
+	if not screen then
+		success, error = pcall(GetPartFromPort, i, "TouchScreen")
+		if success then
+			if GetPartFromPort(i, "TouchScreen") then
+				screen = GetPartFromPort(i, "TouchScreen")
+			end
+		end
+	end
 	if not keyboard then
 		success, error = pcall(GetPartFromPort, i, "Keyboard")
 		if success then
@@ -114,8 +122,12 @@ end
 local keyboardinput = nil
 local backgroundframe = nil
 
-speaker:ClearSounds()
-screen:ClearElements()
+if speaker then
+	speaker:ClearSounds()
+end
+if screen then
+	screen:ClearElements()
+end
 
 local function StringToGui(screen, text, parent)
 	local start = UDim2.new(0,0,0,0)
@@ -401,7 +413,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createfilebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name (Click to update)" and filenamebutton.Text ~= "Color" then
+		if filenamebutton.Text ~= "File Name (Click to update)" and filename ~= "Color" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
 				disk:Write(filename, data)
 				createfilebutton.Text = "Success"
@@ -598,8 +610,23 @@ local function loadmenu(screen, disk)
 		end
 	end)
 end
-
-loadmenu(screen, disk)
+if screen then
+	if disk then
+		if speaker then
+			if keyboard then
+				loadmenu(screen, disk)
+			else
+				screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found."})
+			end
+		else
+			screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found."})
+		end
+	else
+		screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No disk was found."})
+	end
+else
+	print("No screen was found.")
+end
 
 keyboard:Connect("TextInputted", function(text)
 	keyboardinput = text
