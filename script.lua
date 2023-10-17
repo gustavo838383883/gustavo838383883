@@ -128,10 +128,15 @@ end
 local keyboardinput = nil
 local backgroundframe = nil
 
-if speaker then
+local success, error = pcall(speaker:ClearSounds)
+
+if success then
 	speaker:ClearSounds()
 end
-if screen then
+
+local success, error = pcall(screen:ClearElements)
+
+if success then
 	screen:ClearElements()
 end
 
