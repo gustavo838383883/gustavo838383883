@@ -540,9 +540,26 @@ local function loadmenu(screen, disk)
 	local startui = nil
 	local opendiskreader = nil
 	local opencreatefile = nil
+
+	local color = disk:Read("Color")
+	if color then
+		color = string.split(color, ",")
+		if color then
+			if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
+				color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+			else
+				color = Color3.new(0, 128/255, 218/255)
+			end
+		else
+			color = Color3.new(0, 128/255, 218/255)
+		end
+	else
+		color = Color3.new(0, 128/255, 218/255)
+	end
+	
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0,50,0,25), Position = UDim2.new(0, 0, 1, -25)})
-
+	
 	backgroundframe:AddChild(startmenu)
 
 	startmenu.MouseButton1Down:Connect(function()
@@ -597,22 +614,6 @@ end
 
 if screen then
 	if disk then
-		
-		local color = disk:Read("Color")
-		if color then
-			color = string.split(color, ",")
-			if color then
-				if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
-					color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
-				else
-					color = Color3.new(0, 128/255, 218/255)
-				end
-			else
-				color = Color3.new(0, 128/255, 218/255)
-			end
-		else
-			color = Color3.new(0, 128/255, 218/255)
-		end
 		
 		if speaker then
 			if keyboard then
