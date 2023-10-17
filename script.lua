@@ -103,9 +103,7 @@ for i=1, 128 do
 	end
 end
 
-local color = disk:Read("Color")
-
-local success, error = pcall(disk:Read, "Color")
+local success, error = pcall(disk.Read, "Color")
 if success then
 	
 	local color = disk:Read("Color")
