@@ -556,6 +556,8 @@ local function loadmenu(screen, disk)
 	else
 		color = Color3.new(0, 128/255, 218/255)
 	end
+
+	color = Color3.new(0, 128/255, 218/255)
 	
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0,50,0,25), Position = UDim2.new(0, 0, 1, -25)})
