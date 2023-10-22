@@ -494,8 +494,8 @@ local function calculator(screen)
 			number1 = number1= tonumber(tostring(number1)..tostring(1))
 			local part1.Text = number1
 		else
-				number2 = tonumber(tostring(number2)..tostring(1))
-				local part2.Text = number2
+			number2 = tonumber(tostring(number2)..tostring(1))
+			local part2.Text = number2
 		end
 	end)
 end
