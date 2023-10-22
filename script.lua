@@ -611,6 +611,8 @@ local function calculator(screen)
 	local  button19 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.50, 0, 0.4, 25), Text = "."})
 	holderframe:AddChild(button19)
 	button19.MouseButton1Down:Connect(function()
+		print(tostring(number1))
+		print(string.find(tostring(number1), "."))
 		if not type then
 			if not string.find(tostring(number1), ".") then
 				number1 = tostring(number1).."."
