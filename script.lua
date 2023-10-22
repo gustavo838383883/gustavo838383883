@@ -613,8 +613,8 @@ local function calculator(screen)
 	button11.MouseButton1Down:Connect(function()
 		number1 = 0
 		part1.Text = number1
-		numbeer2 = 0
-		part1.Text = ""
+		number2 = 0
+		part2.Text = ""
 		type = nil
 		part3.Text = ""
 	end)
