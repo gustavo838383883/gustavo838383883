@@ -647,6 +647,20 @@ local function calculator(screen)
 		part3.Text = "/"
 	end)
 
+	local  button17 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.5, 25), Text = "√", RichText = true})
+	holderframe:AddChild(button17)
+	button17.MouseButton1Down:Connect(function()
+		type = "√"
+		part3.Text = "√"
+	end)
+
+	local  button18 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.25, 0, 0.5, 25), Text = "^", RichText = true})
+	holderframe:AddChild(button18)
+	button18.MouseButton1Down:Connect(function()
+		type = "^"
+		part3.Text = "^"
+	end)
+
 	local  button16 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.75, 0, 0.5, 25), Text = "="})
 	holderframe:AddChild(button16)
 	button16.MouseButton1Down:Connect(function()
@@ -680,6 +694,24 @@ local function calculator(screen)
 		if type == "/" then
 			number1 = number1 / number2
 			part1.Text = number1 / number2
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+			
+		if type == "√" then
+			number1 = number2 ^ (1 / number1)
+			part1.Text = number2 ^ (1 / number1)
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+			
+		if type == "^" then
+			number1 = number1 ^ number2
+			part1.Text = number1 ^ number2
 			part2.Text = ""
 			number2 = 0
 			part3.Text = ""
