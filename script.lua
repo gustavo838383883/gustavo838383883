@@ -618,6 +618,70 @@ local function calculator(screen)
 		type = nil
 		part3.Text = ""
 	end)
+
+	local  button12 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.75, 0, 0.1, 25), Text = "+"})
+	holderframe:AddChild(button12)
+	button12.MouseButton1Down:Connect(function()
+		type = "+"
+		part3.Text = "+"
+	end)
+
+	local  button13 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.75, 0, 0.2, 25), Text = "-"})
+	holderframe:AddChild(button13)
+	button13.MouseButton1Down:Connect(function()
+		type = "-"
+		part3.Text = "-"
+	end)
+
+	local  button14 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.75, 0, 0.3, 25), Text = "*"})
+	holderframe:AddChild(button14)
+	button14.MouseButton1Down:Connect(function()
+		type = "*"
+		part3.Text = "*"
+	end)
+
+	local  button15 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.75, 0, 0.4, 25), Text = "/"})
+	holderframe:AddChild(button15)
+	button15.MouseButton1Down:Connect(function()
+		type = "/"
+		part3.Text = "/"
+	end)
+
+	local  button16 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.75, 0, 0.5, 25), Text = "="})
+	holderframe:AddChild(button16)
+	button16.MouseButton1Down:Connect(function()
+		if type == "+" then
+			part1.Text = number1 + number2
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+		
+		if type == "-" then
+			part1.Text = number1 - number2
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+
+		if type == "*" then
+			part1.Text = number1 * number2
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+
+		if type == "/" then
+			part1.Text = number1 / number2
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+	end)
 end
 
 local function audioui(screen, disk, data, speaker)
