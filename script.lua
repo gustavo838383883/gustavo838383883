@@ -524,7 +524,7 @@ local function calculator(screen)
 		end
 	end)
 
-	local  button4 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.35, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "6"})
+	local  button4 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.35, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "6"})
 	holderframe:AddChild(button4)
 	button4.MouseButton1Down:Connect(function()
 		if not type then
@@ -536,7 +536,7 @@ local function calculator(screen)
 		end
 	end)
 	
-	local  button5 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "5"})
+	local  button5 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "5"})
 	holderframe:AddChild(button5)
 	button5.MouseButton1Down:Connect(function()
 		if not type then
