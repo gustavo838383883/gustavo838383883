@@ -491,7 +491,7 @@ local function calculator(screen)
 	local  button1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "1"})
 	button1.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = number1= tonumber(tostring(number1)..tostring(1))
+			number1 = tonumber(tostring(number1)..tostring(1))
 			local part1.Text = number1
 		else
 			number2 = tonumber(tostring(number2)..tostring(1))
