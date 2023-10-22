@@ -466,6 +466,40 @@ local function changecolor(screen, disk)
 	end)
 end
 
+local function calculator(screen)
+	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
+	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
+	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0.23, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
+	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0.46, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
+	holderframe:AddChild(part1)
+	holderframe:AddChild(part2)
+	olderframe:AddChild(part3)
+	holderframe:AddChild(closebutton)
+
+	local number1 = 0
+	local type = nil
+	local number2 = 0
+
+	local data = nil
+	local filename = nil
+
+	closebutton.MouseButton1Down:Connect(function()
+		holderframe:Destroy()
+	end)
+
+	local  button1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "1"})
+	button1.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = number1= tonumber(tostring(number1)..tostring(1))
+			local part1.Text = number1
+		else
+				number2 = tonumber(tostring(number2)..tostring(1))
+				local part2.Text = number2
+		end
+	end)
+end
+
 local function audioui(screen, disk, data, speaker)
 	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
@@ -580,10 +614,12 @@ local function loadmenu(screen, disk)
 			opencreatefile = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 25)})
 			local openchangecolor = screen:CreateElement("TextButton", {Text = "Change Background Color", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 50)})
 			local openmediaplayer = screen:CreateElement("TextButton", {Text = "Media Player", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 75)})
+			local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, 100)})
 			scrollingframe:AddChild(opendiskreader)
 			scrollingframe:AddChild(opencreatefile)
 			scrollingframe:AddChild(openchangecolor)
 			scrollingframe:AddChild(openmediaplayer)
+			scrollingframe:AddChild(opencalculator)
 			startui:AddChild(scrollingframe)
 
 			opendiskreader.MouseButton1Down:Connect(function()
@@ -609,6 +645,13 @@ local function loadmenu(screen, disk)
 
 			openmediaplayer.MouseButton1Down:Connect(function()
 				mediaplayer(screen, disk, speaker)
+				startui:Destroy()
+				startui = nil
+				pressed = false
+			end)
+
+			opencalculator.MouseButton1Down:Connect(function()
+				calculator(screen)
 				startui:Destroy()
 				startui = nil
 				pressed = false
