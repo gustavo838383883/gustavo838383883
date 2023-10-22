@@ -651,6 +651,7 @@ local function calculator(screen)
 	holderframe:AddChild(button16)
 	button16.MouseButton1Down:Connect(function()
 		if type == "+" then
+			number1 = number1 + number2
 			part1.Text = number1 + number2
 			part2.Text = ""
 			number2 = 0
@@ -659,6 +660,7 @@ local function calculator(screen)
 		end
 		
 		if type == "-" then
+			number1 = number1 - number2
 			part1.Text = number1 - number2
 			part2.Text = ""
 			number2 = 0
@@ -667,6 +669,7 @@ local function calculator(screen)
 		end
 
 		if type == "*" then
+			number1 = number1 * number2
 			part1.Text = number1 * number2
 			part2.Text = ""
 			number2 = 0
@@ -675,6 +678,7 @@ local function calculator(screen)
 		end
 
 		if type == "/" then
+			number1 = number1 / number2
 			part1.Text = number1 / number2
 			part2.Text = ""
 			number2 = 0
