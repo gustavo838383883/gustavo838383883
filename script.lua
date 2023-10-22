@@ -492,10 +492,10 @@ local function calculator(screen)
 	button1.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(1))
-			local part1.Text = number1
+			part1.Text = number1
 		else
 			number2 = tonumber(tostring(number2)..tostring(1))
-			local part2.Text = number2
+			part2.Text = number2
 		end
 	end)
 end
