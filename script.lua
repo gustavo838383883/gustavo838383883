@@ -467,11 +467,11 @@ local function changecolor(screen, disk)
 end
 
 local function calculator(screen)
-	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
-	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "0"})
+	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 25), Active = true, Draggable = true})
+	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.1, 0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "0"})
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0.23, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
-	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0.46, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
+	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.1, 0), Position = UDim2.new(0.23, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
+	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.1, 0), Position = UDim2.new(0.46, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
 	holderframe:AddChild(part1)
 	holderframe:AddChild(part2)
 	holderframe:AddChild(part3)
@@ -488,14 +488,122 @@ local function calculator(screen)
 		holderframe:Destroy()
 	end)
 
-	local  button1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "1"})
+	local  button1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "9"})
 	holderframe:AddChild(button1)
 	button1.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(9))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(9))
+			part2.Text = number2
+		end
+	end)
+
+	local  button2 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "8"})
+	holderframe:AddChild(button2)
+	button2.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(8))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(8))
+			part2.Text = number2
+		end
+	end)
+
+	local  button3 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "7"})
+	holderframe:AddChild(button3)
+	button3.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(7))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(7))
+			part2.Text = number2
+		end
+	end)
+
+	local  button4 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.35, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "6"})
+	holderframe:AddChild(button4)
+	button4.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(6))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(6))
+			part2.Text = number2
+		end
+	end)
+	
+	local  button5 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "5"})
+	holderframe:AddChild(button5)
+	button5.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(5))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(5))
+			part2.Text = number2
+		end
+	end)
+
+	local  button6 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "4"})
+	holderframe:AddChild(button6)
+	button6.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(4))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(4))
+			part2.Text = number2
+		end
+	end)
+	
+	local  button7 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "3"})
+	holderframe:AddChild(button7)
+	button7.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(3))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(3))
+			part2.Text = number2
+		end
+	end)
+
+	local  button8 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "2"})
+	holderframe:AddChild(button8)
+	button8.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(2))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(2))
+			part2.Text = number2
+		end
+	end)
+
+	local  button9 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "1"})
+	holderframe:AddChild(button9)
+	button9.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(1))
 			part1.Text = number1
 		else
 			number2 = tonumber(tostring(number2)..tostring(1))
+			part2.Text = number2
+		end
+	end)
+	
+	local  button10 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "0"})
+	holderframe:AddChild(button10)
+	button10.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(0))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(0))
 			part2.Text = number2
 		end
 	end)
