@@ -15,4 +15,4 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-Click the repository with my username and then click script.lua for GustavOS (WOS Microcontroler OS)
+Click the repository with my username and then click script.lua for GustavOS (WOS Microcontroler OS) and copy the raw link and paste in a Microcontroller, you also cant have 2 or more ports with the same number.
