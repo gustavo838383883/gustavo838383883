@@ -468,13 +468,13 @@ end
 
 local function calculator(screen)
 	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
-	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
+	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0.23, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
-	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0.46, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
+	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0.23, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
+	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.23, 0, 0.175, 0), Position = UDim2.new(0.46, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = ""})
 	holderframe:AddChild(part1)
 	holderframe:AddChild(part2)
-	olderframe:AddChild(part3)
+	holderframe:AddChild(part3)
 	holderframe:AddChild(closebutton)
 
 	local number1 = 0
@@ -488,7 +488,7 @@ local function calculator(screen)
 		holderframe:Destroy()
 	end)
 
-	local  button1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "1"})
+	local  button1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.175, 0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "1"})
 	button1.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(1))
