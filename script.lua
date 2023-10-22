@@ -524,7 +524,7 @@ local function calculator(screen)
 		end
 	end)
 
-	local  button4 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.35, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "6"})
+	local  button4 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.35, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "6"})
 	holderframe:AddChild(button4)
 	button4.MouseButton1Down:Connect(function()
 		if not type then
@@ -536,7 +536,7 @@ local function calculator(screen)
 		end
 	end)
 	
-	local  button5 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "5"})
+	local  button5 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "5"})
 	holderframe:AddChild(button5)
 	button5.MouseButton1Down:Connect(function()
 		if not type then
@@ -548,7 +548,7 @@ local function calculator(screen)
 		end
 	end)
 
-	local  button6 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "4"})
+	local  button6 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "4"})
 	holderframe:AddChild(button6)
 	button6.MouseButton1Down:Connect(function()
 		if not type then
@@ -560,7 +560,7 @@ local function calculator(screen)
 		end
 	end)
 	
-	local  button7 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "3"})
+	local  button7 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.35, 0, 0.3, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "3"})
 	holderframe:AddChild(button7)
 	button7.MouseButton1Down:Connect(function()
 		if not type then
@@ -572,7 +572,7 @@ local function calculator(screen)
 		end
 	end)
 
-	local  button8 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "2"})
+	local  button8 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.3, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "2"})
 	holderframe:AddChild(button8)
 	button8.MouseButton1Down:Connect(function()
 		if not type then
@@ -584,7 +584,7 @@ local function calculator(screen)
 		end
 	end)
 
-	local  button9 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "1"})
+	local  button9 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.3, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "1"})
 	holderframe:AddChild(button9)
 	button9.MouseButton1Down:Connect(function()
 		if not type then
@@ -596,7 +596,7 @@ local function calculator(screen)
 		end
 	end)
 	
-	local  button10 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.1, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "0"})
+	local  button10 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.175, 0, 0.1, 0), Position = UDim2.new(0.175, 0, 0.4, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "0"})
 	holderframe:AddChild(button10)
 	button10.MouseButton1Down:Connect(function()
 		if not type then
