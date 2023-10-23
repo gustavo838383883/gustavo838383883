@@ -603,7 +603,7 @@ local function calculator(screen)
 			number1 = tostring(number1).."0"
 			part1.Text = number1
 		else
-			if tonumber(number2) ~= 0 then
+			if tostring(number2) ~= "0" then
 				number2 = tostring(number2).."0"
 				part2.Text = number2
 			else
