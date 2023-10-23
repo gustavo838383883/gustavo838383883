@@ -832,7 +832,7 @@ local function loadmenu(screen, disk)
 	local opencreatefile = nil
 
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
-	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.05,0,0.025,0), Position = UDim2.new(0, 0, 0.975, 0)})
+	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.1,0,0.075,0), Position = UDim2.new(0, 0, 0.975, 0)})
 
 	backgroundframe:AddChild(startmenu)
 
