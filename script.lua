@@ -604,8 +604,10 @@ local function calculator(screen)
 			part1.Text = number1
 		else
 			if tostring(number2) ~= "0" then
-				number2 = tostring(number2).."0"
-				part2.Text = number2
+				if tonumber(tostring(number2).."0") then
+					number2 = tostring(number2).."0"
+					part2.Text = number2
+				end
 			else
 				number2 = 0
 				part2.Text = number2
