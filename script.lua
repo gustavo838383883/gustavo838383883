@@ -762,7 +762,7 @@ local function audioui(screen, disk, data, speaker)
 	end)
 
 	local data = disk:Read(data)
-	local pausebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.9, 0), Text = "Stop", TextScaled = true})
+	local pausebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), Text = "Stop", TextScaled = true})
 	holderframe:AddChild(pausebutton)
 
 	sound = SpeakerHandler.CreateSound({
