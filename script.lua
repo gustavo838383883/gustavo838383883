@@ -492,10 +492,10 @@ local function calculator(screen)
 	holderframe:AddChild(button1)
 	button1.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(9)
+			number1 = tonumber(tostring(number1)..tostring(9))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(9)
+			number2 = tonumber(tostring(number2)..tostring(9))
 			part2.Text = number2
 		end
 	end)
@@ -504,10 +504,10 @@ local function calculator(screen)
 	holderframe:AddChild(button2)
 	button2.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(8)
+			number1 = tonumber(tostring(number1)..tostring(8))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(8)
+			number2 = tonumber(tostring(number2)..tostring(8))
 			part2.Text = number2
 		end
 	end)
@@ -516,10 +516,10 @@ local function calculator(screen)
 	holderframe:AddChild(button3)
 	button3.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(7)
+			number1 = tonumber(tostring(number1)..tostring(7))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(7)
+			number2 = tonumber(tostring(number2)..tostring(7))
 			part2.Text = number2
 		end
 	end)
@@ -528,10 +528,10 @@ local function calculator(screen)
 	holderframe:AddChild(button4)
 	button4.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(6)
+			number1 = tonumber(tostring(number1)..tostring(6))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(6)
+			number2 = tonumber(tostring(number2)..tostring(6))
 			part2.Text = number2
 		end
 	end)
@@ -540,10 +540,10 @@ local function calculator(screen)
 	holderframe:AddChild(button5)
 	button5.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(5)
+			number1 = tonumber(tostring(number1)..tostring(5))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(5)
+			number2 = tonumber(tostring(number2)..tostring(5))
 			part2.Text = number2
 		end
 	end)
@@ -552,10 +552,10 @@ local function calculator(screen)
 	holderframe:AddChild(button6)
 	button6.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(4)
+			number1 = tonumber(tostring(number1)..tostring(4))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(4)
+			number2 = tonumber(tostring(number2)..tostring(4))
 			part2.Text = number2
 		end
 	end)
@@ -564,10 +564,10 @@ local function calculator(screen)
 	holderframe:AddChild(button7)
 	button7.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(3)
+			number1 = tonumber(tostring(number1)..tostring(3))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(3)
+			number2 = tonumber(tostring(number2)..tostring(3))
 			part2.Text = number2
 		end
 	end)
@@ -576,10 +576,10 @@ local function calculator(screen)
 	holderframe:AddChild(button8)
 	button8.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(2)
+			number1 = tonumber(tostring(number1)..tostring(2))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(2)
+			number2 = tonumber(tostring(number2)..tostring(2))
 			part2.Text = number2
 		end
 	end)
@@ -588,10 +588,10 @@ local function calculator(screen)
 	holderframe:AddChild(button9)
 	button9.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1)..tostring(1)
+			number1 = tonumber(tostring(number1)..tostring(1))
 			part1.Text = number1
 		else
-			number2 = tostring(number2)..tostring(1)
+			number2 = tonumber(tostring(number2)..tostring(1))
 			part2.Text = number2
 		end
 	end)
@@ -832,7 +832,7 @@ local function loadmenu(screen, disk)
 	local opencreatefile = nil
 
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
-	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0,50,0,25), Position = UDim2.new(0, 0, 1, -25)})
+	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.05,0,0.025,0), Position = UDim2.new(0, 0, 0.975, 0)})
 
 	backgroundframe:AddChild(startmenu)
 
