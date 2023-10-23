@@ -845,7 +845,7 @@ local function loadmenu(screen, disk)
 				pressed = false
 			end
 		else
-			startui = screen:CreateElement("Frame", {Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.5, -25)})
+			startui = screen:CreateElement("Frame", {Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.425, 0)})
 			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), ScrollBarThickness = 4, CanvasSize = UDim2.new(0, 0, 1, 0)})
 			opendiskreader = screen:CreateElement("TextButton", {Text = "Files", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0)})
 			opencreatefile = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.2, 0)})
