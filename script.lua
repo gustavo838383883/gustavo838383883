@@ -600,8 +600,15 @@ local function calculator(screen)
 	holderframe:AddChild(button10)
 	button10.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = tostring(number1).."0"
-			part1.Text = number1
+			if tostring(number1) ~= "0" then
+				if tonumber(tostring(number1).."0") then
+					number1 = tostring(number1).."0"
+					part1.Text = number1
+				end
+			else
+				number1 = 0
+				part1.Text = number1
+			end
 		else
 			if tostring(number2) ~= "0" then
 				if tonumber(tostring(number2).."0") then
