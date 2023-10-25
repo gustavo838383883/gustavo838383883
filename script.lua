@@ -833,7 +833,8 @@ local function mediaplayer(screen, disk, speaker)
 	openimage.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
 			local data = disk:Read(data)
-			woshtmlfile([[<img src="]]..data..[[" position="0, 0, 0, 0" size="1, 0, 1, 0">]], screen)
+			print([[<woshtml> <img src="]]..data..[[" position="0, 0, 0, 0" size="1, 0, 1, 0"/>]])
+			woshtmlfile([[<woshtml> <img src="]]..data..[[" position="0, 0, 0, 0" size="1, 0, 1, 0"/>]], screen)
 		end
 	end)
 end
