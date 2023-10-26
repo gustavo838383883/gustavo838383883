@@ -626,11 +626,11 @@ local function calculator(screen)
 	holderframe:AddChild(button19)
 	button19.MouseButton1Down:Connect(function()
 		if not type then
-			number1 = string.gsub(tostring(number1), ".", "")
+			number1 = string.gsub(tostring(number1), "%.", "")
 			number1 = tostring(number1).."."
 			part1.Text = number1
 		else
-			number2 = string.gsub(tostring(number2), ".", "")
+			number2 = string.gsub(tostring(number2), "%.", "")
 			number2 = tostring(number2).."."
 			part2.Text = number2
 		end
