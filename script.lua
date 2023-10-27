@@ -485,6 +485,10 @@ local function changecolor(screen, disk)
 				if tonumber(colordata[1]) and tonumber(colordata[2]) and tonumber(colordata[3]) then
 					backgroundframe.BackgroundColor3 = Color3.new(tonumber(colordata[1])/255, tonumber(colordata[2])/255, tonumber(colordata[3])/255)
 					changecolorbutton.Text = "Success"
+					if backgroundimage then
+						disk:Write("BackgroundImage", "")
+						backgroundimageframe.Image = ""
+					end
 				end
 			end
 		end
