@@ -542,23 +542,19 @@ local function changebackgroundimage(screen, disk)
 	end)
 
 	changebackimg.MouseButton1Down:Connect(function()
-		print("0")
 		if id.Text ~= "Image ID" then
-			print("1")
 			if tonumber(data) then
-				print("2")
 				disk:Write("BackgroundImage", data..","..tostring(tile)..","..tilenumb)
 				backgroundimageframe.Image = "rbxassetid://"..tonumber(data)
 				changebackimg.Text = "Success"
-				print("3")
 				if tile then
-					print("4")
 					local tilenumb = string.split(tilenumb, ",")
 					if tonumber(tilenumb[1]) and tonumber(tilenumb[2]) and tonumber(tilenumb[3]) and tonumber(tilenumb[4]) then
-						print("5")
 						backgroundimageframe.ScaleType = Enum.ScaleType.Tile
 						backgroundimageframe.TileSize = UDim2.new(tonumber(tilenumb[1]), tonumber(tilenumb[2]), tonumber(tilenumb[3]), tonumber(tilenumb[4]))
 					end
+					else
+							backgroundimageframe.ScaleType = Enum.ScaleType.Stretch
 				end
 			end
 		end
