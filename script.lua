@@ -103,8 +103,14 @@ for i=1, 128 do
 end
 
 local color = nil
+local backgroundimage = nil
+local backgroundimageframe = nil
+local tile = false
+local tilesize = nil
+
 if disk then
 	color = disk:Read("Color")
+	diskbackgroundimage = disk:Read("BackgroundImage")
 	if color then
 		color = string.split(color, ",")
 		if color then
@@ -118,6 +124,23 @@ if disk then
 		end
 	else
 		color = Color3.new(0, 128/255, 218/255)
+	end
+	
+	if diskbackgroundimage then
+		local idandbool = string.split(diskbackgroundimage, ",")
+		if tonumber(idandbool[1]) then
+			backgroundimage = tonumber(idandbool[1])
+			if idandbool[2] == "true" then
+				tile = true
+			end
+			if tonumber(idandbool[3]) and tonumber(idandbool[4]) and tonumber(idandbool[5]) and tonumber(idandbool[7]) then
+				tilesize = UDim2.new(tonumber(idandbool[3]), tonumber(idandbool[4]), tonumber(idandbool[5]), tonumber(idandbool[6]))
+			end
+		else
+			backgroundimage = nil
+		end
+	else
+		backgroundimage = nil
 	end
 end
 
@@ -465,6 +488,73 @@ local function changecolor(screen, disk)
 		end
 	end)
 end
+
+local function changebackgroundimage(screen, disk)
+	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
+	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Color"})
+	local id = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Image ID"})
+	local tiletoggle = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Enable tile"})
+	local tilenumber = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.75,0,0.2,0), Position = UDim2.new(0.25, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "0.2"})
+	local changebackimg = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Background Image"})
+	holderframe:AddChild(textlabel)
+	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+	holderframe:AddChild(changebackimg)
+	holderframe:AddChild(id)
+	holderframe:AddChild(tiletoggle)
+	holderframe:AddChild(tilenumber)
+	holderframe:AddChild(closebutton)
+
+
+	local data = nil
+	local filename = nil
+	local tile = false
+	tilenumb = "0.2, 0, 0.2, 0"
+
+	closebutton.MouseButton1Down:Connect(function()
+		holderframe:Destroy()
+	end)
+
+	id.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			color.Text = keyboardinput
+			data = keyboardinput
+		end
+	end)
+
+	tiletoggle.MouseButton1Down:Connect(function()
+		if tile then
+			tile = false
+			tiletoggle.Text = "Enable tile"
+		else
+			tiletoggle.Text = "Disable tile"
+			tile = true
+		end
+	end)
+
+	
+	tilenumber.MouseButton1Down:Connect(function()
+		tilenumber.Text = keyboardinput
+		tilenumb = keyboardinput
+	end)
+
+	changebackimg.MouseButton1Down:Connect(function()
+		if id.Text ~= "Image ID" then
+			if tonumber(data) then
+				disk:Write("BackgroundImage", data..","..tile..","..tilenumb)
+				backgroundimageframe.Image = tonumber(data)
+				changebackimg.Text = "Success"
+				if tile then
+					local tilenumb = string.split(tilenumb, ",")
+					if tonumber(tilenumb[1]) and tonumber(tilenumb[2]) and tonumber(tilenumb[3]) and tonumber(tilenumb[4]) then
+						backgroundimageframe.ScaleType = Enum.ScaleType.Tile
+						backgroundimageframe.TileSize = UDim2.new(tonumber(tilenumb[1]), tonumber(tilenumb[2]), tonumber(tilenumb[3]), tonumber(tilenumb[4]))
+					end
+				end
+			end
+		end
+	end)
+end
+
 
 local function calculator(screen)
 	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
@@ -858,6 +948,18 @@ local function loadmenu(screen, disk)
 	local opencreatefile = nil
 
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
+	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 0})
+	if backgroundimage then
+		backgroundimageframe.Image = "rbxassetid://"..tonumber(backgroundimage)
+		if tile then
+			local tilesize = string.split(tilesize, ",")
+			if tonumber(tilesize[1]) and tonumber(tilesize[2]) and tonumber(tilesize[3]) and tonumber(tilesize[4]) then
+				backgroundimageframe.ScaleType = Enum.Scaletype.Tile
+				backgroundimageframe.TileSize = UDim2.new(tonumber(tilesize[1]), tonumber(tilesize[2]), tonumber(tilesize[3]), tonumber(tilesize[4]))
+			end
+		end
+	end
+	
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.2,0,0.1,0), Position = UDim2.new(0, 0, 0.9, 0)})
 
 	backgroundframe:AddChild(startmenu)
