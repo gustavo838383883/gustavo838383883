@@ -516,7 +516,7 @@ local function changebackgroundimage(screen, disk)
 
 	id.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			color.Text = keyboardinput
+			id.Text = keyboardinput
 			data = keyboardinput
 		end
 	end)
@@ -533,8 +533,10 @@ local function changebackgroundimage(screen, disk)
 
 	
 	tilenumber.MouseButton1Down:Connect(function()
-		tilenumber.Text = keyboardinput
-		tilenumb = keyboardinput
+		if keyboardinput then
+			tilenumber.Text = keyboardinput
+			tilenumb = keyboardinput
+		end
 	end)
 
 	changebackimg.MouseButton1Down:Connect(function()
