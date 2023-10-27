@@ -948,7 +948,7 @@ local function loadmenu(screen, disk)
 	local opencreatefile = nil
 
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
-	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 0})
+	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	if backgroundimage then
 		backgroundimageframe.Image = "rbxassetid://"..tonumber(backgroundimage)
 		if tile then
@@ -959,9 +959,9 @@ local function loadmenu(screen, disk)
 			end
 		end
 	end
+	backgroundframe:AddChild(backgroundimageframe)
 	
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.2,0,0.1,0), Position = UDim2.new(0, 0, 0.9, 0)})
-
 	backgroundframe:AddChild(startmenu)
 
 	startmenu.MouseButton1Down:Connect(function()
