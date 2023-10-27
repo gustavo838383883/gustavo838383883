@@ -508,7 +508,7 @@ local function changebackgroundimage(screen, disk)
 	local data = nil
 	local filename = nil
 	local tile = false
-	tilenumb = "0.2, 0, 0.2, 0"
+	local tilenumb = "0.2, 0, 0.2, 0"
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
