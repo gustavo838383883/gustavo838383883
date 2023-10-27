@@ -553,8 +553,8 @@ local function changebackgroundimage(screen, disk)
 						backgroundimageframe.ScaleType = Enum.ScaleType.Tile
 						backgroundimageframe.TileSize = UDim2.new(tonumber(tilenumb[1]), tonumber(tilenumb[2]), tonumber(tilenumb[3]), tonumber(tilenumb[4]))
 					end
-					else
-							backgroundimageframe.ScaleType = Enum.ScaleType.Stretch
+				else
+					backgroundimageframe.ScaleType = Enum.ScaleType.Stretch
 				end
 			end
 		end
@@ -962,6 +962,8 @@ local function loadmenu(screen, disk)
 				backgroundimageframe.ScaleType = Enum.ScaleType.Tile
 				backgroundimageframe.TileSize = UDim2.new(tilesize.X.Scale, tilesize.X.Offset, tilesize.Y.Scale, tilesize.Y.Offset)
 			end
+		else
+			backgroundimageframe.ScaleType = Enum.ScaleType.Stretch
 		end
 	end
 	backgroundframe:AddChild(backgroundimageframe)
