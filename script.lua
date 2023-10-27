@@ -132,6 +132,8 @@ if disk then
 			backgroundimage = tonumber(idandbool[1])
 			if idandbool[2] == "true" then
 				tile = true
+			else
+				tile = false
 			end
 			if tonumber(idandbool[3]) and tonumber(idandbool[4]) and tonumber(idandbool[5]) and tonumber(idandbool[6]) then
 				tilesize = UDim2.new(tonumber(idandbool[3]), tonumber(idandbool[4]), tonumber(idandbool[5]), tonumber(idandbool[6]))
