@@ -973,10 +973,11 @@ local function loadmenu(screen, disk)
 			end
 		else
 			startui = screen:CreateElement("Frame", {Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0)})
-			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), ScrollBarThickness = 4, CanvasSize = UDim2.new(0, 0, 1, 0)})
+			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), ScrollBarThickness = 4, CanvasSize = UDim2.new(0, 0, 1.2, 0)})
 			opendiskreader = screen:CreateElement("TextButton", {Text = "Files", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0)})
 			opencreatefile = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.2, 0)})
 			local openchangecolor = screen:CreateElement("TextButton", {Text = "Change Background Color", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.4, 0)})
+			local openchangebackimg = screen:CreateElement("TextButton", {Text = "Change Background Image", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 1, 0)})
 			local openmediaplayer = screen:CreateElement("TextButton", {Text = "Media Player", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.6, 0)})
 			local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0)})
 			scrollingframe:AddChild(opendiskreader)
@@ -984,6 +985,7 @@ local function loadmenu(screen, disk)
 			scrollingframe:AddChild(openchangecolor)
 			scrollingframe:AddChild(openmediaplayer)
 			scrollingframe:AddChild(opencalculator)
+			scrollingframe:AddChild(openchangebackimg)
 			startui:AddChild(scrollingframe)
 
 			opendiskreader.MouseButton1Down:Connect(function()
@@ -1002,6 +1004,13 @@ local function loadmenu(screen, disk)
 
 			openchangecolor.MouseButton1Down:Connect(function()
 				changecolor(screen, disk)
+				startui:Destroy()
+				startui = nil
+				pressed = false
+			end)
+
+			openchangebackimg.MouseButton1Down:Connect(function()
+				changebackgroundimage(screen, disk)
 				startui:Destroy()
 				startui = nil
 				pressed = false
