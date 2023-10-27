@@ -962,7 +962,7 @@ local function loadmenu(screen, disk)
 		if tile then
 			local tilesize = string.split(tilesize, ",")
 			if tonumber(tilesize[1]) and tonumber(tilesize[2]) and tonumber(tilesize[3]) and tonumber(tilesize[4]) then
-				backgroundimageframe.ScaleType = Enum.Scaletype.Tile
+				backgroundimageframe.ScaleType = Enum.ScaleType.Tile
 				backgroundimageframe.TileSize = UDim2.new(tonumber(tilesize[1]), tonumber(tilesize[2]), tonumber(tilesize[3]), tonumber(tilesize[4]))
 			end
 		end
