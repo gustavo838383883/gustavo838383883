@@ -961,11 +961,8 @@ local function loadmenu(screen, disk)
 		backgroundimageframe.Image = "rbxassetid://"..tonumber(backgroundimage)
 		if tile then
 			if tilesize then
-				local tilesize = string.split(tilesize, ",")
-				if tonumber(tilesize[1]) and tonumber(tilesize[2]) and tonumber(tilesize[3]) and tonumber(tilesize[4]) then
-					backgroundimageframe.ScaleType = Enum.ScaleType.Tile
-					backgroundimageframe.TileSize = UDim2.new(tonumber(tilesize[1]), tonumber(tilesize[2]), tonumber(tilesize[3]), tonumber(tilesize[4]))
-				end
+				backgroundimageframe.ScaleType = Enum.ScaleType.Tile
+				backgroundimageframe.TileSize = UDim2.new(tilesize.Scale.X, tilesize.Offset.X, tilesize.Scale.Y, tilesize.Offset.Y)
 			end
 		end
 	end
