@@ -962,7 +962,7 @@ local function loadmenu(screen, disk)
 		if tile then
 			if tilesize then
 				backgroundimageframe.ScaleType = Enum.ScaleType.Tile
-				backgroundimageframe.TileSize = UDim2.new(tilesize.Scale.X, tilesize.Offset.X, tilesize.Scale.Y, tilesize.Offset.Y)
+				backgroundimageframe.TileSize = UDim2.new(tilesize.X.Scale, tilesize.X.Offset, tilesize.Y.Scale, tilesize.Y.Offset)
 			end
 		end
 	end
