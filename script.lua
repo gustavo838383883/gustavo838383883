@@ -546,7 +546,7 @@ local function changebackgroundimage(screen, disk)
 			if tonumber(data) then
 				print("2")
 				disk:Write("BackgroundImage", data..","..tostring(tile)..","..tilenumb)
-				backgroundimageframe.Image = tonumber(data)
+				backgroundimageframe.Image = "rbxassetid://"..tonumber(data)
 				changebackimg.Text = "Success"
 				print("3")
 				if tile then
