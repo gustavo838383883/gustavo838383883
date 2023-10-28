@@ -59,6 +59,8 @@ local screen = nil
 local keyboard = nil
 local speaker = nil
 
+local shutdownpoly = nil
+
 for i=1, 128 do
 	if not disk then
 		success, Error = pcall(GetPartFromPort, i, "Disk")
@@ -68,6 +70,16 @@ for i=1, 128 do
 			end
 		end
 	end
+
+	if not shutdownpoly then
+		success, Error = pcall(GetPartFromPort, i, "PolySilicon")
+		if success then
+			if GetPartFromPort(i, "PolySilicon") then
+				shutdownpoly = i
+			end
+		end
+	end
+	
 	if not speaker then
 		success, Error = pcall(GetPartFromPort, i, "Speaker")
 		if success then
@@ -987,6 +999,13 @@ local function loadmenu(screen, disk)
 			local settings = screen:CreateElement("TextButton", {Text = "Settings", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.2, 0)})
 			startui:AddChild(settings)
 
+			local shutdown = nil
+			
+			if shutdownpoly then
+				shutdown = screen:CreateElement("TextButton", {Text = "Shutdown", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0)})
+				startui:AddChild(shutdown)
+			end
+
 			pressed = true
 
 			local holdingframe = nil
@@ -1073,6 +1092,17 @@ local function loadmenu(screen, disk)
 					holdingframe2 = nil
 				end
 			end)
+
+			--shutdown:
+
+			if shutdown then
+				shutdown.MouseButton1Up:Connect(function()
+					screen:ClearElements()
+					speaker:ClearSounds()
+					TriggerPort(shutdownpoly)
+				end)
+			end
+			
 		end
 	end)
 end
