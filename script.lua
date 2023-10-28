@@ -75,6 +75,7 @@ for i=1, 128 do
 		success, Error = pcall(GetPartFromPort, i, "PolySilicon")
 		if success then
 			if GetPartFromPort(i, "PolySilicon") then
+				print("found")
 				shutdownpoly = i
 			end
 		end
@@ -1002,6 +1003,7 @@ local function loadmenu(screen, disk)
 			local shutdown = nil
 			
 			if shutdownpoly then
+				print("found")
 				shutdown = screen:CreateElement("TextButton", {Text = "Shutdown", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0)})
 				startui:AddChild(shutdown)
 			end
