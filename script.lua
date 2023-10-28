@@ -878,9 +878,7 @@ local function audioui(screen, disk, data, speaker)
 	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
-	local sound = nil
-
-
+	print("1")
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
 		if sound then
@@ -888,11 +886,17 @@ local function audioui(screen, disk, data, speaker)
 			sound:Destroy()
 		end
 	end)
+	print("2")
+	local sound = nil
 
+	print("3")
+	
 	local data = disk:Read(data)
 	local pausebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), Text = "Stop", TextScaled = true})
 	holderframe:AddChild(pausebutton)
 
+	print("4")
+	
 	sound = SpeakerHandler.CreateSound({
 		Id = tonumber(data),
 		Pitch = 1,
@@ -900,6 +904,8 @@ local function audioui(screen, disk, data, speaker)
 	})
 	sound:Play()
 
+	print("5")
+	
 	pausebutton.MouseButton1Down:Connect(function()
 		if pausebutton.Text == "Stop" then
 			pausebutton.Text = "Play"
