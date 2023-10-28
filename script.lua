@@ -981,18 +981,23 @@ local function loadmenu(screen, disk)
 				pressed = false
 			end
 		else
-			startui = screen:CreateElement("Frame", {Size = UDim2.new(0.3, 0, 0.6, 0), Position = UDim2.new(0, 0, 0.3, 0)})
-			local programs = screen:CreateElement("TextButton", {Text = "Programs", TextScaled = true, Size = UDim2.new(1, 0, 0.15, 0)})
+			startui = screen:CreateElement("Frame", {Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0)})
+			local programs = screen:CreateElement("TextButton", {Text = "Programs", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0)})
 			startui:AddChild(programs)
-			local settings = screen:CreateElement("TextButton", {Text = "Settings", TextScaled = true, Size = UDim2.new(1, 0, 0.15, 0), Position = UDim2.new(0, 0, 0.15, 0)})
+			local settings = screen:CreateElement("TextButton", {Text = "Settings", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.2, 0)})
 			startui:AddChild(settings)
 
 			pressed = true
 
 			local holdingframe = nil
+			local holdingframe2 = nil
 			programs.MouseButton1Down:Connect(function()
 				print("1")
 				if not holdingframe then
+					if holdingframe2 then
+						holdingframe2:Destroy()
+						holdingframe2 = nil
+					end
 					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 0.45, 0), Position = UDim2.new(1, 0, 0, 0)})
 					startui:AddChild(holdingframe)
 					print("2")
@@ -1029,9 +1034,12 @@ local function loadmenu(screen, disk)
 				end
 			end)
 
-			local holdingframe2 = nil
 			settings.MouseButton1Down:Connect(function()
 				if not holdingframe2 then
+					if holdingframe then
+						holdingframe:Destroy()
+						holdingframe = nil
+					end
 					holdingframe2 = screen:CreateElement("Frame", { Size = UDim2.new(1, 0, 0.45, 0), Position = UDim2.new(1, 0, 0.15, 0)})
 					startui:AddChild(holdingframe2)
 					local openwrite = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0)})
