@@ -992,15 +992,14 @@ local function loadmenu(screen, disk)
 			local holdingframe = nil
 			local holdingframe2 = nil
 			programs.MouseButton1Down:Connect(function()
-				print("1")
 				if not holdingframe then
 					if holdingframe2 then
 						holdingframe2:Destroy()
 						holdingframe2 = nil
 					end
-					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 0.45, 0), Position = UDim2.new(1, 0, 0, 0)})
+					
+					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 0.6, 0), Position = UDim2.new(1, 0, 0, 0)})
 					startui:AddChild(holdingframe)
-					print("2")
 					local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0)})
 					holdingframe:AddChild(opencalculator)
 					local openfiles = screen:CreateElement("TextButton", {Text = "Files", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0), Position = UDim2.new(0, 0, 0.33, 0)})
@@ -1040,7 +1039,7 @@ local function loadmenu(screen, disk)
 						holdingframe:Destroy()
 						holdingframe = nil
 					end
-					holdingframe2 = screen:CreateElement("Frame", { Size = UDim2.new(1, 0, 0.45, 0), Position = UDim2.new(1, 0, 0.15, 0)})
+					holdingframe2 = screen:CreateElement("Frame", { Size = UDim2.new(1, 0, 0.6, 0), Position = UDim2.new(1, 0, 0.2, 0)})
 					startui:AddChild(holdingframe2)
 					local openwrite = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0)})
 					holdingframe2:AddChild(openwrite)
