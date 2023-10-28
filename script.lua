@@ -61,58 +61,62 @@ local speaker = nil
 
 local shutdownpoly = nil
 
-for i=1, 128 do
-	if not disk then
-		success, Error = pcall(GetPartFromPort, i, "Disk")
-		if success then
-			if GetPartFromPort(i, "Disk") then
-				disk = GetPartFromPort(i, "Disk")
+local function getstuff()
+	for i=1, 128 do
+		if not disk then
+			success, Error = pcall(GetPartFromPort, i, "Disk")
+			if success then
+				if GetPartFromPort(i, "Disk") then
+					disk = GetPartFromPort(i, "Disk")
+				end
 			end
 		end
-	end
-
-	if not shutdownpoly then
-		success, Error = pcall(GetPartFromPort, i, "Polysilicon")
-		if success then
-			if GetPartFromPort(i, "Polysilicon") then
-				shutdownpoly = i
-			end
-		end
-	end
 	
-	if not speaker then
-		success, Error = pcall(GetPartFromPort, i, "Speaker")
-		if success then
-			if GetPartFromPort(i, "Speaker") then
-				speaker = GetPartFromPort(i, "Speaker")
+		if not shutdownpoly then
+			success, Error = pcall(GetPartFromPort, i, "Polysilicon")
+			if success then
+				if GetPartFromPort(i, "Polysilicon") then
+					shutdownpoly = i
+				end
 			end
 		end
-	end
-	if not screen then
-		success, Error = pcall(GetPartFromPort, i, "Screen")
-		if success then
-			if GetPartFromPort(i, "Screen") then
-				screen = GetPartFromPort(i, "Screen")
+		
+		if not speaker then
+			success, Error = pcall(GetPartFromPort, i, "Speaker")
+			if success then
+				if GetPartFromPort(i, "Speaker") then
+					speaker = GetPartFromPort(i, "Speaker")
+				end
 			end
 		end
-	end
-	if not screen then
-		success, Error = pcall(GetPartFromPort, i, "TouchScreen")
-		if success then
-			if GetPartFromPort(i, "TouchScreen") then
-				screen = GetPartFromPort(i, "TouchScreen")
+		if not screen then
+			success, Error = pcall(GetPartFromPort, i, "Screen")
+			if success then
+				if GetPartFromPort(i, "Screen") then
+					screen = GetPartFromPort(i, "Screen")
+				end
 			end
 		end
-	end
-	if not keyboard then
-		success, Error = pcall(GetPartFromPort, i, "Keyboard")
-		if success then
-			if GetPartFromPort(i, "Keyboard") then
-				keyboard = GetPartFromPort(i, "Keyboard")
+		if not screen then
+			success, Error = pcall(GetPartFromPort, i, "TouchScreen")
+			if success then
+				if GetPartFromPort(i, "TouchScreen") then
+					screen = GetPartFromPort(i, "TouchScreen")
+				end
+			end
+		end
+		if not keyboard then
+			success, Error = pcall(GetPartFromPort, i, "Keyboard")
+			if success then
+				if GetPartFromPort(i, "Keyboard") then
+					keyboard = GetPartFromPort(i, "Keyboard")
+				end
 			end
 		end
 	end
 end
+
+getstuff()
 
 local color = nil
 local backgroundimage = nil
@@ -1130,6 +1134,7 @@ local function loadmenu(screen, disk)
 					speaker:ClearSounds()
 					Beep(1)
 					backgroundimageframe = nil
+					getstuff()
 					loadmenu(screen, disk)
 				end)
 			end)
