@@ -982,12 +982,10 @@ local function loadmenu(screen, disk)
 			end
 		else
 			startui = screen:CreateElement("Frame", {Size = UDim2.new(0.3, 0, 0.6, 0), Position = UDim2.new(0, 0, 0.3, 0)})
-			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), ScrollBarThickness = 4, CanvasSize = UDim2.new(0, 0, 1, 0)})
 			local programs = screen:CreateElement("TextButton", {Text = "Programs", TextScaled = true, Size = UDim2.new(1, 0, 0.15, 0)})
-			scrollingframe:AddChild(programs)
+			startui:AddChild(programs)
 			local settings = screen:CreateElement("TextButton", {Text = "Settings", TextScaled = true, Size = UDim2.new(1, 0, 0.15, 0), Position = UDim2.new(0, 0, 0.15, 0)})
-			scrollingframe:AddChild(settings)
-			startui:AddChild(scrollingframe)
+			startui:AddChild(settings)
 
 			pressed = true
 
@@ -996,7 +994,7 @@ local function loadmenu(screen, disk)
 				print("1")
 				if not holdingframe then
 					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 0.45, 0), Position = UDim2.new(1, 0, 0, 0)})
-					scrollingframe:AddChild(holdingframe)
+					startui:AddChild(holdingframe)
 					print("2")
 					local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0)})
 					holdingframe:AddChild(opencalculator)
@@ -1035,7 +1033,7 @@ local function loadmenu(screen, disk)
 			settings.MouseButton1Down:Connect(function()
 				if not holdingframe2 then
 					holdingframe2 = screen:CreateElement("Frame", { Size = UDim2.new(1, 0, 0.45, 0), Position = UDim2.new(1, 0, 0.15, 0)})
-					scrollingframe:AddChild(holdingframe2)
+					startui:AddChild(holdingframe2)
 					local openwrite = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0)})
 					holdingframe2:AddChild(openwrite)
 					local openchangebackimg = screen:CreateElement("TextButton", {Text = "Change Background Image", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0), Position = UDim2.new(0, 0, 0.33, 0)})
