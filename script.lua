@@ -1034,9 +1034,9 @@ local function loadmenu(screen, disk)
 			local holdingframe2 = nil
 			settings.MouseButton1Down:Connect(function()
 				if not holdingframe2 then
-					holdingframe2 = screen:CreateElement("Frame", { Size = UDim2.new(1, 0, 0.45, 0)})
+					holdingframe2 = screen:CreateElement("Frame", { Size = UDim2.new(1, 0, 0.45, 0), Position = UDim2.new(1, 0, 0.15, 0)})
 					scrollingframe:AddChild(holdingframe2)
-					local openwrite = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0), Position = UDim2.new(1, 0, 0.15, 0)})
+					local openwrite = screen:CreateElement("TextButton", {Text = "Create/Overwrite File", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0)})
 					holdingframe2:AddChild(openwrite)
 					local openchangebackimg = screen:CreateElement("TextButton", {Text = "Change Background Image", TextScaled = true, Size = UDim2.new(1, 0, 0.33, 0), Position = UDim2.new(0, 0, 0.33, 0)})
 					holdingframe2:AddChild(openchangebackimg)
