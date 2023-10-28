@@ -15,4 +15,4 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-Click the repository with my username and then click script.lua for GustavOS (WOS Microcontroler OS) and copy the raw link and paste in a Microcontroller, you also cant have 2 or more ports with the same id or a id higher than 128.
+Click the repository with my username and then click script.lua for GustavOS (WOS Microcontroler OS) and copy the raw link and paste in a Microcontroller, you also cant have 2 or more ports with the same id or a id higher than 128, if you want a shutdown button in the start menu you need a polysilicon connected to a port without a ethernet cable and the microcontroller.
