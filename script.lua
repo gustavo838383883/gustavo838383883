@@ -1135,7 +1135,28 @@ local function loadmenu(screen, disk)
 					Beep(1)
 					backgroundimageframe = nil
 					getstuff()
-					loadmenu(screen, disk)
+					if screen then
+						if disk then
+					
+							if speaker then
+								if keyboard then
+									loadmenu(screen, disk)
+								else
+									screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
+									Beep(1)
+								end
+							else
+								screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
+								Beep(1)
+							end
+						else
+							screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No disk was found.", TextScaled = true})
+							Beep(1)
+						end
+					else
+						Beep(1)
+						print("No screen was found.")
+					end
 				end)
 			end)
 			--shutdown:
@@ -1197,6 +1218,7 @@ else
 	Beep(1)
 	print("No screen was found.")
 end
+
 if keyboard then
 	keyboard:Connect("TextInputted", function(text)
 		keyboardinput = text
