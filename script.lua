@@ -1099,7 +1099,7 @@ local function loadmenu(screen, disk)
 				shutdown.MouseButton1Up:Connect(function()
 					screen:ClearElements()
 					speaker:ClearSounds()
-					beep(1)
+					Beep(1)
 					TriggerPort(shutdownpoly)
 				end)
 			end
