@@ -992,8 +992,10 @@ local function loadmenu(screen, disk)
 			pressed = true
 
 			local holdingframe = nil
-			programs.MouseButton1Up:Connect(function()
+			programs.MouseButton1Down:Connect(function()
+				print("1")
 				if not holdingframe then
+					print("2")
 					holdingframe = screen:CreateElement("Frame", {Position = UDim2.new(1, 0, 0, 0), Size = UDim2.new(1, 0, 3, 0)})
 					programs:AddChild(holdingframe)
 					local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 1/3, 0)})
@@ -1030,7 +1032,7 @@ local function loadmenu(screen, disk)
 			end)
 
 			local holdingframe2 = nil
-			settings.MouseButton1Up:Connect(function()
+			settings.MouseButton1Down:Connect(function()
 				if not holdingframe2 then
 					holdingframe2 = screen:CreateElement("Frame", {Position = UDim2.new(1, 0, 0, 0), Size = UDim2.new(1, 0, 3, 0)})
 					programs:AddChild(holdingframe2)
