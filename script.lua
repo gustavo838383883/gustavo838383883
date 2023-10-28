@@ -72,9 +72,10 @@ for i=1, 128 do
 	end
 
 	if not shutdownpoly then
-		success, Error = pcall(GetPartFromPort, i, "PolySilicon")
+		print("A")
+		success, Error = pcall(GetPartFromPort, i, "Polysilicon")
 		if success then
-			if GetPartFromPort(i, "PolySilicon") then
+			if GetPartFromPort(i, "Polysilicon") then
 				print("found")
 				shutdownpoly = i
 			end
