@@ -1129,6 +1129,7 @@ local function loadmenu(screen, disk)
 					screen:ClearElements()
 					speaker:ClearSounds()
 					Beep(1)
+					backgroundimageframe = nil
 					loadmenu(screen, disk)
 				end)
 			end)
