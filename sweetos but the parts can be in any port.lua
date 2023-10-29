@@ -1745,11 +1745,11 @@ WOS_MODULES.InputButton = function()
 	end
 end
 
-local disk = nil
-local screen = nil
-local keyboard = nil
-local speaker = nil
-local modem = nil
+local Disk = nil
+local Screen = nil
+local Keyboard = nil
+local Speaker = nil
+local Modem = nil
 
 local function getstuff()
 	disk = nil
@@ -2097,11 +2097,11 @@ local InputButton = require("InputButton")
 local PilotLua = require("PilotLua")
 
 -- Objects
-local Screen: ScreenPlus.Screen = keyboard
-local Keyboard: PilotLua.Keyboard = keyboard
-local Speaker: PilotLua.Speaker = speaker
-local Disk: PilotLua.Disk = disk
-local Modem: PilotLua.Modem = modem
+local Screen: ScreenPlus.Screen = Keyboard
+local Keyboard: PilotLua.Keyboard = Keyboard
+local Speaker: PilotLua.Speaker = Speaker
+local Disk: PilotLua.Disk = Disk
+local Modem: PilotLua.Modem = Modem
 local ThreadMicros: { [number]: PilotLua.Microcontroller } = GetPartsFromPort(2, "Microcontroller")
 
 SpeakerHandler.DefaultSpeaker = Speaker
