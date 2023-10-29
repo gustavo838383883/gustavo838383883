@@ -371,11 +371,7 @@ local function readfile(txt, nameondisk)
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
-	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = txt})
-
-
-
-	filegui:AddChild(disktext)
+	
 	filegui:AddChild(closebutton)
 	filegui:AddChild(deletebutton)
 
@@ -394,6 +390,10 @@ local function readfile(txt, nameondisk)
 		filegui:Destroy()
 		filegui = nil
 	end)
+
+	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
+	
+	filegui:AddChild(disktext)
 
 	if string.find(string.lower(txt), "<woshtml>") then
 		woshtmlfile(txt,  screen)
