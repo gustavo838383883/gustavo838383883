@@ -66,7 +66,8 @@ local function getstuff()
 	screen = nil
 	keyboard = nil
 	speaker = nil
-	
+	shutdownpoly = nil
+
 	for i=1, 128 do
 		if not disk then
 			success, Error = pcall(GetPartFromPort, i, "Disk")
