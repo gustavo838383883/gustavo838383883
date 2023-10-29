@@ -1202,7 +1202,7 @@ if screen then
 		if speaker then
 			if keyboard then
 				loadmenu(screen, disk)
-				Beep(0.1)
+				Beep(0.25)
 				task.wait(0.1)
 				Beep(0.5)
 				task.wait(0.1)
