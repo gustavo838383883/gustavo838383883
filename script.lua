@@ -1202,6 +1202,17 @@ if screen then
 		if speaker then
 			if keyboard then
 				loadmenu(screen, disk)
+				Beep(1)
+				task.wait(0.1)
+				Beep(0.75)
+				task.wait(0.1)
+				Beep(0.5)
+				task.wait(0.1)
+				Beep(1)
+				task.wait(0.1)
+				Beep(0.5)
+				task.wait(0.1)
+				Beep(0.1)
 			else
 				screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 				Beep(1)
