@@ -365,31 +365,6 @@ local function woshtmlfile(txt, screen)
 
 end
 
-local function loadtable(screen, tableval)
-	local start = 0
-	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
-	holderframe:AddChild(scrollingframe)
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
-	holderframe:AddChild(textlabel)
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	holderframe:AddChild(closebutton)
-
-	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-	end)
-
-	for index, data in pairs(tableval) do
-		local button = screen:CreateElement("TextButton", {TextScaled = true, Text = index, Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
-		scrollingframe:AddChild(button)
-		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
-		start += 25
-		button.MouseButton1Down:Connect(function()
-			readfile(data, nil, false, index)
-		end)
-	end
-end
-
 local function readfile(txt, nameondisk, bool, nameval)
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
@@ -418,7 +393,7 @@ local function readfile(txt, nameondisk, bool, nameval)
 		end)
 	end
 	
-	print(tostringnameval)
+	print(tostring(nameval))
 	if string.find(string.lower(tostring(nameval)), ".aud") then
 		print("Hi")
 		audioui(screen, disk, tostring(txt), speaker)
@@ -437,16 +412,39 @@ local function readfile(txt, nameondisk, bool, nameval)
 	end
 
 	if type(txt) == "table" then
-		loadtable(screen, txt)
+		local table = txt
+		local start = 0
+		local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
+		holderframe:AddChild(scrollingframe)
+		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
+		holderframe:AddChild(textlabel)
+		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+		holderframe:AddChild(closebutton)
+	
+		closebutton.MouseButton1Down:Connect(function()
+			holderframe:Destroy()
+		end)
+	
+		for index, data in pairs(tableval) do
+			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = index, Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
+			scrollingframe:AddChild(button)
+			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+			start += 25
+			button.MouseButton1Down:Connect(function()
+				readfile(data, nil, false, index)
+			end)
+		end
 	end
 
-	if string.find(string.lower(tostring(txt)), "<woshtml>") then
-		woshtmlfile(txt,  screen)
-	end
-	
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
 	
 	filegui:AddChild(disktext)
+	
+	if string.find(string.lower(tostring(txt)), "<woshtml>") then
+		woshtmlfile(txt, screen)
+	end
+	
 end
 
 local function loaddisk(screen, disk)
