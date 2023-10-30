@@ -460,7 +460,7 @@ local function readfile(txt, nameondisk, boolean)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".img") then
-			woshtmlfile([[<img src="]]..tonumber(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+			woshtmlfile([[<img src="]]..txt..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 	end
 
 	if type(txt) == "table" then
@@ -1033,7 +1033,7 @@ local function mediaplayer(screen, disk, speaker)
 	openimage.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
 			local data = disk:Read(data)
-			woshtmlfile([[<img src="]]..tonumber(data)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+			woshtmlfile([[<img src="]]..data..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 		end
 	end)
 end
