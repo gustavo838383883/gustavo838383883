@@ -440,6 +440,9 @@ local function readfile(txt, nameondisk, boolean)
 		if string.find(tostring(txt), "pitch") then
 			local splitted = string.split(tostring(txt), " pitch:")
 			audioui(screen, disk, splitted[1], speaker, tonumber(splitted[2]))
+		elseif string.find(tostring(txt), "length") then
+			local splitted = string.split(tostring(txt), " ")
+			audioui(screen, disk, splitted[1], speaker)
 		else
 			audioui(screen, disk, txt, speaker)
 		end
