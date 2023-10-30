@@ -365,7 +365,8 @@ local function woshtmlfile(txt, screen)
 
 end
 
-local function readfile(txt, nameondisk, bool)
+local function readfile(txt, nameondisk, boolean)
+	local adddata = disk:ReadEntireDisk()
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local deletebutton = nil
@@ -378,9 +379,10 @@ local function readfile(txt, nameondisk, bool)
 		filegui:Destroy()
 		filegui = nil
 	end)
-	if bool then
+	
+	if bool == true then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
-		filegui:AddChild(deletebutton)	
+		filegui:AddChild(deletebutton)
 		
 		deletebutton.MouseButton1Down:Connect(function()
 			disk:ClearDisk()
