@@ -414,7 +414,7 @@ local function readfile(txt, nameondisk, boolean)
 	end
 
 	if type(txt) == "table" then
-		local table = txt
+		local tableval = txt
 		local start = 0
 		local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
