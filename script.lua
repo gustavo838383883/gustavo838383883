@@ -1167,7 +1167,7 @@ local function loadmenu(screen, disk)
 	local pressed = false
 	local startui = nil
 
-	backgroundframe = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color, TextTransparency = 1})
+	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
 	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	if backgroundimage then
 		backgroundimageframe.Image = backgroundimage
@@ -1193,7 +1193,7 @@ local function loadmenu(screen, disk)
 				pressed = false
 			end
 		else
-			startui = screen:CreateElement("Frame", {Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0)})
+			startui = screen:CreateElement("TextButton", {Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), TextTransparency = 1})
 			local programs = screen:CreateElement("TextButton", {Text = "Programs", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0)})
 			startui:AddChild(programs)
 			local settings = screen:CreateElement("TextButton", {Text = "Settings", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.2, 0)})
