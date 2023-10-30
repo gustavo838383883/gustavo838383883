@@ -365,7 +365,7 @@ local function woshtmlfile(txt, screen)
 
 end
 
-local function audioui(screen, disk, data, speaker)
+local function audioui(screen, disk, data, speaker, pitch)
 	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
@@ -376,6 +376,9 @@ local function audioui(screen, disk, data, speaker)
 		sound:Destroy()
 	end)
 
+	if not pitch then
+		pitch = 1
+	end
 	
 	local pausebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), Text = "Stop", TextScaled = true})
 	holderframe:AddChild(pausebutton)
@@ -383,7 +386,7 @@ local function audioui(screen, disk, data, speaker)
 	
 	sound = SpeakerHandler.CreateSound({
 		Id = tonumber(data),
-		Pitch = 1,
+		Pitch = tonumber(pitch),
 		Speaker = speaker,
 	})
 	sound:Play()
@@ -435,8 +438,8 @@ local function readfile(txt, nameondisk, boolean)
 	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
 		if string.find(tostring(txt), "pitch") then
-			local splitted = string.split(tostring(txt), " ")
-			audioui(screen, disk, splitted[1], speaker)
+			local splitted = string.split(tostring(txt), " pitch:")
+			audioui(screen, disk, splitted[1], speaker, tonumber(splitted[2]))
 		else
 			audioui(screen, disk, txt, speaker)
 		end
