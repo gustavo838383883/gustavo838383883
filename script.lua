@@ -1011,7 +1011,19 @@ local function mediaplayer(screen, disk, speaker)
 	openaudio.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
 			local data = disk:Read(data)
-			audioui(screen, disk, data, speaker)
+			if string.find(tostring(data), "pitch") then
+					
+				local splitted = string.split(tostring(data), " pitch:")
+				audioui(screen, disk, splitted[1], speaker, tonumber(splitted[2]))
+					
+			elseif string.find(tostring(data), "length") then
+					
+				local splitted = string.split(tostring(data), " ")
+				audioui(screen, disk, splitted[1], speaker)
+					
+			else
+				audioui(screen, disk, data, speaker)
+			end
 		end
 	end)
 
