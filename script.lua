@@ -269,7 +269,7 @@ local function StringToGui(screen, text, parent)
 				url.Image = "http://www.roblox.com/asset/?id=8552847009"
 				if (link ~= "") then
 					if tonumber(link) then
-						url.Image = "rbxthumb://type=Asset&id="..link.."&w=420&h=420"
+						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
 					else
 						url.Image = string.match(link, "%d+")
 						print(string.match(link, "%d+"))
