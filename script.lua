@@ -365,18 +365,19 @@ local function woshtmlfile(txt, screen)
 
 end
 
-local function readfile(txt, nameondisk, bool, nameval)
+local function readfile(txt, nameondisk, bool)
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local deletebutton = nil
 	
 	filegui:AddChild(closebutton)
 
+	print(tostring(nameondisk))
+	
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
 		filegui = nil
 	end)
-	print("a")
 	if bool then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 		filegui:AddChild(deletebutton)	
@@ -393,13 +394,12 @@ local function readfile(txt, nameondisk, bool, nameval)
 		end)
 	end
 	
-	print(tostring(nameval))
-	if string.find(string.lower(tostring(nameval)), ".aud") then
-		print("Hi")
+	print(tostring(nameondisk))
+	if string.find(string.lower(tostring(nameondisk)), ".aud") then
 		audioui(screen, disk, tostring(txt), speaker)
 	end
 
-	if string.find(string.lower(tostring(nameval)), ".img") then
+	if string.find(string.lower(tostring(nameondisk)), ".img") then
 			local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
 			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 			holderframe:AddChild(closebutton)
@@ -432,7 +432,7 @@ local function readfile(txt, nameondisk, bool, nameval)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
 			button.MouseButton1Down:Connect(function()
-				readfile(data, nil, false, index)
+				readfile(data, index, false)
 			end)
 		end
 	end
@@ -469,7 +469,7 @@ local function loaddisk(screen, disk)
 			start += 25
 			button.MouseButton1Down:Connect(function()
 				local data = disk:Read(filename)
-				readfile(data, filename, true, filename)
+				readfile(data, filename, true)
 			end)
 		end
 	end
