@@ -351,10 +351,17 @@ local function StringToGui(screen, text, parent)
 	end
 end
 
-local function woshtmlfile(txt, screen)
-	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
+local function woshtmlfile(txt, screen, boolean)
+	local size = UDim2.new(0.7, 0, 0.7, 0)
+	
+	if boolean then
+		size = UDim2.new(0.5, 0, 0.5, 0)
+	end
+
+	
+	local filegui = screen:CreateElement("Frame", {Size = size, Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, 0)})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -25)})
 	filegui:AddChild(scrollingframe)
 	filegui:AddChild(closebutton)
 	closebutton.MouseButton1Down:Connect(function()
@@ -449,16 +456,7 @@ local function readfile(txt, nameondisk, boolean)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".img") then
-			local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
-			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-			holderframe:AddChild(closebutton)
-			closebutton.MouseButton1Down:Connect(function()
-				holderframe:Destroy()
-				holderframe = nil
-			end)
-			local imageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, Image = "rbxassetid://"..tostring(txt)})
-			holderframe:AddChild(imageframe)
-			woshtmlfile([[<img src="]]..tonumber(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen)
+			woshtmlfile([[<img src="]]..tonumber(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 	end
 
 	if type(txt) == "table" then
@@ -1030,17 +1028,8 @@ local function mediaplayer(screen, disk, speaker)
 
 	openimage.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
-			local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
-			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-			holderframe:AddChild(closebutton)
-			closebutton.MouseButton1Down:Connect(function()
-				holderframe:Destroy()
-				holderframe = nil
-			end)
 			local data = disk:Read(data)
-			local imageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, Image = "rbxassetid://"..data})
-			holderframe:AddChild(imageframe)
-			woshtmlfile([[<img src="]]..tonumber(data)..[[" size="1,0,1,0" position="0,0,0,0">]], screen)
+			woshtmlfile([[<img src="]]..tonumber(data)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 		end
 	end)
 end
