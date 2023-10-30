@@ -562,17 +562,23 @@ local function readfile(txt, nameondisk, boolean)
 			local length = nil
 			
 			local splitted = string.split(tostring(txt), "pitch:")
+			local spacesplitted = string.split(tostring(txt), " ")
 			
 			if string.find(tostring(txt), "length:") then
 				local splitted = string.split(tostring(txt), "length:")
 				length = splitted[2]
 			end
 			
-			audioui(screen, disk, splitted[1], speaker, tonumber(splitted[2]), length)
+			audioui(screen, disk, spacesplitted[1], speaker, tonumber(splitted[2]), tonumber(length))
 			
 		elseif string.find(tostring(txt), "length:") then
+			
 			local splitted = string.split(tostring(txt), "length:")
-			audioui(screen, disk, splitted[1], speaker, nil, tonumber(splitted[2]))
+			
+			local spacesplitted = string.split(tostring(txt), " ")
+			
+			audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(splitted[2]))
+			
 		else
 			audioui(screen, disk, txt, speaker)
 		end
@@ -1137,17 +1143,23 @@ local function mediaplayer(screen, disk, speaker)
 				local length = nil
 				
 				local splitted = string.split(tostring(data), "pitch:")
+				local spacesplitted = string.split(tostring(data), " ")
 				
 				if string.find(tostring(data), "length:") then
 					local splitted = string.split(tostring(data), "length:")
 					length = splitted[2]
 				end
 				
-				audioui(screen, disk, splitted[1], speaker, tonumber(splitted[2]), length)
+				audioui(screen, disk, spacesplitted[1], speaker, tonumber(splitted[2]), tonumber(length))
 				
 			elseif string.find(tostring(data), "length:") then
+				
 				local splitted = string.split(tostring(data), "length:")
-				audioui(screen, disk, splitted[1], speaker, nil, tonumber(splitted[2]))
+				
+				local spacesplitted = string.split(tostring(data), " ")
+				
+				audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(splitted[2]))
+				
 			else
 				audioui(screen, disk, data, speaker)
 			end
