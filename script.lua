@@ -437,11 +437,11 @@ local function readfile(txt, nameondisk, boolean)
 	end
 	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
-		if string.find(tostring(txt), "pitch") then
-			local splitted = string.split(tostring(txt), " pitch:")
+		if string.find(tostring(txt), "pitch:") then
+			local splitted = string.split(tostring(txt), "pitch:")
 			audioui(screen, disk, splitted[1], speaker, tonumber(splitted[2]))
-		elseif string.find(tostring(txt), "length") then
-			local splitted = string.split(tostring(txt), " ")
+		elseif string.find(tostring(txt), "length:") then
+			local splitted = string.split(tostring(txt), "length:")
 			audioui(screen, disk, splitted[1], speaker)
 		else
 			audioui(screen, disk, txt, speaker)
@@ -458,6 +458,7 @@ local function readfile(txt, nameondisk, boolean)
 			end)
 			local imageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, Image = "rbxassetid://"..tostring(txt)})
 			holderframe:AddChild(imageframe)
+			woshtmlfile([[<img src="]]..tonumber(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen)
 	end
 
 	if type(txt) == "table" then
@@ -1011,14 +1012,14 @@ local function mediaplayer(screen, disk, speaker)
 	openaudio.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
 			local data = disk:Read(data)
-			if string.find(tostring(data), "pitch") then
+			if string.find(tostring(data), "pitch:") then
 					
-				local splitted = string.split(tostring(data), " pitch:")
+				local splitted = string.split(tostring(data), "pitch:")
 				audioui(screen, disk, splitted[1], speaker, tonumber(splitted[2]))
 					
-			elseif string.find(tostring(data), "length") then
+			elseif string.find(tostring(data), "length:") then
 					
-				local splitted = string.split(tostring(data), " ")
+				local splitted = string.split(tostring(data), "length:")
 				audioui(screen, disk, splitted[1], speaker)
 					
 			else
@@ -1039,6 +1040,7 @@ local function mediaplayer(screen, disk, speaker)
 			local data = disk:Read(data)
 			local imageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, Image = "rbxassetid://"..data})
 			holderframe:AddChild(imageframe)
+			woshtmlfile([[<img src="]]..tonumber(data)..[[" size="1,0,1,0" position="0,0,0,0">]], screen)
 		end
 	end)
 end
