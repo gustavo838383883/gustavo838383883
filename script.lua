@@ -434,7 +434,12 @@ local function readfile(txt, nameondisk, boolean)
 	end
 	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
-		audioui(screen, disk, txt, speaker)
+		if string.find(tostring(txt), "pitch") then
+			local splitted = string.split(tostring(txt), " ")
+			audioui(screen, disk, splitted[1], speaker)
+		else
+			audioui(screen, disk, txt, speaker)
+		end
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".img") then
