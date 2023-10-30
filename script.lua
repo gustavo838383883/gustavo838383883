@@ -370,15 +370,16 @@ local function readfile(txt, nameondisk, boolean)
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local deletebutton = nil
-	
+
 	filegui:AddChild(closebutton)
 
-	print(tostring(nameondisk))
 	
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
 		filegui = nil
 	end)
+
+	print(txt)
 	
 	if bool == true then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
@@ -396,7 +397,6 @@ local function readfile(txt, nameondisk, boolean)
 		end)
 	end
 	
-	print(tostring(nameondisk))
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
 		audioui(screen, disk, tostring(txt), speaker)
 	end
