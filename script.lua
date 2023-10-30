@@ -390,7 +390,7 @@ local function loadtable(screen, tableval)
 	end
 end
 
-local function readfile(txt, nameondisk, bool, name)
+local function readfile(txt, nameondisk, bool, nameval)
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local deletebutton = nil
@@ -423,12 +423,13 @@ local function readfile(txt, nameondisk, bool, name)
 	if string.find(string.lower(txt), "<woshtml>") then
 		woshtmlfile(txt,  screen)
 	end
-
-	if string.find(string.lower(name), ".aud") then
+	print("Hi")
+	if string.find(string.lower(nameval), ".aud") then
+		print("Hi")
 		audioui(screen, disk, tostring(txt), speaker)
 	end
 
-	if string.find(string.lower(name), ".img") then
+	if string.find(string.lower(nameval), ".img") then
 			local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
 			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 			holderframe:AddChild(closebutton)
@@ -436,7 +437,6 @@ local function readfile(txt, nameondisk, bool, name)
 				holderframe:Destroy()
 				holderframe = nil
 			end)
-			local data = disk:Read(data)
 			local imageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, Image = "rbxassetid://"..tostring(txt)})
 			holderframe:AddChild(imageframe)
 	end
