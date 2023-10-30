@@ -372,6 +372,8 @@ local function audioui(screen, disk, data, speaker)
 	local sound = nil
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
+		sound:Stop()
+		sound:Destroy()
 	end)
 
 	
@@ -432,7 +434,7 @@ local function readfile(txt, nameondisk, boolean)
 	end
 	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
-		audioui(screen, disk, tostring(txt), speaker)
+		audioui(screen, disk, txt, speaker)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".img") then
