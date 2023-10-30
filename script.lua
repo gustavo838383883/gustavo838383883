@@ -940,10 +940,6 @@ local function audioui(screen, disk, data, speaker)
 	local sound = nil
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		--[[if sound then
-			sound:Stop()
-			sound:Destroy()
-		end]]--
 	end)
 
 	
