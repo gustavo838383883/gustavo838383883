@@ -503,7 +503,7 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 		Id = tonumber(data),
 		Pitch = tonumber(pitch),
 		Speaker = speaker,
-		Length = length
+		Length = tonumber(length)
 	})
 
 	if length then
