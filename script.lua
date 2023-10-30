@@ -151,7 +151,7 @@ if disk then
 	if diskbackgroundimage then
 		local idandbool = string.split(diskbackgroundimage, ",")
 		if tonumber(idandbool[1]) then
-			backgroundimage = tonumber(idandbool[1])
+			backgroundimage = "rbxthumb://type=Asset&id="..tonumber(idandbool[1]).."&w=420&h=420"
 			if idandbool[2] == "true" then
 				tile = true
 			else
@@ -195,7 +195,12 @@ local function StringToGui(screen, text, parent)
 				url.BackgroundTransparency = 1
 				url.Image = "http://www.roblox.com/asset/?id=8552847009"
 				if (link ~= "") then
-					url.Image = "rbxthumb://type=Asset&id="..link.."&w=420&h=420"
+					if tonumber(link) then
+						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
+					else
+						url.Image = "rbxthumb://type=Asset&id="..tonumber(string.match(link, "%d+")).."&w=420&h=420"
+						print(string.match(link, "%d+"))
+					end
 				end
 				url.ScaleType = Enum.ScaleType.Tile
 				url.TileSize = UDim2.new(0, 256, 0, 256)
