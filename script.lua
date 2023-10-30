@@ -1052,7 +1052,7 @@ local function loadmenu(screen, disk)
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
 	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	if backgroundimage then
-		backgroundimageframe.Image = "rbxassetid://"..tonumber(backgroundimage)
+		backgroundimageframe.Image = backgroundimage
 		if tile then
 			if tilesize then
 				backgroundimageframe.ScaleType = Enum.ScaleType.Tile
