@@ -560,16 +560,27 @@ local function readfile(txt, nameondisk, boolean)
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
 		if string.find(tostring(txt), "pitch:") then
 			local length = nil
-			
+
+			local pitch = nil
 			local splitted = string.split(tostring(txt), "pitch:")
 			local spacesplitted = string.split(tostring(txt), " ")
+
+			if string.find(splitted[2], " ") then
+				pitch = (string.split(splitted[2], " "))[1]
+			else
+				pitch = splitted[2]
+			end
 			
 			if string.find(tostring(txt), "length:") then
 				local splitted = string.split(tostring(txt), "length:")
-				length = splitted[2]
+				if string.find(splitted[2], " ") then
+					length = (string.split(splitted[2], " "))[1]
+				else
+					length = splitted[2]
+				end
 			end
 			
-			audioui(screen, disk, spacesplitted[1], speaker, tonumber(splitted[2]), tonumber(length))
+			audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
 			
 		elseif string.find(tostring(txt), "length:") then
 			
@@ -577,7 +588,15 @@ local function readfile(txt, nameondisk, boolean)
 			
 			local spacesplitted = string.split(tostring(txt), " ")
 			
-			audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(splitted[2]))
+			local length = nil
+				
+			if string.find(splitted[2], " ") then
+				length = (string.split(splitted[2], " "))[1]
+			else
+				length = splitted[2]
+			end
+			
+			audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
 			
 		else
 			audioui(screen, disk, txt, speaker)
@@ -1141,16 +1160,27 @@ local function mediaplayer(screen, disk, speaker)
 			local data = disk:Read(data)
 			if string.find(tostring(data), "pitch:") then
 				local length = nil
-				
+	
+				local pitch = nil
 				local splitted = string.split(tostring(data), "pitch:")
 				local spacesplitted = string.split(tostring(data), " ")
+	
+				if string.find(splitted[2], " ") then
+					pitch = (string.split(splitted[2], " "))[1]
+				else
+					pitch = splitted[2]
+				end
 				
 				if string.find(tostring(data), "length:") then
 					local splitted = string.split(tostring(data), "length:")
-					length = splitted[2]
+					if string.find(splitted[2], " ") then
+						length = (string.split(splitted[2], " "))[1]
+					else
+						length = splitted[2]
+					end
 				end
 				
-				audioui(screen, disk, spacesplitted[1], speaker, tonumber(splitted[2]), tonumber(length))
+				audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
 				
 			elseif string.find(tostring(data), "length:") then
 				
@@ -1158,7 +1188,15 @@ local function mediaplayer(screen, disk, speaker)
 				
 				local spacesplitted = string.split(tostring(data), " ")
 				
-				audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(splitted[2]))
+				local length = nil
+					
+				if string.find(splitted[2], " ") then
+					length = (string.split(splitted[2], " "))[1]
+				else
+					length = splitted[2]
+				end
+				
+				audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
 				
 			else
 				audioui(screen, disk, data, speaker)
