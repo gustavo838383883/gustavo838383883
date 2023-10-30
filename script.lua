@@ -365,38 +365,84 @@ local function woshtmlfile(txt, screen)
 
 end
 
+local function loadtable(screen, tableval)
+	local start = 0
+	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
+	holderframe:AddChild(scrollingframe)
+	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
+	holderframe:AddChild(textlabel)
+	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+	holderframe:AddChild(closebutton)
 
-local function readfile(txt, nameondisk)
-	local alldata = disk:ReadEntireDisk()
+	closebutton.MouseButton1Down:Connect(function()
+		holderframe:Destroy()
+	end)
+
+	for index, data in pairs(tableval) do
+		local button = screen:CreateElement("TextButton", {TextScaled = true, Text = index, Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
+		scrollingframe:AddChild(button)
+		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+		start += 25
+		button.MouseButton1Down:Connect(function()
+			readfile(data, nil, false, index)
+		end)
+	end
+end
+
+local function readfile(txt, nameondisk, bool, name)
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
-	local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
-	
+	local deletebutton = nil
+	if bool then
+		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
+		filegui:AddChild(deletebutton)	
+	end
 	filegui:AddChild(closebutton)
-	filegui:AddChild(deletebutton)
 
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
 		filegui = nil
 	end)
-
-	deletebutton.MouseButton1Down:Connect(function()
-		disk:ClearDisk()
-		for name, data in pairs(alldata) do
-			if name ~= nameondisk then
-				disk:Write(name, data)
+	if bool then
+		deletebutton.MouseButton1Down:Connect(function()
+			disk:ClearDisk()
+			for name, data in pairs(alldata) do
+				if name ~= nameondisk then
+					disk:Write(name, data)
+				end
 			end
-		end
-		filegui:Destroy()
-		filegui = nil
-	end)
-
+			filegui:Destroy()
+			filegui = nil
+		end)
+	end
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
 	
 	filegui:AddChild(disktext)
 
 	if string.find(string.lower(txt), "<woshtml>") then
 		woshtmlfile(txt,  screen)
+	end
+
+	if string.find(string.lower(name), ".aud") then
+		audioui(screen, disk, tostring(txt), speaker)
+	end
+
+	if string.find(string.lower(name), ".img") then
+			local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
+			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+			holderframe:AddChild(closebutton)
+			closebutton.MouseButton1Down:Connect(function()
+				holderframe:Destroy()
+				holderframe = nil
+			end)
+			local data = disk:Read(data)
+			local imageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, Image = "rbxassetid://"..tostring(txt)})
+			holderframe:AddChild(imageframe)
+	end
+
+	if type(txt) == "table" then
+		loadtable(screen, txt)
 	end
 end
 
@@ -422,7 +468,7 @@ local function loaddisk(screen, disk)
 			start += 25
 			button.MouseButton1Down:Connect(function()
 				local data = disk:Read(filename)
-				readfile(data, filename)
+				readfile(data, filename, true, filename)
 			end)
 		end
 	end
@@ -898,7 +944,6 @@ local function audioui(screen, disk, data, speaker)
 	end)
 
 	
-	local data = disk:Read(data)
 	local pausebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), Text = "Stop", TextScaled = true})
 	holderframe:AddChild(pausebutton)
 
@@ -953,6 +998,7 @@ local function mediaplayer(screen, disk, speaker)
 
 	openaudio.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
+			local data = disk:Read(data)
 			audioui(screen, disk, data, speaker)
 		end
 	end)
