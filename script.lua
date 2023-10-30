@@ -1167,7 +1167,7 @@ local function loadmenu(screen, disk)
 	local pressed = false
 	local startui = nil
 
-	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
+	backgroundframe = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color, TextTransparency = 1})
 	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	if backgroundimage then
 		backgroundimageframe.Image = backgroundimage
