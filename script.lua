@@ -503,8 +503,10 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 		Id = tonumber(data),
 		Pitch = tonumber(pitch),
 		Speaker = speaker,
-		Length = tonumber(length)
+		Length = tonumber(length),
 	})
+
+	print(length)
 
 	if length then
 		sound:Loop()
