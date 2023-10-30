@@ -271,7 +271,7 @@ local function StringToGui(screen, text, parent)
 					if tonumber(link) then
 						url.Image = "rbxthumb://type=Asset&id="..link.."&w=420&h=420"
 					else
-						url.Image = link
+						url.Image = string.match(link, "%d+")
 					end
 				end
 				url.Size = UDim2.new(0, 50, 0, 50)
