@@ -404,6 +404,7 @@ local function readfile(txt, nameondisk, bool, nameval)
 		filegui:Destroy()
 		filegui = nil
 	end)
+	
 	if bool then
 		deletebutton.MouseButton1Down:Connect(function()
 			disk:ClearDisk()
@@ -416,14 +417,11 @@ local function readfile(txt, nameondisk, bool, nameval)
 			filegui = nil
 		end)
 	end
-	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
 	
-	filegui:AddChild(disktext)
-
 	if string.find(string.lower(txt), "<woshtml>") then
 		woshtmlfile(txt,  screen)
 	end
-	print("Hi")
+	print(nameval)
 	if string.find(string.lower(nameval), ".aud") then
 		print("Hi")
 		audioui(screen, disk, tostring(txt), speaker)
@@ -444,6 +442,10 @@ local function readfile(txt, nameondisk, bool, nameval)
 	if type(txt) == "table" then
 		loadtable(screen, txt)
 	end
+	
+	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
+	
+	filegui:AddChild(disktext)
 end
 
 local function loaddisk(screen, disk)
