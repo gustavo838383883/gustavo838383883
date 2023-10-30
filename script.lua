@@ -381,7 +381,7 @@ local function readfile(txt, nameondisk, boolean)
 
 	print(txt)
 	
-	if bool == true then
+	if boolean == true then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 		filegui:AddChild(deletebutton)
 		
