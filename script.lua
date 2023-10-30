@@ -268,7 +268,11 @@ local function StringToGui(screen, text, parent)
 				url.BackgroundTransparency = 1
 				url.Image = "http://www.roblox.com/asset/?id=8552847009"
 				if (link ~= "") then
-					url.Image = "rbxthumb://type=Asset&id="..link.."&w=420&h=420"
+					if tonumber(link) then
+						url.Image = "rbxthumb://type=Asset&id="..link.."&w=420&h=420"
+					else
+						url.Image = link
+					end
 				end
 				url.Size = UDim2.new(0, 50, 0, 50)
 				if (string.find(value, [[rotation="]])) then
