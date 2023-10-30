@@ -271,7 +271,7 @@ local function StringToGui(screen, text, parent)
 					if tonumber(link) then
 						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
 					else
-						url.Image = string.match(link, "%d+")
+						url.Image = "rbxthumb://type=Asset&id="..tonumber(string.match(link, "%d+")).."&w=420&h=420"
 						print(string.match(link, "%d+"))
 					end
 				end
