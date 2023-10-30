@@ -394,18 +394,18 @@ local function readfile(txt, nameondisk, bool, nameval)
 	local filegui = screen:CreateElement("Frame", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local deletebutton = nil
-	if bool then
-		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
-		filegui:AddChild(deletebutton)	
-	end
+	
 	filegui:AddChild(closebutton)
 
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
 		filegui = nil
 	end)
-	
+	print("a")
 	if bool then
+		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
+		filegui:AddChild(deletebutton)	
+		
 		deletebutton.MouseButton1Down:Connect(function()
 			disk:ClearDisk()
 			for name, data in pairs(alldata) do
@@ -418,16 +418,13 @@ local function readfile(txt, nameondisk, bool, nameval)
 		end)
 	end
 	
-	if string.find(string.lower(txt), "<woshtml>") then
-		woshtmlfile(txt,  screen)
-	end
-	print(nameval)
-	if string.find(string.lower(nameval), ".aud") then
+	print(tostringnameval)
+	if string.find(string.lower(tostring(nameval)), ".aud") then
 		print("Hi")
 		audioui(screen, disk, tostring(txt), speaker)
 	end
 
-	if string.find(string.lower(nameval), ".img") then
+	if string.find(string.lower(tostring(nameval)), ".img") then
 			local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true})
 			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 			holderframe:AddChild(closebutton)
@@ -441,6 +438,10 @@ local function readfile(txt, nameondisk, bool, nameval)
 
 	if type(txt) == "table" then
 		loadtable(screen, txt)
+	end
+
+	if string.find(string.lower(tostring(txt)), "<woshtml>") then
+		woshtmlfile(txt,  screen)
 	end
 	
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
