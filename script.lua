@@ -1505,12 +1505,25 @@ if screen then
 					task.wait(0.1)
 					Beep(1)
 				else
+					
 					Beep(1)
+					local backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+					if backgroundimage then
+						backgroundimageframe.Image = backgroundimage
+						if tile then
+							if tilesize then
+								backgroundimageframe.ScaleType = Enum.ScaleType.Tile
+								backgroundimageframe.TileSize = UDim2.new(tilesize.X.Scale, tilesize.X.Offset, tilesize.Y.Scale, tilesize.Y.Offset)
+							end
+						else
+							backgroundimageframe.ScaleType = Enum.ScaleType.Stretch
+						end
+					end
 					local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Position = UDim2.new(0.15, 0, 0.15, 0), Active = true, TextTransparency = 1})
 					local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Welcome to GustavOS"})
-					local textlabel2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add a wallpaper and some sounds in the disk?"})
-					local yes = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
-					local no = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Cancel"})
+					local textlabel2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add a backgroundimage and some sounds to the disk?"})
+					local yes = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
+					local no = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 					holderframe:AddChild(textlabel)
 					holderframe:AddChild(textlabel2)
 					local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
@@ -1519,6 +1532,7 @@ if screen then
 					holderframe:AddChild(yes)
 
 						local function loados()
+							backgroundimageframe:Destroy()
 							holderframe:Destroy()
 							holderframe = nil
 							loadmenu(screen, disk)
@@ -1545,6 +1559,7 @@ if screen then
 
 					yes.MouseButton1Up:Connect(function()
 						disk:Write("BackgroundImage", "15185998460,false,0.2,0,0.2,0")
+						backgroundimage = "rbxthumb://type=Asset&id=15185998460&w=420&h=420"
 						disk:Write("sounds", {
 							["quiz.aud"] = "9042796147 length:197.982",
 							["Synthwar.aud"] = "4580911200",
