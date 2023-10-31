@@ -230,7 +230,7 @@ local tilesize = nil
 
 if disk then
 	color = disk:Read("Color")
-	diskbackgroundimage = disk:Read("BackgroundImage")
+	local diskbackgroundimage = disk:Read("BackgroundImage")
 	if color then
 		color = string.split(color, ",")
 		if color then
@@ -1406,7 +1406,41 @@ local function loadmenu(screen, disk)
 					getstuff()
 					if screen then
 						if disk then
-					
+							color = disk:Read("Color")
+							local diskbackgroundimage = disk:Read("BackgroundImage")
+							if color then
+								color = string.split(color, ",")
+								if color then
+									if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
+										color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+									else
+										color = Color3.new(0, 128/255, 218/255)
+									end
+								else
+									color = Color3.new(0, 128/255, 218/255)
+								end
+							else
+								color = Color3.new(0, 128/255, 218/255)
+							end
+							
+							if diskbackgroundimage then
+								local idandbool = string.split(diskbackgroundimage, ",")
+								if tonumber(idandbool[1]) then
+									backgroundimage = "rbxthumb://type=Asset&id="..tonumber(idandbool[1]).."&w=420&h=420"
+									if idandbool[2] == "true" then
+										tile = true
+									else
+										tile = false
+									end
+									if tonumber(idandbool[3]) and tonumber(idandbool[4]) and tonumber(idandbool[5]) and tonumber(idandbool[6]) then
+										tilesize = UDim2.new(tonumber(idandbool[3]), tonumber(idandbool[4]), tonumber(idandbool[5]), tonumber(idandbool[6]))
+									end
+								else
+									backgroundimage = nil
+								end
+							else
+								backgroundimage = nil
+							end
 							if speaker then
 								if keyboard then
 									loadmenu(screen, disk)
