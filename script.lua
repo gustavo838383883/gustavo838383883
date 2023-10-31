@@ -556,7 +556,7 @@ local function readfile(txt, nameondisk, boolean)
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 		filegui:AddChild(deletebutton)
 		
-		deletebutton.MouseButton1Down:Connect(function()
+		deletebutton.MouseButton1Up:Connect(function()
 			disk:ClearDisk()
 			for name, data in pairs(alldata) do
 				if name ~= nameondisk then
@@ -636,7 +636,7 @@ local function readfile(txt, nameondisk, boolean)
 			holderframe:AddChild(deletebutton)
 			textlabel.Size = UDim2.new(1,-50,0,25)
 			
-			deletebutton.MouseButton1Down:Connect(function()
+			deletebutton.MouseButton1Up:Connect(function()
 				disk:ClearDisk()
 				for name, data in pairs(alldata) do
 					if name ~= nameondisk then
