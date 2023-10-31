@@ -1514,8 +1514,7 @@ if screen then
 					holderframe:AddChild(textlabel)
 					holderframe:AddChild(textlabel2)
 					local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-					holderframe:AddChild(Backimg)
-					holderframe:AddChild(soundfolder)
+					holderframe:AddChild(no)
 					holderframe:AddChild(closebutton)
 					holderframe:AddChild(yes)
 
