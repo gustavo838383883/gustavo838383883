@@ -1545,7 +1545,7 @@ if screen then
 
 					yes.MouseButton1Up:Connect(function()
 						disk:Write("BackgroundImage", "15185998460,false,0.2,0,0.2,0")
-						disk:Write("Sounds", {
+						disk:Write("sounds", {
 							["quiz.aud"] = "9042796147 length:197.982",
 							["Synthwar.aud"] = "4580911200",
 							["SynthBetter.aud"] = "4580911200 pitch:1.15",
