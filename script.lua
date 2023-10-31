@@ -1491,18 +1491,75 @@ if screen then
 
 		if speaker then
 			if keyboard then
-				loadmenu(screen, disk)
-				Beep(0.25)
-				task.wait(0.1)
-				Beep(0.5)
-				task.wait(0.1)
-				Beep(1)
-				task.wait(0.1)
-				Beep(0.5)
-				task.wait(0.1)
-				Beep(0.75)
-				task.wait(0.1)
-				Beep(1)
+				if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
+					loadmenu(screen, disk)
+					Beep(0.25)
+					task.wait(0.1)
+					Beep(0.5)
+					task.wait(0.1)
+					Beep(1)
+					task.wait(0.1)
+					Beep(0.5)
+					task.wait(0.1)
+					Beep(0.75)
+					task.wait(0.1)
+					Beep(1)
+				else
+					Beep(1)
+					local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Position = UDim2.new(0.15, 0, 0.15, 0), Active = true, TextTransparency = 1})
+					local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Welcome to GustavOS"})
+					local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add a wallpaper and some sounds in the disk?"})
+					local yes = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
+					local no = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Cancel"})
+					holderframe:AddChild(textlabel)
+					local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+					holderframe:AddChild(Backimg)
+					holderframe:AddChild(soundfolder)
+					holderframe:AddChild(closebutton)
+					holderframe:AddChild(yes)
+
+						local function loados()
+							holderframe:Destroy()
+							holderframe = nil
+							loadmenu(screen, disk)
+							Beep(0.25)
+							task.wait(0.1)
+							Beep(0.5)
+							task.wait(0.1)
+							Beep(1)
+							task.wait(0.1)
+							Beep(0.5)
+							task.wait(0.1)
+							Beep(0.75)
+							task.wait(0.1)
+							Beep(1)
+						end
+					
+					closebutton.MouseButton1Up:Connect(function()
+						loados()
+					end)
+
+					no.MouseButton1Up:Connect(function()
+						loados()
+					end)
+
+					yes.MouseButton1Up:Connect(function()
+						disk:Write("BackgroundImage", "15185998460,false,0.2,0,0.2,0")
+						disk:Write("Sounds", {
+							["quiz.aud"] = "9042796147 length:197.982",
+							["Synthwar.aud"] = "4580911200",
+							["SynthBetter.aud"] = "4580911200 pitch:1.15",
+							["DISTANT.aud"] = "4611202823 pitch:1.15",
+							["blade.aud"] = "10951049295",
+							["Climber.aud"] = "10951047950",
+							["tune.aud"] = "1846897737",
+							["Synthwar-remix.aud"] = "9223412780",
+						})
+						
+						loados()
+					end)
+					
+				end
 			else
 				screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 				Beep(1)
