@@ -560,6 +560,7 @@ local function readfile(txt, nameondisk, boolean)
 	end
 	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
+		local txt = string.lower(txt)
 		if string.find(tostring(txt), "pitch:") then
 			local length = nil
 
@@ -1159,7 +1160,7 @@ local function mediaplayer(screen, disk, speaker)
 
 	openaudio.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
-			local data = disk:Read(data)
+			local data = string.lower(tostring(disk:Read(data)))
 			if string.find(tostring(data), "pitch:") then
 				local length = nil
 	
