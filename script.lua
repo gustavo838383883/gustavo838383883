@@ -545,7 +545,11 @@ local function readfile(txt, nameondisk, boolean)
 		filegui:Destroy()
 		filegui = nil
 	end)
-
+	
+	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
+	
+	filegui:AddChild(disktext)
+	
 	print(txt)
 	
 	if boolean == true then
@@ -661,10 +665,6 @@ local function readfile(txt, nameondisk, boolean)
 			end)
 		end
 	end
-
-	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
-	
-	filegui:AddChild(disktext)
 	
 	if string.find(string.lower(tostring(txt)), "<woshtml>") then
 		woshtmlfile(txt, screen)
