@@ -632,7 +632,7 @@ local function readfile(txt, nameondisk, boolean)
 		if boolean == true then
 			local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 			holderframe:AddChild(deletebutton)
-			textlabel.size = Size = UDim2.new(1,-50,0,25)
+			textlabel.Size = UDim2.new(1,-50,0,25)
 			
 			deletebutton.MouseButton1Down:Connect(function()
 				disk:ClearDisk()
