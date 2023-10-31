@@ -152,8 +152,6 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 	return sound
 end
 
-return SpeakerHandler
-
 local disk = nil
 local screen = nil
 local keyboard = nil
