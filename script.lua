@@ -1191,8 +1191,7 @@ local function mediaplayer(screen, disk, speaker)
 			maximizepressed = true
 		else
 			holderframe.Size = UDim2.new(0.7, 0, 0.7, 0)
-			holderframe.Active = false
-			holderframe.Draggable = false
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
 			maximizepressed = false
 		end
