@@ -1158,7 +1158,7 @@ end
 
 local function mediaplayer(screen, disk, speaker)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Media Player"})
+	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Media Player"})
 	local Filename = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File with id (Click to update)"})
 	local openimage = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as image"})
 	local openaudio = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as audio"})
@@ -1169,7 +1169,6 @@ local function mediaplayer(screen, disk, speaker)
 	holderframe:AddChild(closebutton)
 	holderframe:AddChild(openaudio)
 
-
 	local data = nil
 	local filename = nil
 
@@ -1177,6 +1176,26 @@ local function mediaplayer(screen, disk, speaker)
 		holderframe:Destroy()
 	end)
 
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+
+	maximizebutton.MouseButton1Up:Connect(function()
+		if not maximizepressed then
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe.Draggable = false
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = UDim2.new(0.7, 0, 0.7, 0)
+			holderframe.Draggable = true
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
+	end)
+	
+	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			Filename.Text = keyboardinput
