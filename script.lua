@@ -225,6 +225,8 @@ getstuff()
 local color = nil
 local backgroundimage = nil
 local backgroundimageframe = nil
+local programholder1 = nil
+local programholder2 = nil
 local tile = false
 local tilesize = nil
 
@@ -486,6 +488,7 @@ local function woshtmlfile(txt, screen, boolean)
 		local holderframe = filegui
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -493,6 +496,7 @@ local function woshtmlfile(txt, screen, boolean)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -523,6 +527,7 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 		local holderframe = holderframe
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -530,6 +535,7 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -601,6 +607,7 @@ local function readfile(txt, nameondisk, boolean)
 		local holderframe = filegui
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -608,6 +615,7 @@ local function readfile(txt, nameondisk, boolean)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -733,6 +741,7 @@ local function readfile(txt, nameondisk, boolean)
 			local holderframe = holderframe
 			if not maximizepressed then
 				unmaximizedsize = holderframe.Size
+				programholder2:AddChild(holderframe)
 				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 				holderframe:ChangeProperties({Active = false, Draggable = false;})
 				holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -740,6 +749,7 @@ local function readfile(txt, nameondisk, boolean)
 				maximizebutton.Text = "-"
 				maximizepressed = true
 			else
+				programholder1:AddChild(holderframe)
 				holderframe.Size = unmaximizedsize
 				holderframe:ChangeProperties({Active = true, Draggable = true;})
 				maximizebutton.Text = "+"
@@ -787,6 +797,7 @@ local function loaddisk(screen, disk)
 		local holderframe = holderframe
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -794,6 +805,7 @@ local function loaddisk(screen, disk)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -845,6 +857,7 @@ local function writedisk(screen, disk)
 		local holderframe = holderframe
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -852,6 +865,7 @@ local function writedisk(screen, disk)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -911,6 +925,7 @@ local function changecolor(screen, disk)
 		local holderframe = holderframe
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -918,6 +933,7 @@ local function changecolor(screen, disk)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -984,6 +1000,7 @@ local function changebackgroundimage(screen, disk)
 		local holderframe = holderframe
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -991,6 +1008,7 @@ local function changebackgroundimage(screen, disk)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -1075,6 +1093,7 @@ local function calculator(screen)
 		local holderframe = holderframe
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -1082,6 +1101,7 @@ local function calculator(screen)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -1392,6 +1412,7 @@ local function mediaplayer(screen, disk, speaker)
 		local holderframe = holderframe
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
+			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -1399,6 +1420,7 @@ local function mediaplayer(screen, disk, speaker)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
+			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
@@ -1475,9 +1497,10 @@ end
 local function loadmenu(screen, disk)
 	local pressed = false
 	local startui = nil
-
+	
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
 	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+
 	if backgroundimage then
 		backgroundimageframe.Image = backgroundimage
 		if tile then
@@ -1493,6 +1516,10 @@ local function loadmenu(screen, disk)
 	
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.2,0,0.1,0), Position = UDim2.new(0, 0, 0.9, 0)})
 	backgroundframe:AddChild(startmenu)
+
+	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+	programholder1:AddChild(programholder2)
 
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
