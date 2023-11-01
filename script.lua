@@ -705,10 +705,12 @@ local function readfile(txt, nameondisk, boolean)
 		local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
 		holderframe:AddChild(scrollingframe)
-		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-75,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
+		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
 		holderframe:AddChild(textlabel)
 		
 		if boolean == true then
+			textlabel.Size = UDim2.new(1, -75, 0, 25)
+			
 			local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 			holderframe:AddChild(deletebutton)
 			textlabel.Size = UDim2.new(1,-50,0,25)
