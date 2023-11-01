@@ -1855,6 +1855,7 @@ if screen then
 						backgroundimage = "rbxthumb://type=Asset&id=15185998460&w=420&h=420"
 						disk:Write("sounds", {
 							["quiz.aud"] = "9042796147 length:197.982",
+							["meltdown.aud"] = "1845092181",
 							["Synthwar.aud"] = "4580911200",
 							["SynthBetter.aud"] = "4580911200 pitch:1.15",
 							["DISTANT.aud"] = "4611202823 pitch:1.15",
