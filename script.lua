@@ -476,6 +476,29 @@ local function woshtmlfile(txt, screen, boolean)
 		filegui:Destroy()
 		filegui = nil
 	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	filegui:AddChild(maximizebutton)
+	local unmaximizedsize = filegui.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = filegui
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
+	end)
 	StringToGui(screen, txt, scrollingframe)
 
 end
@@ -489,6 +512,29 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 		holderframe:Destroy()
 		sound:Stop()
 		sound:Destroy()
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
 	end)
 
 	if not pitch then
@@ -544,6 +590,29 @@ local function readfile(txt, nameondisk, boolean)
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
 		filegui = nil
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	filegui:AddChild(maximizebutton)
+	local unmaximizedsize = filegui.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = filegui
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
 	end)
 	
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt)})
@@ -628,7 +697,7 @@ local function readfile(txt, nameondisk, boolean)
 		local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
 		holderframe:AddChild(scrollingframe)
-		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
+		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
 		holderframe:AddChild(textlabel)
 		
 		if boolean == true then
@@ -654,6 +723,29 @@ local function readfile(txt, nameondisk, boolean)
 		closebutton.MouseButton1Down:Connect(function()
 			holderframe:Destroy()
 		end)
+
+		local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+		local maximizepressed = false
+		
+		holderframe:AddChild(maximizebutton)
+		local unmaximizedsize = holderframe.Size
+		maximizebutton.MouseButton1Up:Connect(function()
+			local holderframe = holderframe
+			if not maximizepressed then
+				unmaximizedsize = holderframe.Size
+				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+				holderframe:ChangeProperties({Active = false, Draggable = false;})
+				holderframe.Position = UDim2.new(0, 0, 1, 0)
+				holderframe.Position = UDim2.new(0, 0, 0, 0)
+				maximizebutton.Text = "-"
+				maximizepressed = true
+			else
+				holderframe.Size = unmaximizedsize
+				holderframe:ChangeProperties({Active = true, Draggable = true;})
+				maximizebutton.Text = "+"
+				maximizepressed = false
+			end
+		end)
 	
 		for index, data in pairs(tableval) do
 			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = index, Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
@@ -677,13 +769,36 @@ local function loaddisk(screen, disk)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
 	holderframe:AddChild(scrollingframe)
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Disk Content"})
+	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Disk Content"})
 	holderframe:AddChild(textlabel)
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
 	end)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
@@ -702,7 +817,7 @@ end
 
 local function writedisk(screen, disk)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create File"})
+	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create File"})
 	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name (Click to update)"})
 	local filedatabutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Data (Click to update)"})
 	local createfilebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
@@ -719,6 +834,29 @@ local function writedisk(screen, disk)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
 	end)
 
 	filenamebutton.MouseButton1Down:Connect(function()
@@ -747,7 +885,7 @@ end
 
 local function changecolor(screen, disk)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Color"})
+	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Color"})
 	local color = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "RGB (Click to update)"})
 	local changecolorbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Color"})
 	holderframe:AddChild(textlabel)
@@ -756,12 +894,35 @@ local function changecolor(screen, disk)
 	holderframe:AddChild(color)
 	holderframe:AddChild(closebutton)
 
-
+	
 	local data = nil
 	local filename = nil
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
 	end)
 
 	color.MouseButton1Down:Connect(function()
@@ -791,7 +952,7 @@ end
 
 local function changebackgroundimage(screen, disk)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Background Image"})
+	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Background Image"})
 	local id = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Image ID"})
 	local tiletoggle = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Enable tile"})
 	local tilenumber = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.75,0,0.2,0), Position = UDim2.new(0.25, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "UDim2"})
@@ -814,6 +975,29 @@ local function changebackgroundimage(screen, disk)
 		holderframe:Destroy()
 	end)
 
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
+	end)
+	
 	id.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			id.Text = keyboardinput
@@ -880,6 +1064,29 @@ local function calculator(screen)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
 	end)
 
 	local  button1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.50, 0, 0.1, 25), Text = "9"})
@@ -1178,11 +1385,13 @@ local function mediaplayer(screen, disk, speaker)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
 	local maximizepressed = false
-
+	
 	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
 	maximizebutton.MouseButton1Up:Connect(function()
 		local holderframe = holderframe
 		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -1190,7 +1399,7 @@ local function mediaplayer(screen, disk, speaker)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
-			holderframe.Size = UDim2.new(0.7, 0, 0.7, 0)
+			holderframe.Size = unmaximizedsize
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
 			maximizepressed = false
