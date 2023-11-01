@@ -1176,9 +1176,10 @@ local function mediaplayer(screen, disk, speaker)
 		holderframe:Destroy()
 	end)
 
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
 	local maximizepressed = false
 
+	holderframe:AddChild(maximizebutton)
 	maximizebutton.MouseButton1Up:Connect(function()
 		if not maximizepressed then
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
