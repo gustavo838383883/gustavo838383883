@@ -1181,6 +1181,7 @@ local function mediaplayer(screen, disk, speaker)
 
 	holderframe:AddChild(maximizebutton)
 	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
 		if not maximizepressed then
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 			holderframe.Active = false
@@ -1191,7 +1192,8 @@ local function mediaplayer(screen, disk, speaker)
 			maximizepressed = true
 		else
 			holderframe.Size = UDim2.new(0.7, 0, 0.7, 0)
-			holderframe.Draggable = true
+			holderframe.Active = false
+			holderframe.Draggable = false
 			maximizebutton.Text = "+"
 			maximizepressed = false
 		end
