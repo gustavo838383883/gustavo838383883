@@ -1850,8 +1850,10 @@ if screen then
 					end)
 
 					yes.MouseButton1Up:Connect(function()
+						disk:Read("BackgroundImage")
 						disk:Write("BackgroundImage", "15185998460,false,0.2,0,0.2,0")
 						backgroundimage = "rbxthumb://type=Asset&id=15185998460&w=420&h=420"
+						disk:Read("sounds")
 						disk:Write("sounds", {
 							["quiz.aud"] = "9042796147 length:197.982",
 							["meltdown.aud"] = "1845092181",
