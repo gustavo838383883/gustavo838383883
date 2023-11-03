@@ -1862,6 +1862,13 @@ if screen then
 							["Climber.aud"] = "10951047950",
 							["tune.aud"] = "1846897737",
 							["Synthwar-remix.aud"] = "9223412780",
+							["Wasting-Space"] = "4715885427",
+							["Mobius"] = "10951050091",
+							["Productive"] = "10951166364",
+							["Landing"] = "10951045010",
+							["Travel"] = "10951043922",
+							["Solar-wind"] = "8887201925",
+							["4th-axis"] = "8909965418",
 						})
 						
 						loados()
