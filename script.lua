@@ -634,6 +634,7 @@ local function readfile(txt, nameondisk, boolean)
 	print(txt)
 	
 	if boolean == true then
+		local alldata = disk:ReadEntireDisk()
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 		filegui:AddChild(deletebutton)
 		
@@ -714,6 +715,7 @@ local function readfile(txt, nameondisk, boolean)
 		holderframe:AddChild(textlabel)
 		
 		if boolean == true then
+			local alldata = disk:ReadEntireDisk()
 			local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 			holderframe:AddChild(deletebutton)
 			textlabel.Size = UDim2.new(1,-75,0,25)
