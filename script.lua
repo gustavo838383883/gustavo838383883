@@ -1532,7 +1532,7 @@ local function loadmenu(screen, disk)
 
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
-	programholder1:AddChild(programholder2)
+	programholder2:AddChild(programholder1)
 
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
