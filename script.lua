@@ -1881,25 +1881,25 @@ local function startload()
 						
 					end
 				else
-					local button = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
+					local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 					Beep(1)
-					button.MouseButton1Down(function()
+					textbutton.MouseButton1Down(function()
 						screen:ClearElements()
 						startload()
 					end)
 				end
 			else
-				local button =  screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
+				local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
 				Beep(1)
-				button.MouseButton1Down(function()
+				textbutton.MouseButton1Down(function()
 					screen:ClearElements()
 					startload()
 				end)
 			end
 		else
-			local button = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No disk was found.", TextScaled = true})
+			local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No disk was found.", TextScaled = true})
 			Beep(1)
-			button.MouseButton1Down(function()
+			textbutton.MouseButton1Down(function()
 				screen:ClearElements()
 				startload()
 			end)
