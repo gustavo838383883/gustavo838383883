@@ -1726,20 +1726,35 @@ local function loadmenu(screen, disk)
 									task.wait(0.1)
 									Beep(1)
 								else
-									screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
+									local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 									Beep(1)
+									textbutton.MouseButton1Down:Connect(function()
+										screen:ClearElements()
+										getstuff()
+										startload()
+									end)
 								end
 							else
-								screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
-								Beep(1)
+								local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
+								Beep(1) 
+								textbutton.MouseButton1Down:Connect(function()
+									screen:ClearElements()
+									getstuff()
+									startload()
+								end)
 							end
 						else
-							screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Text = "No disk was found.", TextScaled = true})
+							local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No disk was found.", TextScaled = true})
 							Beep(1)
+							textbutton.MouseButton1Down:Connect(function()
+								screen:ClearElements()
+								getstuff()
+								startload()
+							end)
 						end
 					else
-						Beep(1)
 						print("No screen was found.")
+						Beep(1)
 					end
 				end)
 			end)
