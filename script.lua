@@ -1890,7 +1890,7 @@ local function startload()
 				end
 			else
 				local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
-				Beep(1)
+				Beep(1) 
 				textbutton.MouseButton1Down(function()
 					screen:ClearElements()
 					startload()
