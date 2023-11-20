@@ -365,7 +365,7 @@ local dirt6 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0, 25, 0, 150
 ground:AddChild(dirt6)
 table.insert(allobjects, dirt6)
 
-local text = screen:CreateElement("TextLabel", {Size = UDim2.new(0, 50, 0, 25), Text = "More coming soon", TextScaled = true, BackgroundTransparency = 1, Position = UDim2.new(0, 375, 0, -5), ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0, 25, 0, 25)})
+local text = screen:CreateElement("TextLabel", {Size = UDim2.new(0, 50, 0, 25), Text = "More coming soon", TextScaled = true, BackgroundTransparency = 1, Position = UDim2.new(0, 375, 0, -5)})
 ground:AddChild(text)
 
 local rightnum = 0
