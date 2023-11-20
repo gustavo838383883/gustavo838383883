@@ -317,11 +317,11 @@ getstuff()
 
 screen:ClearElements()
 
-local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,0)})
+local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,0)})
 local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 holderframe:AddChild(scrollingframe)
 local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-scrollingframe:AddChild(closebutton)
+holderframe:AddChild(closebutton)
 
 closebutton.MouseButton1Down:Connect(function()
 	holderframe:Destroy()
@@ -330,7 +330,7 @@ end)
 local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
 local maximizepressed = false
 
-scrollingframe:AddChild(maximizebutton)
+holderframe:AddChild(maximizebutton)
 local unmaximizedsize = holderframe.Size
 maximizebutton.MouseButton1Up:Connect(function()
 	local holderframe = holderframe
@@ -351,7 +351,7 @@ maximizebutton.MouseButton1Up:Connect(function()
 end)
 
 
-local superyellowsquare = screen:CreateElement("ImageLabel", {Position = UDim2.new(0, 0, 0, 25), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
+local superyellowsquare = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
 scrollingframe:AddChild(superyellowsquare)
 
 local thegame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Position = UDim2.new(0.5, -12, 0.5, -12)})
