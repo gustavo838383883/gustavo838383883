@@ -315,8 +315,6 @@ end
 
 getstuff()
 
-screen:ClearElements()
-
 local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,0)})
 local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 holderframe:AddChild(scrollingframe)
