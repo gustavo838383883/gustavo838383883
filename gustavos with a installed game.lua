@@ -1334,23 +1334,25 @@ local function gameload()
   
   holderframe:AddChild(maximizebutton)
   local unmaximizedsize = holderframe.Size
-  maximizebutton.MouseButton1Up:Connect(function()
-  	local holderframe = holderframe
-  	if not maximizepressed then
-  		unmaximizedsize = holderframe.Size
-  		holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-  		holderframe:ChangeProperties({Active = false, Draggable = false;})
-  		holderframe.Position = UDim2.new(0, 0, 1, 0)
-  		holderframe.Position = UDim2.new(0, 0, 0, 0)
-  		maximizebutton.Text = "-"
-  		maximizepressed = true
-  	else
-  		holderframe.Size = unmaximizedsize
-  		holderframe:ChangeProperties({Active = true, Draggable = true;})
-  		maximizebutton.Text = "+"
-  		maximizepressed = false
-  	end
-  end)
+	maximizebutton.MouseButton1Up:Connect(function()
+			local holderframe = holderframe
+			if not maximizepressed then
+				unmaximizedsize = holderframe.Size
+				programholder2:AddChild(holderframe)
+				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+				holderframe:ChangeProperties({Active = false, Draggable = false;})
+				holderframe.Position = UDim2.new(0, 0, 1, 0)
+				holderframe.Position = UDim2.new(0, 0, 0, 0)
+				maximizebutton.Text = "-"
+				maximizepressed = true
+			else
+				programholder1:AddChild(holderframe)
+				holderframe.Size = unmaximizedsize
+				holderframe:ChangeProperties({Active = true, Draggable = true;})
+				maximizebutton.Text = "+"
+				maximizepressed = false
+			end
+	end)
   
   
   local superyellowsquare = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
