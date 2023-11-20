@@ -341,7 +341,7 @@ local grass1 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0, 450, 0, 2
 ground:AddChild(grass1)
 table.insert(allobjects, grass1)
 
-local dirt1 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0, 450, 0, 25), Image = "http://www.roblox.com/asset/?id=14648484477", BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 145), ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0, 25, 0, 25)})
+local dirt1 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0, 450, 0, 50), Image = "http://www.roblox.com/asset/?id=14648484477", BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 145), ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0, 25, 0, 25)})
 ground:AddChild(dirt1)
 table.insert(allobjects, dirt1)
 
