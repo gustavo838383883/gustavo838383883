@@ -1475,10 +1475,10 @@ local function gameload()
 	
 	while task.wait(0.01) do
 		if GetCollidedGuiObjects(hitbox, lavas) then
-		plr.Position = UDim2.new(0,0,0,0)
-		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
-		speaker:PlaySound("rbxassetid://3802269741")
-	end
+			plr.Position = UDim2.new(0,0,0,0)
+			thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
+			speaker:PlaySound("rbxassetid://3802269741")
+		end
 		
 		if plr.Position.Y.Offset > 150 then
 			plr.Position = UDim2.new(0,0,0,0)
