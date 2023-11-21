@@ -250,7 +250,7 @@ local screen = nil
 local keyboard = nil
 local speaker = nil
 
-local shutdownpoly = nil
+local button = nil
 
 local function getstuff()
 	disk = nil
@@ -439,7 +439,7 @@ while task.wait(0.01) do
 		plr.Position = UDim2.new(0,0,0,0)
 		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
 		speaker:PlaySound("rbxassetid://3802269741")
-    button:Trigger()
+    		button:Trigger()
 	end
 	
 	if plr.Position.Y.Offset > 150 then
