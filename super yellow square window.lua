@@ -468,7 +468,7 @@ keyboard:Connect("KeyPressed", function(key, keystring, state)
 end)
 
 while task.wait(0.01) do
-	if string.find(GetCollidedGuiObjects(hitbox, lavas)) then
+	if GetCollidedGuiObjects(hitbox, lavas) then
 		plr.Position = UDim2.new(0,0,0,0)
 		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
 		speaker:PlaySound("rbxassetid://3802269741")
