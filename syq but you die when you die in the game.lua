@@ -415,7 +415,7 @@ keyboard:Connect("KeyPressed", function(key, keystring, state)
 			hitbox.Position -= UDim2.new(0, 0, 0, 5)
 			if not GetCollidedGuiObjects(hitbox, allobjects) then
 				hitbox.Position += UDim2.new(0, 0, 0, 5)
-				for i=1,20,1 do
+				for i=1,12,1 do
 					task.wait()
 					hitbox.Position -= UDim2.new(0, 0, 0, 5)	
 					if not GetCollidedGuiObjects(hitbox, allobjects) then
