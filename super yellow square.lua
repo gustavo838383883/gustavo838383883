@@ -368,7 +368,7 @@ table.insert(allobjects, dirt6)
 local text = screen:CreateElement("TextLabel", {Size = UDim2.new(0, 50, 0, 25), Text = "More coming soon", TextScaled = true, BackgroundTransparency = 1, Position = UDim2.new(0, 375, 0, -5)})
 ground:AddChild(text)
 
-local lava1 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0, 25, 0, 10), Image = "http://www.roblox.com/asset/?id=13289036106", BackgroundTransparency = 1, Position = UDim2.new(0, 150, 0, 105), ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0, 25, 0, 25)})
+local lava1 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0, 25, 0, 10), Image = "http://www.roblox.com/asset/?id=13289036106", BackgroundTransparency = 1, Position = UDim2.new(0, 150, 0, 110), ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0, 25, 0, 25)})
 ground:AddChild(lava1)
 
 local lavas = {}
@@ -415,7 +415,7 @@ keyboard:Connect("KeyPressed", function(key, keystring, state)
 			hitbox.Position -= UDim2.new(0, 0, 0, 5)
 			if not GetCollidedGuiObjects(hitbox, allobjects) then
 				hitbox.Position += UDim2.new(0, 0, 0, 5)
-				for i=1,10,1 do
+				for i=1,20,1 do
 					task.wait()
 					hitbox.Position -= UDim2.new(0, 0, 0, 5)	
 					if not GetCollidedGuiObjects(hitbox, allobjects) then
