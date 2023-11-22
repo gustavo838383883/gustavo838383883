@@ -1684,7 +1684,7 @@ local function loadmenu(screen, disk)
 					holdingframe:AddChild(openfiles)
 					local openmediaplayer = screen:CreateElement("TextButton", {Text = "Mediaplayer", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*2, 0)})
 					holdingframe:AddChild(openmediaplayer)
-					local openchat = screen:CreateElement("TextButton", {Text = "Chat", TextScaled = true, Size = UDim2.new(1, 0, 1/3, 0), Position = UDim2.new(0, 0, 1/4*3, 0)})
+					local openchat = screen:CreateElement("TextButton", {Text = "Chat", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*3, 0)})
 					holdingframe:AddChild(openchat)
 
 					opencalculator.MouseButton1Down:Connect(function()
