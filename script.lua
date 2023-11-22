@@ -1674,6 +1674,7 @@ local function loadmenu(screen, disk)
 					speaker:ClearSounds()
 					Beep(1)
 					backgroundimageframe = nil
+					backgroundimage = nil
 					getstuff()
 					if screen then
 						if disk then
