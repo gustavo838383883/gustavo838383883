@@ -1715,13 +1715,6 @@ local function loadmenu(screen, disk)
 							end
 							if speaker then
 								if keyboard then
-									if keyboardevent then
-										keyboardevent:UnBind()
-										keyboardevent = nil
-									end
-									keyboardevent = keyboard:Connect("TextInputted", function(text)
-										keyboardinput = text
-									end)
 									loadmenu(screen, disk)
 									Beep(0.25)
 									task.wait(0.1)
@@ -1734,6 +1727,13 @@ local function loadmenu(screen, disk)
 									Beep(0.75)
 									task.wait(0.1)
 									Beep(1)
+									if keyboardevent then
+										keyboardevent:UnBind()
+										keyboardevent = nil
+									end
+									keyboardevent = keyboard:Connect("TextInputted", function(text)
+										keyboardinput = text
+									end)
 								else
 									local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 									Beep(1)
