@@ -1712,6 +1712,9 @@ local function loadmenu(screen, disk)
 							end
 							if speaker then
 								if keyboard then
+									keyboard:Connect("TextInputted", function(text)
+										keyboardinput = text
+									end)
 									loadmenu(screen, disk)
 									Beep(0.25)
 									task.wait(0.1)
@@ -1810,6 +1813,9 @@ function startload()
 	
 			if speaker then
 				if keyboard then
+					keyboard:Connect("TextInputted", function(text)
+						keyboardinput = text
+					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
 						loadmenu(screen, disk)
 						Beep(0.25)
@@ -1927,9 +1933,3 @@ function startload()
 	end
 end
 startload()
-
-if keyboard then
-	keyboard:Connect("TextInputted", function(text)
-		keyboardinput = text
-	end)
-end
