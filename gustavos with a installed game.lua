@@ -1916,10 +1916,10 @@ local function chatthing(screen, disk, modem)
 		end
 	end)
 
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 0.8, 0), Position = UDim2.new(0, 0, 0.1, 25)})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 0.8, -25), Position = UDim2.new(0, 0, 0.1, 25)})
 	holderframe:AddChild(scrollingframe)
 
-	local sendbox =  screen:CreateElement("TextButton", {Size = UDim2.new(0.8, 0, 0.1, 0), Position = UDim2.new(0,0,0.9,25), Text = "Message (Click to update)", TextScaled = true})
+	local sendbox =  screen:CreateElement("TextButton", {Size = UDim2.new(0.8, 0, 0.1, 0), Position = UDim2.new(0,0,0.9,0), Text = "Message (Click to update)", TextScaled = true})
 	holderframe:AddChild(sendbox)
 
 	local sendtext = nil
@@ -1931,7 +1931,7 @@ local function chatthing(screen, disk, modem)
 		end
 	end)
 
-	local sendbutton =  screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.1, 0), Position = UDim2.new(0.8,0,0.9,25), Text = "Send", TextScaled = true})
+	local sendbutton =  screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.1, 0), Position = UDim2.new(0.8,0,0.9,0), Text = "Send", TextScaled = true})
 	holderframe:AddChild(sendbutton)
 
 	sendbutton.MouseButton1Up:Connect(function()
