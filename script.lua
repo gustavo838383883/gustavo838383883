@@ -1506,6 +1506,8 @@ local function mediaplayer(screen, disk, speaker)
 	end)
 end
 
+local keyboardevent = nil
+
 local function loadmenu(screen, disk)
 	local pressed = false
 	local startui = nil
@@ -1712,7 +1714,9 @@ local function loadmenu(screen, disk)
 							end
 							if speaker then
 								if keyboard then
-									keyboard:Connect("TextInputted", function(text)
+									keyboardevent:UnBind()
+									keyboardevent = nil
+									keyboardevent = keyboard:Connect("TextInputted", function(text)
 										keyboardinput = text
 									end)
 									loadmenu(screen, disk)
@@ -1813,7 +1817,9 @@ function startload()
 	
 			if speaker then
 				if keyboard then
-					keyboard:Connect("TextInputted", function(text)
+					keyboardevent:UnBind()
+					keyboardevent = nil
+					keyboardevent = keyboard:Connect("TextInputted", function(text)
 						keyboardinput = text
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
