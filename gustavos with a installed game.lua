@@ -1324,10 +1324,14 @@ local function gameload()
   holderframe:AddChild(scrollingframe)
   local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
   holderframe:AddChild(closebutton)
-  
+	
+  local keyboardevent = nil
+	
   closebutton.MouseButton1Down:Connect(function()
   	holderframe:Destroy()
 	holderframe = nil
+	keyboardevent:UnBind()
+	keyboardevent = nil
   end)
   
   local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1421,7 +1425,7 @@ local function gameload()
 	local right = false
 	local left = false
 	
-	keyboard:Connect("KeyPressed", function(key, keystring, state)
+	keyboardevent = keyboard:Connect("KeyPressed", function(key, keystring, state)
 		if string.lower(keystring) == "d" then
 			rightnum += 1
 			if left == true then
