@@ -2033,7 +2033,7 @@ local function loadmenu(screen, disk)
 					local openmediaplayer = screen:CreateElement("TextButton", {Text = "Mediaplayer", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*2, 0)})
 					holdingframe:AddChild(openmediaplayer)
 
-          local opengame = screen:CreateElement("TextButton", {Text = "Game", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*3, 0)})
+         				 local opengame = screen:CreateElement("TextButton", {Text = "Game", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*3, 0)})
 					holdingframe:AddChild(opengame)
 
 					opencalculator.MouseButton1Down:Connect(function()
@@ -2050,11 +2050,11 @@ local function loadmenu(screen, disk)
 						pressed = false
 					end)
 
-          opengame.MouseButton1Down:Connect(function()
-						gameload(screen, disk, speaker)
+          				opengame.MouseButton1Down:Connect(function()
 						startui:Destroy()
 						startui = nil
 						pressed = false
+						gameload(screen, disk, speaker)
 					end)
 
 					openfiles.MouseButton1Down:Connect(function()
