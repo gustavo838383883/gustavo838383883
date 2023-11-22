@@ -1935,10 +1935,12 @@ local function chatthing(screen, disk, modem)
 		holderframe:AddChild(sendbutton)
 	
 		sendbutton.MouseButton1Up:Connect(function()
-			modem:SendMessage(keyboardinput, id)
-			sendbutton.Text = "Sended"
-			task.wait(2)
-			sendbutton.Text = "Send"
+			if sendtext then
+				modem:SendMessage(sendtext, id)
+				sendbutton.Text = "Sended"
+				task.wait(2)
+				sendbutton.Text = "Send"
+			end
 		end)
 	
 		local start = 0
