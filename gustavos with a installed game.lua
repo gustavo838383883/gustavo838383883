@@ -2281,6 +2281,7 @@ function startload()
 	
 			if speaker then
 				if keyboard then
+					keyboardevent:UnBind()
 					keyboardevent = nil
 					keyboardevent = keyboard:Connect("TextInputted", function(text)
 						keyboardinput = text
