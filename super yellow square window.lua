@@ -315,6 +315,8 @@ end
 
 getstuff()
 
+local keyboardevent = nil
+
 local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,-25)})
 local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 holderframe:AddChild(scrollingframe)
@@ -324,6 +326,8 @@ holderframe:AddChild(closebutton)
 closebutton.MouseButton1Down:Connect(function()
 	holderframe:Destroy()
 	holderframe = nil
+	keyboardevent:UnBind()
+	keyboardevent = nil
 end)
 
 local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -415,7 +419,7 @@ local downnum = 0
 local right = false
 local left = false
 
-keyboard:Connect("KeyPressed", function(key, keystring, state)
+keyboardevent = keyboard:Connect("KeyPressed", function(key, keystring, state)
 	if string.lower(keystring) == "d" then
 		rightnum += 1
 		if left == true then
