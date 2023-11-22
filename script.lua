@@ -1158,16 +1158,18 @@ local function chatthing(screen, disk, modem)
 		holderframe:AddChild(sendbutton)
 	
 		sendbutton.MouseButton1Up:Connect(function()
-			modem:SendMessage(keyboardinput, id)
-			sendbutton.Text = "Sended"
-			task.wait(2)
-			sendbutton.Text = "Send"
+			if sendtext then
+				modem:SendMessage(sendtext, id)
+				sendbutton.Text = "Sended"
+				task.wait(2)
+				sendbutton.Text = "Send"
+			end
 		end)
 	
 		local start = 0
 		
 		modem:Connect("MessageSent", function(text)
-			local textlabel = screen:CreateElement("TextLabel", {Text = text, Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
+			local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
 			scrollingframe:AddChild(textlabel)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
 			start += 25
