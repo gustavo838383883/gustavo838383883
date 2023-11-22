@@ -1327,6 +1327,7 @@ local function gameload()
   
   closebutton.MouseButton1Down:Connect(function()
   	holderframe:Destroy()
+	holderframe = nil
   end)
   
   local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1474,6 +1475,7 @@ local function gameload()
 	end)
 	
 	while task.wait(0.01) do
+		if not holderframe then break end
 		if GetCollidedGuiObjects(hitbox, lavas) then
 			plr.Position = UDim2.new(0,0,0,0)
 			thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
