@@ -1902,53 +1902,53 @@ local function chatthing(screen, disk, modem)
 	end)
 
 	if modem then
-
-	local id = 0
 	
-	local idui = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.1, 0), Position = UDim2.new(0,0,0,25), Text = "Network id", TextScaled = true})
-	holderframe:AddChild(idui)
+		local id = 0
+		
+		local idui = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.1, 0), Position = UDim2.new(0,0,0,25), Text = "Network id", TextScaled = true})
+		holderframe:AddChild(idui)
+		
+		idui.MouseButton1Up:Connect(function()
+			if tonumber(keyboardinput) then
+				idui.Text = tonumber(keyboardinput)
+				id = tonumber(keyboardinput)
+				modem:Configure({NetworkID = tonumber(keyboardinput)})
+			end
+		end)
 	
-	idui.MouseButton1Up:Connect(function()
-		if tonumber(keyboardinput) then
-			idui.Text = tonumber(keyboardinput)
-			id = tonumber(keyboardinput)
-			modem:Configure({NetworkID = tonumber(keyboardinput)})
-		end
-	end)
-
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 0.8, -25), Position = UDim2.new(0, 0, 0.1, 25)})
-	holderframe:AddChild(scrollingframe)
-
-	local sendbox =  screen:CreateElement("TextButton", {Size = UDim2.new(0.8, 0, 0.1, 0), Position = UDim2.new(0,0,0.9,0), Text = "Message (Click to update)", TextScaled = true})
-	holderframe:AddChild(sendbox)
-
-	local sendtext = nil
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 0.8, -25), Position = UDim2.new(0, 0, 0.1, 25)})
+		holderframe:AddChild(scrollingframe)
 	
-	sendbox.MouseButton1Up:Connect(function()
-		if keyboardinput then
-			sendbox.Text = keyboardinput:gsub(".?$","");
-			sendtext = keyboardinput:gsub(".?$","");
-		end
-	end)
-
-	local sendbutton =  screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.1, 0), Position = UDim2.new(0.8,0,0.9,0), Text = "Send", TextScaled = true})
-	holderframe:AddChild(sendbutton)
-
-	sendbutton.MouseButton1Up:Connect(function()
-		modem:SendMessage(keyboardinput, id)
-		sendbutton.Text = "Sended"
-		task.wait(2)
-		sendbutton.Text = "Send"
-	end)
-
-	local start = 0
+		local sendbox =  screen:CreateElement("TextButton", {Size = UDim2.new(0.8, 0, 0.1, 0), Position = UDim2.new(0,0,0.9,0), Text = "Message (Click to update)", TextScaled = true})
+		holderframe:AddChild(sendbox)
 	
-	modem:Connect("MessageSent", function(text)
-		local textlabel = screen:CreateElement("TextLabel", {Text = text, Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
-		start += 25
-		scrollingframe:AddChild(textlabel)
-		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
-	end)
+		local sendtext = nil
+		
+		sendbox.MouseButton1Up:Connect(function()
+			if keyboardinput then
+				sendbox.Text = keyboardinput:gsub(".?$","");
+				sendtext = keyboardinput:gsub(".?$","");
+			end
+		end)
+	
+		local sendbutton =  screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.1, 0), Position = UDim2.new(0.8,0,0.9,0), Text = "Send", TextScaled = true})
+		holderframe:AddChild(sendbutton)
+	
+		sendbutton.MouseButton1Up:Connect(function()
+			modem:SendMessage(keyboardinput, id)
+			sendbutton.Text = "Sended"
+			task.wait(2)
+			sendbutton.Text = "Send"
+		end)
+	
+		local start = 0
+		
+		modem:Connect("MessageSent", function(text)
+			local textlabel = screen:CreateElement("TextLabel", {Text = text, Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
+			scrollingframe:AddChild(textlabel)
+			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
+			start += 25
+		end)
 	else
 		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0,0,0,25)})
 		holderframe:AddChild(textlabel)
