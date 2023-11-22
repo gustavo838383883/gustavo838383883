@@ -324,7 +324,6 @@ holderframe:AddChild(closebutton)
 closebutton.MouseButton1Down:Connect(function()
 	holderframe:Destroy()
 	holderframe = nil
-	keyboard:Disconnect("KeyPressed")
 end)
 
 local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
