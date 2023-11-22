@@ -156,6 +156,7 @@ local disk = nil
 local screen = nil
 local keyboard = nil
 local speaker = nil
+local modem = nil
 
 local shutdownpoly = nil
 
@@ -165,6 +166,7 @@ local function getstuff()
 	keyboard = nil
 	speaker = nil
 	shutdownpoly = nil
+	modem = nil
 
 	for i=1, 128 do
 		if not disk then
@@ -172,6 +174,15 @@ local function getstuff()
 			if success then
 				if GetPartFromPort(i, "Disk") then
 					disk = GetPartFromPort(i, "Disk")
+				end
+			end
+		end
+
+		if not modem then
+			success, Error = pcall(GetPartFromPort, i, "Modem")
+			if success then
+				if GetPartFromPort(i, "Modem") then
+					modem = GetPartFromPort(i, "Modem")
 				end
 			end
 		end
@@ -1849,6 +1860,101 @@ local function calculator(screen)
 	end)
 end
 
+local function chatthing(screen, disk, modem)
+	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
+	if programholder1 then
+		programholder1:AddChild(holderframe)
+	end
+	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+	holderframe:AddChild(closebutton)
+
+	closebutton.MouseButton1Down:Connect(function()
+		holderframe:Destroy()
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			if programholder2 then
+				programholder2:AddChild(holderframe)
+			end
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			if programholder1 then
+				programholder1:AddChild(holderframe)
+			end
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
+	end)
+
+	if modem then
+
+	local id = 0
+	
+	local idui = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.1, 0), Position = UDim2.new(0,0,0,25), Text = "Network id", TextScaled = true})
+	holderframe:AddChild(idui)
+	
+	idui.MouseButton1Up:Connect(function()
+		if tonumber(keyboardinput) then
+			idui.Text = tonumber(keyboardinput)
+			id = tonumber(keyboardinput)
+			modem:Configure({NetworkID = tonumber(keyboardinput)})
+		end
+	end)
+
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 0.8, 0), Position = UDim2.new(0, 0, 0.1, 25)})
+	holderframe:AddChild(scrollingframe)
+
+	local sendbox =  screen:CreateElement("TextButton", {Size = UDim2.new(0.8, 0, 0.1, 0), Position = UDim2.new(0,0,0.9,25), Text = "Message (Click to update)", TextScaled = true})
+	holderframe:AddChild(sendbox)
+
+	local sendtext = nil
+	
+	sendbox.MouseButton1Up:Connect(function()
+		if keyboardinput then
+			sendbox.Text = keyboardinput:gsub(".?$","");
+			sendtext = keyboardinput:gsub(".?$","");
+		end
+	end)
+
+	local sendbutton =  screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.1, 0), Position = UDim2.new(0.8,0,0.9,25), Text = "Send", TextScaled = true})
+	holderframe:AddChild(sendbutton)
+
+	sendbutton.MouseButton1Up:Connect(function()
+		modem:SendMessage(keyboardinput, id)
+		sendbutton.Text = "Sended"
+		task.wait(2)
+		sendbutton.Text = "Send"
+	end)
+
+	local start = 0
+	
+	modem:Connect("MessageSent", function(text)
+		local textlabel = screen:CreateElement("TextLabel", {Text = text, Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
+		start += 25
+		scrollingframe:AddChild(textlabel)
+		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
+	end)
+	else
+		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0,0,0,25)})
+		holderframe:AddChild(textlabel)
+	end
+end
+
 local function mediaplayer(screen, disk, speaker)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 	programholder1:AddChild(holderframe)
@@ -2024,7 +2130,7 @@ local function loadmenu(screen, disk)
 						holdingframe2 = nil
 					end
 					
-					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 0.8, 0), Position = UDim2.new(1, 0, 0, 0)})
+					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(1, 0, 0, 0)})
 					startui:AddChild(holdingframe)
 					local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0)})
 					holdingframe:AddChild(opencalculator)
@@ -2032,6 +2138,8 @@ local function loadmenu(screen, disk)
 					holdingframe:AddChild(openfiles)
 					local openmediaplayer = screen:CreateElement("TextButton", {Text = "Mediaplayer", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*2, 0)})
 					holdingframe:AddChild(openmediaplayer)
+					local openchat = screen:CreateElement("TextButton", {Text = "Chat", TextScaled = true, Size = UDim2.new(1, 0, 1/3, 0), Position = UDim2.new(0, 0, 1/3*4, 0)})
+					holdingframe:AddChild(openchat)
 
          				 local opengame = screen:CreateElement("TextButton", {Text = "Game", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*3, 0)})
 					holdingframe:AddChild(opengame)
@@ -2041,6 +2149,13 @@ local function loadmenu(screen, disk)
 						startui:Destroy()
 						startui = nil
 						pressed = false
+					end)
+
+					openchat.MouseButton1Down:Connect(function()
+						startui:Destroy()
+						startui = nil
+						pressed = false
+						chatthing(screen, disk, modem)
 					end)
 							
 					openmediaplayer.MouseButton1Down:Connect(function()
