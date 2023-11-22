@@ -166,6 +166,7 @@ local function getstuff()
 	keyboard = nil
 	speaker = nil
 	shutdownpoly = nil
+	modem = nil
 
 	for i=1, 128 do
 		if not disk then
