@@ -2178,8 +2178,10 @@ local function loadmenu(screen, disk)
 							end
 							if speaker then
 								if keyboard then
-									keyboardevent:UnBind()
-									keyboardevent = nil
+									if keyboardevent then
+										keyboardevent:UnBind()
+										keyboardevent = nil
+									end
 									keyboardevent = keyboard:Connect("TextInputted", function(text)
 										keyboardinput = text
 									end)
@@ -2281,8 +2283,10 @@ function startload()
 	
 			if speaker then
 				if keyboard then
-					keyboardevent:UnBind()
-					keyboardevent = nil
+					if keyboardevent then
+						keyboardevent:UnBind()
+						keyboardevent = nil
+					end
 					keyboardevent = keyboard:Connect("TextInputted", function(text)
 						keyboardinput = text
 					end)
