@@ -280,6 +280,7 @@ if disk then
 end
 
 local keyboardinput = nil
+local playerthatinputted = nil
 local backgroundframe = nil
 
 
@@ -1146,11 +1147,13 @@ local function chatthing(screen, disk, modem)
 		holderframe:AddChild(sendbox)
 	
 		local sendtext = nil
+		local player = nil
 		
 		sendbox.MouseButton1Up:Connect(function()
 			if keyboardinput then
 				sendbox.Text = keyboardinput:gsub(".?$","");
 				sendtext = keyboardinput:gsub(".?$","");
+				player = playerthatinputted
 			end
 		end)
 	
@@ -1159,7 +1162,7 @@ local function chatthing(screen, disk, modem)
 	
 		sendbutton.MouseButton1Up:Connect(function()
 			if sendtext then
-				modem:SendMessage(sendtext, id)
+				modem:SendMessage("["..player.."]: "..sendtext, id)
 				sendbutton.Text = "Sended"
 				task.wait(2)
 				sendbutton.Text = "Send"
@@ -1848,8 +1851,9 @@ local function loadmenu(screen, disk)
 										keyboardevent:UnBind()
 										keyboardevent = nil
 									end
-									keyboardevent = keyboard:Connect("TextInputted", function(text)
+									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
 										keyboardinput = text
+										playerthatinputted = plr
 									end)
 								else
 									local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
@@ -1941,8 +1945,9 @@ function startload()
 						keyboardevent:UnBind()
 						keyboardevent = nil
 					end
-					keyboardevent = keyboard:Connect("TextInputted", function(text)
+					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
 						keyboardinput = text
+						playerthatinputted = plr
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
 						loadmenu(screen, disk)
