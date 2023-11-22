@@ -1946,7 +1946,7 @@ local function chatthing(screen, disk, modem)
 		local start = 0
 		
 		modem:Connect("MessageSent", function(text)
-			local textlabel = screen:CreateElement("TextLabel", {Text = text, Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
+			local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
 			scrollingframe:AddChild(textlabel)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
 			start += 25
