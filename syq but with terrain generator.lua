@@ -342,6 +342,9 @@ local loadingframe = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0)})
 local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0), BackgroundColor3 = Color3.fromRGB(0, 200, 0)})
 loadingframe:AddChild(loadingbar)
 
+local loadingcircle = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8932511161", Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0.8, 0, 0.8, 0), BackgroundTransparency = 1})
+
+loadingframe:AddChild(loadingcircle)
 
 local start = 0
 local y = 25
@@ -354,6 +357,8 @@ for i=1, 256 do
 	ground:AddChild(grass)
 	
 	loadingbar.Size = UDim2.new(i/256, 0, 0.2, 0)
+
+	loadingcircle.Rotation += 5
 	
 	if randomnumber == 4 then
 		y -= 25
