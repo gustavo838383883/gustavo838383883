@@ -319,7 +319,7 @@ screen:ClearElements()
 
 local superyellowsquare = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
 
-local thegame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Position = UDim2.new(0.5, -2512, 0.5, -12)})
+local thegame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Position = UDim2.new(0.5, -12, 0.5, -12)})
 superyellowsquare:AddChild(thegame)
 
 local ground = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
@@ -328,7 +328,7 @@ thegame:AddChild(ground)
 local players = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
 thegame:AddChild(players)
 
-local plr = screen:CreateElement("ImageLabel", {Image = "rbxassetid://11696727579", Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, -2500, 0, 0), BackgroundTransparency = 1})
+local plr = screen:CreateElement("ImageLabel", {Image = "rbxassetid://11696727579", Size = UDim2.new(0, 25, 0, 25), BackgroundTransparency = 1})
 players:AddChild(plr)
 
 local hitbox = screen:CreateElement("ImageLabel", {Image = "rbxassetid://11696727579", Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, ImageTransparency = 1})
@@ -337,7 +337,7 @@ plr:AddChild(hitbox)
 
 local allobjects = {}
 
-local start = -2500
+local start = 0
 local y = 25
 for i=1, 5000 do
 	task.wait()
