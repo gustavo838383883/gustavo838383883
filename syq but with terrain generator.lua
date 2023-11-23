@@ -356,6 +356,7 @@ for i=1, 980 do
 		end
 	end
 	start += 25
+	print(i)
 end
 
 print("next")
