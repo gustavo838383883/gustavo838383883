@@ -448,16 +448,17 @@ while task.wait(0.01) do
 	if plr.Position.Y.Offset > 150 then
 		plr.Position = UDim2.new(0,0,0,0)
 		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
+		speaker:PlaySound("rbxassetid://3802269741")
 	end
 	
 	
-	hitbox.Position += UDim2.new(0, 0, 0, 1)
+	hitbox.Position += UDim2.new(0, 0, 0, 2)
 	if not DetectGuiBelow(hitbox, allobjects) then
-		plr.Position += UDim2.new(0, 0, 0, 1)
-		thegame.Position -= UDim2.new(0, 0, 0, 1)
-		hitbox.Position -= UDim2.new(0, 0, 0, 1)
+		plr.Position += UDim2.new(0, 0, 0, 2)
+		thegame.Position -= UDim2.new(0, 0, 0, 2)
+		hitbox.Position -= UDim2.new(0, 0, 0, 2)
 	else
-		hitbox.Position -= UDim2.new(0, 0, 0, 1)
+		hitbox.Position -= UDim2.new(0, 0, 0, 2)
 	end
 
 	if right == true then
