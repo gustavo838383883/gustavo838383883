@@ -344,7 +344,7 @@ for i=1, 980 do
 	local grass = screen:CreateElement("ImageLabel", {Image = "rbxassetid://11693507606", Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, start, 0, y), BackgroundTransparency = 1})
 	local randomnumber = math.random(1, 3)
 
-	
+	table.insert(allobjects, grass)
 	ground:AddChild(grass)
 	
 	
