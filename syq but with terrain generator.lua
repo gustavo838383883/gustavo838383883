@@ -337,9 +337,15 @@ plr:AddChild(hitbox)
 
 local allobjects = {}
 
+local loadingframe = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0)})
+
+local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0)})
+loadingframe:AddChild(loadingbar)
+
+
 local start = 0
 local y = 25
-for i=1, 980 do
+for i=1, 256 do
 	task.wait()
 	local grass = screen:CreateElement("ImageLabel", {Image = "rbxassetid://11693507606", Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, start, 0, y), BackgroundTransparency = 1})
 	local randomnumber = math.random(1, 9)
@@ -347,6 +353,7 @@ for i=1, 980 do
 	table.insert(allobjects, grass)
 	ground:AddChild(grass)
 	
+	loadingbar.Size = UDim2.new(0, i/256, 0.2, 0)
 	
 	if randomnumber == 4 then
 		y -= 25
@@ -358,6 +365,8 @@ for i=1, 980 do
 	start += 25
 	print(i)
 end
+
+loadingframe:Destroy()
 
 print("next")
 
@@ -423,7 +432,13 @@ keyboard:Connect("KeyPressed", function(key, keystring, state)
 	end
 end)
 
+local positionxcounter = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(0.2, 0, 0.2, 0)})
+local positionycounter = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0.2, 0, 0, 0)})
+
 while task.wait(0.01) do
+	positionxcounter.Text = plr.Position.X.Offset
+	positionycounter.Text = plr.Position.Y.Offset
+	
 	if GetCollidedGuiObjects(hitbox, lavas) then
 		plr.Position = UDim2.new(0,0,0,0)
 		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
