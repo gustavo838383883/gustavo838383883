@@ -1939,7 +1939,7 @@ local function chatthing(screen, disk, modem)
 	
 		sendbutton.MouseButton1Up:Connect(function()
 			if sendtext then
-				modem:SendMessage("["..player.."]: "..sendtext, id)
+				modem:SendMessage("[ "..player.." ]: "..sendtext, id)
 				sendbutton.Text = "Sended"
 				task.wait(2)
 				sendbutton.Text = "Send"
