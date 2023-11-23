@@ -1866,11 +1866,16 @@ local function chatthing(screen, disk, modem)
 	if programholder1 then
 		programholder1:AddChild(holderframe)
 	end
+	local messagesent = nil
+	
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
+		if messagesent then
+			messagesent:UnBind()
+		end
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1948,7 +1953,7 @@ local function chatthing(screen, disk, modem)
 	
 		local start = 0
 		
-		modem:Connect("MessageSent", function(text)
+		messagesent = modem:Connect("MessageSent", function(text)
 			print(text)
 			local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
 			scrollingframe:AddChild(textlabel)
