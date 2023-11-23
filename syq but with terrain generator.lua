@@ -337,7 +337,7 @@ plr:AddChild(hitbox)
 
 local allobjects = {}
 
-local loadingframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0), Image = "rbxassetid://15440219329", ScaleType = Enum.ScaleType.Tile, ScaleSize = UDim2.new(0.2, 0, 0.2, 0)})
+local loadingframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0), Image = "rbxassetid://15440219329", ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0.2, 0, 0.2, 0)})
 
 local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0)})
 loadingframe:AddChild(loadingbar)
