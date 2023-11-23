@@ -1,4 +1,4 @@
- local function GetTouchingGuiObjects(gui, folder)
+local function GetTouchingGuiObjects(gui, folder)
 
 	if gui then
 		if not folder then print("Table was not specified.") return end
@@ -315,47 +315,9 @@ end
 
 getstuff()
 
-local keyboardevent = nil
-
-local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,-25)})
-local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-holderframe:AddChild(scrollingframe)
-local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-holderframe:AddChild(closebutton)
-
-closebutton.MouseButton1Down:Connect(function()
-	holderframe:Destroy()
-	holderframe = nil
-	keyboardevent:UnBind()
-	keyboardevent = nil
-end)
-
-local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-local maximizepressed = false
-
-holderframe:AddChild(maximizebutton)
-local unmaximizedsize = holderframe.Size
-maximizebutton.MouseButton1Up:Connect(function()
-	local holderframe = holderframe
-	if not maximizepressed then
-		unmaximizedsize = holderframe.Size
-		holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-		holderframe:ChangeProperties({Active = false, Draggable = false;})
-		holderframe.Position = UDim2.new(0, 0, 1, 0)
-		holderframe.Position = UDim2.new(0, 0, 0, 0)
-		maximizebutton.Text = "-"
-		maximizepressed = true
-	else
-		holderframe.Size = unmaximizedsize
-		holderframe:ChangeProperties({Active = true, Draggable = true;})
-		maximizebutton.Text = "+"
-		maximizepressed = false
-	end
-end)
-
+screen:ClearElements()
 
 local superyellowsquare = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
-scrollingframe:AddChild(superyellowsquare)
 
 local thegame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Position = UDim2.new(0.5, -2512, 0.5, -12)})
 superyellowsquare:AddChild(thegame)
@@ -381,8 +343,6 @@ for i=1, 5000 do
 	task.wait()
 	local grass = screen:CreateElement("ImageLabel", {Image = "rbxassetid://11693507606", Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, start, 0, y), BackgroundTransparency = 1})
 	local randomnumber = math.random(1, 3)
-
-  table.insert(allobjects, grass)
 	
 	if randomnumber == 2 then
 		y -= 25
@@ -403,7 +363,7 @@ local downnum = 0
 local right = false
 local left = false
 
-keyboardevent = keyboard:Connect("KeyPressed", function(key, keystring, state)
+keyboard:Connect("KeyPressed", function(key, keystring, state)
 	if string.lower(keystring) == "d" then
 		rightnum += 1
 		if left == true then
@@ -457,7 +417,6 @@ keyboardevent = keyboard:Connect("KeyPressed", function(key, keystring, state)
 end)
 
 while task.wait(0.01) do
-	if not holderframe then break end
 	if GetCollidedGuiObjects(hitbox, lavas) then
 		plr.Position = UDim2.new(0,0,0,0)
 		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
