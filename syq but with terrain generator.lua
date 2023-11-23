@@ -337,12 +337,12 @@ plr:AddChild(hitbox)
 
 local allobjects = {}
 
-local loadingframe = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0)})
+local loadingframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0), Image = "rbxassetid://15440219329", ScaleType = Enum.ScaleType.Tile, ScaleSize = UDim2.new(0.2, 0, 0.2, 0)})
 
-local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0), BackgroundColor3 = Color3.fromRGB(0, 200, 0)})
+local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0)})
 loadingframe:AddChild(loadingbar)
 
-local loadingcircle = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8932511161", Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0.8, 0, 0.8, 0), BackgroundTransparency = 1})
+local loadingcircle = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8932511161", Size = UDim2.new(0.15, 0, 0.15, 0), Position = UDim2.new(0.85, 0, 0.85, 0), BackgroundTransparency = 1})
 
 loadingframe:AddChild(loadingcircle)
 
@@ -457,13 +457,13 @@ while task.wait(0.01) do
 	end
 	
 	
-	hitbox.Position += UDim2.new(0, 0, 0, 2)
+	hitbox.Position += UDim2.new(0, 0, 0, 1)
 	if not DetectGuiBelow(hitbox, allobjects) then
-		plr.Position += UDim2.new(0, 0, 0, 2)
-		thegame.Position -= UDim2.new(0, 0, 0, 2)
-		hitbox.Position -= UDim2.new(0, 0, 0, 2)
+		plr.Position += UDim2.new(0, 0, 0, 1)
+		thegame.Position -= UDim2.new(0, 0, 0, 1)
+		hitbox.Position -= UDim2.new(0, 0, 0, 1)
 	else
-		hitbox.Position -= UDim2.new(0, 0, 0, 2)
+		hitbox.Position -= UDim2.new(0, 0, 0, 1)
 	end
 
 	if right == true then
