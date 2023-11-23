@@ -339,7 +339,7 @@ local allobjects = {}
 
 local loadingframe = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0)})
 
-local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0)})
+local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0), BackgroundColor3 = Color3.fromRGB(0, 200, 0)})
 loadingframe:AddChild(loadingbar)
 
 
