@@ -353,7 +353,7 @@ for i=1, 256 do
 	table.insert(allobjects, grass)
 	ground:AddChild(grass)
 	
-	loadingbar.Size = UDim2.new(0, i/256, 0.2, 0)
+	loadingbar.Size = UDim2.new(i/256, 0, 0.2, 0)
 	
 	if randomnumber == 4 then
 		y -= 25
