@@ -2064,6 +2064,12 @@ function startload()
 						getstuff()
 						startload()
 					end)
+					task.wait(0.1)
+					Beep(1)
+					task.wait(0.1)
+					Beep(1)
+					task.wait(0.1)
+					Beep(1)
 				end
 			else
 				local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
@@ -2073,6 +2079,10 @@ function startload()
 					getstuff()
 					startload()
 				end)
+				task.wait(0.1)
+				Beep(1)
+				task.wait(0.1)
+				Beep(1)
 			end
 		else
 			local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No disk was found.", TextScaled = true})
@@ -2082,6 +2092,8 @@ function startload()
 				getstuff()
 				startload()
 			end)
+			task.wait(0.1)
+			Beep(1)
 		end
 	else
 		Beep(1)
