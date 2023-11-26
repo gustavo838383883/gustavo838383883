@@ -1133,8 +1133,12 @@ local function chatthing(screen, disk, modem)
 	if modem then
 	
 		local id = 0
+
+		local toggleanonymous = false
+		local togglea = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.1, 0), Position = UDim2.new(0,0,0,25), Text = "Enable anonymous mode", TextScaled = true})
+		holderframe:AddChild(togglea)
 		
-		local idui = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.1, 0), Position = UDim2.new(0,0,0,25), Text = "Network id", TextScaled = true})
+		local idui = screen:CreateElement("TextButton", {Size = UDim2.new(0.6, 0, 0.1, 0), Position = UDim2.new(0.4,0,0,25), Text = "Network id", TextScaled = true})
 		holderframe:AddChild(idui)
 		
 		idui.MouseButton1Up:Connect(function()
@@ -1142,6 +1146,16 @@ local function chatthing(screen, disk, modem)
 				idui.Text = tonumber(keyboardinput)
 				id = tonumber(keyboardinput)
 				modem:Configure({NetworkID = tonumber(keyboardinput)})
+			end
+		end)
+
+		togglea.MouseButton1Up:Connect(function()
+			if toggleanonymous then
+				togglea.Text = "Eable anonymous mode"
+				toggleanonymous = false
+			else
+				toggleanonymous = true
+				togglea.Text = "Disable anonymous mode"
 			end
 		end)
 	
@@ -1167,7 +1181,11 @@ local function chatthing(screen, disk, modem)
 	
 		sendbutton.MouseButton1Up:Connect(function()
 			if sendtext then
-				modem:SendMessage("[ "..player.." ]: "..sendtext, id)
+				if not toggleanonymous then
+					modem:SendMessage("[ "..player.." ]: "..sendtext, id)
+				else
+					modem:SendMessage(sendtext, id)
+				end
 				sendbutton.Text = "Sended"
 				task.wait(2)
 				sendbutton.Text = "Send"
