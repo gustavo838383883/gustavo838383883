@@ -1186,7 +1186,7 @@ local function chatthing(screen, disk, modem)
 				else
 					modem:SendMessage(sendtext, id)
 				end
-				sendbutton.Text = "Sended"
+				sendbutton.Text = "Sent"
 				task.wait(2)
 				sendbutton.Text = "Send"
 			end
