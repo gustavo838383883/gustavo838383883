@@ -1928,7 +1928,7 @@ local function chatthing(screen, disk, modem)
 
 		togglea.MouseButton1Up:Connect(function()
 			if toggleanonymous then
-				togglea.Text = "Eable anonymous mode"
+				togglea.Text = "Enable anonymous mode"
 				toggleanonymous = false
 			else
 				toggleanonymous = true
