@@ -1947,8 +1947,8 @@ local function chatthing(screen, disk, modem)
 		
 		sendbox.MouseButton1Up:Connect(function()
 			if keyboardinput then
-				sendbox.Text = keyboardinput:gsub(".?$","");
-				sendtext = keyboardinput:gsub(".?$","");
+				sendbox.Text = keyboardinput
+				sendtext = keyboardinput
 				player = playerthatinputted
 			end
 		end)
@@ -2340,7 +2340,7 @@ local function loadmenu(screen, disk)
 										keyboardevent = nil
 									end
 									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-										keyboardinput = text
+										keyboardinput = text:gsub(".?$","");
 										playerthatinputted = plr
 									end)
 								else
@@ -2434,7 +2434,7 @@ function startload()
 						keyboardevent = nil
 					end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-						keyboardinput = text
+						keyboardinput = text:gsub(".?$","");
 						playerthatinputted = plr
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
