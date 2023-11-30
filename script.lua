@@ -157,6 +157,7 @@ local screen = nil
 local keyboard = nil
 local speaker = nil
 local modem = nil
+local microcontrollers = nil
 
 local shutdownpoly = nil
 
@@ -167,6 +168,7 @@ local function getstuff()
 	speaker = nil
 	shutdownpoly = nil
 	modem = nil
+	microcontrollers = nil
 
 	for i=1, 128 do
 		if not disk then
@@ -174,6 +176,15 @@ local function getstuff()
 			if success then
 				if GetPartFromPort(i, "Disk") then
 					disk = GetPartFromPort(i, "Disk")
+				end
+			end
+		end
+
+		if not microcontrollers then
+			success, Error = pcall(GetPartsFromPort, i, "Microcontroller")
+			if success then
+				if GetPartsFromPort(i, "Microcontroller") then
+					microcontrollers = GetPartFromPort(i, "Microcontroller")
 				end
 			end
 		end
@@ -598,6 +609,8 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 
 end
 
+local usedmicros = {}
+
 local function readfile(txt, nameondisk, boolean)
 	local alldata = disk:ReadEntireDisk()
 	local filegui = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
@@ -711,6 +724,77 @@ local function readfile(txt, nameondisk, boolean)
 
 	if string.find(string.lower(tostring(nameondisk)), ".img") then
 			woshtmlfile([[<img src="]]..txt..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+	end
+
+	if string.find(string.lower(tostring(nameondisk)), ".exe") then
+		local coderan = false
+		local success = false
+		local code = txt
+		for index, value in pairs(microcontrollers) do
+			if coderan then return end
+			if not table.find(usedmicros, value) then
+				table.insert(usedmicros, value)
+				local polysilicon = GetPartFromPort(value, "Polysilicon")
+				local polyport = GetPartFromPort(polysilicon, "Port")
+				if polysilicon then
+					if polyport then
+						value:Configure({Code = code})
+						polysilicon:Configure({PolysiliconMode = 0})
+						TriggerPort(polyport)
+						coderan = true
+						success = true
+						runcodebutton.Text = "Code Ran"
+						task.wait(2)
+						runcodebutton.Text = "Run lua"
+					else
+						print("No port connected to polysilicon")
+					end
+				else
+					print("No polysilicon connected to microcontroller")
+				end
+			end
+		end
+		if not success then
+			local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
+			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+			holderframe:AddChild(closebutton)
+		
+			closebutton.MouseButton1Down:Connect(function()
+				holderframe:Destroy()
+			end)
+	
+			local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+			local maximizepressed = false
+		
+			holderframe:AddChild(maximizebutton)
+			local unmaximizedsize = holderframe.Size
+			maximizebutton.MouseButton1Up:Connect(function()
+		
+				local holderframe = holderframe
+				if not maximizepressed then
+					unmaximizedsize = holderframe.Size
+					if programholder2 then
+						programholder2:AddChild(holderframe)
+					end
+					holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+					holderframe:ChangeProperties({Active = false, Draggable = false;})
+					holderframe.Position = UDim2.new(0, 0, 1, 0)
+					holderframe.Position = UDim2.new(0, 0, 0, 0)
+					maximizebutton.Text = "-"
+					maximizepressed = true
+				else
+					if programholder1 then
+						programholder1:AddChild(holderframe)
+					end
+					holderframe.Size = unmaximizedsize
+					holderframe:ChangeProperties({Active = true, Draggable = true;})
+					maximizebutton.Text = "+"
+					maximizepressed = false
+				end
+			end)
+			local frame = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0, 0, 0, 25), Text = "No microcontrollers left.", TextWrapped = true, TextScaled = true})
+			holderframe:AddChild(frame)
+		end
 	end
 
 	if type(txt) == "table" then
@@ -1640,6 +1724,214 @@ local function mediaplayer(screen, disk, speaker)
 	end)
 end
 
+local function shutdownmicros(screen, micros)
+	local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
+	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+	holderframe:AddChild(closebutton)
+	
+	closebutton.MouseButton1Down:Connect(function()
+		holderframe:Destroy()
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			if programholder2 then
+				programholder2:AddChild(holderframe)
+			end
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			if programholder1 then
+				programholder1:AddChild(holderframe)
+			end
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
+	end)
+	
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25)})
+	holderframe:AddChild(scrollingframe)
+
+	local start = 0
+	for index, value in pairs(microcontrollers) do
+		local button = screen:CreateElement("TextButton", {Text = start/25, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, start)})
+		scrollingframe:AddChild(button)
+		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
+		local oldstart = start
+		button.MouseButton1Up:Connect(function()
+			local polysilicon = GetPartFromPort(value, "Polysilicon")
+			local polyport = GetPartFromPort(polysilicon, "Port")
+			if polysilicon then
+				if polyport then
+					value:Configure({Code = ""})
+					polysilicon:Configure({PolysiliconMode = 1})
+					TriggerPort(polyport)
+					if table.find(usedmicros, value) then
+						local numberidk
+						for i,v in pairs(usedmicros) do
+							if v == value then numberidk = i end
+						end
+						table.remove(usedmicros, numberidk)
+					end
+					button.Text = "Microcontroller turned off."
+					task.wait(2)
+					button.Text = oldstart/25
+				else
+					print("No port connected to polysilicon")
+				end
+			else
+				print("No polysilicon connected to microcontroller")
+			end
+		end)
+		start += 25
+	end
+end
+
+
+local function customprogramthing(screen, micros)
+	local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
+	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+	holderframe:AddChild(closebutton)
+	
+	closebutton.MouseButton1Down:Connect(function()
+		holderframe:Destroy()
+	end)
+
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			if programholder2 then
+				programholder2:AddChild(holderframe)
+			end
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			if programholder1 then
+				programholder1:AddChild(holderframe)
+			end
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
+	end)
+
+	local code = ""
+
+	local codebutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0, 25), Text = "Enter lua here (Click to update)", TextScaled = true, TextWrapped = true})
+	holderframe:AddChild(codebutton)
+
+	codebutton.MouseButton1Up:Connect(function()
+		if keyboardinput then
+			codebutton.Text = tostring(keyboardinput)
+			code = tostring(keyboardinput)
+		end
+	end)
+
+	local stopcodesbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.6, 0), Text = "Shutdown microcontrollers", TextScaled = true, TextWrapped = true})
+	holderframe:AddChild(stopcodesbutton)
+
+	stopcodesbutton.MouseButton1Up:Connect(function()
+		shutdownmicros(screen, microcontrollers)
+	end)
+
+	local runcodebutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), Text = "Run lua", TextScaled = true, TextWrapped = true})
+	holderframe:AddChild(runcodebutton)
+
+	runcodebutton.MouseButton1Up:Connect(function()
+		local coderan = false
+		local success = false
+		for index, value in pairs(microcontrollers) do
+			if coderan then return end
+			if not table.find(usedmicros, value) then
+				table.insert(usedmicros, value)
+				local polysilicon = GetPartFromPort(value, "Polysilicon")
+				local polyport = GetPartFromPort(polysilicon, "Port")
+				if polysilicon then
+					if polyport then
+						value:Configure({Code = code})
+						polysilicon:Configure({PolysiliconMode = 0})
+						TriggerPort(polyport)
+						coderan = true
+						success = true
+						runcodebutton.Text = "Code Ran"
+						task.wait(2)
+						runcodebutton.Text = "Run lua"
+					else
+						print("No port connected to polysilicon")
+					end
+				else
+					print("No polysilicon connected to microcontroller")
+				end
+			end
+		end
+		if not success then
+			local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
+			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+			holderframe:AddChild(closebutton)
+		
+			closebutton.MouseButton1Down:Connect(function()
+				holderframe:Destroy()
+			end)
+	
+			local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+			local maximizepressed = false
+		
+			holderframe:AddChild(maximizebutton)
+			local unmaximizedsize = holderframe.Size
+			maximizebutton.MouseButton1Up:Connect(function()
+		
+				local holderframe = holderframe
+				if not maximizepressed then
+					unmaximizedsize = holderframe.Size
+					if programholder2 then
+						programholder2:AddChild(holderframe)
+					end
+					holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+					holderframe:ChangeProperties({Active = false, Draggable = false;})
+					holderframe.Position = UDim2.new(0, 0, 1, 0)
+					holderframe.Position = UDim2.new(0, 0, 0, 0)
+					maximizebutton.Text = "-"
+					maximizepressed = true
+				else
+					if programholder1 then
+						programholder1:AddChild(holderframe)
+					end
+					holderframe.Size = unmaximizedsize
+					holderframe:ChangeProperties({Active = true, Draggable = true;})
+					maximizebutton.Text = "+"
+					maximizepressed = false
+				end
+			end)
+			local frame = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0, 0, 0, 25), Text = "No microcontrollers left.", TextWrapped = true, TextScaled = true})
+			holderframe:AddChild(frame)
+		end
+	end)
+end
+
 local keyboardevent = nil
 
 local function loadmenu(screen, disk)
@@ -1714,9 +2006,19 @@ local function loadmenu(screen, disk)
 					holdingframe:AddChild(openmediaplayer)
 					local openchat = screen:CreateElement("TextButton", {Text = "Chat", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*3, 0)})
 					holdingframe:AddChild(openchat)
+					local openluaexecutor = screen:CreateElement("TextButton", {Text = "Lua executor", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(1, 0, 0, 0)})
+					holdingframe:AddChild(openluaexecutor)
 
 					opencalculator.MouseButton1Down:Connect(function()
 						calculator(screen)
+						startui:Destroy()
+						startui = nil
+						pressed = false
+					end)
+
+							
+					openluaexecutor.MouseButton1Down:Connect(function()
+						customprogramthing(screen)
 						startui:Destroy()
 						startui = nil
 						pressed = false
