@@ -1996,17 +1996,17 @@ local function loadmenu(screen, disk)
 						holdingframe2 = nil
 					end
 					
-					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 0.75, 0), Position = UDim2.new(1, 0, 0, 0)})
+					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(1, 0, 0, 0)})
 					startui:AddChild(holdingframe)
-					local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0)})
+					local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0)})
 					holdingframe:AddChild(opencalculator)
-					local openfiles = screen:CreateElement("TextButton", {Text = "Files", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4, 0)})
+					local openfiles = screen:CreateElement("TextButton", {Text = "Files", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0), Position = UDim2.new(0, 0, 1/5, 0)})
 					holdingframe:AddChild(openfiles)
-					local openmediaplayer = screen:CreateElement("TextButton", {Text = "Mediaplayer", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*2, 0)})
+					local openmediaplayer = screen:CreateElement("TextButton", {Text = "Mediaplayer", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0), Position = UDim2.new(0, 0, 1/5*2, 0)})
 					holdingframe:AddChild(openmediaplayer)
-					local openchat = screen:CreateElement("TextButton", {Text = "Chat", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(0, 0, 1/4*3, 0)})
+					local openchat = screen:CreateElement("TextButton", {Text = "Chat", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0), Position = UDim2.new(0, 0, 1/5*3, 0)})
 					holdingframe:AddChild(openchat)
-					local openluaexecutor = screen:CreateElement("TextButton", {Text = "Lua executor", TextScaled = true, Size = UDim2.new(1, 0, 1/4, 0), Position = UDim2.new(1, 0, 0, 0)})
+					local openluaexecutor = screen:CreateElement("TextButton", {Text = "Lua executor", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0), Position = UDim2.new(0, 0, 1/5*4, 0)})
 					holdingframe:AddChild(openluaexecutor)
 
 					opencalculator.MouseButton1Down:Connect(function()
