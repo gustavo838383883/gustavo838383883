@@ -184,7 +184,7 @@ local function getstuff()
 			success, Error = pcall(GetPartsFromPort, i, "Microcontroller")
 			if success then
 				if GetPartsFromPort(i, "Microcontroller") then
-					microcontrollers = GetPartFromPort(i, "Microcontroller")
+					microcontrollers = GetPartsFromPort(i, "Microcontroller")
 				end
 			end
 		end
