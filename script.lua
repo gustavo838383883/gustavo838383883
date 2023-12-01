@@ -611,7 +611,7 @@ end
 
 local usedmicros = {}
 
-local function loadluafile(microcontrollers, usedmicros, screen, code)
+local function loadluafile(microcontrollers, usedmicros, screen, code, runcodebutton)
 	local coderan = false
 	local success = false
 	for index, value in pairs(microcontrollers) do
@@ -1871,7 +1871,9 @@ local function customprogramthing(screen, micros)
 	holderframe:AddChild(runcodebutton)
 
 	runcodebutton.MouseButton1Up:Connect(function()
-		loadluafile(microcontrollers, usedmicros, screen, code)
+		if code ~= "" then
+			loadluafile(microcontrollers, usedmicros, screen, code, runcodebutton)
+		end
 	end)
 end
 
