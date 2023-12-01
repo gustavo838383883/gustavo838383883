@@ -611,6 +611,76 @@ end
 
 local usedmicros = {}
 
+local function loadluafile(microcontrollers, usedmicros, screen, code)
+	local coderan = false
+	local success = false
+	for index, value in pairs(microcontrollers) do
+		if coderan then return end
+		if not table.find(usedmicros, value) then
+			table.insert(usedmicros, value)
+			local polysilicon = GetPartFromPort(value, "Polysilicon")
+			local polyport = GetPartFromPort(polysilicon, "Port")
+			if polysilicon then
+				if polyport then
+					value:Configure({Code = code})
+					polysilicon:Configure({PolysiliconMode = 0})
+					TriggerPort(polyport)
+					coderan = true
+					success = true
+					runcodebutton.Text = "Code Ran"
+					task.wait(2)
+					runcodebutton.Text = "Run lua"
+				else
+					print("No port connected to polysilicon")
+				end
+			else
+				print("No polysilicon connected to microcontroller")
+			end
+		end
+	end
+	if not success then
+		local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
+		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+		holderframe:AddChild(closebutton)
+	
+		closebutton.MouseButton1Down:Connect(function()
+			holderframe:Destroy()
+		end)
+
+		local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+		local maximizepressed = false
+	
+		holderframe:AddChild(maximizebutton)
+		local unmaximizedsize = holderframe.Size
+		maximizebutton.MouseButton1Up:Connect(function()
+	
+			local holderframe = holderframe
+			if not maximizepressed then
+				unmaximizedsize = holderframe.Size
+				if programholder2 then
+					programholder2:AddChild(holderframe)
+				end
+				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+				holderframe:ChangeProperties({Active = false, Draggable = false;})
+				holderframe.Position = UDim2.new(0, 0, 1, 0)
+				holderframe.Position = UDim2.new(0, 0, 0, 0)
+				maximizebutton.Text = "-"
+				maximizepressed = true
+			else
+				if programholder1 then
+					programholder1:AddChild(holderframe)
+				end
+				holderframe.Size = unmaximizedsize
+				holderframe:ChangeProperties({Active = true, Draggable = true;})
+				maximizebutton.Text = "+"
+				maximizepressed = false
+			end
+		end)
+		local frame = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0, 0, 0, 25), Text = "No microcontrollers left.", TextWrapped = true, TextScaled = true})
+		holderframe:AddChild(frame)
+	end
+end
+
 local function readfile(txt, nameondisk, boolean)
 	local alldata = disk:ReadEntireDisk()
 	local filegui = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
@@ -726,75 +796,8 @@ local function readfile(txt, nameondisk, boolean)
 			woshtmlfile([[<img src="]]..txt..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 	end
 
-	if string.find(string.lower(tostring(nameondisk)), ".exe") then
-		local coderan = false
-		local success = false
-		local code = txt
-		for index, value in pairs(microcontrollers) do
-			if coderan then return end
-			if not table.find(usedmicros, value) then
-				table.insert(usedmicros, value)
-				local polysilicon = GetPartFromPort(value, "Polysilicon")
-				local polyport = GetPartFromPort(polysilicon, "Port")
-				if polysilicon then
-					if polyport then
-						value:Configure({Code = code})
-						polysilicon:Configure({PolysiliconMode = 0})
-						TriggerPort(polyport)
-						coderan = true
-						success = true
-						runcodebutton.Text = "Code Ran"
-						task.wait(2)
-						runcodebutton.Text = "Run lua"
-					else
-						print("No port connected to polysilicon")
-					end
-				else
-					print("No polysilicon connected to microcontroller")
-				end
-			end
-		end
-		if not success then
-			local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
-			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-			holderframe:AddChild(closebutton)
-		
-			closebutton.MouseButton1Down:Connect(function()
-				holderframe:Destroy()
-			end)
-	
-			local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-			local maximizepressed = false
-		
-			holderframe:AddChild(maximizebutton)
-			local unmaximizedsize = holderframe.Size
-			maximizebutton.MouseButton1Up:Connect(function()
-		
-				local holderframe = holderframe
-				if not maximizepressed then
-					unmaximizedsize = holderframe.Size
-					if programholder2 then
-						programholder2:AddChild(holderframe)
-					end
-					holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-					holderframe:ChangeProperties({Active = false, Draggable = false;})
-					holderframe.Position = UDim2.new(0, 0, 1, 0)
-					holderframe.Position = UDim2.new(0, 0, 0, 0)
-					maximizebutton.Text = "-"
-					maximizepressed = true
-				else
-					if programholder1 then
-						programholder1:AddChild(holderframe)
-					end
-					holderframe.Size = unmaximizedsize
-					holderframe:ChangeProperties({Active = true, Draggable = true;})
-					maximizebutton.Text = "+"
-					maximizepressed = false
-				end
-			end)
-			local frame = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0, 0, 0, 25), Text = "No microcontrollers left.", TextWrapped = true, TextScaled = true})
-			holderframe:AddChild(frame)
-		end
+	if string.find(string.lower(tostring(nameondisk)), ".lua") then
+		loadluafile(microcontrollers, usedmicros, screen, txt)
 	end
 
 	if type(txt) == "table" then
@@ -996,7 +999,17 @@ local function writedisk(screen, disk)
 		if filenamebutton.Text ~= "File Name (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
 				disk:Write(filename, data)
-				createfilebutton.Text = "Success"
+				if disk:Read(filename) then
+					if disk:Read(filename) == data then
+						createfilebutton.Text = "Success"
+					else
+						createfilebutton.Text = "Failed"
+					end
+				else
+					createfilebutton.Text = "Failed"
+				end
+				task.wait(2)
+				createfilebutton.Text = "Apply"
 			end
 		end
 	end)
@@ -1769,7 +1782,7 @@ local function shutdownmicros(screen, micros)
 	for index, value in pairs(microcontrollers) do
 		local button = screen:CreateElement("TextButton", {Text = start/25, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, start)})
 		scrollingframe:AddChild(button)
-		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
+		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 		local oldstart = start
 		button.MouseButton1Up:Connect(function()
 			local polysilicon = GetPartFromPort(value, "Polysilicon")
@@ -1780,11 +1793,7 @@ local function shutdownmicros(screen, micros)
 					polysilicon:Configure({PolysiliconMode = 1})
 					TriggerPort(polyport)
 					if table.find(usedmicros, value) then
-						local numberidk
-						for i,v in pairs(usedmicros) do
-							if v == value then numberidk = i end
-						end
-						table.remove(usedmicros, numberidk)
+						table.remove(usedmicros, table.find(usedmicros, value))
 					end
 					button.Text = "Microcontroller turned off."
 					task.wait(2)
@@ -1862,73 +1871,7 @@ local function customprogramthing(screen, micros)
 	holderframe:AddChild(runcodebutton)
 
 	runcodebutton.MouseButton1Up:Connect(function()
-		local coderan = false
-		local success = false
-		for index, value in pairs(microcontrollers) do
-			if coderan then return end
-			if not table.find(usedmicros, value) then
-				table.insert(usedmicros, value)
-				local polysilicon = GetPartFromPort(value, "Polysilicon")
-				local polyport = GetPartFromPort(polysilicon, "Port")
-				if polysilicon then
-					if polyport then
-						value:Configure({Code = code})
-						polysilicon:Configure({PolysiliconMode = 0})
-						TriggerPort(polyport)
-						coderan = true
-						success = true
-						runcodebutton.Text = "Code Ran"
-						task.wait(2)
-						runcodebutton.Text = "Run lua"
-					else
-						print("No port connected to polysilicon")
-					end
-				else
-					print("No polysilicon connected to microcontroller")
-				end
-			end
-		end
-		if not success then
-			local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
-			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-			holderframe:AddChild(closebutton)
-		
-			closebutton.MouseButton1Down:Connect(function()
-				holderframe:Destroy()
-			end)
-	
-			local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-			local maximizepressed = false
-		
-			holderframe:AddChild(maximizebutton)
-			local unmaximizedsize = holderframe.Size
-			maximizebutton.MouseButton1Up:Connect(function()
-		
-				local holderframe = holderframe
-				if not maximizepressed then
-					unmaximizedsize = holderframe.Size
-					if programholder2 then
-						programholder2:AddChild(holderframe)
-					end
-					holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-					holderframe:ChangeProperties({Active = false, Draggable = false;})
-					holderframe.Position = UDim2.new(0, 0, 1, 0)
-					holderframe.Position = UDim2.new(0, 0, 0, 0)
-					maximizebutton.Text = "-"
-					maximizepressed = true
-				else
-					if programholder1 then
-						programholder1:AddChild(holderframe)
-					end
-					holderframe.Size = unmaximizedsize
-					holderframe:ChangeProperties({Active = true, Draggable = true;})
-					maximizebutton.Text = "+"
-					maximizepressed = false
-				end
-			end)
-			local frame = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0, 0, 0, 25), Text = "No microcontrollers left.", TextWrapped = true, TextScaled = true})
-			holderframe:AddChild(frame)
-		end
+		loadluafile(microcontrollers, usedmicros, screen, code)
 	end)
 end
 
