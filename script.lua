@@ -611,7 +611,7 @@ end
 
 local usedmicros = {}
 
-local function loadluafile(microcontrollers, usedmicros, screen, code, runcodebutton)
+local function loadluafile(microcontrollers, screen, code, runcodebutton)
 	local coderan = false
 	local success = false
 	for index, value in pairs(microcontrollers) do
@@ -797,7 +797,7 @@ local function readfile(txt, nameondisk, boolean)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".lua") then
-		loadluafile(microcontrollers, usedmicros, screen, txt)
+		loadluafile(microcontrollers, screen, txt)
 	end
 
 	if type(txt) == "table" then
@@ -1872,7 +1872,7 @@ local function customprogramthing(screen, micros)
 
 	runcodebutton.MouseButton1Up:Connect(function()
 		if code ~= "" then
-			loadluafile(microcontrollers, usedmicros, screen, code, runcodebutton)
+			loadluafile(microcontrollers, screen, code, runcodebutton)
 		end
 	end)
 end
