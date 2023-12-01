@@ -241,7 +241,9 @@ local function getstuff()
 		end
 	end
 end
-print(microcontrollers)
+for i,v in pairs(microcontrollers) do
+	print(i,v)
+end
 getstuff()
 
 local color = nil
