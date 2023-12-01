@@ -183,8 +183,11 @@ local function getstuff()
 		if not microcontrollers then
 			success, Error = pcall(GetPartsFromPort, i, "Microcontroller")
 			if success then
-				if GetPartsFromPort(i, "Microcontroller") then
-					microcontrollers = GetPartsFromPort(i, "Microcontroller")
+				local microtable = GetPartsFromPort(i, "Microcontroller")
+				if microtable then
+					if #microtable > 0 then
+						microcontrollers = microtable
+					end
 				end
 			end
 		end
@@ -242,9 +245,6 @@ local function getstuff()
 	end
 end
 getstuff()
-for i,v in pairs(microcontrollers) do
-	print(i,v)
-end
 
 local color = nil
 local backgroundimage = nil
