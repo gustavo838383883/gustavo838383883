@@ -241,10 +241,10 @@ local function getstuff()
 		end
 	end
 end
+getstuff()
 for i,v in pairs(microcontrollers) do
 	print(i,v)
 end
-getstuff()
 
 local color = nil
 local backgroundimage = nil
