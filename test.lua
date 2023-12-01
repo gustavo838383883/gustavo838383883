@@ -1,4 +1,4 @@
-local screen = GetPartFromPort(1, "TouchScreen")
+local screen = GetPartFromPort(1, "Screen")
 
 local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.1, 0), Position = UDim2.new(0, 0, 0, 25), Text = "0"})
