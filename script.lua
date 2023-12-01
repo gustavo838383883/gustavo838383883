@@ -241,7 +241,7 @@ local function getstuff()
 		end
 	end
 end
-
+print(microcontrollers)
 getstuff()
 
 local color = nil
