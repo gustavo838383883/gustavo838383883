@@ -629,9 +629,11 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 					TriggerPort(polyport)
 					coderan = true
 					success = true
-					runcodebutton.Text = "Code Ran"
-					task.wait(2)
-					runcodebutton.Text = "Run lua"
+					if runcodebutton then
+						runcodebutton.Text = "Code Ran"
+						task.wait(2)
+						runcodebutton.Text = "Run lua"
+					end
 				else
 					print("No port connected to polysilicon")
 				end
