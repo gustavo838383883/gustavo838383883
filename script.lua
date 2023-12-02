@@ -614,7 +614,6 @@ end
 local usedmicros = {}
 
 local function loadluafile(microcontrollers, screen, code, runcodebutton)
-	local coderan = false
 	local success = false
 	for index, value in pairs(microcontrollers) do
 		if coderan then return end
@@ -627,13 +626,13 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 					value:Configure({Code = code})
 					polysilicon:Configure({PolysiliconMode = 0})
 					TriggerPort(polyport)
-					coderan = true
 					success = true
 					if runcodebutton then
 						runcodebutton.Text = "Code Ran"
 						task.wait(2)
 						runcodebutton.Text = "Run lua"
 					end
+					break
 				else
 					print("No port connected to polysilicon")
 				end
@@ -1784,7 +1783,7 @@ local function shutdownmicros(screen, micros)
 
 	local start = 0
 	for index, value in pairs(microcontrollers) do
-		local button = screen:CreateElement("TextButton", {Text = start/25, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, start)})
+		local button = screen:CreateElement("TextButton", {Text = (start/25)+1, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, start)})
 		scrollingframe:AddChild(button)
 		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 		local oldstart = start
