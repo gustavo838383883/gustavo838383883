@@ -668,7 +668,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 					local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,0.5,-25), Position = UDim2.new(0, 0, 0, 25), Text = "Using microcontroller:", TextWrapped = true, TextScaled = true})
 					holderframe:AddChild(txtlabel)
 					
-					local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,0.5,-25), Position = UDim2.new(0, 0, 0.5, 0), Text = micronumber, TextWrapped = true, TextScaled = true})
+					local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,0.5,0), Position = UDim2.new(0, 0, 0.5, 0), Text = micronumber, TextWrapped = true, TextScaled = true})
 					holderframe:AddChild(txtlabel2)
 					
 					if runcodebutton then
