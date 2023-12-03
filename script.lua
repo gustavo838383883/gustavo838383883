@@ -1788,6 +1788,10 @@ local function shutdownmicros(screen, micros)
 	local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
+
+	if programholder1 then
+		programholder1:AddChild(holderframe)
+	end
 	
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
@@ -1865,6 +1869,10 @@ local function customprogramthing(screen, micros)
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
 	end)
+
+	if programholder1 then
+		programholder1:AddChild(holderframe)
+	end
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
 	local maximizepressed = false
