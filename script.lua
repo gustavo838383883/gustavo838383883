@@ -1718,7 +1718,19 @@ local function mediaplayer(screen, disk, speaker)
 			maximizepressed = false
 		end
 	end)
-	
+	local toggleopen = true
+	local Toggle1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open from File: Yes"})
+	holderframe:AddChild(Toggle1)
+
+	Toggle1.MouseButton1Up:Connect(function()
+		if toggleopen then
+			toggleopen = false
+			Toggle1.Text = "Open from File: No"
+		else
+			toggleopen = true
+			Toggle1.Text = "Open from File: Yes"
+		end
+	end)
 	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
@@ -1729,7 +1741,14 @@ local function mediaplayer(screen, disk, speaker)
 
 	openaudio.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
-			local data = string.lower(tostring(disk:Read(data)))
+			local readdata = nil
+			if toggleopen then
+				readdata = string.lower(tostring(disk:Read(data)))
+				else
+				readdata = string.lower(tostring(data))
+			end
+			local data = readdata
+			
 			if string.find(tostring(data), "pitch:") then
 				local length = nil
 	
@@ -1778,8 +1797,13 @@ local function mediaplayer(screen, disk, speaker)
 
 	openimage.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
-			local data = disk:Read(data)
-			woshtmlfile([[<img src="]]..data..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+			local readdata = nil
+			if toggleopen then
+				readdata = tostring(disk:Read(data))
+				else
+				readdata = tostring(data)
+			end
+			woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 		end
 	end)
 end
