@@ -859,17 +859,11 @@ local function readfile(txt, nameondisk, boolean, directory)
 	print(txt)
 	
 	if boolean == true then
-		local alldata = disk:ReadEntireDisk()
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 		filegui:AddChild(deletebutton)
 		
 		deletebutton.MouseButton1Up:Connect(function()
-			disk:ClearDisk()
-			for name, data in pairs(alldata) do
-				if name ~= nameondisk then
-					disk:Write(name, data)
-				end
-			end
+			disk:Write(nameondisk, nil)
 			filegui:Destroy()
 			filegui = nil
 		end)
