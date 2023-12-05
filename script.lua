@@ -2451,7 +2451,6 @@ local function loadmenu(screen, disk)
 					shutdownbutton.MouseButton1Down:Connect(function()
 						screen:ClearElements()
 						speaker:ClearSounds()
-						keyboardevent:UnBind()
 						Beep(1)
 						task.wait(0.1)
 						Beep(0.75)
@@ -2463,6 +2462,10 @@ local function loadmenu(screen, disk)
 						Beep(0.5)
 						task.wait(0.1)
 						Beep(0.25)
+						if keyboardevent then
+							keyboardevent:UnBind()
+							keyboardevent = nil
+						end
 						TriggerPort(shutdownpoly)
 					end)
 				end)
