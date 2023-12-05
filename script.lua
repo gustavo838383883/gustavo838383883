@@ -2574,7 +2574,7 @@ function startload()
 								["Solar-wind.aud"] = "8887201925",
 								["4th-axis.aud"] = "8909965418",
 							})
-							disk:Write([[File "Extensions"]], [[There are 3 different File "Extensions" and they are: .lua, .img and .aud.]])
+							disk:Write([[File "Extensions"]], [[There are 3 different File "Extensions", they are: .lua, .img and .aud.]])
 							
 							loados()
 						end)
