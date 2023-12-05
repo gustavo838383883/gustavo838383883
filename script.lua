@@ -1017,11 +1017,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
 			button.MouseButton1Down:Connect(function()
-				if typeof(data) == "table" then
-					readfile(data, index, false, newdirectory)
-				else
-					readfile(data, index, false, newdirectory.."/"..tostring(index))
-				end
+				readfile(data, index, false, newdirectory)
 			end)
 		end
 	end
