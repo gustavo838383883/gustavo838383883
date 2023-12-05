@@ -197,7 +197,9 @@ local function createfileontable(disk, filename, filedata, directory)
 						end
 					elseif i == 0 then
 						returntable = lasttable
-						disk:Write(split[2], lasttable)
+						if typeof(split2) == table then
+							disk:Write(split[2], lasttable)
+						end
 					end
 				end
 			end
@@ -1187,7 +1189,7 @@ local function writedisk(screen, disk)
 						createfilebutton.Text = "Failed"
 					end
 				else
-					if disk:Read(split[2]) == returntable then
+					if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
 						createfilebutton.Text = "Success i think"
 					else
 						createfilebutton.Text = "Failed i think"
