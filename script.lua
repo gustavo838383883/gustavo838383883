@@ -181,7 +181,7 @@ local function createfileontable(disk, filename, filedata, directory)
 					if i == #split - number and i ~= 0 then
 						local temptable = tablez[i]
 						if temptable then
-							if typeof(temptable) == table then
+							if typeof(temptable) == "table" then
 								temptable[filename] = filedata
 								lasttable = temptable
 							end
@@ -190,7 +190,7 @@ local function createfileontable(disk, filename, filedata, directory)
 					if i < #split-number and i >= 1 then
 						if lasttable then
 							local temptable = tablez[i]
-							if typeof(temptable) == table then
+							if typeof(temptable) == "table" then
 								temptable[split[i+2]] = lasttable
 								lasttable = temptable
 							end
