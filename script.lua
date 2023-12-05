@@ -1153,7 +1153,11 @@ local function writedisk(screen, disk)
 						createfilebutton.Text = "Failed"
 					end
 				else
-					createfilebutton.Text = "Success i think"	
+					if disk:Read(split[2]) == data then
+						createfilebutton.Text = "Success i think"
+					else
+						createfilebutton.Text = "Failed i think"
+					end	
 				end
 				task.wait(2)
 				createfilebutton.Text = "Apply"
