@@ -1143,7 +1143,7 @@ local function writedisk(screen, disk)
 				if directory ~= "" then
 					split = string.split(directory, "/")
 				end
-				if not split then
+				if not split or split[2] == "" then
 					disk:Write(filename, data)
 				else
 					returntable = createfileontable(disk, filename, data, directory)
@@ -1178,7 +1178,7 @@ local function writedisk(screen, disk)
 			if directory ~= "" then
 				split = string.split(directory, "/")
 			end
-			if not split then
+			if not split or split[2] == "" then
 				disk:Write(filename, {
 				})
 			else
@@ -1901,7 +1901,7 @@ local function mediaplayer(screen, disk, speaker)
 				if directory ~= "" then
 					split = string.split(directory, "/")
 				end
-				if not split then
+				if not split or split[2] == "" then
 					readdata = disk:Read(data)
 				else
 					readdata = getfileontable(disk, data, directory)
@@ -1965,7 +1965,7 @@ local function mediaplayer(screen, disk, speaker)
 				if directory ~= "" then
 					split = string.split(directory, "/")
 				end
-				if not split then
+				if not split or split[2] == "" then
 					readdata = disk:Read(data)
 				else
 					readdata = getfileontable(disk, data, directory)
