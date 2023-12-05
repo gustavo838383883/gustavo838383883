@@ -936,7 +936,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	end
 
 	if type(txt) == "table" then
-		local newdirectory
+		local newdirectory = nil
 		if directory then
 			newdirectory = directory.."/"..nameondisk
 		else
