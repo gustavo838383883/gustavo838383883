@@ -1058,7 +1058,7 @@ end
 local function writedisk(screen, disk)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 	if programholder1 then programholder1:AddChild(holderframe) end
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 200) Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 200), Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create File"})
 	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name (Click to update)"})
@@ -1808,7 +1808,7 @@ end
 local function mediaplayer(screen, disk, speaker)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 	programholder1:AddChild(holderframe)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 200) Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 200), Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Media Player"})
 	local Filename = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File with id (Click to update)"})
