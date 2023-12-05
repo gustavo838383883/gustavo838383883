@@ -867,17 +867,15 @@ local function readfile(txt, nameondisk, boolean, directory)
 			filegui:Destroy()
 			filegui = nil
 		end)
-	else
-		if directory then
-			deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
-			filegui:AddChild(deletebutton)
-			
-			deletebutton.MouseButton1Up:Connect(function()
-				createfileontable(disk, nameondisk, nil, directory)
-				filegui:Destroy()
-				filegui = nil
-			end)
-		end
+	elseif directory then
+		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
+		filegui:AddChild(deletebutton)
+		
+		deletebutton.MouseButton1Up:Connect(function()
+			createfileontable(disk, nameondisk, nil, directory)
+			filegui:Destroy()
+			filegui = nil
+		end)
 	end
 	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
@@ -935,7 +933,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		loadluafile(microcontrollers, screen, txt)
 	end
 
-	if type(txt) == "table" then
+	if typeof(txt) == "table" then
 		local newdirectory = nil
 		if directory then
 			newdirectory = directory.."/"..nameondisk
@@ -954,7 +952,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
 		holderframe:AddChild(textlabel)
 		
-		if boolean == true or directory then
+		if boolean == true then
 			local alldata = disk:ReadEntireDisk()
 			local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 			holderframe:AddChild(deletebutton)
@@ -967,6 +965,15 @@ local function readfile(txt, nameondisk, boolean, directory)
 						disk:Write(name, data)
 					end
 				end
+				holderframe:Destroy()
+				holderframe = nil
+			end)
+		elseif directory then
+			deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
+			holderframe:AddChild(deletebutton)
+			
+			deletebutton.MouseButton1Up:Connect(function()
+				createfileontable(disk, nameondisk, nil, directory)
 				holderframe:Destroy()
 				holderframe = nil
 			end)
@@ -1010,7 +1017,11 @@ local function readfile(txt, nameondisk, boolean, directory)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
 			button.MouseButton1Down:Connect(function()
-				readfile(data, index, false, newdirectory)
+				if typeof(data) == "table" then
+					readfile(data, index, false, newdirectory)
+				else
+					readfile(data, index, false, newdirectory.."/"..tostring(index))
+				end
 			end)
 		end
 	end
