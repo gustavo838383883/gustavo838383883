@@ -1057,11 +1057,11 @@ end
 
 local function writedisk(screen, disk)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	programholder1:AddChild(holderframe)
+	if programholder1 then programholder1:AddChild(holderframe) end
 	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create File"})
 	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name (Click to update)"})
 	local filedatabutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Data (Click to update)"})
-	local createfilebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
+	local createfilebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
 	holderframe:AddChild(textlabel)
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
@@ -1069,7 +1069,12 @@ local function writedisk(screen, disk)
 	holderframe:AddChild(filedatabutton)
 	holderframe:AddChild(createfilebutton)
 
+	local createtablebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create Table"})
+	holderframe:AddChild(createtablebutton)
 
+	local directorybutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.4, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Directory (Click to update) example = '/sounds'"})
+	holderframe:AddChild(directorybutton)
+	
 	local data = nil
 	local filename = nil
 
@@ -1080,22 +1085,24 @@ local function writedisk(screen, disk)
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
 	local maximizepressed = false
 	
+	local directory = ""
+	
 	holderframe:AddChild(maximizebutton)
 	local unmaximizedsize = holderframe.Size
 	maximizebutton.MouseButton1Up:Connect(function()
 		local holderframe = holderframe
 		if not maximizepressed then
 			unmaximizedsize = holderframe.Size
-			programholder2:AddChild(holderframe)
 			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			if programholder2 then programholder2:AddChild(holderframe) end
 			holderframe:ChangeProperties({Active = false, Draggable = false;})
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
 			holderframe.Position = UDim2.new(0, 0, 0, 0)
 			maximizebutton.Text = "-"
 			maximizepressed = true
 		else
-			programholder1:AddChild(holderframe)
 			holderframe.Size = unmaximizedsize
+			if programholder1 then programholder1:AddChild(holderframe) end
 			holderframe:ChangeProperties({Active = true, Draggable = true;})
 			maximizebutton.Text = "+"
 			maximizepressed = false
@@ -1109,6 +1116,13 @@ local function writedisk(screen, disk)
 		end
 	end)
 
+	directorybutton.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			directorybutton.Text = keyboardinput
+			directory = keyboardinput
+		end
+	end)
+
 	filedatabutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			filedatabutton.Text = keyboardinput
@@ -1119,19 +1133,57 @@ local function writedisk(screen, disk)
 	createfilebutton.MouseButton1Down:Connect(function()
 		if filenamebutton.Text ~= "File Name (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
-				disk:Write(filename, data)
-				if disk:Read(filename) then
-					if disk:Read(filename) == data then
-						createfilebutton.Text = "Success"
+				local split = nil
+				if directory ~= "" then
+					split = string.split(directory, "/")
+				end
+				if not split then
+					disk:Write(filename, data)
+				else
+					tabledirectorysystem(disk, filename, data, directory)
+				end
+				if not split then
+					if disk:Read(filename) then
+						if disk:Read(filename) == data then
+							createfilebutton.Text = "Success i think"
+						else
+							createfilebutton.Text = "Failed"
+						end
 					else
 						createfilebutton.Text = "Failed"
 					end
 				else
-					createfilebutton.Text = "Failed"
+					createfilebutton.Text = "Success i think"	
 				end
 				task.wait(2)
 				createfilebutton.Text = "Apply"
 			end
+		end
+	end)
+
+	createtablebutton.MouseButton1Down:Connect(function()
+		if filenamebutton.Text ~= "File Name (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
+			local split = nil
+			if directory ~= "" then
+				split = string.split(directory, "/")
+			end
+			if not split then
+				disk:Write(filename, {
+				})
+			else
+				tabledirectorysystem(disk, filename, {}, directory)
+			end
+			if not split then
+				if disk:Read(filename) then
+					createtablebutton.Text = "Success i think"
+				else
+					createtablebutton.Text = "Failed"
+				end
+			else
+				createtablebutton.Text = "Success i think"
+			end
+			task.wait(2)
+			createtablebutton.Text = "Create Table"
 		end
 	end)
 end
