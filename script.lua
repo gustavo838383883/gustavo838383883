@@ -1140,7 +1140,7 @@ local function writedisk(screen, disk)
 				if not split then
 					disk:Write(filename, data)
 				else
-					tabledirectorysystem(disk, filename, data, directory)
+					createfileontable(disk, filename, data, directory)
 				end
 				if not split then
 					if disk:Read(filename) then
@@ -1171,7 +1171,7 @@ local function writedisk(screen, disk)
 				disk:Write(filename, {
 				})
 			else
-				tabledirectorysystem(disk, filename, {}, directory)
+				createfileontable(disk, filename, {}, directory)
 			end
 			if not split then
 				if disk:Read(filename) then
