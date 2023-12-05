@@ -1058,22 +1058,24 @@ end
 local function writedisk(screen, disk)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 	if programholder1 then programholder1:AddChild(holderframe) end
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 200) Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
+	holderframe:AddChild(scrollingframe)
 	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create File"})
 	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name (Click to update)"})
 	local filedatabutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Data (Click to update)"})
-	local createfilebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, -25), Position = UDim2.new(0, 0, 0.8, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
+	local createfilebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
 	holderframe:AddChild(textlabel)
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
-	holderframe:AddChild(filenamebutton)
-	holderframe:AddChild(filedatabutton)
-	holderframe:AddChild(createfilebutton)
+	scrollingframe:AddChild(filenamebutton)
+	scrollingframe:AddChild(filedatabutton)
+	scrollingframe:AddChild(createfilebutton)
 
-	local createtablebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, -25), Position = UDim2.new(0.5, 0, 0.8, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create Table"})
-	holderframe:AddChild(createtablebutton)
+	local createtablebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create Table"})
+	scrollingframe:AddChild(createtablebutton)
 
 	local directorybutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.4, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = [[Directory (Click to update) example: "/sounds"]]})
-	holderframe:AddChild(directorybutton)
+	scrollingframe:AddChild(directorybutton)
 	
 	local data = nil
 	local filename = nil
@@ -1806,16 +1808,18 @@ end
 local function mediaplayer(screen, disk, speaker)
 	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 	programholder1:AddChild(holderframe)
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 200) Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
+	holderframe:AddChild(scrollingframe)
 	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Media Player"})
 	local Filename = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "File with id (Click to update)"})
-	local openimage = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,-25), Position = UDim2.new(0, 0, 0.8, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as image"})
+	local openimage = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as image"})
 	local openaudio = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,-25), Position = UDim2.new(0.5, 0, 0.8, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as audio"})
 	holderframe:AddChild(textlabel)
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	holderframe:AddChild(openimage)
-	holderframe:AddChild(Filename)
+	scrollingframe:AddChild(openimage)
+	scrollingframe:AddChild(Filename)
 	holderframe:AddChild(closebutton)
-	holderframe:AddChild(openaudio)
+	scrollingframe:AddChild(openaudio)
 
 	local data = nil
 	local filename = nil
@@ -1850,7 +1854,7 @@ local function mediaplayer(screen, disk, speaker)
 	end)
 	local toggleopen = true
 	local Toggle1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open from File: Yes"})
-	holderframe:AddChild(Toggle1)
+	scrollingframe:AddChild(Toggle1)
 
 	Toggle1.MouseButton1Up:Connect(function()
 		if toggleopen then
@@ -1870,7 +1874,7 @@ local function mediaplayer(screen, disk, speaker)
 	end)
 
 	local directorybutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.4, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = [[Directory (Click to update) example: "/sounds"]]})
-	holderframe:AddChild(directorybutton)
+	scrollingframe:AddChild(directorybutton)
 	local directory = ""
 	
 	directorybutton.MouseButton1Down:Connect(function()
