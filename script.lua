@@ -1921,12 +1921,30 @@ local function mediaplayer(screen, disk, speaker)
 		end
 	end)
 
+	local directorybutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.4, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = [[Directory (Click to update) example: "/sounds"]]})
+	holderframe:AddChild(directorybutton)
+	local directory = ""
+	
+	directorybutton.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			directorybutton.Text = keyboardinput
+			directory = keyboardinput
+		end
+	end)
+	
 	openimage.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id (Click to update)" then
 			local readdata = nil
 			if toggleopen then
-				readdata = tostring(disk:Read(data))
+				if directory ~= "" then
+					split = string.split(directory, "/")
+				end
+				if not split then
+					readdata = disk:Read(data)
 				else
+					readdata = getfileontable(disk, data, directory)
+				end
+			else
 				readdata = tostring(data)
 			end
 			woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
