@@ -1212,7 +1212,7 @@ local function changebackgroundimage(screen, disk)
 		if id.Text ~= "Image ID" then
 			if tonumber(data) then
 				disk:Write("BackgroundImage", data..","..tostring(tile)..","..tilenumb)
-				backgroundimageframe.Image = "rbxassetid://"..tonumber(data)
+				backgroundimageframe.Image = "rbxthumb://type=Asset&id="..tonumber(data).."&w=420&h=420"
 				changebackimg.Text = "Success"
 				if tile then
 					local tilenumb = string.split(tilenumb, ",")
@@ -2201,7 +2201,7 @@ local function loadmenu(screen, disk)
 										keyboardevent = nil
 									end
 									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-										keyboardinput = text:gsub(".?$","");
+										keyboardinput = text:sub(0, -2)
 										playerthatinputted = plr
 									end)
 								else
@@ -2296,7 +2296,7 @@ function startload()
 						keyboardevent = nil
 					end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-						keyboardinput = text:gsub(".?$","");
+						keyboardinput = text:sub(0, -2)
 						playerthatinputted = plr
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
