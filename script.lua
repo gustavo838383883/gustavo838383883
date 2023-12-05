@@ -1139,13 +1139,14 @@ local function writedisk(screen, disk)
 		if filenamebutton.Text ~= "File Name (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
 				local split = nil
+				local returntable = nil
 				if directory ~= "" then
 					split = string.split(directory, "/")
 				end
 				if not split then
 					disk:Write(filename, data)
 				else
-					createfileontable(disk, filename, data, directory)
+					returntable = createfileontable(disk, filename, data, directory)
 				end
 				if not split then
 					if disk:Read(filename) then
@@ -1158,7 +1159,7 @@ local function writedisk(screen, disk)
 						createfilebutton.Text = "Failed"
 					end
 				else
-					if disk:Read(split[2]) == data then
+					if disk:Read(split[2]) == returntable then
 						createfilebutton.Text = "Success i think"
 					else
 						createfilebutton.Text = "Failed i think"
@@ -1173,6 +1174,7 @@ local function writedisk(screen, disk)
 	createtablebutton.MouseButton1Down:Connect(function()
 		if filenamebutton.Text ~= "File Name (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
 			local split = nil
+			local returntable = nil
 			if directory ~= "" then
 				split = string.split(directory, "/")
 			end
@@ -1180,7 +1182,7 @@ local function writedisk(screen, disk)
 				disk:Write(filename, {
 				})
 			else
-				createfileontable(disk, filename, {}, directory)
+				returntable = createfileontable(disk, filename, {}, directory)
 			end
 			if not split then
 				if disk:Read(filename) then
@@ -1189,7 +1191,11 @@ local function writedisk(screen, disk)
 					createtablebutton.Text = "Failed"
 				end
 			else
-				createtablebutton.Text = "Success i think"
+				if disk:Read(split[2]) == returntable then
+					createtablebutton.Text = "Success i think"
+				else
+					createtablebutton.Text = "Failed i think"
+				end	
 			end
 			task.wait(2)
 			createtablebutton.Text = "Create Table"
