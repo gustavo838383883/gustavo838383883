@@ -153,6 +153,7 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 end
 
 local function createfileontable(disk, filename, filedata, directory)
+	local returntable = nil
 	if directory:sub(-1, -1) == "/" then directory = directory:sub(0, -2) end
 	local split = string.split(directory, "/")
 
@@ -191,12 +192,14 @@ local function createfileontable(disk, filename, filedata, directory)
 							lasttable = temptable
 						end
 					elseif i == 0 then
+						return table = lasttable
 						disk:Write(split[2], lasttable)
 					end
 				end
 			end
 		end
 	end
+	return returntable
 end
 
 local function getfileontable(disk, filename, directory)
