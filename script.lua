@@ -152,6 +152,80 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 	return sound
 end
 
+local function createfileontable(disk, filename, filedata, directory)
+	if directory:sub(-1, -1) == "/" then directory = directory:sub(0, -2) end
+	local split = string.split(directory, "/")
+
+	if split then
+		if split[1] and split[2] then
+			local rootfile = disk:Read(split[2])
+			local tablez = {
+			[1] = rootfile,
+			}
+			if typeof(rootfile) == "table" then
+				local resulttable = rootfile
+				if #split >= 3 then
+					for i=3,#split,1 do
+						if resulttable[split[i]] then
+							resulttable = resulttable[split[i]]
+							table.insert(tablez, resulttable)
+						end
+					end
+				end
+			end
+			if tablez then
+				local lasttable = nil
+				local number = 1
+				for i=#split - number,0,-1 do
+					if i == #split - number and i ~= 0 then
+						local temptable = tablez[i]
+						if temptable then
+							temptable[filename] = filedata
+							lasttable = temptable
+						end
+					end
+					if i < #split-number and i >= 1 then
+						if lasttable then
+							local temptable = tablez[i]
+							temptable[split[i+2]] = lasttable
+							lasttable = temptable
+						end
+					elseif i == 0 then
+						disk:Write(split[2], lasttable)
+					end
+				end
+			end
+		end
+	end
+end
+
+local function getfileontable(disk, filename, directory)
+	if directory:sub(-1, -1) == "/" then directory = directory:sub(0, -2) end
+	local split = string.split(directory, "/")
+	local file = nil
+	if split then
+		if split[1] and split[2] then
+			local rootfile = disk:Read(split[2])
+			local tablez = {
+			[1] = rootfile,
+			}
+			if typeof(rootfile) == "table" then
+				local resulttable = rootfile
+				if #split >= 3 then
+					for i=3,#split,1 do
+						if resulttable[split[i]] then
+							resulttable = resulttable[split[i]]
+							table.insert(tablez, resulttable)
+						end
+					end
+				end
+				file = resulttable[filename]
+			end
+		end
+	end
+	return file
+end
+
 local disk = nil
 local screen = nil
 local keyboard = nil
