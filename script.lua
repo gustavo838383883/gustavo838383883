@@ -192,7 +192,7 @@ local function createfileontable(disk, filename, filedata, directory)
 							lasttable = temptable
 						end
 					elseif i == 0 then
-						return table = lasttable
+						returntable = lasttable
 						disk:Write(split[2], lasttable)
 					end
 				end
