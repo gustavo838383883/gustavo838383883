@@ -812,7 +812,6 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 end
 
 local function readfile(txt, nameondisk, boolean, directory)
-	local alldata = disk:ReadEntireDisk()
 	local filegui = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
 	local deletebutton = nil
