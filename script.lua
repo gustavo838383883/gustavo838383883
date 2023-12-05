@@ -805,7 +805,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 	end
 end
 
-local function readfile(txt, nameondisk, boolean)
+local function readfile(txt, nameondisk, boolean, directory)
 	local alldata = disk:ReadEntireDisk()
 	local filegui = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
 	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
@@ -867,6 +867,17 @@ local function readfile(txt, nameondisk, boolean)
 			filegui:Destroy()
 			filegui = nil
 		end)
+	else
+		if directory then
+			deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
+			filegui:AddChild(deletebutton)
+			
+			deletebutton.MouseButton1Up:Connect(function()
+				createfileontable(disk, nameondisk, nil, directory)
+				filegui:Destroy()
+				filegui = nil
+			end)
+		end
 	end
 	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
@@ -925,6 +936,12 @@ local function readfile(txt, nameondisk, boolean)
 	end
 
 	if type(txt) == "table" then
+		local newdirectory
+		if directory then
+			newdirectory = directory.."/"..nameondisk
+		else
+			newdirectory = "/"..nameondisk
+		end
 		filegui:Destroy()
 		filegui = nil
 		
@@ -993,7 +1010,7 @@ local function readfile(txt, nameondisk, boolean)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
 			button.MouseButton1Down:Connect(function()
-				readfile(data, index, false)
+				readfile(data, index, false, newdirectory)
 			end)
 		end
 	end
