@@ -154,6 +154,7 @@ end
 
 local function createfileontable(disk, filename, filedata, directory)
 	local returntable = nil
+	local directory = directory
 	if (string.split(directory, "/"))[1] ~= "" and disk:Read((string.split(directory, "/"))[1]) then
 		directory = "/"..directory
 	end
@@ -212,6 +213,7 @@ local function createfileontable(disk, filename, filedata, directory)
 end
 
 local function getfileontable(disk, filename, directory)
+	local directory = directory
 	if (string.split(directory, "/"))[1] ~= "" and disk:Read((string.split(directory, "/"))[1]) then
 		directory = "/"..directory
 	end
