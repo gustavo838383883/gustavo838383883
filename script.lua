@@ -1174,7 +1174,7 @@ local function writedisk(screen, disk)
 					else
 						directorybutton.Text = "Invalid"
 						task.wait(2)
-						if directory ~= "" then
+						if directory == "" then
 							directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
 						else
 							directorybutton.Text = directory
