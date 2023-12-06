@@ -737,6 +737,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 							holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 							holderframe:ChangeProperties({Active = false, Draggable = false;})
 							holderframe.Position = UDim2.new(0, 0, 1, 0)
+							if programholder1 then programholder1:AddChild(holderframe) end
 							holderframe.Position = UDim2.new(0, 0, 0, 0)
 							maximizebutton.Text = "-"
 							maximizepressed = true
