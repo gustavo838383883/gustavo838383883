@@ -1100,7 +1100,7 @@ local function writedisk(screen, disk)
 	local createtablebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create Table"})
 	scrollingframe:AddChild(createtablebutton)
 
-	local directorybutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.4, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = [[Directory (Click to update) example: "/sounds"]]})
+	local directorybutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.4, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]})
 	scrollingframe:AddChild(directorybutton)
 	
 	local data = nil
@@ -1139,15 +1139,31 @@ local function writedisk(screen, disk)
 
 	filenamebutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filenamebutton.Text = keyboardinput
-			filename = keyboardinput
+			filenamebutton.Text = keyboardinput:gsub("/", "")
+			filename = keyboardinput:gsub("/", "")
 		end
 	end)
 
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			directorybutton.Text = keyboardinput
-			directory = keyboardinput
+			local inputtedtext = keyboardinput:gsub("\n", "")
+			local split = string.split(inputtedtext, "/")
+			if split then
+				local removedlast = inputtedtext:sub(0, -split[#split]-1)
+				print(removedlast)
+				if getfilefromtable(disk, split[#split], removedlast) then
+					directorybutton.Text = inputtedtext
+					directory = inputtedtext
+				else
+					directorybutton.Text = "Invalid"
+					task.wait(2)
+					directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+				end
+			else
+				directorybutton.Text = "Invalid"
+				task.wait(2)
+				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+			end
 		end
 	end)
 
@@ -1273,8 +1289,8 @@ local function changecolor(screen, disk)
 
 	color.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			color.Text = keyboardinput
-			data = keyboardinput
+			color.Text = keyboardinput:gsub("\n", "")
+			data = keyboardinput:gsub("\n", "")
 		end
 	end)
 
@@ -1349,8 +1365,8 @@ local function changebackgroundimage(screen, disk)
 	
 	id.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			id.Text = keyboardinput
-			data = keyboardinput
+			id.Text = keyboardinput:gsub("\n", "")
+			data = keyboardinput:gsub("\n", "")
 		end
 	end)
 
@@ -1367,8 +1383,8 @@ local function changebackgroundimage(screen, disk)
 	
 	tilenumber.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			tilenumber.Text = keyboardinput
-			tilenumb = keyboardinput
+			tilenumber.Text = keyboardinput:gsub("\n", "")
+			tilenumb = keyboardinput:gsub("\n", "")
 		end
 	end)
 
@@ -1478,8 +1494,8 @@ local function chatthing(screen, disk, modem)
 		
 		sendbox.MouseButton1Up:Connect(function()
 			if keyboardinput then
-				sendbox.Text = keyboardinput
-				sendtext = keyboardinput
+				sendbox.Text = keyboardinput:gsub("\n", "")
+				sendtext = keyboardinput:gsub("\n", "")
 				player = playerthatinputted
 			end
 		end)
@@ -1900,8 +1916,8 @@ local function mediaplayer(screen, disk, speaker)
 	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			Filename.Text = keyboardinput
-			data = keyboardinput
+			Filename.Text = keyboardinput:gsub("\n", "")
+			data = keyboardinput:gsub("\n", "")
 		end
 	end)
 
@@ -1911,8 +1927,8 @@ local function mediaplayer(screen, disk, speaker)
 	
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			directorybutton.Text = keyboardinput
-			directory = keyboardinput
+			directorybutton.Text = keyboardinput:gsub("\n", "")
+			directory = keyboardinput:gsub("\n", "")
 		end
 	end)
 	
@@ -2394,7 +2410,7 @@ local function loadmenu(screen, disk)
 										keyboardevent = nil
 									end
 									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-										keyboardinput = text:sub(0, -2)
+										keyboardinput = text
 										playerthatinputted = plr
 									end)
 								else
@@ -2492,7 +2508,7 @@ function startload()
 						keyboardevent = nil
 					end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-						keyboardinput = text:sub(0, -2)
+						keyboardinput = text
 						playerthatinputted = plr
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
