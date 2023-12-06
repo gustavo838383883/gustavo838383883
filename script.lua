@@ -1087,7 +1087,7 @@ local function writedisk(screen, disk)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create File"})
-	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name (Click to update)"})
+	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name(Case Sensitive if on a table) (Click to update)"})
 	local filedatabutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Data (Click to update)"})
 	local createfilebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
 	holderframe:AddChild(textlabel)
@@ -1196,7 +1196,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createfilebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
 				local split = nil
 				local returntable = nil
@@ -1232,7 +1232,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createtablebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
 			local split = nil
 			local returntable = nil
 			if directory ~= "" then
@@ -1880,7 +1880,7 @@ local function mediaplayer(screen, disk, speaker)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Media Player"})
-	local Filename = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File with id (Click to update)"})
+	local Filename = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File with id(Case Sensitive if on a table) (Click to update)"})
 	local openimage = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as image"})
 	local openaudio = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as audio"})
 	holderframe:AddChild(textlabel)
@@ -1991,7 +1991,7 @@ local function mediaplayer(screen, disk, speaker)
 	end)
 	
 	openaudio.MouseButton1Down:Connect(function()
-		if Filename.Text ~= "File with id (Click to update)" then
+		if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
 			local readdata = nil
 			if toggleopen then
 				local split = nil
@@ -2055,7 +2055,7 @@ local function mediaplayer(screen, disk, speaker)
 	end)
 	
 	openimage.MouseButton1Down:Connect(function()
-		if Filename.Text ~= "File with id (Click to update)" then
+		if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
 			local readdata = nil
 			if toggleopen then
 				local split = nil
