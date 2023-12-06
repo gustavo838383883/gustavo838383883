@@ -1153,6 +1153,7 @@ local function writedisk(screen, disk)
 				print(split)
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-1)
 				print(removedlast)
+				print(split[#split])
 				if #split >= 3 then
 					if getfilefromtable(disk, split[#split], removedlast) then
 						directorybutton.Text = inputtedtext
