@@ -1153,13 +1153,24 @@ local function writedisk(screen, disk)
 				print(split)
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-1)
 				print(removedlast)
-				if getfilefromtable(disk, split[#split], removedlast) then
-					directorybutton.Text = inputtedtext
-					directory = inputtedtext
+				if #split >= 3 then
+					if getfilefromtable(disk, split[#split], removedlast) then
+						directorybutton.Text = inputtedtext
+						directory = inputtedtext
+					else
+						directorybutton.Text = "Invalid"
+						task.wait(2)
+						directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+					end
 				else
-					directorybutton.Text = "Invalid"
-					task.wait(2)
-					directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+					if disk:Read(split[#split]) then
+						directorybutton.Text = inputtedtext
+						directory = inputtedtext
+					else
+						directorybutton.Text = "Invalid"
+						task.wait(2)
+						directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+					end
 				end
 			else
 				directorybutton.Text = "Invalid"
