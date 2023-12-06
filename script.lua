@@ -1151,7 +1151,7 @@ local function writedisk(screen, disk)
 			if split then
 				print(inputtedtext)
 				print(split)
-				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-1)
+				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				print(removedlast)
 				print(split[#split])
 				if #split >= 3 then
