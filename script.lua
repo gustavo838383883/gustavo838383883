@@ -1247,7 +1247,7 @@ local function writedisk(screen, disk)
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				if #split >= 3 then
-					if getfileontable(disk, split[#split], removedlast) then
+					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
 						directorybutton.Text = inputtedtext
 						directory = inputtedtext
 					else
@@ -2050,11 +2050,12 @@ local function mediaplayer(screen, disk, speaker)
 				inputtedtext = "/"..inputtedtext
 			end
 			if inputtedtext:sub(-1, -1) == "/" then inputtedtext = inputtedtext:sub(0, -2); end
+			print(inputtedtext)
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				if #split >= 3 then
-					if getfileontable(disk, split[#split], removedlast) then
+					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
 						directorybutton.Text = inputtedtext
 						directory = inputtedtext
 					else
