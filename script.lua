@@ -2051,7 +2051,7 @@ local function shutdownmicros(screen, micros)
 		local button = screen:CreateElement("TextButton", {Text = (start/25)+1, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.new(0, 0, 0, start)})
 		scrollingframe:AddChild(button)
 		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
-		local oldstart = start
+		local oldstart = start + 25
 		button.MouseButton1Up:Connect(function()
 			local polysilicon = GetPartFromPort(value, "Polysilicon")
 			local polyport = GetPartFromPort(polysilicon, "Port")
