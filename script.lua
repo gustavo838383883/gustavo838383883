@@ -1160,7 +1160,11 @@ local function writedisk(screen, disk)
 					else
 						directorybutton.Text = "Invalid"
 						task.wait(2)
-						directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						if directory ~= "" then
+							directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						else
+							directorybutton.Text = directory
+						end
 					end
 				else
 					if disk:Read(split[#split]) or split[2] == "" then
@@ -1169,7 +1173,11 @@ local function writedisk(screen, disk)
 					else
 						directorybutton.Text = "Invalid"
 						task.wait(2)
-						directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						if directory ~= "" then
+							directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						else
+							directorybutton.Text = directory
+						end
 					end
 				end
 			else
