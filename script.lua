@@ -1949,8 +1949,46 @@ local function mediaplayer(screen, disk, speaker)
 	
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			directorybutton.Text = keyboardinput:gsub("\n", "")
-			directory = keyboardinput:gsub("\n", "")
+			local inputtedtext = keyboardinput:gsub("\n", "")
+			local split = string.split(inputtedtext, "/")
+			if split then
+				print(inputtedtext)
+				print(split)
+				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
+				print(removedlast)
+				print(split[#split])
+				if #split >= 3 then
+					if getfileontable(disk, split[#split], removedlast) then
+						directorybutton.Text = inputtedtext
+						directory = inputtedtext
+					else
+						directorybutton.Text = "Invalid"
+						task.wait(2)
+						if directory ~= "" then
+							directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						else
+							directorybutton.Text = directory
+						end
+					end
+				else
+					if disk:Read(split[#split]) or split[2] == "" then
+						directorybutton.Text = inputtedtext
+						directory = inputtedtext
+					else
+						directorybutton.Text = "Invalid"
+						task.wait(2)
+						if directory == "" then
+							directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						else
+							directorybutton.Text = directory
+						end
+					end
+				end
+			else
+				directorybutton.Text = "Invalid"
+				task.wait(2)
+				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+			end
 		end
 	end)
 	
