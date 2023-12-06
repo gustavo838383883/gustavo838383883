@@ -1155,7 +1155,7 @@ local function writedisk(screen, disk)
 				print(removedlast)
 				print(split[#split])
 				if #split >= 3 then
-					if getfilefromtable(disk, split[#split], removedlast) then
+					if getfileontable(disk, split[#split], removedlast) then
 						directorybutton.Text = inputtedtext
 						directory = inputtedtext
 					else
