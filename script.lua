@@ -862,18 +862,62 @@ local function readfile(txt, nameondisk, boolean, directory)
 		filegui:AddChild(deletebutton)
 		
 		deletebutton.MouseButton1Up:Connect(function()
-			disk:Write(nameondisk, nil)
-			filegui:Destroy()
-			filegui = nil
+			local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
+			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
+			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+			holdframe:AddChild(textlabel)
+			holdframe:AddChild(closebutton)
+			local deletebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
+			holdframe:AddChild(deletebutton)
+			local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
+			holdframe:AddChild(cancelbutton)
+			
+			closebutton.MouseButton1Down:Connect(function()
+				holderframe:Destroy()
+				holderframe = nil
+			end)	
+				
+			cancelbutton.MouseButton1Down:Connect(function()
+				holderframe:Destroy()
+				holderframe = nil
+			end)
+
+			deletebutton.MouseButton1Up:Connect(function()
+				disk:Write(nameondisk, nil)
+				filegui:Destroy()
+				filegui = nil
+			end)
 		end)
 	elseif directory then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 		filegui:AddChild(deletebutton)
 		
 		deletebutton.MouseButton1Up:Connect(function()
-			createfileontable(disk, nameondisk, nil, directory)
-			filegui:Destroy()
-			filegui = nil
+			local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
+			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
+			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+			holdframe:AddChild(textlabel)
+			holdframe:AddChild(closebutton)
+			local deletebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
+			holdframe:AddChild(deletebutton)
+			local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
+			holdframe:AddChild(cancelbutton)
+			
+			closebutton.MouseButton1Down:Connect(function()
+				holderframe:Destroy()
+				holderframe = nil
+			end)	
+				
+			cancelbutton.MouseButton1Down:Connect(function()
+				holderframe:Destroy()
+				holderframe = nil
+			end)
+
+			deletebutton.MouseButton1Up:Connect(function()
+				createfileontable(disk, nameondisk, nil, directory)
+				filegui:Destroy()
+				filegui = nil
+			end)
 		end)
 	end
 	
@@ -958,23 +1002,62 @@ local function readfile(txt, nameondisk, boolean, directory)
 			textlabel.Size = UDim2.new(1,-75,0,25)
 			
 			deletebutton.MouseButton1Up:Connect(function()
-				disk:ClearDisk()
-				for name, data in pairs(alldata) do
-					if name ~= nameondisk then
-						disk:Write(name, data)
-					end
-				end
-				holderframe:Destroy()
-				holderframe = nil
+				local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
+				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
+				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+				holdframe:AddChild(textlabel)
+				holdframe:AddChild(closebutton)
+				local deletebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
+				holdframe:AddChild(deletebutton)
+				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
+				holdframe:AddChild(cancelbutton)
+				
+				closebutton.MouseButton1Down:Connect(function()
+					holderframe:Destroy()
+					holderframe = nil
+				end)	
+					
+				cancelbutton.MouseButton1Down:Connect(function()
+					holderframe:Destroy()
+					holderframe = nil
+				end)
+	
+				deletebutton.MouseButton1Up:Connect(function()
+					disk:Write(filename, nil)
+					holderframe:Destroy()
+					holderframe = nil
+				end)
 			end)
 		elseif directory then
 			deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 			holderframe:AddChild(deletebutton)
 			
 			deletebutton.MouseButton1Up:Connect(function()
-				createfileontable(disk, nameondisk, nil, directory)
-				holderframe:Destroy()
-				holderframe = nil
+				local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
+				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
+				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+				holdframe:AddChild(textlabel)
+				holdframe:AddChild(closebutton)
+				local deletebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
+				holdframe:AddChild(deletebutton)
+				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
+				holdframe:AddChild(cancelbutton)
+				
+				closebutton.MouseButton1Down:Connect(function()
+					holderframe:Destroy()
+					holderframe = nil
+				end)	
+					
+				cancelbutton.MouseButton1Down:Connect(function()
+					holderframe:Destroy()
+					holderframe = nil
+				end)
+	
+				deletebutton.MouseButton1Up:Connect(function()
+					createfileontable(disk, nameondisk, nil, directory)
+					holderframe:Destroy()
+					holderframe = nil
+				end)
 			end)
 		end
 		
