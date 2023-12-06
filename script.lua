@@ -1247,7 +1247,7 @@ local function writedisk(screen, disk)
 			if tempsplit2 then
 				if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
 			end
-			print(":"..inputtedtext..":")
+			if inputtedtext == " " then inputtedtext = ""; end
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
@@ -2060,6 +2060,7 @@ local function mediaplayer(screen, disk, speaker)
 			if tempsplit2 then
 				if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
 			end
+			if inputtedtext == " " then inputtedtext = ""; end
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
@@ -2100,6 +2101,7 @@ local function mediaplayer(screen, disk, speaker)
 			end
 		end
 	end)
+
 	
 	openaudio.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
