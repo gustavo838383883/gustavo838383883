@@ -215,7 +215,8 @@ end
 
 local function getfileontable(disk, filename, directory)
 	local directory = directory
-	if (string.split(directory, "/"))[1] ~= "" and disk:Read((string.split(directory, "/"))[1]) then
+	local tempsplit = string.split(directory, "/")
+	if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
 		directory = "/"..directory
 	end
 	if directory:sub(-1, -1) == "/" then directory = directory:sub(0, -2) end
