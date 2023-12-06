@@ -1163,7 +1163,7 @@ local function writedisk(screen, disk)
 						directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
 					end
 				else
-					if disk:Read(split[#split]) then
+					if disk:Read(split[#split]) or split[2] == "" then
 						directorybutton.Text = inputtedtext
 						directory = inputtedtext
 					else
