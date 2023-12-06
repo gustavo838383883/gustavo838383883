@@ -155,10 +155,6 @@ end
 local function createfileontable(disk, filename, filedata, directory)
 	local returntable = nil
 	local directory = directory
-	local tempsplit = string.split(directory, "/")
-	if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
-		directory = "/"..directory
-	end
 	if directory:sub(-1, -1) == "/" then directory = directory:sub(0, -2) end
 	local split = string.split(directory, "/")
 
@@ -215,10 +211,6 @@ end
 
 local function getfileontable(disk, filename, directory)
 	local directory = directory
-	local tempsplit = string.split(directory, "/")
-	if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
-		directory = "/"..directory
-	end
 	if directory:sub(-1, -1) == "/" then directory = directory:sub(0, -2) end
 	local split = string.split(directory, "/")
 	local file = nil
@@ -1244,6 +1236,10 @@ local function writedisk(screen, disk)
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			local inputtedtext = keyboardinput:gsub("\n", "")
+			local tempsplit = string.split(inputtedtext, "/")
+			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+				inputtedtext = "/"..inputtedtext
+			end
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
@@ -2046,6 +2042,10 @@ local function mediaplayer(screen, disk, speaker)
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			local inputtedtext = keyboardinput:gsub("\n", "")
+			local tempsplit = string.split(inputtedtext, "/")
+			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+				inputtedtext = "/"..inputtedtext
+			end
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
