@@ -1139,8 +1139,8 @@ local function writedisk(screen, disk)
 
 	filenamebutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filenamebutton.Text = keyboardinput:gsub("/", "")
-			filename = keyboardinput:gsub("/", "")
+			filenamebutton.Text = keyboardinput:gsub("\n", ""):gsub("/", "")
+			filename = keyboardinput:gsub("\n", ""):gsub("/", "")
 		end
 	end)
 
@@ -1149,6 +1149,8 @@ local function writedisk(screen, disk)
 			local inputtedtext = keyboardinput:gsub("\n", "")
 			local split = string.split(inputtedtext, "/")
 			if split then
+				print(inputtedtext)
+				print(split)
 				local removedlast = inputtedtext:sub(0, -split[#split]-1)
 				print(removedlast)
 				if getfilefromtable(disk, split[#split], removedlast) then
