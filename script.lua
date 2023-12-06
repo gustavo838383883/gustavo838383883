@@ -1151,7 +1151,7 @@ local function writedisk(screen, disk)
 			if split then
 				print(inputtedtext)
 				print(split)
-				local removedlast = inputtedtext:sub(1, -#split-1)
+				local removedlast = inputtedtext:sub(1, -#split+1)
 				print(removedlast)
 				if getfilefromtable(disk, split[#split], removedlast) then
 					directorybutton.Text = inputtedtext
