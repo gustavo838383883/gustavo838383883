@@ -1238,11 +1238,15 @@ local function writedisk(screen, disk)
 		if keyboardinput then
 			local inputtedtext = keyboardinput:gsub("\n", "")
 			local tempsplit = string.split(inputtedtext, "/")
-			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
-				inputtedtext = "/"..inputtedtext
+			if tempsplit then
+				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+					inputtedtext = "/"..inputtedtext
+				end
 			end
-			if inputtedtext:sub(-1, -1) == "/" then inputtedtext = inputtedtext:sub(0, -2); end
-			print(inputtedtext)
+			local tempsplit2 = string.split(inputtedtext, "/")
+			if tempsplit2 then
+				if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
+			end
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
@@ -2046,11 +2050,15 @@ local function mediaplayer(screen, disk, speaker)
 		if keyboardinput then
 			local inputtedtext = keyboardinput:gsub("\n", "")
 			local tempsplit = string.split(inputtedtext, "/")
-			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
-				inputtedtext = "/"..inputtedtext
+			if tempsplit then
+				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+					inputtedtext = "/"..inputtedtext
+				end
 			end
-			if inputtedtext:sub(-1, -1) == "/" then inputtedtext = inputtedtext:sub(0, -2); end
-			print(inputtedtext)
+			local tempsplit2 = string.split(inputtedtext, "/")
+			if tempsplit2 then
+				if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
+			end
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
