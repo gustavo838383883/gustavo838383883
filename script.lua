@@ -1149,11 +1149,7 @@ local function writedisk(screen, disk)
 			local inputtedtext = keyboardinput:gsub("\n", "")
 			local split = string.split(inputtedtext, "/")
 			if split then
-				print(inputtedtext)
-				print(split)
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
-				print(removedlast)
-				print(split[#split])
 				if #split >= 3 then
 					if getfileontable(disk, split[#split], removedlast) then
 						directorybutton.Text = inputtedtext
@@ -1181,6 +1177,9 @@ local function writedisk(screen, disk)
 						end
 					end
 				end
+			elseif inputtedtext = "" then
+				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+				directory = inputtedtext
 			else
 				directorybutton.Text = "Invalid"
 				task.wait(2)
@@ -1952,11 +1951,7 @@ local function mediaplayer(screen, disk, speaker)
 			local inputtedtext = keyboardinput:gsub("\n", "")
 			local split = string.split(inputtedtext, "/")
 			if split then
-				print(inputtedtext)
-				print(split)
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
-				print(removedlast)
-				print(split[#split])
 				if #split >= 3 then
 					if getfileontable(disk, split[#split], removedlast) then
 						directorybutton.Text = inputtedtext
@@ -1984,6 +1979,9 @@ local function mediaplayer(screen, disk, speaker)
 						end
 					end
 				end
+			elseif inputtedtext = "" then
+				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+				directory = inputtedtext
 			else
 				directorybutton.Text = "Invalid"
 				task.wait(2)
