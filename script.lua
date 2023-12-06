@@ -1241,6 +1241,7 @@ local function writedisk(screen, disk)
 			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
 				inputtedtext = "/"..inputtedtext
 			end
+			if inputtedtext:sub(-1, -1) == "/" then inputtedtext = inputtedtext:sub(0, -2) end
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
@@ -1279,13 +1280,6 @@ local function writedisk(screen, disk)
 				task.wait(2)
 				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
 			end
-		end
-	end)
-
-	filedatabutton.MouseButton1Down:Connect(function()
-		if keyboardinput then
-			filedatabutton.Text = keyboardinput
-			data = keyboardinput
 		end
 	end)
 
@@ -2047,6 +2041,7 @@ local function mediaplayer(screen, disk, speaker)
 			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
 				inputtedtext = "/"..inputtedtext
 			end
+			if inputtedtext:sub(-1, -1) == "/" then inputtedtext = inputtedtext:sub(0, -2) end
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
