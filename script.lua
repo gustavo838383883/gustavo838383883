@@ -1247,6 +1247,7 @@ local function writedisk(screen, disk)
 			if tempsplit2 then
 				if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
 			end
+			print(":"..inputtedtext..":")
 			local split = string.split(inputtedtext, "/")
 			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
