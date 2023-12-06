@@ -1033,7 +1033,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 				end)
 	
 				deletebutton.MouseButton1Up:Connect(function()
-					disk:Write(filename, nil)
+					disk:Write(nameondisk, nil)
 					holderframe:Destroy()
 					holdframe:Destroy()
 					holderframe = nil
