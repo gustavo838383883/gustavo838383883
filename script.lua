@@ -1208,7 +1208,7 @@ local function writedisk(screen, disk)
 				else
 					returntable = createfileontable(disk, filename, data, directory)
 				end
-				if not split then
+				if not split or split[2] == "" then
 					if disk:Read(filename) then
 						if disk:Read(filename) == data then
 							createfilebutton.Text = "Success i think"
