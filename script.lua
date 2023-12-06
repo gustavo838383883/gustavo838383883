@@ -873,17 +873,18 @@ local function readfile(txt, nameondisk, boolean, directory)
 			holdframe:AddChild(cancelbutton)
 			
 			closebutton.MouseButton1Down:Connect(function()
-				holderframe:Destroy()
-				holderframe = nil
+				holdframe:Destroy()
+				holdframe = nil
 			end)	
 				
 			cancelbutton.MouseButton1Down:Connect(function()
-				holderframe:Destroy()
-				holderframe = nil
+				holdframe:Destroy()
+				holdframe = nil
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				disk:Write(nameondisk, nil)
+				holdframe:Destroy()
 				filegui:Destroy()
 				filegui = nil
 			end)
@@ -904,17 +905,18 @@ local function readfile(txt, nameondisk, boolean, directory)
 			holdframe:AddChild(cancelbutton)
 			
 			closebutton.MouseButton1Down:Connect(function()
-				holderframe:Destroy()
-				holderframe = nil
+				holdframe:Destroy()
+				holdframe = nil
 			end)	
 				
 			cancelbutton.MouseButton1Down:Connect(function()
-				holderframe:Destroy()
-				holderframe = nil
+				holdframe:Destroy()
+				holdframe = nil
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				createfileontable(disk, nameondisk, nil, directory)
+				holdframe:Destroy()
 				filegui:Destroy()
 				filegui = nil
 			end)
@@ -1013,18 +1015,19 @@ local function readfile(txt, nameondisk, boolean, directory)
 				holdframe:AddChild(cancelbutton)
 				
 				closebutton.MouseButton1Down:Connect(function()
-					holderframe:Destroy()
-					holderframe = nil
+					holdframe:Destroy()
+					holdframe = nil
 				end)	
 					
 				cancelbutton.MouseButton1Down:Connect(function()
-					holderframe:Destroy()
-					holderframe = nil
+					holdframe:Destroy()
+					holdframe = nil
 				end)
 	
 				deletebutton.MouseButton1Up:Connect(function()
 					disk:Write(filename, nil)
 					holderframe:Destroy()
+					holdframe:Destroy()
 					holderframe = nil
 				end)
 			end)
@@ -1044,17 +1047,18 @@ local function readfile(txt, nameondisk, boolean, directory)
 				holdframe:AddChild(cancelbutton)
 				
 				closebutton.MouseButton1Down:Connect(function()
-					holderframe:Destroy()
-					holderframe = nil
+					holdframe:Destroy()
+					holdframe = nil
 				end)	
 					
 				cancelbutton.MouseButton1Down:Connect(function()
-					holderframe:Destroy()
-					holderframe = nil
+					holdframe:Destroy()
+					holdframe = nil
 				end)
 	
 				deletebutton.MouseButton1Up:Connect(function()
 					createfileontable(disk, nameondisk, nil, directory)
+					holdframe:Destroy()
 					holderframe:Destroy()
 					holderframe = nil
 				end)
