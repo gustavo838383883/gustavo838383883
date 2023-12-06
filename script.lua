@@ -1177,7 +1177,7 @@ local function writedisk(screen, disk)
 						end
 					end
 				end
-			elseif inputtedtext = "" then
+			elseif inputtedtext == "" then
 				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
 				directory = inputtedtext
 			else
@@ -1979,7 +1979,7 @@ local function mediaplayer(screen, disk, speaker)
 						end
 					end
 				end
-			elseif inputtedtext = "" then
+			elseif inputtedtext == "" then
 				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
 				directory = inputtedtext
 			else
