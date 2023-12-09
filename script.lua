@@ -1543,7 +1543,7 @@ local function chatthing(screen, disk, modem)
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
 		if messagesent then
-			messagesent:UnBind()
+			messagesent:Unbind()
 		end
 	end)
 
@@ -2577,7 +2577,7 @@ local function loadmenu(screen, disk)
 									task.wait(0.1)
 									Beep(1)
 									if keyboardevent then
-										keyboardevent:UnBind()
+										keyboardevent:Unbind()
 										keyboardevent = nil
 									end
 									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
@@ -2656,7 +2656,7 @@ local function loadmenu(screen, disk)
 						task.wait(0.1)
 						Beep(0.25)
 						if keyboardevent then
-							keyboardevent:UnBind()
+							keyboardevent:Unbind()
 							keyboardevent = nil
 						end
 						TriggerPort(shutdownpoly)
@@ -2675,7 +2675,7 @@ function startload()
 			if speaker then
 				if keyboard then
 					if keyboardevent then
-						keyboardevent:UnBind()
+						keyboardevent:Unbind()
 						keyboardevent = nil
 					end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
