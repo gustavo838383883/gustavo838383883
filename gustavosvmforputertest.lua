@@ -332,7 +332,9 @@ end
 getstuff()
 
 local puter = GetPartFromPort(1, "Disk"):Read("PuterLibrary")
-local window, closebutton = puter.CreateWindow(400, 300, "GustavOS VM")
+if puter then
+	local window, closebutton = puter.CreateWindow(400, 300, "GustavOS VM")
+end
 
 local color = nil
 local backgroundimage = nil
