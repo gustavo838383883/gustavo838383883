@@ -2336,12 +2336,12 @@ local function loadmenu(screen, disk)
 	local pressed = false
 	local startui = nil
 
-  local puter = disk:Read("PuterLibrary")
+ 	local puter = disk:Read("PuterLibrary")
 
-  local window, closebutton = puter.CreateWindow(400, 300, "GustavOS VM")
+  	local window, closebutton = puter.CreateWindow(400, 300, "GustavOS VM")
   
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
-  window:AddChild(backgroundframe)
+ 	window:AddChild(backgroundframe)
 	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 
 	if backgroundimage then
@@ -2361,7 +2361,7 @@ local function loadmenu(screen, disk)
 	backgroundframe:AddChild(startmenu)
 
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
-  window:AddChild(programholder1)
+ 	window:AddChild(programholder1)
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
 
@@ -2519,13 +2519,13 @@ local function loadmenu(screen, disk)
 				end)
 					
 				restartbutton.MouseButton1Down:Connect(function()
-          if backgroundframe then
-            backgroundframe:Destroy()
-          end
+				        if backgroundframe then
+				          backgroundframe:Destroy()
+				        end
 					Beep(1)
 					backgroundimageframe = nil
 					backgroundimage = nil
-          local textbutton
+         				local textbutton
 					getstuff()
 					if screen then
 						if disk then
@@ -2645,8 +2645,8 @@ local function loadmenu(screen, disk)
 
 					shutdownbutton.MouseButton1Down:Connect(function()
 						if backgroundframe then
-              backgroundframe:Destroy()
-            end
+							backgroundframe:Destroy()
+					        end
 						Beep(1)
 						task.wait(0.1)
 						Beep(0.75)
