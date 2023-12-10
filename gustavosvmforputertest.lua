@@ -243,6 +243,8 @@ local keyboard = nil
 local speaker = nil
 local modem = nil
 local microcontrollers = nil
+local puter = nil
+local window, closebutton = nil
 
 local shutdownpoly = nil
 
@@ -254,6 +256,8 @@ local function getstuff()
 	shutdownpoly = nil
 	modem = nil
 	microcontrollers = nil
+	window, closebutton = nil
+	puter = nil
 
 	for i=1, 128 do
 		if not disk then
@@ -327,6 +331,10 @@ local function getstuff()
 				end
 			end
 		end
+	end
+	if disk then
+		puter = disk:Read("PuterLibrary")
+		window, closebutton = puter.CreateWindow(400, 300, "GustavOS VM")
 	end
 end
 getstuff()
@@ -2332,13 +2340,9 @@ end
 
 local keyboardevent = nil
 
-local window, closebutton = puter.CreateWindow(400, 300, "GustavOS VM")
-
 local function loadmenu(screen, disk)
 	local pressed = false
 	local startui = nil
-
-	local puter = disk:Read("PuterLibrary")
 
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
 	window:AddChild(backgroundframe)
