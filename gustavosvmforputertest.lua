@@ -243,8 +243,6 @@ local keyboard = nil
 local speaker = nil
 local modem = nil
 local microcontrollers = nil
-local puter = nil
-local window, closebutton = nil
 
 local shutdownpoly = nil
 
@@ -256,8 +254,6 @@ local function getstuff()
 	shutdownpoly = nil
 	modem = nil
 	microcontrollers = nil
-	window, closebutton = nil
-	puter = nil
 
 	for i=1, 128 do
 		if not disk then
@@ -332,12 +328,11 @@ local function getstuff()
 			end
 		end
 	end
-	if disk then
-		puter = disk:Read("PuterLibrary")
-		window, closebutton = puter.CreateWindow(400, 300, "GustavOS VM")
-	end
 end
 getstuff()
+
+local puter = GetPartFromPort(1, "Disk"):Read("PuterLibrary")
+local window, closebutton = puter.CreateWindow(400, 300, "GustavOS VM")
 
 local color = nil
 local backgroundimage = nil
