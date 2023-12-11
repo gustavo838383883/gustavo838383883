@@ -2368,7 +2368,7 @@ local function loadmenu(screen, disk)
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.2,0,0.1,0), Position = UDim2.new(0, 0, 0.9, 0)})
 	backgroundframe:AddChild(startmenu)
 
-	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+	programholder1 = screen:CreateElement("ScrollingFrame", {CanvasSize = UDim2.new(1, 0, 1, 0), Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	window:AddChild(programholder1)
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
@@ -2634,52 +2634,49 @@ local function loadmenu(screen, disk)
 			end)
 			--shutdown:
 
-			if shutdown then
-				shutdown.MouseButton1Up:Connect(function()
-					local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-					if programholder2 then programholder2:AddChild(holderframe) end
-					local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
-					local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-					holderframe:AddChild(textlabel)
-					holderframe:AddChild(closebutton)
-					local shutdownbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
-					holderframe:AddChild(shutdownbutton)
-					local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
-					holderframe:AddChild(cancelbutton)
+			shutdown.MouseButton1Up:Connect(function()
+				local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
+				if programholder2 then programholder2:AddChild(holderframe) end
+				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
+				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+				holderframe:AddChild(textlabel)
+				holderframe:AddChild(closebutton)
+				local shutdownbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
+				holderframe:AddChild(shutdownbutton)
+				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
+				holderframe:AddChild(cancelbutton)
 
-					closebutton.MouseButton1Down:Connect(function()
-						holderframe:Destroy()
-						holderframe = nil
-					end)
-
-					cancelbutton.MouseButton1Down:Connect(function()
-						holderframe:Destroy()
-						holderframe = nil
-					end)
-
-					shutdownbutton.MouseButton1Down:Connect(function()
-						if backgroundframe then
-							backgroundframe:Destroy()
-						end
-						Beep(1)
-						task.wait(0.1)
-						Beep(0.75)
-						task.wait(0.1)
-						Beep(0.5)
-						task.wait(0.1)
-						Beep(1)
-						task.wait(0.1)
-						Beep(0.5)
-						task.wait(0.1)
-						Beep(0.25)
-						if keyboardevent then
-							keyboardevent:Unbind()
-							keyboardevent = nil
-						end
-						TriggerPort(shutdownpoly)
-					end)
+				closebutton.MouseButton1Down:Connect(function()
+					holderframe:Destroy()
+					holderframe = nil
 				end)
-			end
+
+				cancelbutton.MouseButton1Down:Connect(function()
+					holderframe:Destroy()
+					holderframe = nil
+				end)
+
+				shutdownbutton.MouseButton1Down:Connect(function()
+					if backgroundframe then
+						backgroundframe:Destroy()
+					end
+					Beep(1)
+					task.wait(0.1)
+					Beep(0.75)
+					task.wait(0.1)
+					Beep(0.5)
+					task.wait(0.1)
+					Beep(1)
+					task.wait(0.1)
+					Beep(0.5)
+					task.wait(0.1)
+					Beep(0.25)
+					if keyboardevent then
+						keyboardevent:Unbind()
+						keyboardevent = nil
+					end
+				end)
+			end)
 
 		end
 	end)
