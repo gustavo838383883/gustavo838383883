@@ -2348,7 +2348,7 @@ end
 
 local keyboardevent = nil
 
-local function loadmenu(screen, disk)
+local function loadmenu()
 	local pressed = false
 	local startui = nil
 	
@@ -2532,7 +2532,6 @@ local function loadmenu(screen, disk)
 					Beep(1)
 					backgroundimageframe = nil
 					backgroundimage = nil
-					disk = nil
 					getstuff()
 					if screen then
 						if disk then
@@ -2573,7 +2572,7 @@ local function loadmenu(screen, disk)
 							end
 							if speaker then
 								if keyboard then
-									loadmenu(screen, disk)
+									loadmenu()
 									Beep(0.25)
 									task.wait(0.1)
 									Beep(0.5)
@@ -2692,7 +2691,7 @@ function startload()
 						playerthatinputted = plr
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
-						loadmenu(screen, disk)
+						loadmenu()
 						Beep(0.25)
 						task.wait(0.1)
 						Beep(0.5)
@@ -2725,7 +2724,7 @@ function startload()
 								backgroundimageframe:Destroy()
 								holderframe:Destroy()
 								holderframe = nil
-								loadmenu(screen, disk)
+								loadmenu()
 								Beep(0.25)
 								task.wait(0.1)
 								Beep(0.5)
