@@ -890,7 +890,9 @@ local function readfile(txt, nameondisk, boolean, directory)
 			deletebutton.MouseButton1Up:Connect(function()
 				disk:Write(nameondisk, nil)
 				holdframe:Destroy()
-				filegui:Destroy()
+				if filegui then
+					filegui:Destroy()
+				end
 				filegui = nil
 			end)
 		end)
@@ -922,7 +924,9 @@ local function readfile(txt, nameondisk, boolean, directory)
 			deletebutton.MouseButton1Up:Connect(function()
 				createfileontable(disk, nameondisk, nil, directory)
 				holdframe:Destroy()
-				filegui:Destroy()
+				if filegui then
+					filegui:Destroy()
+				end
 				filegui = nil
 			end)
 		end)
@@ -1031,7 +1035,9 @@ local function readfile(txt, nameondisk, boolean, directory)
 	
 				deletebutton.MouseButton1Up:Connect(function()
 					disk:Write(nameondisk, nil)
-					holderframe:Destroy()
+					if holderframe then
+						holderframe:Destroy()
+					end
 					holdframe:Destroy()
 					holderframe = nil
 				end)
@@ -1064,7 +1070,9 @@ local function readfile(txt, nameondisk, boolean, directory)
 				deletebutton.MouseButton1Up:Connect(function()
 					createfileontable(disk, nameondisk, nil, directory)
 					holdframe:Destroy()
-					holderframe:Destroy()
+					if holderframe then
+						holderframe:Destroy()
+					end
 					holderframe = nil
 				end)
 			end)
