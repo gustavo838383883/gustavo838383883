@@ -2368,10 +2368,10 @@ local function loadmenu(screen, disk)
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.2,0,0.1,0), Position = UDim2.new(0, 0, 0.9, 0)})
 	backgroundframe:AddChild(startmenu)
 
-	programholder1 = screen:CreateElement("ScrollingFrame", {CanvasSize = UDim2.new(1, 0, 1, 0), Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
-	programholder2:AddChild(programholder1)
 	backgroundframe:AddChild(programholder2)
+	programholder1 = screen:CreateElement("ScrollingFrame", {CanvasSize = UDim2.new(1, 0, 1, 0), Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+	programholder2:AddChild(programholder1)
 
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
