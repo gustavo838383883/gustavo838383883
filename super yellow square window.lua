@@ -317,45 +317,55 @@ getstuff()
 
 local keyboardevent = nil
 
-local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,-25)})
-local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-holderframe:AddChild(scrollingframe)
-local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-holderframe:AddChild(closebutton)
-
-closebutton.MouseButton1Down:Connect(function()
-	holderframe:Destroy()
-	holderframe = nil
-	keyboardevent:UnBind()
-	keyboardevent = nil
-end)
-
-local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-local maximizepressed = false
-
-holderframe:AddChild(maximizebutton)
-local unmaximizedsize = holderframe.Size
-maximizebutton.MouseButton1Up:Connect(function()
-	local holderframe = holderframe
-	if not maximizepressed then
-		unmaximizedsize = holderframe.Size
-		holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-		holderframe:ChangeProperties({Active = false, Draggable = false;})
-		holderframe.Position = UDim2.new(0, 0, 1, 0)
-		holderframe.Position = UDim2.new(0, 0, 0, 0)
-		maximizebutton.Text = "-"
-		maximizepressed = true
-	else
-		holderframe.Size = unmaximizedsize
-		holderframe:ChangeProperties({Active = true, Draggable = true;})
-		maximizebutton.Text = "+"
-		maximizepressed = false
-	end
-end)
+local puter = disk:Read("PuterLibrary")
+local window
+if not puter then
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,-25)})
+	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
+	holderframe:AddChild(scrollingframe)
+	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+	holderframe:AddChild(closebutton)
+	
+	closebutton.MouseButton1Down:Connect(function()
+		holderframe:Destroy()
+		holderframe = nil
+		keyboardevent:UnBind()
+		keyboardevent = nil
+	end)
+	
+	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+	local maximizepressed = false
+	
+	holderframe:AddChild(maximizebutton)
+	local unmaximizedsize = holderframe.Size
+	maximizebutton.MouseButton1Up:Connect(function()
+		local holderframe = holderframe
+		if not maximizepressed then
+			unmaximizedsize = holderframe.Size
+			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe:ChangeProperties({Active = false, Draggable = false;})
+			holderframe.Position = UDim2.new(0, 0, 1, 0)
+			holderframe.Position = UDim2.new(0, 0, 0, 0)
+			maximizebutton.Text = "-"
+			maximizepressed = true
+		else
+			holderframe.Size = unmaximizedsize
+			holderframe:ChangeProperties({Active = true, Draggable = true;})
+			maximizebutton.Text = "+"
+			maximizepressed = false
+		end
+	end)
+else
+	window = puter.CreateWindow(400, 350, "Super Yellow Square")
+end
 
 
 local superyellowsquare = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
-scrollingframe:AddChild(superyellowsquare)
+if not puter then
+	scrollingframe:AddChild(superyellowsquare)
+else
+	window:AddChild(superyellowsquare)
+end
 
 local thegame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Position = UDim2.new(0.5, -12, 0.5, -12)})
 superyellowsquare:AddChild(thegame)
