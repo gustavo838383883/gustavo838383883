@@ -868,7 +868,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 
 		deletebutton.MouseButton1Up:Connect(function()
 			local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-			if programholder2 then programholder2:AddChild(holderframe) end
+			if programholder2 then programholder2:AddChild(holdframe) end
 			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
 			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 			holdframe:AddChild(textlabel)
@@ -901,7 +901,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 
 		deletebutton.MouseButton1Up:Connect(function()
 			local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-			if programholder2 then programholder2:AddChild(holderframe) end
+			if programholder2 then programholder2:AddChild(holdframe) end
 			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
 			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 			holdframe:AddChild(textlabel)
@@ -1012,7 +1012,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-				if programholder2 then programholder2:AddChild(holderframe) end
+				if programholder2 then programholder2:AddChild(holdframe) end
 				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
 				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 				holdframe:AddChild(textlabel)
@@ -1045,7 +1045,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-				if programholder2 then programholder2:AddChild(holderframe) end
+				if programholder2 then programholder2:AddChild(holdframe) end
 				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
 				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 				holdframe:AddChild(textlabel)
