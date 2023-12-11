@@ -2404,6 +2404,7 @@ local function customprogramthing(screen, micros)
 end
 
 local keyboardevent = nil
+local keyboardreloadevent = nil
 
 local function loadmenu(screen, disk)
 	local pressed = false
@@ -2655,9 +2656,24 @@ local function loadmenu(screen, disk)
 										keyboardevent:Unbind()
 										keyboardevent = nil
 									end
+									if keyboardreloadevent then
+										keyboardreloadevent:Unbind()
+										keyboardreloadevent = nil
+									end
 									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
 										keyboardinput = text
 										playerthatinputted = plr
+									end)
+									keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
+										if string.lower(tostring(keystring)) == "r" then
+											for index, value in pairs(holderframes) do
+												if value then
+													value.Position = UDim2.new(1, 0, 0, 0)
+													value.Position = UDim2.new(0, 0, 0, 0)
+												end
+												task.wait()
+											end
+										end
 									end)
 								else
 									textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
@@ -2763,9 +2779,24 @@ function startload()
 						keyboardevent:Unbind()
 						keyboardevent = nil
 					end
+					if keyboardreloadevent then
+						keyboardreloadevent:Unbind()
+						keyboardreloadevent = nil
+					end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
 						keyboardinput = text
 						playerthatinputted = plr
+					end)
+					keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
+						if string.lower(tostring(keystring)) == "r" then
+							for index, value in pairs(holderframes) do
+								if value then
+									value.Position = UDim2.new(1, 0, 0, 0)
+									value.Position = UDim2.new(0, 0, 0, 0)
+								end
+								task.wait()
+							end
+						end
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
 						loadmenu(screen, disk)
