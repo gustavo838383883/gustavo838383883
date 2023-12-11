@@ -588,7 +588,7 @@ local function woshtmlfile(txt, screen, boolean)
 	filegui:AddChild(closebutton)
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
-		table.remove(holderframes, table.find(holderframes, filegui))
+		--table.remove(holderframes, table.find(holderframes, filegui))
 		filegui = nil
 	end)
 
@@ -629,7 +629,7 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 	table.insert(holderframes, holderframe)
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 		sound:Stop()
 		sound:Destroy()
 	end)
@@ -726,7 +726,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 						
 						closebutton.MouseButton1Down:Connect(function()
 							holderframe:Destroy()
-							table.remove(holderframes, table.find(holderframes, holderframe))
+							--table.remove(holderframes, table.find(holderframes, holderframe))
 						end)
 
 						local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -789,7 +789,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 		table.insert(holderframes, holderframe)
 		closebutton.MouseButton1Down:Connect(function()
 			holderframe:Destroy()
-			table.remove(holderframes, table.find(holderframes, holderframe))
+			--table.remove(holderframes, table.find(holderframes, holderframe))
 		end)
 
 		local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -840,7 +840,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
 		filegui = nil
-		table.remove(holderframes, table.find(holderframes, filegui))
+		--table.remove(holderframes, table.find(holderframes, filegui))
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -894,21 +894,21 @@ local function readfile(txt, nameondisk, boolean, directory)
 			closebutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
 				holdframe = nil
-				table.remove(holderframes, table.find(holderframes, holdframe))
+				--table.remove(holderframes, table.find(holderframes, holdframe))
 			end)	
 
 			cancelbutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
 				holdframe = nil
-				table.remove(holderframes, table.find(holderframes, holdframe))
+				--table.remove(holderframes, table.find(holderframes, holdframe))
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				disk:Write(nameondisk, nil)
 				holdframe:Destroy()
-				table.remove(holderframes, table.find(holderframes, holdframe))
+				--table.remove(holderframes, table.find(holderframes, holdframe))
 				if filegui then
-					table.remove(holderframes, table.find(holderframes, filegui))
+					--table.remove(holderframes, table.find(holderframes, filegui))
 					filegui:Destroy()
 				end
 				filegui = nil
@@ -933,14 +933,14 @@ local function readfile(txt, nameondisk, boolean, directory)
 			table.insert(holderframes, holdframe)
 			table.insert(holderframes, holdframe)
 			closebutton.MouseButton1Down:Connect(function()
-				table.remove(holderframes, table.find(holderframes, holdframe))
+				--table.remove(holderframes, table.find(holderframes, holdframe))
 				holdframe:Destroy()
 				holdframe = nil
 			end)	
 
 			cancelbutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
-				table.remove(holderframes, table.find(holderframes, holdframe))
+				--table.remove(holderframes, table.find(holderframes, holdframe))
 				holdframe = nil
 			end)
 
@@ -948,10 +948,10 @@ local function readfile(txt, nameondisk, boolean, directory)
 				createfileontable(disk, nameondisk, nil, directory)
 				holdframe:Destroy()
 				if filegui then
-					table.remove(holderframes, table.find(holderframes, filegui))
+					--table.remove(holderframes, table.find(holderframes, filegui))
 					filegui:Destroy()
 				end
-				table.remove(holderframes, table.find(holderframes, holdframe))
+				--table.remove(holderframes, table.find(holderframes, holdframe))
 				filegui = nil
 			end)
 		end)
@@ -1022,7 +1022,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		filegui:Destroy()
 		filegui = nil
 		
-		table.remove(holderframes, table.find(holderframes, filegui))
+		--table.remove(holderframes, table.find(holderframes, filegui))
 		local tableval = txt
 		local start = 0
 		local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
@@ -1055,13 +1055,13 @@ local function readfile(txt, nameondisk, boolean, directory)
 				table.insert(holderframes, holdframe)
 				closebutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
-					table.remove(holderframes, table.find(holderframes, holdframe))
+					--table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe = nil
 				end)	
 
 				cancelbutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
-					table.remove(holderframes, table.find(holderframes, holdframe))
+					--table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe = nil
 				end)
 
@@ -1069,10 +1069,10 @@ local function readfile(txt, nameondisk, boolean, directory)
 					disk:Write(nameondisk, nil)
 					holdframe:Destroy()
 					if holderframe then
-						table.remove(holderframes, table.find(holderframes, holderframe))
+						--table.remove(holderframes, table.find(holderframes, holderframe))
 						holderframe:Destroy()
 					end
-					table.remove(holderframes, table.find(holderframes, holdframe))
+					--table.remove(holderframes, table.find(holderframes, holdframe))
 					holderframe = nil
 				end)
 			end)
@@ -1095,23 +1095,23 @@ local function readfile(txt, nameondisk, boolean, directory)
 				table.insert(holderframes, holdframe)
 				closebutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
-					table.remove(holderframes, table.find(holderframes, holdframe))
+					--table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe = nil
 				end)	
 
 				cancelbutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
-					table.remove(holderframes, table.find(holderframes, holdframe))
+					--table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe = nil
 				end)
 
 				deletebutton.MouseButton1Up:Connect(function()
 					createfileontable(disk, nameondisk, nil, directory)
 					if holderframe then
-						table.remove(holderframes, table.find(holderframes, holderframe))
+						--table.remove(holderframes, table.find(holderframes, holderframe))
 						holderframe:Destroy()
 					end
-					table.remove(holderframes, table.find(holderframes, holdframe))
+					--table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe:Destroy()
 					holderframe = nil
 				end)
@@ -1123,7 +1123,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 
 		closebutton.MouseButton1Down:Connect(function()
 			holderframe:Destroy()
-			table.remove(holderframes, table.find(holderframes, holderframe))
+			--table.remove(holderframes, table.find(holderframes, holderframe))
 		end)
 
 		local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1181,7 +1181,7 @@ local function loaddisk(screen, disk)
 
 	table.insert(holderframes, holderframe)
 	closebutton.MouseButton1Down:Connect(function()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 		holderframe:Destroy()
 	end)
 
@@ -1252,7 +1252,7 @@ local function writedisk(screen, disk)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1437,7 +1437,7 @@ local function changecolor(screen, disk)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1514,7 +1514,7 @@ local function changebackgroundimage(screen, disk)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1603,7 +1603,7 @@ local function chatthing(screen, disk, modem)
 		if messagesent then
 			messagesent:Unbind()
 		end
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1734,7 +1734,7 @@ local function calculator(screen)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -2058,7 +2058,7 @@ local function mediaplayer(screen, disk, speaker)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -2263,7 +2263,7 @@ local function shutdownmicros(screen, micros)
 
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -2337,7 +2337,7 @@ local function customprogramthing(screen, micros)
 
 	table.insert(holderframes, holderframe)
 	closebutton.MouseButton1Down:Connect(function()
-		table.remove(holderframes, table.find(holderframes, holderframe))
+		--table.remove(holderframes, table.find(holderframes, holderframe))
 		holderframe:Destroy()
 	end)
 
@@ -2581,13 +2581,13 @@ local function loadmenu()
 
 				closebutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
-					table.remove(holderframes, table.find(holderframes, holderframe))
+					--table.remove(holderframes, table.find(holderframes, holderframe))
 					holderframe = nil
 				end)	
 
 				cancelbutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
-					table.remove(holderframes, table.find(holderframes, holderframe))
+					--table.remove(holderframes, table.find(holderframes, holderframe))
 					holderframe = nil
 				end)
 
@@ -2598,7 +2598,7 @@ local function loadmenu()
 					Beep(1)
 					backgroundimageframe = nil
 					backgroundimage = nil
-					table.remove(holderframes, table.find(holderframes, holderframe))
+					--table.remove(holderframes, table.find(holderframes, holderframe))
 					local textbutton
 					getstuff()
 					if screen then
@@ -2728,13 +2728,13 @@ local function loadmenu()
 
 				closebutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
-					table.remove(holderframes, table.find(holderframes, holderframe))
+					--table.remove(holderframes, table.find(holderframes, holderframe))
 					holderframe = nil
 				end)
 
 				cancelbutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
-					table.remove(holderframes, table.find(holderframes, holderframe))
+					--table.remove(holderframes, table.find(holderframes, holderframe))
 					holderframe = nil
 				end)
 
@@ -2742,7 +2742,7 @@ local function loadmenu()
 					if backgroundframe then
 						backgroundframe:Destroy()
 					end
-					table.remove(holderframes, table.find(holderframes, holderframe))
+					--table.remove(holderframes, table.find(holderframes, holderframe))
 					local frame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0)})
 					window:AddChild(frame)
 					Beep(1)
