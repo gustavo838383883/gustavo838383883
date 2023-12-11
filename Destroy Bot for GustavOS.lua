@@ -1,5 +1,6 @@
 local Screen = GetPartFromPort(1,"TouchScreen")
 if not Screen then Screen = GetPartFromPort(2,"TouchScreen") end
+if not Screen then Screen = GetPartFromPort(1, "Screen") end
 local Microphone = GetPartFromPort(1,"Microphone")
 if not Microphone then Microphone = GetPartFromPort(2,"Microphone") end
 local Speaker = GetPartFromPort(1,"Speaker")
