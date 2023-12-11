@@ -1179,7 +1179,7 @@ local function writedisk(screen, disk)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create File"})
-	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name(Case Sensitive if on a table) (Click to update)"})
+	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name(Case Sensitive) (Click to update)"})
 	local filedatabutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Data (Click to update)"})
 	local createfilebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
 	holderframe:AddChild(textlabel)
@@ -2621,50 +2621,50 @@ local function loadmenu(screen, disk)
 			end)
 			--shutdown:
 
-			if shutdown then
-				shutdown.MouseButton1Up:Connect(function()
-					local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-					local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
-					local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-					holderframe:AddChild(textlabel)
-					holderframe:AddChild(closebutton)
-					local shutdownbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
-					holderframe:AddChild(shutdownbutton)
-					local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
-					holderframe:AddChild(cancelbutton)
-					
-					closebutton.MouseButton1Down:Connect(function()
-						holderframe:Destroy()
-						holderframe = nil
-					end)
-
-					cancelbutton.MouseButton1Down:Connect(function()
-						holderframe:Destroy()
-						holderframe = nil
-					end)
-
-					shutdownbutton.MouseButton1Down:Connect(function()
-						screen:ClearElements()
-						speaker:ClearSounds()
-						Beep(1)
-						task.wait(0.1)
-						Beep(0.75)
-						task.wait(0.1)
-						Beep(0.5)
-						task.wait(0.1)
-						Beep(1)
-						task.wait(0.1)
-						Beep(0.5)
-						task.wait(0.1)
-						Beep(0.25)
-						if keyboardevent then
-							keyboardevent:Unbind()
-							keyboardevent = nil
-						end
-						TriggerPort(shutdownpoly)
-					end)
+			shutdown.MouseButton1Up:Connect(function()
+				local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
+				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
+				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+				holderframe:AddChild(textlabel)
+				holderframe:AddChild(closebutton)
+				local shutdownbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
+				holderframe:AddChild(shutdownbutton)
+				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
+				holderframe:AddChild(cancelbutton)
+				
+				closebutton.MouseButton1Down:Connect(function()
+					holderframe:Destroy()
+					holderframe = nil
 				end)
-			end
+
+				cancelbutton.MouseButton1Down:Connect(function()
+					holderframe:Destroy()
+					holderframe = nil
+				end)
+
+				shutdownbutton.MouseButton1Down:Connect(function()
+					screen:ClearElements()
+					speaker:ClearSounds()
+					Beep(1)
+					task.wait(0.1)
+					Beep(0.75)
+					task.wait(0.1)
+					Beep(0.5)
+					task.wait(0.1)
+					Beep(1)
+					task.wait(0.1)
+					Beep(0.5)
+					task.wait(0.1)
+					Beep(0.25)
+					if keyboardevent then
+						keyboardevent:Unbind()
+						keyboardevent = nil
+					end
+					if shutdownpoly then
+						TriggerPort(shutdownpoly)
+					end
+				end)
+			end)
 			
 		end
 	end)
