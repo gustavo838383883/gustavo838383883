@@ -2742,6 +2742,10 @@ local function loadmenu(screen, disk)
 						keyboardevent:Unbind()
 						keyboardevent = nil
 					end
+					local frame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0)})
+					window:AddChild(frame)
+					local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, TextXAlignment = Enum.TextXAlignment.Left, TextWrapped = true, TextScaled = true, Text = "GustavOS was shutdown."})
+					frame:AddChild(textlabel)
 				end)
 			end)
 
