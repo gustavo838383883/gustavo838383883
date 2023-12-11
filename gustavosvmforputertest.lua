@@ -588,7 +588,7 @@ local function woshtmlfile(txt, screen, boolean)
 	filegui:AddChild(closebutton)
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
-		holderframes = table.remove(holderframes, string.find(filegui))
+		holderframes = table.remove(holderframes, table.find(holderframes, filegui))
 		filegui = nil
 	end)
 
