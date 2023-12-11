@@ -2393,10 +2393,8 @@ local function loadmenu(screen, disk)
 			local restart = screen:CreateElement("TextButton", {Text = "Restart", TextScaled = true, Size = UDim2.new(0.5, 0, 0.2, 0), Position = UDim2.new(0.5, 0, 0.8, 0)})
 			startui:AddChild(restart)
 
-			if shutdownpoly then
-				shutdown = screen:CreateElement("TextButton", {Text = "Shutdown", TextScaled = true, Size = UDim2.new(0.5, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0)})
-				startui:AddChild(shutdown)
-			end
+			shutdown = screen:CreateElement("TextButton", {Text = "Shutdown", TextScaled = true, Size = UDim2.new(0.5, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0)})
+			startui:AddChild(shutdown)
 
 			pressed = true
 
