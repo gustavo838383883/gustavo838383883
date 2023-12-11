@@ -2382,7 +2382,7 @@ local function loadmenu(screen, disk)
 			end
 		else
 			startui = screen:CreateElement("TextButton", {Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), TextTransparency = 1})
-			if programholder2 then programholder2:AddChild(startui) end
+			backgroundframe:AddChild(startui)
 			local programs = screen:CreateElement("TextButton", {Text = "Programs", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0)})
 			startui:AddChild(programs)
 			local settings = screen:CreateElement("TextButton", {Text = "Settings", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.2, 0)})
