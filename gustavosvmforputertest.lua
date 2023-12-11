@@ -584,17 +584,8 @@ local function woshtmlfile(txt, screen, boolean)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -25)})
 	filegui:AddChild(scrollingframe)
 	filegui:AddChild(closebutton)
-
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			filegui.Position = UDim2.new(1, 0, 0, 0)
-			filegui.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-	
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
-		keyboardreloadevent:Unbind()
 		filegui = nil
 	end)
 
@@ -632,17 +623,8 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
 	local sound = nil
-
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-	
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 		sound:Stop()
 		sound:Destroy()
 	end)
@@ -735,15 +717,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 						local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 						holderframe:AddChild(closebutton)
 
-						local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-							if string.lower(tostring(keystring)) == "r" then
-								holderframe.Position = UDim2.new(1, 0, 0, 0)
-								holderframe.Position = UDim2.new(0, 0, 0, 0)
-							end
-						end)
-						
 						closebutton.MouseButton1Down:Connect(function()
-							keyboardreloadevent:Unbind()
 							holderframe:Destroy()
 						end)
 
@@ -804,15 +778,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 		holderframe:AddChild(closebutton)
 
-		local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-			if string.lower(tostring(keystring)) == "r" then
-				holderframe.Position = UDim2.new(1, 0, 0, 0)
-				holderframe.Position = UDim2.new(0, 0, 0, 0)
-			end
-		end)
-
 		closebutton.MouseButton1Down:Connect(function()
-			keyboardreloadevent:Unbind()
 			holderframe:Destroy()
 		end)
 
@@ -859,16 +825,9 @@ local function readfile(txt, nameondisk, boolean, directory)
 
 	filegui:AddChild(closebutton)
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			filegui.Position = UDim2.new(1, 0, 0, 0)
-			filegui.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
 
 	closebutton.MouseButton1Down:Connect(function()
 		filegui:Destroy()
-		keyboardreloadevent:Unbind()
 		filegui = nil
 	end)
 
@@ -919,29 +878,19 @@ local function readfile(txt, nameondisk, boolean, directory)
 			local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 			holdframe:AddChild(cancelbutton)
 
-			local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-				if string.lower(tostring(keystring)) == "r" then
-					holdframe.Position = UDim2.new(1, 0, 0, 0)
-					holdframe.Position = UDim2.new(0, 0, 0, 0)
-				end
-			end)
-			
 			closebutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
-				keyboardreloadevent:Unbind()
 				holdframe = nil
 			end)	
 
 			cancelbutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
-				keyboardreloadevent:Unbind()
 				holdframe = nil
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				disk:Write(nameondisk, nil)
 				holdframe:Destroy()
-				keyboardreloadevent:Unbind()
 				filegui:Destroy()
 				filegui = nil
 			end)
@@ -962,29 +911,19 @@ local function readfile(txt, nameondisk, boolean, directory)
 			local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 			holdframe:AddChild(cancelbutton)
 
-			local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-				if string.lower(tostring(keystring)) == "r" then
-					holdframe.Position = UDim2.new(1, 0, 0, 0)
-					holdframe.Position = UDim2.new(0, 0, 0, 0)
-				end
-			end)
-			
 			closebutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
 				holdframe = nil
-				keyboardreloadevent:Unbind()				
 			end)	
 
 			cancelbutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
-				keyboardreloadevent:Unbind()
 				holdframe = nil
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				createfileontable(disk, nameondisk, nil, directory)
 				holdframe:Destroy()
-				keyboardreloadevent:Unbind()
 				filegui:Destroy()
 				filegui = nil
 			end)
@@ -1053,7 +992,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 		else
 			newdirectory = "/"..nameondisk
 		end
-		keyboardreloadevent:Unbind()
 		filegui:Destroy()
 		filegui = nil
 
@@ -1066,13 +1004,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
 		holderframe:AddChild(textlabel)
 
-		local keyboardreloadevent1 = keyboard:Connect("KeyPressed", function(key, keystring)
-			if string.lower(tostring(keystring)) == "r" then
-				holderframe.Position = UDim2.new(1, 0, 0, 0)
-				holderframe.Position = UDim2.new(0, 0, 0, 0)
-			end
-		end)
-		
 		if boolean == true then
 			local alldata = disk:ReadEntireDisk()
 			local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
@@ -1091,29 +1022,18 @@ local function readfile(txt, nameondisk, boolean, directory)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 				holdframe:AddChild(cancelbutton)
 
-				local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-					if string.lower(tostring(keystring)) == "r" then
-						holdframe.Position = UDim2.new(1, 0, 0, 0)
-						holdframe.Position = UDim2.new(0, 0, 0, 0)
-					end
-				end)
-					
 				closebutton.MouseButton1Down:Connect(function()
-					keyboardreloadevent:Unbind()
 					holdframe:Destroy()
 					holdframe = nil
 				end)	
 
 				cancelbutton.MouseButton1Down:Connect(function()
-					keyboardreloadevent:Unbind()
 					holdframe:Destroy()
 					holdframe = nil
 				end)
 
 				deletebutton.MouseButton1Up:Connect(function()
-					keyboardreloadevent:Unbind()
 					disk:Write(nameondisk, nil)
-					keyboardreloadevent1:Unbind()
 					holderframe:Destroy()
 					holdframe:Destroy()
 					holderframe = nil
@@ -1135,42 +1055,30 @@ local function readfile(txt, nameondisk, boolean, directory)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 				holdframe:AddChild(cancelbutton)
 
-				local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-					if string.lower(tostring(keystring)) == "r" then
-						holdframe.Position = UDim2.new(1, 0, 0, 0)
-						holdframe.Position = UDim2.new(0, 0, 0, 0)
-					end
-				end)
-					
 				closebutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
 					holdframe = nil
-					keyboardreloadevent:Unbind()
 				end)	
 
 				cancelbutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
 					holdframe = nil
-					keyboardreloadevent:Unbind()
 				end)
 
 				deletebutton.MouseButton1Up:Connect(function()
 					createfileontable(disk, nameondisk, nil, directory)
 					holdframe:Destroy()
 					holderframe:Destroy()
-					keyboardreloadevent1:Unbind()
 					holderframe = nil
-					keyboardreloadevent:Unbind()
 				end)
 			end)
 		end
 
 		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 		holderframe:AddChild(closebutton)
-		
+
 		closebutton.MouseButton1Down:Connect(function()
 			holderframe:Destroy()
-			keyboardreloadevent1:Unbind()
 		end)
 
 		local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1226,16 +1134,8 @@ local function loaddisk(screen, disk)
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-	
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1302,16 +1202,8 @@ local function writedisk(screen, disk)
 	local data = nil
 	local filename = nil
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-	
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1490,19 +1382,12 @@ local function changecolor(screen, disk)
 	holderframe:AddChild(color)
 	holderframe:AddChild(closebutton)
 
+
 	local data = nil
 	local filename = nil
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-	
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1577,16 +1462,8 @@ local function changebackgroundimage(screen, disk)
 	local tile = false
 	local tilenumb = "0.2, 0, 0.2, 0"
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-	
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -1669,16 +1546,8 @@ local function chatthing(screen, disk, modem)
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 		if messagesent then
 			messagesent:Unbind()
 		end
@@ -1809,16 +1678,8 @@ local function calculator(screen)
 	local data = nil
 	local filename = nil
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-	
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -2139,16 +2000,8 @@ local function mediaplayer(screen, disk, speaker)
 	local data = nil
 	local filename = nil
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -2350,16 +2203,8 @@ local function shutdownmicros(screen, micros)
 		programholder1:AddChild(holderframe)
 	end
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-	
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 	end)
 
 	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
@@ -2431,16 +2276,8 @@ local function customprogramthing(screen, micros)
 	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(closebutton)
 
-	local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-		if string.lower(tostring(keystring)) == "r" then
-			holderframe.Position = UDim2.new(1, 0, 0, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-		end
-	end)
-
 	closebutton.MouseButton1Down:Connect(function()
 		holderframe:Destroy()
-		keyboardreloadevent:Unbind()
 	end)
 
 	if programholder1 then
@@ -2679,22 +2516,13 @@ local function loadmenu(screen, disk)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 				holderframe:AddChild(cancelbutton)
 
-				local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-					if string.lower(tostring(keystring)) == "r" then
-						holderframe.Position = UDim2.new(1, 0, 0, 0)
-						holderframe.Position = UDim2.new(0, 0, 0, 0)
-					end
-				end)
-				
 				closebutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
-					keyboardreloadevent:Unbind()
 					holderframe = nil
 				end)	
 
 				cancelbutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
-					keyboardreloadevent:Unbind()
 					holderframe = nil
 				end)
 
@@ -2705,7 +2533,6 @@ local function loadmenu(screen, disk)
 					Beep(1)
 					backgroundimageframe = nil
 					backgroundimage = nil
-					keyboardreloadevent:Unbind()
 					local textbutton
 					getstuff()
 					if screen then
@@ -2817,30 +2644,20 @@ local function loadmenu(screen, disk)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 				holderframe:AddChild(cancelbutton)
 
-				local keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-					if string.lower(tostring(keystring)) == "r" then
-						holderframe.Position = UDim2.new(1, 0, 0, 0)
-						holderframe.Position = UDim2.new(0, 0, 0, 0)
-					end
-				end)
-
 				closebutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
 					holderframe = nil
-					keyboardreloadevent:Unbind()
 				end)
 
 				cancelbutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
 					holderframe = nil
-					keyboardreloadevent:Unbind()
 				end)
 
 				shutdownbutton.MouseButton1Down:Connect(function()
 					if backgroundframe then
 						backgroundframe:Destroy()
 					end
-					keyboardreloadevent:Unbind()
 					Beep(1)
 					task.wait(0.1)
 					Beep(0.75)
