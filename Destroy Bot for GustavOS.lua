@@ -1,6 +1,9 @@
 local Screen = GetPartFromPort(1,"TouchScreen")
+if not Screen then Screen = GetPartFromPort(2,"TouchScreen") end
 local Microphone = GetPartFromPort(1,"Microphone")
+if not Microphone then Microphone = GetPartFromPort(2,"Microphone") end
 local Speaker = GetPartFromPort(1,"Speaker")
+if not Speaker then Speaker = GetPartFromPort(2,"Speaker") end
 local ChatDebounce = false
 Beep(1)
 local function CreateWindow(x, y, name)
