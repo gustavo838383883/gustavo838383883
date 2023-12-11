@@ -2369,7 +2369,7 @@ local function loadmenu(screen, disk)
 	backgroundframe:AddChild(startmenu)
 
 	programholder1 = screen:CreateElement("ScrollingFrame", {CanvasSize = UDim2.new(1, 0, 1, 0), Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
-	window:AddChild(programholder1)
+	backgroundframe:AddChild(programholder1)
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
 
