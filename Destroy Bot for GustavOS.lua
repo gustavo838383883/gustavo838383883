@@ -16,6 +16,7 @@ local function CreateWindow(x, y, name)
 		holderframe = nil
 	end)
 	local window = Screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 25)})
+	holderframe:AddChild(window)
 	return window, closebutton, holderframe
 end
 
