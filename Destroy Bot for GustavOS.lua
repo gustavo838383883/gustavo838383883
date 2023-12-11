@@ -4,18 +4,19 @@ local Speaker = GetPartFromPort(1,"Speaker")
 local ChatDebounce = false
 Beep(1)
 local function CreateWindow(x, y, name)
-	local holderframe = Screen:CreateElement("TextButton", {TextTransparency = 1, Position = UDim2.new(0, 0, 0, 25), Size = UDim2.new(0, x, 0, y), Draggable = true})
-	local textlabel = Screen:CreateElement("TextLabel", {TextScaled = true, TextWrapped = true, Text = name, Position = UDim2.new(0,25,0,-25), Size = UDim2.new(1, -25, 0, 25)})
+	local holderframe = Screen:CreateElement("TextButton", {TextTransparency = 1, Position = UDim2.new(0, 0, 0, 0), Size = UDim2.new(0, x, 0, y+25), Draggable = true})
+	local textlabel = Screen:CreateElement("TextLabel", {TextScaled = true, TextWrapped = true, Text = name, Position = UDim2.new(0,25,0,0), Size = UDim2.new(1, 0, 0, 25)})
 	holderframe:AddChild(textlabel)
 	
-	local closebutton = Screen:CreateElement("TextButton", {TextScaled = true, TextWrapped = true, Size = UDim2.new(0,25,0,25), Position = UDim2.new(0,0,0,-25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close"})
+	local closebutton = Screen:CreateElement("TextButton", {TextScaled = true, TextWrapped = true, Size = UDim2.new(0,25,0,25), Position = UDim2.new(0,0,0,0), BackgroundColor3 = Color3.new(1,0,0), Text = "Close"})
 	holderframe:AddChild(closebutton)
 	
 	closebutton.MouseButton1Up:Connect(function()
 		holderframe:Destroy()
 		holderframe = nil
 	end)
-	return holderframe, closebutton
+	local window = Screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 25)})
+	return window, closebutton, holderframe
 end
 
 local function AddWindowElement(window, name, properties)
