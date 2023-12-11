@@ -2532,6 +2532,7 @@ local function loadmenu(screen, disk)
 					Beep(1)
 					backgroundimageframe = nil
 					backgroundimage = nil
+					disk = nil
 					getstuff()
 					if screen then
 						if disk then
