@@ -355,16 +355,12 @@ if not puter then
 			maximizepressed = false
 		end
 	end)
-else
-	window = puter.CreateWindow(400, 350, "Super Yellow Square")
 end
 
 
 local superyellowsquare = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
 if not puter then
 	scrollingframe:AddChild(superyellowsquare)
-else
-	window:AddChild(superyellowsquare)
 end
 
 local thegame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Position = UDim2.new(0.5, -12, 0.5, -12)})
@@ -524,6 +520,12 @@ while task.wait(0.01) do
 			hitbox.Position += UDim2.new(0, 1, 0, 0)
 		else
 			hitbox.Position += UDim2.new(0, 1, 0, 0)
+		end
+	end
+	if not window then
+		if puter then
+			window = puter.CreateWindow(400, 350, "Super Yellow Square")
+			window:AddChild(superyellowsquare)
 		end
 	end
 end
