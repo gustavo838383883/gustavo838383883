@@ -1057,7 +1057,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 
 				cancelbutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
-					holderframes = holderframes = table.remove(holderframes, table.find(holderframes, holdframe))
+					holderframes = table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe = nil
 				end)
 
