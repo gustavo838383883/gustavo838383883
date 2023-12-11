@@ -906,10 +906,10 @@ local function readfile(txt, nameondisk, boolean, directory)
 			deletebutton.MouseButton1Up:Connect(function()
 				disk:Write(nameondisk, nil)
 				holdframe:Destroy()
-				filegui:Destroy()
 				holderframes = table.remove(holderframes, table.find(holderframes, holdframe))
 				if filegui then
 					holderframes = table.remove(holderframes, table.find(holderframes, filegui))
+					filegui:Destroy()
 				end
 				filegui = nil
 			end)
@@ -949,9 +949,9 @@ local function readfile(txt, nameondisk, boolean, directory)
 				holdframe:Destroy()
 				if filegui then
 					holderframes = table.remove(holderframes, table.find(holderframes, filegui))
+					filegui:Destroy()
 				end
 				holderframes = table.remove(holderframes, table.find(holderframes, holdframe))
-				filegui:Destroy()
 				filegui = nil
 			end)
 		end)
@@ -1067,10 +1067,10 @@ local function readfile(txt, nameondisk, boolean, directory)
 
 				deletebutton.MouseButton1Up:Connect(function()
 					disk:Write(nameondisk, nil)
-					holderframe:Destroy()
 					holdframe:Destroy()
 					if holderframe then
 						holderframes = table.remove(holderframes, table.find(holderframes, holderframe))
+						holderframe:Destroy()
 					end
 					holderframes = table.remove(holderframes, table.find(holderframes, holdframe))
 					holderframe = nil
@@ -1109,10 +1109,10 @@ local function readfile(txt, nameondisk, boolean, directory)
 					createfileontable(disk, nameondisk, nil, directory)
 					if holderframe then
 						holderframes = table.remove(holderframes, table.find(holderframes, holderframe))
+						holderframe:Destroy()
 					end
 					holderframes = table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe:Destroy()
-					holderframe:Destroy()
 					holderframe = nil
 				end)
 			end)
