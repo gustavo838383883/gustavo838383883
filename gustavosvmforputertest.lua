@@ -2443,49 +2443,6 @@ local function loadmenu()
 			local object = screen:CreateElement(element, properties)
 			return object
 		end,
-		CreateWindow = function(udim2, text, boolean)
-			local holderframe = screen:CreateElement("TextButton", {Size = udim2, Active = true, Draggable = true, TextTransparency = 1})
-			programholder1:AddChild(holderframe)
-			local textlabel
-			if boolean == false or boolean == nil then
-				textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = tostring(text)})
-				holderframe:AddChild(textlabel)
-			end
-			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-			holderframe:AddChild(closebutton)
-
-			closebutton.MouseButton1Up:Connect(function()
-				holderframe:Destroy()
-				holderframe = nil
-			end)
-
-			local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-			local maximizepressed = false
-			
-			holderframe:AddChild(maximizebutton)
-			local unmaximizedsize = holderframe.Size
-			maximizebutton.MouseButton1Up:Connect(function()
-				local holderframe = holderframe
-				if not maximizepressed then
-					unmaximizedsize = holderframe.Size
-					programholder2:AddChild(holderframe)
-					holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-					holderframe:ChangeProperties({Active = false, Draggable = false;})
-					holderframe.Position = UDim2.new(0, 0, 1, 0)
-					holderframe.Position = UDim2.new(0, 0, 0, 0)
-					maximizebutton.Text = "-"
-					maximizepressed = true
-				else
-					programholder1:AddChild(holderframe)
-					holderframe.Size = unmaximizedsize
-					holderframe:ChangeProperties({Active = true, Draggable = true;})
-					maximizebutton.Text = "+"
-					maximizepressed = false
-				end
-			end)
-			
-			return holderframe, closebutton, maximizebutton, textlabel
-		end,
 		Screen = screen,
 		Keyboard = keyboard,
 		Modem = modem,
