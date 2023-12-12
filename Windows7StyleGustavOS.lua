@@ -391,70 +391,77 @@ if screen then
 end
 
 local function CreateNewWindow(udim2, text, boolean, boolean2)
-  local holderframe
-  if boolean2 == false then
-    holderframe = screen:CreateElement("ImageButton", {Active = true, Draggable = true, Size = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
-  elseif boolean2 == true then
-    holderframe = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
-  end
-  if not holderframe then return end
-  local textlabel
-  programholder1:AddChild(holderframe)
-  if text then
-    textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -50, 0, 25), Position = UDim2.new(0, 50, 0, 0), BackgroundTransparency = 1, Text = tostring(text)})
-    holderframe:AddChild(textlabel)
-    if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
-  end
+	local holderframe
+	if boolean2 == false then
+		holderframe = screen:CreateElement("ImageButton", {Active = true, Draggable = true, Size = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+	elseif boolean2 == true then
+ 		holderframe = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+ 	 end
+ 	 if not holderframe then return end
+ 	 local textlabel
+ 	 programholder1:AddChild(holderframe)
+ 	 if text then
+   		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -50, 0, 25), Position = UDim2.new(0, 50, 0, 0), BackgroundTransparency = 1, Text = tostring(text)})
+   		holderframe:AddChild(textlabel)
+   		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
+ 	 end
   
-  local maximizepressed = false
+ 	local maximizepressed = false
   
-  local closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, 35, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
-  holderframe:AddChild(closebutton)
+  	local closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, 35, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
+  	holderframe:AddChild(closebutton)
   
-  closebutton.MouseButton1Down:Connect(function()
-  	closebutton.Image = "rbxassetid://15617984474"
-  end)
+	closebutton.MouseButton1Down:Connect(function()
+		closebutton.Image = "rbxassetid://15617984474"
+	end)
   
-  closebutton.MouseButton1Up:Connect(function()
-  	closebutton.Image = "rbxassetid://15617983488"
-  	speaker:PlaySound("rbxassetid://6977010128")
-  	holderframe:Destroy()
-  	holderframe = nil
-  end)
-  local maximizebutton
-  if not boolean then
-    maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-    local maximizepressed = false
-  
-    holderframe:AddChild(maximizebutton)
-    local unmaximizedsize = holderframe.Size
-    maximizebutton.MouseButton1Up:Connect(function()
-  
-      local holderframe = holderframe
-      if not maximizepressed then
-        unmaximizedsize = holderframe.Size
-        if programholder2 then
-          programholder2:AddChild(holderframe)
-        end
-        holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-        holderframe:ChangeProperties({Active = false, Draggable = false;})
-        holderframe.Position = UDim2.new(0, 0, 1, 0)
-        if programholder1 then programholder1:AddChild(holderframe) end
-        holderframe.Position = UDim2.new(0, 0, 0, 0)
-        maximizebutton.Text = "-"
-        maximizepressed = true
-      else
-        if programholder1 then
-          programholder1:AddChild(holderframe)
-        end
-        holderframe.Size = unmaximizedsize
-        holderframe:ChangeProperties({Active = true, Draggable = true;})
-        maximizebutton.Text = "+"
-        maximizepressed = false
-      end
-    end)
-  end
-  return holderframe, closebutton, maximizebutton, textlabel
+	closebutton.MouseButton1Up:Connect(function()
+		closebutton.Image = "rbxassetid://15617983488"
+	 	speaker:PlaySound("rbxassetid://6977010128")
+		holderframe:Destroy()
+		holderframe = nil
+	end)
+	local maximizebutton
+	if not boolean then
+		maximizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 35, 0, 0), BackgroundTransparency = 1})
+		local maximizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "+"})
+		maximizebutton:AddChild(maximizetext)
+		local maximizepressed = false
+	
+		holderframe:AddChild(maximizebutton)
+		local unmaximizedsize = holderframe.Size
+
+		maximizebutton.MouseButton1Down:Connect(function()
+			maximizebutton.Image = "rbxassetid://15617866125"
+		end)
+		
+		maximizebutton.MouseButton1Up:Connect(function()
+			speaker:PlaySound("rbxassetid://6977010128")
+			local holderframe = holderframe
+			if not maximizepressed then
+				unmaximizedsize = holderframe.Size
+				if programholder2 then
+					programholder2:AddChild(holderframe)
+				end
+				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+				holderframe:ChangeProperties({Active = false, Draggable = false;})
+				holderframe.Position = UDim2.new(0, 0, 1, 0)
+				if programholder1 then programholder1:AddChild(holderframe) end
+				holderframe.Position = UDim2.new(0, 0, 0, 0)
+				maximizetext.Text = "-"
+				maximizepressed = true
+			else
+				if programholder1 then
+					programholder1:AddChild(holderframe)
+				end
+				holderframe.Size = unmaximizedsize
+				holderframe:ChangeProperties({Active = true, Draggable = true;})
+				maximizetext.Text = "+"
+				maximizepressed = false
+			end
+		end)
+	end
+	return holderframe, closebutton, maximizebutton, textlabel
 end
 
 local function StringToGui(screen, text, parent)
