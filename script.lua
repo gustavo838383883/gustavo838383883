@@ -1111,7 +1111,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		end)
 	
 		for index, data in pairs(tableval) do
-			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = index, Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
+			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = tostring(index), Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
 			scrollingframe:AddChild(button)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
@@ -1169,7 +1169,7 @@ local function loaddisk(screen, disk)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
 		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "Screen" then
-			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = filename, Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
+			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = tostring(filename), Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
 			scrollingframe:AddChild(button)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
