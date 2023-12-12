@@ -1214,7 +1214,7 @@ local function loaddisk(screen, disk)
 	end)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
-		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "createScreenElement" then
+		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "Screen" then
 			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = filename, Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
 			scrollingframe:AddChild(button)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
@@ -1307,7 +1307,7 @@ local function writedisk(screen, disk)
 			end
 			if inputtedtext == " " then inputtedtext = ""; end
 			local split = string.split(inputtedtext, "/")
-			if split then
+			if split and split[2] ~= "Screen" then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				if #split >= 3 then
 					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
@@ -1355,7 +1355,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createfilebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "createScreenElement" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "Screen" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
 				local split = nil
 				local returntable = nil
@@ -2606,11 +2606,14 @@ local function loadmenu()
 					getstuff()
 					if screen then
 						if disk then
-							disk:Write("createScreenElement", function(element, properties)
-								local object = screen:CreateElement(element, properties)
-								backgroundframe:AddChild(object)
-								return object
-							end)
+							disk:Write("Screen", {
+								CreateElement = function(element, properties)
+									local object = screen:CreateElement(element, properties)
+									backgroundframe:AddChild(object)
+									return object
+								end
+								Instance = screen
+							})
 							color = disk:Read("Color")
 							local diskbackgroundimage = disk:Read("BackgroundImage")
 							if color then
@@ -2780,11 +2783,14 @@ end
 function startload()
 	if screen then
 		if disk then
-			disk:Write("createScreenElement", function(element, properties)
-				local object = screen:CreateElement(element, properties)
-				backgroundframe:AddChild(object)
-				return object
-			end)
+			disk:Write("Screen", {
+				CreateElement = function(element, properties)
+					local object = screen:CreateElement(element, properties)
+					backgroundframe:AddChild(object)
+					return object
+				end
+				Instance = screen
+			})
 			if speaker then
 				if keyboard then
 					if keyboardevent then
