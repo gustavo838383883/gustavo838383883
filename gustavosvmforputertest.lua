@@ -2609,7 +2609,6 @@ local function loadmenu()
 							disk:Write("Screen", {
 								CreateElement = function(element, properties)
 									local object = screen:CreateElement(element, properties)
-									backgroundframe:AddChild(object)
 									return object
 								end,
 								Instance = screen,
@@ -2786,7 +2785,6 @@ function startload()
 			disk:Write("Screen", {
 				CreateElement = function(element, properties)
 					local object = screen:CreateElement(element, properties)
-					backgroundframe:AddChild(object)
 					return object
 				end,
 				Instance = screen,
