@@ -961,7 +961,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
-		local txt = string.lower(txt)
+		local txt = string.lower(tostring(txt))
 		if string.find(tostring(txt), "pitch:") then
 			local length = nil
 
@@ -1008,7 +1008,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".img") then
-		woshtmlfile([[<img src="]]..txt..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+		woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".lua") then
@@ -1391,7 +1391,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createtablebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "Screen" then
 			local split = nil
 			local returntable = nil
 			if directory ~= "" then
@@ -2178,9 +2178,9 @@ local function mediaplayer(screen, disk, speaker)
 					split = string.split(directory, "/")
 				end
 				if not split or split[2] == "" then
-					readdata = disk:Read(data)
+					readdata = tostring(disk:Read(data))
 				else
-					readdata = getfileontable(disk, data, directory)
+					readdata = tostring(getfileontable(disk, data, directory))
 				end
 			else
 				readdata = string.lower(tostring(data))
