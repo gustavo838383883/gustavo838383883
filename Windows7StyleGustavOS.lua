@@ -393,15 +393,15 @@ end
 local function CreateNewWindow(udim2, text, boolean, boolean2)
 	local holderframe
 	if boolean2 == false then
-		holderframe = screen:CreateElement("ImageButton", {Active = true, Draggable = true, Size = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+		holderframe = screen:CreateElement("ImageButton", {Active = true, Draggable = true, udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 	elseif boolean2 == true then
- 		holderframe = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5, 0, 0.5, 0), BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
- 	 end
+ 		holderframe = screen:CreateElement("ImageButton", {udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+ 	end
  	 if not holderframe then return end
  	 local textlabel
  	 programholder1:AddChild(holderframe)
  	 if text then
-   		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -50, 0, 25), Position = UDim2.new(0, 50, 0, 0), BackgroundTransparency = 1, Text = tostring(text)})
+   		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -50, 0, 25), Position = UDim2.new(0, 50, 0, 0), BackgroundTransparency = 1, Text = tostring(text), TextWrapped = true, TextScaled = true})
    		holderframe:AddChild(textlabel)
    		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
  	 end
@@ -437,6 +437,7 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
 		
 		maximizebutton.MouseButton1Up:Connect(function()
 			speaker:PlaySound("rbxassetid://6977010128")
+			maximizebutton.Image = "rbxassetid://15617867263"
 			local holderframe = holderframe
 			if not maximizepressed then
 				unmaximizedsize = holderframe.Size
