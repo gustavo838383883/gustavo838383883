@@ -1160,7 +1160,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
 			button.MouseButton1Down:Connect(function()
-				readfile(getfileontable(disk, index, newdirectory), tostring(index), false, newdirectory)
+				readfile(getfileontable(disk, index, newdirectory), index, false, newdirectory)
 			end)
 		end
 	end
@@ -1221,7 +1221,7 @@ local function loaddisk(screen, disk)
 			start += 25
 			button.MouseButton1Down:Connect(function()
 				local data = disk:Read(filename)
-				readfile(data, tostring(filename), true)
+				readfile(data, filename, true)
 			end)
 		end
 	end
