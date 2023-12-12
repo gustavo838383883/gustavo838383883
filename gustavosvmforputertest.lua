@@ -1213,7 +1213,7 @@ local function loaddisk(screen, disk)
 	end)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
-		if filename ~= "Color" and filename ~= "BackgroundImage" then
+		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "createScreenElement" then
 			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = filename, Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
 			scrollingframe:AddChild(button)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
@@ -1354,7 +1354,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createfilebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "createScreenElement" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
 				local split = nil
 				local returntable = nil
