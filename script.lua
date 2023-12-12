@@ -2541,7 +2541,7 @@ local function loadmenu()
 									backgroundframe:AddChild(object)
 									return object
 								end,
-								Instance = screen
+								Instance = screen,
 							})
 							color = disk:Read("Color")
 							local diskbackgroundimage = disk:Read("BackgroundImage")
