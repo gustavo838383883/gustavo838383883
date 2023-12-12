@@ -757,7 +757,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 end
 
 local function readfile(txt, nameondisk, boolean, directory)
-	local filegui = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), text, boolean, boolean2)
+	local filegui = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false)
 	local deletebutton = nil
 
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt), RichText = true})
@@ -1355,7 +1355,7 @@ local function chatthing(screen, disk, modem)
 end
 
 local function calculator(screen)
-	local holderframe = CreateNewWindow(udim2, text, boolean, boolean2)
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false)
 	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.1, 0), Position = UDim2.new(0, 0, 0, 25), Text = "0"})
 	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.1, 0, 0.1, 0), Position = UDim2.new(0.45, 0, 0, 25), Text = ""})
 	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.1, 0), Position = UDim2.new(0.55, 0, 0, 25), Text = ""})
@@ -1651,7 +1651,6 @@ local function mediaplayer(screen, disk, speaker)
 	local Filename = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File with id(Case Sensitive if on a table) (Click to update)"})
 	local openimage = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as image"})
 	local openaudio = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as audio"})
-	holderframe:AddChild(textlabel)
 	scrollingframe:AddChild(openimage)
 	scrollingframe:AddChild(Filename)
 	scrollingframe:AddChild(openaudio)
@@ -2070,7 +2069,7 @@ local function loadmenu()
 			--restart:
 
 			restart.MouseButton1Up:Connect(function()
-				local holderframe = CreateNewWindow(UDin2.new(0.4, 0, 0.25, 25), "Are you sure?", false, false)
+				local holderframe = CreateNewWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", false, false)
 				local restartbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
 				holderframe:AddChild(restartbutton)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
