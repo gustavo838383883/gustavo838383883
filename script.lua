@@ -2375,6 +2375,18 @@ local function loadmenu()
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
 
+	disk:Write("Screen", {
+		CreateElement = function(element, properties)
+			local object = screen:CreateElement(element, properties)
+			return object
+		end,
+		Instance = screen,
+		programholder1 = programholder1,
+		programholder2 = programholder2,
+		backgroundframe = backgroundframe,
+		backgroundimageframe = backgroundimageframe,
+	})
+
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
 			if startui then
@@ -2535,13 +2547,6 @@ local function loadmenu()
 					getstuff()
 					if screen then
 						if disk then
-							disk:Write("Screen", {
-								CreateElement = function(element, properties)
-									local object = screen:CreateElement(element, properties)
-									return object
-								end,
-								Instance = screen,
-							})
 							color = disk:Read("Color")
 							local diskbackgroundimage = disk:Read("BackgroundImage")
 							if color then
@@ -2686,13 +2691,6 @@ end
 function startload()
 	if screen then
 		if disk then
-			disk:Write("Screen", {
-				CreateElement = function(element, properties)
-					local object = screen:CreateElement(element, properties)
-					return object
-				end,
-				Instance = screen,
-			})
 			if speaker then
 				if keyboard then
 					if keyboardevent then
