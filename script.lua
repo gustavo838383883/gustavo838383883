@@ -2693,7 +2693,7 @@ function startload()
 					backgroundframe:AddChild(object)
 					return object
 				end,
-				Instance = screen
+				Instance = screen,
 			})
 			if speaker then
 				if keyboard then
