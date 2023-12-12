@@ -2375,12 +2375,7 @@ local function loadmenu()
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
 
-	disk:Write("GustavOSLibrary", {
-		CreateElement = function(element, properties)
-			local object = screen:CreateElement(element, properties)
-			return object
-		end,
-		CreateWindow = function(udim2, text, boolean)
+	local function CreateWindow(udim2, text, boolean)
 			local holderframe = screen:CreateElement("TextButton", {Size = udim2, Active = true, Draggable = true, TextTransparency = 1})
 			programholder1:AddChild(holderframe)
 			local textlabel
@@ -2422,6 +2417,15 @@ local function loadmenu()
 			end)
 			
 			return holderframe, closebutton, maximizebutton, textlabel
+		end,
+	
+	disk:Write("GustavOSLibrary", {
+		CreateElement = function(element, properties)
+			local object = screen:CreateElement(element, properties)
+			return object
+		end,
+		CreateWindow = function(udim2, text, boolean)
+			CreateWindow(udim2, text, boolean)
 		end,
 		Screen = screen,
 		Keyboard = keyboard,
