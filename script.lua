@@ -2417,7 +2417,7 @@ local function loadmenu()
 			end)
 			
 			return holderframe, closebutton, maximizebutton, textlabel
-		end,
+		end
 	
 	disk:Write("GustavOSLibrary", {
 		CreateElement = function(element, properties)
