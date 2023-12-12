@@ -2687,7 +2687,7 @@ function startload()
 	if screen then
 		if disk then
 			disk:Write("Screen", {
-				CreateNewElement = function(element, properties)
+				CreateElement = function(element, properties)
 					local object = screen:CreateElement(element, properties)
 					return object
 				end,
