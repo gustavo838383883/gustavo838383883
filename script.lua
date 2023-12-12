@@ -2540,7 +2540,7 @@ local function loadmenu()
 									local object = screen:CreateElement(element, properties)
 									backgroundframe:AddChild(object)
 									return object
-								end
+								end,
 								Instance = screen
 							})
 							color = disk:Read("Color")
@@ -2692,7 +2692,7 @@ function startload()
 					local object = screen:CreateElement(element, properties)
 					backgroundframe:AddChild(object)
 					return object
-				end
+				end,
 				Instance = screen
 			})
 			if speaker then
