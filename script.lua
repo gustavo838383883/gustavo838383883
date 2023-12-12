@@ -1168,7 +1168,7 @@ local function loaddisk(screen, disk)
 	end)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
-		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "Screen" then
+		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
 			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = tostring(filename), Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
 			scrollingframe:AddChild(button)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
@@ -1259,7 +1259,7 @@ local function writedisk(screen, disk)
 			end
 			if inputtedtext == " " then inputtedtext = ""; end
 			local split = string.split(inputtedtext, "/")
-			if split and split[2] ~= "Screen" then
+			if split and split[2] ~= "GustavOS Library" then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				if #split >= 3 then
 					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
@@ -1307,7 +1307,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createfilebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "Screen" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
 				local split = nil
 				local returntable = nil
@@ -1343,7 +1343,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createtablebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "Screen" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
 			local split = nil
 			local returntable = nil
 			if directory ~= "" then
@@ -2375,12 +2375,58 @@ local function loadmenu()
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
 
-	disk:Write("Screen", {
+	disk:Write("GustavOSLibrary", {
 		CreateElement = function(element, properties)
 			local object = screen:CreateElement(element, properties)
 			return object
 		end,
-		Instance = screen,
+		CreateWindow = function(udim2, text, boolean)
+			local holderframe = screen:CreateElement("TextButton", {Size = udim2, Active = true, Draggable = true, TextTransparency = 1})
+			programholder1:AddChild(holderframe)
+			local textlabel
+			if boolean == false or boolean == nil then
+				textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = tostring(text)})
+				holderframe:AddChild(textlabel)
+			end
+			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+			holderframe:AddChild(closebutton)
+
+			closebutton.MouseButton1Up:Connect(function()
+				holderframe:Destroy()
+				holderframe = nil
+			end)
+
+			local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
+			local maximizepressed = false
+			
+			holderframe:AddChild(maximizebutton)
+			local unmaximizedsize = holderframe.Size
+			maximizebutton.MouseButton1Up:Connect(function()
+				local holderframe = holderframe
+				if not maximizepressed then
+					unmaximizedsize = holderframe.Size
+					programholder2:AddChild(holderframe)
+					holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+					holderframe:ChangeProperties({Active = false, Draggable = false;})
+					holderframe.Position = UDim2.new(0, 0, 1, 0)
+					holderframe.Position = UDim2.new(0, 0, 0, 0)
+					maximizebutton.Text = "-"
+					maximizepressed = true
+				else
+					programholder1:AddChild(holderframe)
+					holderframe.Size = unmaximizedsize
+					holderframe:ChangeProperties({Active = true, Draggable = true;})
+					maximizebutton.Text = "+"
+					maximizepressed = false
+				end
+			end)
+			
+			return holderframe, closebutton, maximizebutton, textlabel
+		end,
+		Screen = screen,
+		Keyboard = keyboard,
+		Modem = modem,
+		Speaker = speaker,
 		programholder1 = programholder1,
 		programholder2 = programholder2,
 		backgroundframe = backgroundframe,
