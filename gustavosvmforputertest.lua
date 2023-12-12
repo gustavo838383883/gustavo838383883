@@ -1012,7 +1012,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".lua") then
-		loadluafile(microcontrollers, screen, txt)
+		loadluafile(microcontrollers, screen, tostring(txt))
 	end
 
 	if typeof(txt) == "table" then
