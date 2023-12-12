@@ -2537,7 +2537,6 @@ local function loadmenu()
 						if disk then
 							disk:Write("createScreenElement", function(element, properties)
 								local object = screen:CreateElement(element, properties)
-								window:AddChild(object)
 								return object
 							end)
 							color = disk:Read("Color")
@@ -2686,7 +2685,6 @@ function startload()
 		if disk then
 			disk:Write("createScreenElement", function(element, properties)
 				local object = screen:CreateElement(element, properties)
-				window:AddChild(object)
 				return object
 			end)
 			if speaker then
