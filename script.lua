@@ -933,7 +933,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	end
 	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
-		local txt = string.lower(txt)
+		local txt = string.lower(tostring(txt))
 		if string.find(tostring(txt), "pitch:") then
 			local length = nil
 
@@ -980,11 +980,11 @@ local function readfile(txt, nameondisk, boolean, directory)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".img") then
-			woshtmlfile([[<img src="]]..txt..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".lua") then
-		loadluafile(microcontrollers, screen, txt)
+		loadluafile(microcontrollers, screen, tostring(txt))
 	end
 
 	if typeof(txt) == "table" then
