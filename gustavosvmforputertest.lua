@@ -262,7 +262,9 @@ local function getstuff()
 			success, Error = pcall(GetPartFromPort, i, "Disk")
 			if success then
 				if GetPartFromPort(i, "Disk") then
-					disk = GetPartFromPort(i, "Disk")
+					if i > 1 or not GetPartFromPort(i, "Disk"):Read("PuterLibrary") then
+						disk = GetPartFromPort(i, "Disk")
+					end
 				end
 			end
 		end
@@ -2603,6 +2605,11 @@ local function loadmenu()
 					getstuff()
 					if screen then
 						if disk then
+							disk:Write("createScreenElement", function(element, properties)
+								local object = screen:CreateElement(element, properties)
+								window:AddChild(object)
+								return object
+							end)
 							color = disk:Read("Color")
 							local diskbackgroundimage = disk:Read("BackgroundImage")
 							if color then
@@ -2772,7 +2779,11 @@ end
 function startload()
 	if screen then
 		if disk then
-
+			disk:Write("createScreenElement", function(element, properties)
+				local object = screen:CreateElement(element, properties)
+				window:AddChild(object)
+				return object
+			end)
 			if speaker then
 				if keyboard then
 					if keyboardevent then
