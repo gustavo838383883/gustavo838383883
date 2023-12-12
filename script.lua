@@ -2384,7 +2384,7 @@ local function loadmenu()
 			local holderframe = screen:CreateElement("TextButton", {Size = udim2, Active = true, Draggable = true, TextTransparency = 1})
 			programholder1:AddChild(holderframe)
 			local textlabel
-			if boolean ~= false or boolean ~= nil then
+			if boolean == false or boolean == nil then
 				textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = tostring(text)})
 				holderframe:AddChild(textlabel)
 			end
