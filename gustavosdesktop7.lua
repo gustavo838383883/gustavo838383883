@@ -394,6 +394,10 @@ local taskbarholder
 
 local buttondown = false
 
+local resolutionframe
+
+local minimizedammount = 0
+
 function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 
@@ -490,6 +494,7 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 
 	local maximizebutton
 	local minimizebutton
+	local taskbarholderscrollingframe
 	
 	if not boolean4 then
 		minimizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 70, 0, 0), BackgroundTransparency = 1})
@@ -502,7 +507,6 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				textlabel.Size -= UDim2.new(0, 35, 0, 0)
 			end
 		end
-		print("A")
 		minimizebutton.MouseButton1Down:Connect(function()
 			minimizebutton.Image = "rbxassetid://15617866125"
 		end)
@@ -511,6 +515,30 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			if holding or holding2 then return end
 			speaker:PlaySound("rbxassetid://6977010128")
 			minimizebutton.Image = "rbxassetid://15617867263"
+			resolutionframe:AddChild(holderframe)
+			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805069", BackgroundTransparency = 1, Size = UDim2.new(0, 35, 1, 0), Position = UDim2.new(0, minimizedammount * 35, 0, 0)})
+			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
+			unminimizebutton:AddChild(unminimizetext)
+			table.insert(unminimizedprograms, unminimizebutton)
+			taskbarholderscrollingframe:AddChild(unminimizebutton)
+			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (maximizedammount * 35) + 35, 1, 0) 
+
+			unminimizebutton.MouseButton1Down:Connect(function()
+				unminimizebutton.Image = "rbxassetid://15625805069"
+			end)
+			unminimizebutton.MouseButton1Up:Connect(function()
+				unminimizebutton.Image = "rbxassetid://15625805069"
+				unminimizebutton:Destroy()
+				minimizedammount -= 1
+				local start = 0
+				for index, value in pairs(minimizedprograms) do
+					if value then
+						value.Position = start * 35
+						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (35 * start) + 35, 1, 0)
+						start += 1
+					end
+				end
+			end)
 		end)
 	end
 	
@@ -582,12 +610,13 @@ end
 
 local startbutton7
 local wallpaper
-local resolutionframe
 
 local name = "GustavOSDesktop7"
 
 local function loaddesktop()
-	resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
+	minimizedammount = 0
+	minimizedprograms = {}
+	resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Position = UDim2.new(2,0,0,0)})
 	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15617469527", BackgroundTransparency = 1})
 	
 	startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
@@ -601,17 +630,20 @@ local function loaddesktop()
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
 
-	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.2})
+	taskbarholders = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.2})
 	taskbarholder:AddChild(startbutton7)
-	
+
+	taskbarholderscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(0.9, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0.9, 0, 1, 0), Position = UDim2.new(0.1, 0, 0, 0)})
+	taskbarholder:AddChild(taskbarholderscrollingframe)
 	rom:Write("GustavOSLibrary", {
 		Screen = screen,
 		Keyboard = keyboard,
 		Modem = modem,
 		Speaker = speaker,
+		Disk = disk,
 		programholder1 = programholder1,
 		programholder2 = programholder2,
-		taskbar = taskbarholder,
+		Taskbar = {taskbarholderscrollingframe, taskbarholder},
 	})
 	local pressed = false
 	local startmenu
