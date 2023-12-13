@@ -520,13 +520,13 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
 			unminimizebutton:AddChild(unminimizetext)
 			taskbarholderscrollingframe:AddChild(unminimizebutton)
-			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (maximizedammount * 50) + 50, 1, 0) 
+			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * 50) + 50, 1, 0) 
 
+			table.insert(minimizedprograms, unminimizebutton)
+				
 			unminimizebutton.MouseButton1Down:Connect(function()
 				unminimizebutton.Image = "rbxassetid://15625805069"
 			end)
-			
-			table.insert(minimizedprograms, unminimizebutton)
 			
 			unminimizebutton.MouseButton1Up:Connect(function()
 				unminimizebutton.Image = "rbxassetid://15625805900"
