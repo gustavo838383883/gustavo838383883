@@ -541,6 +541,7 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 					end
 				end
 			end)
+			minimizedammount += 1
 		end)
 	end
 	
