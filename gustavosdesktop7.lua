@@ -585,9 +585,9 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			end
 		end)
 	else
-		if title then
+		if textlabel then
 			textlabel.Position -= UDim2.new(0, 35, 0, 0)
-			textlabel.Size += UDim2.new(0, -35, 0, 0)
+			textlabel.Size += UDim2.new(0, 35, 0, 0)
 		end
 	end
 	return holderframe, closebutton, maximizebutton, textlabel, resizebutton
