@@ -622,6 +622,7 @@ function bootos()
 		end
 	end
 	if screen and keyboard and speaker and disk then
+		speaker:ClearSounds()
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
 		commandlines:insert(name.." Command line")
