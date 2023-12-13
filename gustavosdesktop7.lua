@@ -569,7 +569,7 @@ local function loaddesktop()
 	resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
 	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15617469527", BackgroundTransparency = 1})
 	
-	startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.9, 0)})
+	startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
 	local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Text = "G", TextScaled = true, TextWrapped = true})
 	startbutton7:AddChild(textlabel)
 	
@@ -580,8 +580,8 @@ local function loaddesktop()
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
 
-	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0.1, 0, 0.9, 0), Size = UDim2.new(0.9, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.2})
-	
+	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.2})
+	taskbarholder:AddChild(startbutton7)
 	local pressed = false
 	local startmenu
 	local function openstartmenu()
