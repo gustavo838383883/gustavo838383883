@@ -586,7 +586,7 @@ local function loaddesktop()
 	local startmenu
 	local function openstartmenu()
 		if not pressed then
-			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), ImageTransparency = 0.1})
+			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), ImageTransparency = 0.2})
 			local testopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(testopen)
 			local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Test"})
