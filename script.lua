@@ -198,7 +198,7 @@ local function createfileontable(disk, filename, filedata, directory)
 						end
 					elseif i == 0 then
 						returntable = lasttable
-						if typeof(split2) == table then
+						if typeof(split[2]) == table then
 							disk:Write(split[2], lasttable)
 						end
 					end
