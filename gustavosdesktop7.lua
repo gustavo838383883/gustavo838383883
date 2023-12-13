@@ -671,7 +671,7 @@ local function loaddesktop()
 			testopen.MouseButton1Up:Connect(function()
 				speaker:PlaySound("rbxassetid://6977010128")
 				testopen.Image = "rbxassetid://15625805900"
-				createwindow(UDim2.new(0.5, 0, 0.5, 0), "Test", false, false, false)
+				createwindow(UDim2.new(0.5, 0, 0.5, 0), "Test", false, false, false, "Test", false)
 				pressed = false
 				startmenu:Destroy()
 			end)
