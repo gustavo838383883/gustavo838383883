@@ -579,6 +579,8 @@ local function loaddesktop()
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
+
+	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0.1, 0, 0.9, 0), Size = UDim2.new(0.9, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.2})
 	
 	local pressed = false
 	local startmenu
