@@ -376,6 +376,9 @@ elseif screen then
 	if not disk then
 		commandlines:insert("No disk was found.")
 	end
+elseif not regularscreen and not screen then
+	Beep(0.5)
+	print("No screen was found.")
 end
 
 local cursorsinscreen = {}
