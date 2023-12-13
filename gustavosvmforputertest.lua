@@ -388,15 +388,6 @@ local keyboardinput = nil
 local playerthatinputted = nil
 local backgroundframe = nil
 
-
-if speaker then
-	speaker:ClearSounds()
-end
-
-if screen then
-	screen:ClearElements()
-end
-
 local function CreateNewWindow(udim2, text, boolean, boolean2)
 	local holderframe
 	if boolean2 == false then
@@ -2049,8 +2040,6 @@ local function loadmenu()
 				end)
 					
 				restartbutton.MouseButton1Down:Connect(function()
-					screen:ClearElements()
-					speaker:ClearSounds()
 					Beep(1)
 					backgroundimageframe = nil
 					backgroundimage = nil
@@ -2119,7 +2108,6 @@ local function loadmenu()
 									Beep(1)
 									window:AddChild(textbutton)
 									textbutton.MouseButton1Down:Connect(function()
-										screen:ClearElements()
 										getstuff()
 										startload()
 									end)
@@ -2129,7 +2117,6 @@ local function loadmenu()
 								Beep(1)
 								window:AddChild(textbutton)
 								textbutton.MouseButton1Down:Connect(function()
-									screen:ClearElements()
 									getstuff()
 									startload()
 								end)
@@ -2139,7 +2126,6 @@ local function loadmenu()
 							Beep(1)
 							window:AddChild(textbutton)
 							textbutton.MouseButton1Down:Connect(function()
-								screen:ClearElements()
 								getstuff()
 								startload()
 							end)
@@ -2165,8 +2151,6 @@ local function loadmenu()
 				end)
 
 				shutdownbutton.MouseButton1Down:Connect(function()
-					screen:ClearElements()
-					speaker:ClearSounds()
 					Beep(1)
 					task.wait(0.1)
 					Beep(0.75)
@@ -2295,7 +2279,6 @@ function startload()
 					Beep(1)
 					window:AddChild(textbutton)
 					textbutton.MouseButton1Down:Connect(function()
-						screen:ClearElements()
 						getstuff()
 						startload()
 					end)
@@ -2311,7 +2294,6 @@ function startload()
 				Beep(1) 
 				window:AddChild(textbutton)
 				textbutton.MouseButton1Down:Connect(function()
-					screen:ClearElements()
 					getstuff()
 					startload()
 				end)
@@ -2325,7 +2307,6 @@ function startload()
 			Beep(1)
 			window:AddChild(textbutton)
 			textbutton.MouseButton1Down:Connect(function()
-				screen:ClearElements()
 				getstuff()
 				startload()
 			end)
