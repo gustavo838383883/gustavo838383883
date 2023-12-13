@@ -237,11 +237,13 @@ local function getfileontable(disk, filename, directory)
 	return file
 end
 
-local disk = nil
+local disks = nil
 local screen = nil
 local keyboard = nil
 local speaker = nil
 local modem = nil
+local rom = nil
+local disk = nil
 local microcontrollers = nil
 local regularscreen = nil
 
@@ -250,6 +252,8 @@ local shutdownpoly = nil
 local createwindow
 
 local function getstuff()
+	disks = nil
+	rom = nil
 	disk = nil
 	screen = nil
 	keyboard = nil
@@ -260,11 +264,14 @@ local function getstuff()
 	regularscreen = nil
 
 	for i=1, 128 do
-		if not disk then
-			success, Error = pcall(GetPartFromPort, i, "Disk")
+		if not disks then
+			success, Error = pcall(GetPartsFromPort, i, "Disk")
 			if success then
-				if GetPartFromPort(i, "Disk") then
-					disk = GetPartFromPort(i, "Disk")
+				local disktable = GetPartsFromPort(i, "Disk")
+				if disktable then
+					if #disktable > 0 then
+						disks = disktable
+					end
 				end
 			end
 		end
@@ -332,6 +339,12 @@ local function getstuff()
 			end
 		end
 	end
+	if disks then
+		for i,v in pairs(disks) do
+			rom = v
+			table.remove(disks, i)
+			break
+		end
 end
 getstuff()
 
@@ -580,6 +593,13 @@ local function loaddesktop()
 		speaker:PlaySound("rbxassetid://6977010128")
 	end)
 end
+
+if #disks > 0 then
+	for i,v in pairs(disks) do
+		disk = v
+		break
+	end
+end
 if screen and keyboard and speaker and disk then
 	screen:ClearElements()
 	local commandlines = commandline.new(false, nil, screen)
@@ -604,7 +624,7 @@ elseif not screen and regularscreen then
 	end
 	task.wait(1)
 	if not disk then
-		commandlines:insert("No disk was found.")
+		commandlines:insert("You need 2 or more disks on the same port.")
 	end
 elseif screen then
 	screen:ClearElements()
@@ -620,7 +640,7 @@ elseif screen then
 	end
 	task.wait(1)
 	if not disk then
-		commandlines:insert("No disk was found.")
+		commandlines:insert("You need 2 or more disks on the same port.")
 	end
 elseif not regularscreen and not screen then
 	Beep(0.5)
