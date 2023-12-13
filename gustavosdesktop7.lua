@@ -390,6 +390,7 @@ local holderframetouse
 
 local programholder1
 local programholder2
+local taskbarholder
 
 local buttondown = false
 
@@ -584,12 +585,6 @@ local resolutionframe
 local name = "GustavOSDesktop7"
 
 local function loaddesktop()
-	rom:Write("GustavOSLibrary", {
-		Screen = screen,
-		Keyboard = keyboard,
-		Modem = modem,
-		Speaker = speaker,
-	})
 	resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
 	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15617469527", BackgroundTransparency = 1})
 	
@@ -606,6 +601,16 @@ local function loaddesktop()
 
 	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.2})
 	taskbarholder:AddChild(startbutton7)
+	
+	rom:Write("GustavOSLibrary", {
+		Screen = screen,
+		Keyboard = keyboard,
+		Modem = modem,
+		Speaker = speaker,
+		programholder1 = programholder1,
+		programholder2 = programholder2,
+		taskbar = taskbarholder,
+	})
 	local pressed = false
 	local startmenu
 	local function openstartmenu()
