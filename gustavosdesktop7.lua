@@ -798,7 +798,7 @@ function bootos()
 		end)
 		if disk then
 			color = disk:Read("Color")
-			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false,0.2,0,0.2,0") end
+			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false") end
 			local diskbackgroundimage = disk:Read("BackgroundImage")
 			if color then
 				color = string.split(color, ",")
