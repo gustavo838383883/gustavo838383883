@@ -388,6 +388,8 @@ local holderframetouse
 local programholder1
 local programholder2
 
+local buttondown = false
+
 function createwindow(udim2, title, boolean, boolean2, boolean3)
 	local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 
@@ -601,8 +603,12 @@ local function loaddesktop()
 			pressed = false
 		end
 	end
-	
 	startbutton7.MouseButton1Up:Connect(function()
+		startbutton7.Image = "rbxassetid://15617867263"
+		buttondown = true
+	end)
+	startbutton7.MouseButton1Up:Connect(function()
+		buttondown = false
 		openstartmenu()
 		speaker:PlaySound("rbxassetid://6977010128")
 	end)
@@ -675,17 +681,19 @@ while true do
 	if startbutton7 then
 		local cursors = screen:GetCursors()
 		local success = false
-		for index,cur in pairs(cursors) do
-			local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, startbutton7)
-			if boolean then
-				print(Vector2.new(x_Axis, y_Axis))
-				startbutton7.Image = "rbxassetid://15617866125"
-				success = true
-				break
+		if not buttondown then
+			for index,cur in pairs(cursors) do
+				local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, startbutton7)
+				if boolean then
+					print(Vector2.new(x_Axis, y_Axis))
+					startbutton7.Image = "rbxassetid://15617866125"
+					success = true
+					break
+				end
 			end
-		end
-		if not success then
-			startbutton7.Image = "rbxassetid://15617867263"
+			if not success then
+				startbutton7.Image = "rbxassetid://15617867263"
+			end
 		end
 	end
 	if holding2 then
