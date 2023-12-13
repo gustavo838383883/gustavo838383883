@@ -266,7 +266,7 @@ end
 
 local commandline = {}
 
-function commandline.new(boolean, udim2)
+function commandline.new(boolean, udim2, screen)
 	local holderframe
 	local background
 	local lines = {
@@ -339,7 +339,7 @@ if screen and keyboard and speaker and disk then
 	screen:ClearElements()
 	loaddesktop()
 elseif not screen and regularscreen then
-	local commandlines = commandline.new(false)
+	local commandlines = commandline.new(false, nil, regularscreen)
 	commandlines:insert("Regular screen is not supported.")
 	if not speaker then
 		commandlines:insert("No speaker was found.")
@@ -351,7 +351,7 @@ elseif not screen and regularscreen then
 		commandlines:insert("No disk was found.")
 	end
 elseif screen then
-	local commandlines = commandline.new(false)
+	local commandlines = commandline.new(false, nil, screen)
 	if not speaker then
 		commandlines:insert("No speaker was found.")
 	end
