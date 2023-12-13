@@ -652,6 +652,10 @@ function bootos()
 		if not disk then
 			commandlines:insert("You need 2 or more disks on the same port.")
 		end
+		if keyboard then
+			keyboard:Connect("KeyPressed", function()
+				
+			end)
 	elseif screen then
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
@@ -740,8 +744,10 @@ while true do
 			local screenresolution = resolutionframe.AbsoluteSize
 
 			if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-				if newX/screenresolution.X < 0.4 then newX = screenresolution.X * 0.4  end
+				if newX/screenresolution.X < 0.4 then newX = screenresolution.X * 0.4 end
 				if newY/screenresolution.Y < 0.4 then newY = screenresolution.Y * 0.4 end
+				if newX/screenresolution.X > 0.95 then newX = screenresolution.X * 0.95 end
+				if newY/screenresolution.Y > 0.95 then newY = screenresolution.Y * 0.95 end
 				holderframetouse.Size = UDim2.fromScale(newX/screenresolution.X, newY/screenresolution.Y)
 			end
 		end
