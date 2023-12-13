@@ -613,6 +613,8 @@ local wallpaper
 
 local name = "GustavOSDesktop7"
 
+local keyboardevent
+
 local function loaddesktop()
 	minimizedammount = 0
 	minimizedprograms = {}
@@ -699,7 +701,7 @@ function bootos()
 		screen:ClearElements()
 		loaddesktop()
 		SpeakerHandler.PlaySound(182007357, 1, nil, speaker)
-		keyboard:Connect("TextInputted", function(text, player)
+		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 			keyboardinput = text
 			playerthatinputted = player
 		end)
@@ -721,10 +723,11 @@ function bootos()
 			commandlines:insert("You need 2 or more disks on the same port.")
 		end
 		if keyboard then
-			keyboard:Connect("KeyPressed", function(key)
+			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
 				if key == Enum.KeyCode.Return then
 					getstuff()
 					bootos()
+					keyboardevent:Unbind()
 				end
 			end)
 		end
@@ -745,10 +748,11 @@ function bootos()
 			commandlines:insert("You need 2 or more disks on the same port.")
 		end
 		if keyboard then
-			keyboard:Connect("KeyPressed", function(key)
+			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
 				if key == Enum.KeyCode.Return then
 					getstuff()
 					bootos()
+					keyboardevent:Unbind()
 				end
 			end)
 		end
