@@ -754,8 +754,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 	filegui:AddChild(disktext)
 	
 	print(txt)
-
-	textlabel.Size -= UDim2.new(0, 0, 0, 25)
 	
 	if boolean == true then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
@@ -863,7 +861,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 	if string.find(string.lower(tostring(nameondisk)), ".lua") then
 		loadluafile(microcontrollers, screen, tostring(txt))
 	end
-	print(typeof(txt))
 	if typeof(txt) == "table" then
 		local newdirectory = nil
 		if directory then
