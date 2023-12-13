@@ -523,7 +523,8 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 
 			table.insert(minimizedprograms, unminimizebutton)
 			print(minimizedprograms)
-				
+			minimizedammount += 1
+			
 			unminimizebutton.MouseButton1Down:Connect(function()
 				unminimizebutton.Image = "rbxassetid://15625805069"
 			end)
@@ -533,6 +534,11 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				speaker:PlaySound("rbxassetid://6977010128")
 				unminimizebutton:Destroy()
 				minimizedammount -= 1
+				if maximizepressed then
+					programholder2:AddChild(holderframe)
+				else
+					programholder1:AddChild(holderframe)
+				end
 				local start = 0
 				for index, value in pairs(minimizedprograms) do
 					if value then
@@ -541,13 +547,7 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 						start += 1
 					end
 				end
-				if maximizepressed then
-					programholder2:AddChild(holderframe)
-				else
-					programholder1:AddChild(holderframe)
-				end
 			end)
-			minimizedammount += 1
 		end)
 	end
 	
