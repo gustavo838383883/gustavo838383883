@@ -736,15 +736,8 @@ while true do
 			if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
 				local newX = uiStartPos.X.Scale - (startCursorPos.X - cursor.X)/screenresolution.X
 				local newY = uiStartPos.Y.Scale - (startCursorPos.Y - cursor.Y)/screenresolution.Y
-				if newX + (holderframetouse.Size.X.Scale / 2) > 1 then
-					newX = 1
-				elseif newX - (holderframetouse.Size.X.Scale / 2) < 0 then
-					newX = 0
-				end
-				if newY + (holderframetouse.Size.Y.Scale / 2) > 0.9 then
-					newY = 0.9
-				elseif newY - (holderframetouse.Size.Y.Scale / 2) < 0 then
-					newY = 0
+				if newY + 0.1 > 0.9 then
+					newY = 0.8
 				end
 				holderframetouse.Position = UDim2.fromScale(newX, newY)
 			end
