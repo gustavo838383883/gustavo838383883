@@ -738,12 +738,12 @@ while true do
 				local newY = uiStartPos.Y.Scale - (startCursorPos.Y - cursor.Y)/screenresolution.Y
 				if newX + (holderframetouse.Size.X.Scale / 2) > 1 then
 					newX = 1
-				elseif newX < 0 then
+				elseif newX - (holderframetouse.Size.X.Scale / 2) < 0 then
 					newX = 0
 				end
 				if newY + (holderframetouse.Size.Y.Scale / 2) > 0.9 then
 					newY = 0.9
-				elseif newY < 0 then
+				elseif newY - (holderframetouse.Size.Y.Scale / 2) < 0 then
 					newY = 0
 				end
 				holderframetouse.Position = UDim2.fromScale(newX, newY)
