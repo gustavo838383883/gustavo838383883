@@ -250,7 +250,7 @@ local playerthatinputted
 
 local shutdownpoly = nil
 
-local createwindow
+local CreateWindow
 
 local function getstuff()
 	disks = nil
@@ -398,7 +398,7 @@ local resolutionframe
 
 local minimizedammount = 0
 
-function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
+function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 
 	programholder1:AddChild(holderframe)
@@ -601,7 +601,7 @@ function commandline.new(boolean, udim2, screen)
 		number = 0
 	}
 	if boolean then
-		holderframe = createwindow(udim2, "Command Line", false, false, false)
+		holderframe = CreateWindow(udim2, "Command Line", false, false, false)
 		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0)})
 		holderframe:AddChild(background)
 	else
@@ -671,7 +671,7 @@ local function loaddesktop()
 			testopen.MouseButton1Up:Connect(function()
 				speaker:PlaySound("rbxassetid://6977010128")
 				testopen.Image = "rbxassetid://15625805900"
-				createwindow(UDim2.new(0.5, 0, 0.5, 0), "Test", false, false, false, "Test", false)
+				CreateWindow(UDim2.new(0.5, 0, 0.5, 0), "Test", false, false, false, "Test", false)
 				pressed = false
 				startmenu:Destroy()
 			end)
