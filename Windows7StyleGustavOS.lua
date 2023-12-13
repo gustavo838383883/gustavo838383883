@@ -978,7 +978,7 @@ local function loaddisk(screen, disk)
 	holderframe:AddChild(scrollingframe)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
-		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
+		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
 			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = tostring(filename), Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
 			scrollingframe:AddChild(button)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
@@ -1037,7 +1037,7 @@ local function writedisk(screen, disk)
 			end
 			if inputtedtext == " " then inputtedtext = ""; end
 			local split = string.split(inputtedtext, "/")
-			if split and split[2] ~= "GustavOS Library" then
+			if split and split[2] ~= "GustavOSLibrary" then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				if #split >= 3 then
 					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
@@ -1085,7 +1085,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createfilebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
 			if filedatabutton.Text ~= "File Data (Click to update)" then
 				local split = nil
 				local returntable = nil
