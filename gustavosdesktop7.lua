@@ -662,6 +662,7 @@ while true do
 				break
 			end
 		end
+		if not cursor then holding2 = false end
 		if cursor then
 			local screenresolution = resolutionframe.AbsoluteSize
 			local startCursorPos = startCursorPos
@@ -675,14 +676,16 @@ while true do
 		if not holderframetouse then return end
 		local cursors = screen:GetCursors()
 		local cursor
-
+		local success = false
 		for index,cur in pairs(cursors) do
 			if startCursorPos and cur then
 				if cur.Player == startCursorPos.Player then
 					cursor = cur
+					success = true
 				end
 			end
 		end
+		if not success then holding = false end
 		if cursor then
 			local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +5
 			local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +5
