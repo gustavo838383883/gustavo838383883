@@ -345,6 +345,7 @@ if screen and keyboard and speaker and disk then
 	screen:ClearElements()
 	local commandlines = commandline.new(false, nil, screen)
 	commandlines:insert(name.." Command line")
+	task.wait(1)
 	commandlines:insert("Welcome To "..name)
 	task.wait(2)
 	Beep(1)
@@ -353,13 +354,16 @@ elseif not screen and regularscreen then
 	regularscreen:ClearElements()
 	local commandlines = commandline.new(false, nil, regularscreen)
 	commandlines:insert(name.." Command line")
+	task.wait(1)
 	commandlines:insert("Regular screen is not supported.")
 	if not speaker then
 		commandlines:insert("No speaker was found.")
 	end
+	task.wait(1)
 	if not keyboard then
 		commandlines:insert("No keyboard was found.")
 	end
+	task.wait(1)
 	if not disk then
 		commandlines:insert("No disk was found.")
 	end
@@ -367,12 +371,15 @@ elseif screen then
 	screen:ClearElements()
 	local commandlines = commandline.new(false, nil, screen)
 	commandlines:insert(name.." Command line")
+	task.wait(1)
 	if not speaker then
 		commandlines:insert("No speaker was found.")
 	end
+	task.wait(1)
 	if not keyboard then
 		commandlines:insert("No keyboard was found.")
 	end
+	task.wait(1)
 	if not disk then
 		commandlines:insert("No disk was found.")
 	end
