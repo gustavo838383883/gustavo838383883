@@ -734,7 +734,6 @@ while true do
 			for index,cur in pairs(cursors) do
 				local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, startbutton7)
 				if boolean then
-					print(Vector2.new(x_Axis, y_Axis))
 					startbutton7.Image = "rbxassetid://15617866125"
 					success = true
 					break
