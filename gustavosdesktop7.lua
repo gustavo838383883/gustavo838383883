@@ -530,6 +530,7 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			
 			unminimizebutton.MouseButton1Up:Connect(function()
 				unminimizebutton.Image = "rbxassetid://15625805900"
+				speaker:PlaySound("rbxassetid://6977010128")
 				unminimizebutton:Destroy()
 				minimizedammount -= 1
 				local start = 0
@@ -539,6 +540,11 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (50 * start) + 50, 1, 0)
 						start += 1
 					end
+				end
+				if maximizepressed then
+					programholder2:AddChild(holderframe)
+				else
+					programholder1:AddChild(holderframe)
 				end
 			end)
 			minimizedammount += 1
