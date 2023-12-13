@@ -289,11 +289,15 @@ function commandline.new(boolean, udim2, screen)
 	return lines, background, holderframe
 end
 
+local startbutton7
+local wallpaper
+local resolutionframe
+
 local function loaddesktop()
-	local resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
-	local wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15617469527", BackgroundTransparency = 1})
+	resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
+	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15617469527", BackgroundTransparency = 1})
 	
-	local startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.9, 0)})
+	startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.9, 0)})
 	local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Text = "G", TextScaled = true, TextWrapped = true})
 	startbutton7:AddChild(textlabel)
 	
@@ -367,19 +371,21 @@ local cursorsinscreen = {}
 
 while true do
 	task.wait(0.01)
-	local cursors = screen:GetCursors()
-	local success = false
-	for index,cur in pairs(cursors) do
-		local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, startbutton7)
-		if boolean then
-			print(Vector2.new(x_Axis, y_Axis))
-			startbutton7.Image = "rbxassetid://15617866125"
-			success = true
-			break
+	if startbutton7 then
+		local cursors = screen:GetCursors()
+		local success = false
+		for index,cur in pairs(cursors) do
+			local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, startbutton7)
+			if boolean then
+				print(Vector2.new(x_Axis, y_Axis))
+				startbutton7.Image = "rbxassetid://15617866125"
+				success = true
+				break
+			end
 		end
-	end
-	if not success then
-		startbutton7.Image = "rbxassetid://15617867263"
+		if not success then
+			startbutton7.Image = "rbxassetid://15617867263"
+		end
 	end
 	if holding2 then
 		local cursors = screen:GetCursors()
