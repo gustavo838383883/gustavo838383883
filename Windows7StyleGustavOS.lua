@@ -393,9 +393,9 @@ end
 local function CreateNewWindow(udim2, text, boolean, boolean2)
 	local holderframe
 	if boolean2 == false then
-		holderframe = screen:CreateElement("ImageButton", {Active = true, Draggable = true, Position = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+		holderframe = screen:CreateElement("ImageButton", {Active = true, Draggable = true, Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 	elseif boolean2 == true then
- 		holderframe = screen:CreateElement("ImageButton", {Position = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+ 		holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
  	end
  	 if not holderframe then return end
  	 local textlabel
