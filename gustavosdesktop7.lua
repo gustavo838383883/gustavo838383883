@@ -144,12 +144,12 @@ function createwindow(udim2, title, boolean, boolean2, boolean3)
 		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -70, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 70, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
 	end
 	local resizebutton
+	local maximizepressed = false
 	if not boolean2 then
 		resizebutton = screen:CreateElement("TextButton", {TextScaled = true, TextWrapped = true, Size = UDim2.new(0, 10, 0, 10), Text = "", Position = UDim2.new(1,-10,1,-10), BackgroundColor3 = Color3.new(1,1,1)})
 		
 		holderframe:AddChild(resizebutton)
 		
-		local maximizepressed = false
 		resizebutton.MouseButton1Down:Connect(function()
 			if holding2 then return end
 			if not maximizepressed then
