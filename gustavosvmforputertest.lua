@@ -2111,7 +2111,9 @@ local function loadmenu()
 												if value then
 													value.Position = UDim2.new(1,0,0,0)
 													value.Position = UDim2.new(0,0,0,0)
+												end
 											end
+										end
 									end)
 								else
 									local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
@@ -2206,7 +2208,9 @@ function startload()
 								if value then
 									value.Position = UDim2.new(1,0,0,0)
 									value.Position = UDim2.new(0,0,0,0)
+								end
 							end
+						end
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
 						loadmenu()
