@@ -549,7 +549,7 @@ local resolutionframe
 local name = "GustavOSDesktop7"
 
 local function loaddesktop()
-	disk:Write("GustavOSLibrary", {
+	rom:Write("GustavOSLibrary", {
 		Screen = screen,
 		Keyboard = keyboard,
 		Modem = modem,
