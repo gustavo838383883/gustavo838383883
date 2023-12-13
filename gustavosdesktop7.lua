@@ -682,7 +682,7 @@ local function loaddesktop()
 end
 
 function bootos()
-	if #disks > 0 then
+	if disks and #disks > 0 then
 		for i,v in pairs(disks) do
 			disk = v
 			break
