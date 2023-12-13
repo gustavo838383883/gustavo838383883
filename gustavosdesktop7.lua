@@ -652,13 +652,11 @@ while true do
 		local cursor
 		local x_axis
 		local y_axis
-
+		if not startCursorPos["Player"] then return end
 		for index,cur in pairs(cursors) do
-			local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, holderframetouse)
-			if boolean then
+			if not cur["Player"] then return end
+			if cur.Player == startCursorPos.Player then
 				cursor = cur
-				x_axis = x_Axis
-				y_axis = y_Axis
 				break
 			end
 		end
