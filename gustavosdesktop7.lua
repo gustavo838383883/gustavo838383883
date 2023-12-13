@@ -522,7 +522,6 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * 50) + 50, 1, 0) 
 
 			table.insert(minimizedprograms, unminimizebutton)
-			print(minimizedprograms)
 			minimizedammount += 1
 			
 			unminimizebutton.MouseButton1Down:Connect(function()
