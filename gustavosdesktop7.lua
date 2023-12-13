@@ -347,6 +347,7 @@ if screen and keyboard and speaker and disk then
 	commandlines:insert("{name} Command line")
 	commandlines:insert("Welcome To {name}")
 	task.wait(2)
+	Beep(1)
 	loaddesktop()
 elseif not screen and regularscreen then
 	regularscreen:ClearElements()
