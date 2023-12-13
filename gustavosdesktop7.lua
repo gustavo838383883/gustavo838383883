@@ -293,6 +293,8 @@ local startbutton7
 local wallpaper
 local resolutionframe
 
+local name = "GustavOSDesktop7"
+
 local function loaddesktop()
 	resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
 	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15617469527", BackgroundTransparency = 1})
@@ -341,9 +343,15 @@ local function loaddesktop()
 end
 if screen and keyboard and speaker and disk then
 	screen:ClearElements()
+	local commandlines = commandline.new(false, nil, screen)
+	commandlines:insert("{name} Command line")
+	commandlines:insert("Welcome To {name}")
+	task.wait(2)
 	loaddesktop()
 elseif not screen and regularscreen then
+	regularscreen:ClearElements()
 	local commandlines = commandline.new(false, nil, regularscreen)
+	commandlines:insert("{name} Command line")
 	commandlines:insert("Regular screen is not supported.")
 	if not speaker then
 		commandlines:insert("No speaker was found.")
@@ -355,7 +363,9 @@ elseif not screen and regularscreen then
 		commandlines:insert("No disk was found.")
 	end
 elseif screen then
+	screen:ClearElements()
 	local commandlines = commandline.new(false, nil, screen)
+	commandlines:insert("{name} Command line")
 	if not speaker then
 		commandlines:insert("No speaker was found.")
 	end
