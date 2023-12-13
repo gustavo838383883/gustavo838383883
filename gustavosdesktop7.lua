@@ -734,8 +734,8 @@ while true do
 			local screenresolution = resolutionframe.AbsoluteSize
 			local startCursorPos = startCursorPos
 			if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-				local newX = (startCursorPos.X - cursor.X)/screenresolution.X
-				local newY = (startCursorPos.Y - cursor.Y)/screenresolution.Y
+				local newX = uiStartPos.X.Scale - (startCursorPos.X - cursor.X)/screenresolution.X
+				local newY = uiStartPos.Y.Scale - (startCursorPos.Y - cursor.Y)/screenresolution.Y
 				if newX > 1 then
 					newX = 1
 				elseif newX < 0 then
@@ -746,7 +746,7 @@ while true do
 				elseif newY < 0 then
 					newY = 0
 				end
-				holderframetouse.Position = uiStartPos - UDim2.fromScale(newX, newY)
+				holderframetouse.Position = UDim2.fromScale(newX, newY)
 			end
 		end
 	end
