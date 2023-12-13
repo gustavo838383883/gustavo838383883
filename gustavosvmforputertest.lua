@@ -1895,7 +1895,7 @@ local function loadmenu()
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
-	window:AddChild(programholder1)
+	window:AddChild(programholder2)
 	
 	disk:Write("GustavOSLibrary", {
 		CreateElement = function(element, properties)
@@ -2132,7 +2132,8 @@ local function loadmenu()
 								end
 							else
 								local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
-								Beep(1) 
+								Beep(1)
+								window:AddChild(textbutton)
 								textbutton.MouseButton1Down:Connect(function()
 									screen:ClearElements()
 									getstuff()
