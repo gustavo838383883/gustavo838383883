@@ -49,33 +49,33 @@ function SpeakerHandler:LoopSound(id, soundLength, pitch, speaker)
 	speaker = speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler:LoopSound]: No speaker provided")
 	id = tonumber(id)
 	pitch = tonumber(pitch) or 1
-
+	
 	if SpeakerHandler._LoopedSounds[speaker.GUID] then
 		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 	end
-
+	
 	speaker:Configure({Audio = id, Pitch = pitch})
-
+	
 	SpeakerHandler._LoopedSounds[speaker.GUID] = {
 		Speaker = speaker,
 		Length = soundLength / pitch,
 		TimePlayed = tick()
 	}
-
+	
 	speaker:Trigger()
 	return true
 end
 
 function SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 	SpeakerHandler._LoopedSounds[speaker.GUID] = nil
-
+	
 	speaker:Configure({Audio = 0, Pitch = 1})
 	speaker:Trigger()
 end
 
 function SpeakerHandler:UpdateSoundLoop(dt) -- Triggers any speakers if it's time for them to be triggered
 	dt = dt or 0
-
+	
 	for _, sound in pairs(SpeakerHandler._LoopedSounds) do
 		local currentTime = tick() - dt
 		local timePlayed = currentTime - sound.TimePlayed
@@ -88,7 +88,7 @@ function SpeakerHandler:UpdateSoundLoop(dt) -- Triggers any speakers if it's tim
 end
 
 function SpeakerHandler:StartSoundLoop() -- If you use this, you HAVE to put it at the end of your code.
-
+	
 	while true do
 		local dt = task.wait()
 		SpeakerHandler:UpdateSoundLoop(dt)
@@ -97,7 +97,7 @@ end
 
 function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length: number, Speaker: any } ) -- Psuedo sound object, kinda bad
 	config.Pitch = config.Pitch or 1
-
+	
 	local sound = {
 		ClassName = "SpeakerHandler.Sound",
 		Id = config.Id,
@@ -106,49 +106,49 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 		_OnCooldown = false, -- For sound cooldowns
 		_Looped = false
 	}
-
+	
 	if config.Length then
 		sound.Length = config.Length / config.Pitch
 	end
-
+	
 	function sound:Play(cooldownSeconds)
 		if sound._OnCooldown then
 			return
 		end
-
+		
 		sound._Speaker:Configure({Audio = sound.Id, Pitch = sound.Pitch})
 		sound._Speaker:Trigger()
-
+		
 		if not cooldownSeconds then
 			return
 		end
-
+		
 		sound._OnCooldown = true
 		task.delay(cooldownSeconds, function()
 			sound._OnCooldown = false
 		end)
 	end
-
+	
 	function sound:Stop()
 		sound._Speaker:Configure({Audio = 0, Pitch = 1})
 		sound._Speaker:Trigger()
-
+		
 		sound._OnCooldown = false
 	end
-
+	
 	function sound:Loop()
 		sound._Looped = true
 		SpeakerHandler:LoopSound(sound.Id, sound.Length, sound.Pitch, sound._Speaker)
 	end
-
+	
 	function sound:Destroy()
 		if sound._Looped then
 			SpeakerHandler:RemoveSpeakerFromLoop(sound._Speaker)
 		end
-
+		
 		table.clear(sound)
 	end
-
+	
 	return sound
 end
 
@@ -162,7 +162,7 @@ local function createfileontable(disk, filename, filedata, directory)
 		if split[1] and split[2] then
 			local rootfile = disk:Read(split[2])
 			local tablez = {
-				[1] = rootfile,
+			[1] = rootfile,
 			}
 			if typeof(rootfile) == "table" then
 				local resulttable = rootfile
@@ -218,7 +218,7 @@ local function getfileontable(disk, filename, directory)
 		if split[1] and split[2] then
 			local rootfile = disk:Read(split[2])
 			local tablez = {
-				[1] = rootfile,
+			[1] = rootfile,
 			}
 			if typeof(rootfile) == "table" then
 				local resulttable = rootfile
@@ -243,12 +243,10 @@ local keyboard = nil
 local speaker = nil
 local modem = nil
 local microcontrollers = nil
-local holderframes = {}
 
 local shutdownpoly = nil
 
 local function getstuff()
-	holderframes = {}
 	disk = nil
 	screen = nil
 	keyboard = nil
@@ -262,9 +260,7 @@ local function getstuff()
 			success, Error = pcall(GetPartFromPort, i, "Disk")
 			if success then
 				if GetPartFromPort(i, "Disk") then
-					if i > 1 or not GetPartFromPort(i, "Disk"):Read("PuterLibrary") then
-						disk = GetPartFromPort(i, "Disk")
-					end
+					disk = GetPartFromPort(i, "Disk")
 				end
 			end
 		end
@@ -289,7 +285,7 @@ local function getstuff()
 				end
 			end
 		end
-
+	
 		if not shutdownpoly then
 			success, Error = pcall(GetPartFromPort, i, "Polysilicon")
 			if success then
@@ -298,7 +294,7 @@ local function getstuff()
 				end
 			end
 		end
-
+		
 		if not speaker then
 			success, Error = pcall(GetPartFromPort, i, "Speaker")
 			if success then
@@ -367,7 +363,7 @@ if disk then
 	else
 		color = Color3.new(0, 128/255, 218/255)
 	end
-
+	
 	if diskbackgroundimage then
 		local idandbool = string.split(diskbackgroundimage, ",")
 		if tonumber(idandbool[1]) then
@@ -392,6 +388,77 @@ local keyboardinput = nil
 local playerthatinputted = nil
 local backgroundframe = nil
 
+
+if speaker then
+	speaker:ClearSounds()
+end
+
+if screen then
+	screen:ClearElements()
+end
+
+local function CreateNewWindow(udim2, text, boolean, boolean2)
+	local holderframe
+	if boolean2 == false then
+		holderframe = screen:CreateElement("TextButton", {Active = true, Draggable = true, Size = udim2, TextTransparency = 1})
+	elseif boolean2 == true then
+ 		holderframe = screen:CreateElement("TextButton", {Size = udim2, TextTransparency = 1})
+ 	end
+ 	 if not holderframe then return end
+ 	 local textlabel
+ 	 programholder1:AddChild(holderframe)
+ 	 if text then
+   		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -50, 0, 25), Position = UDim2.new(0, 50, 0, 0), BackgroundTransparency = 1, Text = tostring(text), TextWrapped = true, TextScaled = true})
+   		holderframe:AddChild(textlabel)
+   		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
+ 	 end
+  
+ 	local maximizepressed = false
+  
+  	local closebutton = screen:CreateElement("TextButton", {BackgroundColor3 = Color3.new(1,0,0), Size = UDim2.new(0, 25, 0, 25), Text = "Close", TextScaled = true, TextWrapped = true})
+  	holderframe:AddChild(closebutton)
+  
+  
+	closebutton.MouseButton1Up:Connect(function()
+		holderframe:Destroy()
+		holderframe = nil
+	end)
+	
+	local maximizebutton
+	if not boolean then
+		maximizebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0), TextScaled = true, TextWrapped = true})
+		local maximizepressed = false
+	
+		holderframe:AddChild(maximizebutton)
+		local unmaximizedsize = holderframe.Size
+
+		maximizebutton.MouseButton1Up:Connect(function()
+			local holderframe = holderframe
+			if not maximizepressed then
+				unmaximizedsize = holderframe.Size
+				if programholder2 then
+					programholder2:AddChild(holderframe)
+				end
+				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+				holderframe:ChangeProperties({Active = false, Draggable = false;})
+				holderframe.Position = UDim2.new(0, 0, 1, 0)
+				if programholder1 then programholder1:AddChild(holderframe) end
+				holderframe.Position = UDim2.new(0, 0, 0, 0)
+				maximizebutton.Text = "-"
+				maximizepressed = true
+			else
+				if programholder1 then
+					programholder1:AddChild(holderframe)
+				end
+				holderframe.Size = unmaximizedsize
+				holderframe:ChangeProperties({Active = true, Draggable = true;})
+				maximizebutton.Text = "+"
+				maximizepressed = false
+			end
+		end)
+	end
+	return holderframe, closebutton, maximizebutton, textlabel
+end
 
 local function StringToGui(screen, text, parent)
 	local start = UDim2.new(0,0,0,0)
@@ -576,99 +643,34 @@ end
 
 local function woshtmlfile(txt, screen, boolean)
 	local size = UDim2.new(0.7, 0, 0.7, 0)
-
+	
 	if boolean then
 		size = UDim2.new(0.5, 0, 0.5, 0)
 	end
-
-	local filegui = screen:CreateElement("TextButton", {Size = size, Active = true, Draggable = true, TextTransparency = 1})
-	programholder1:AddChild(filegui)
-	table.insert(holderframes, filegui)
-	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -25)})
+	local filegui = CreateNewWindow(size, nil, false, false)
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -25), BackgroundTransparency = 1})
 	filegui:AddChild(scrollingframe)
-	filegui:AddChild(closebutton)
-	closebutton.MouseButton1Down:Connect(function()
-		filegui:Destroy()
-		--table.remove(holderframes, table.find(holderframes, filegui))
-		filegui = nil
-	end)
 
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	filegui:AddChild(maximizebutton)
-	local unmaximizedsize = filegui.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = filegui
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			programholder2:AddChild(holderframe)
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			programholder1:AddChild(holderframe)
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
 	StringToGui(screen, txt, scrollingframe)
 
 end
 
 local function audioui(screen, disk, data, speaker, pitch, length)
-	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.5, 0, 0.5, 0), Active = true, Draggable = true, TextTransparency = 1})
-	programholder1:AddChild(holderframe)
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	holderframe:AddChild(closebutton)
+	local holderframe, closebutton = CreateNewWindow(UDim2.new(0.5, 0, 0.5, 0), nil, false, false)
 	local sound = nil
-	table.insert(holderframes, holderframe)
 	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
 		sound:Stop()
 		sound:Destroy()
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			programholder2:AddChild(holderframe)
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			programholder1:AddChild(holderframe)
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
 	end)
 
 	if not pitch then
 		pitch = 1
 	end
-
+	
 	local pausebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), Text = "Stop", TextScaled = true})
 	holderframe:AddChild(pausebutton)
 
-
+	
 	sound = SpeakerHandler.CreateSound({
 		Id = tonumber(data),
 		Pitch = tonumber(pitch),
@@ -682,9 +684,9 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 	else
 		sound:Play()
 	end
+	
 
-
-
+	
 	pausebutton.MouseButton1Down:Connect(function()
 		if pausebutton.Text == "Stop" then
 			pausebutton.Text = "Play"
@@ -720,54 +722,14 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 						polysilicon:Configure({PolysiliconMode = 0})
 						TriggerPort(polyport)
 						success = true
-						local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.5, 0, 0.5, 0)})
-						local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-						holderframe:AddChild(closebutton)
-
-						programholder2:AddChild(holderframe)
-						table.insert(holderframes, holderframe)
-						
-						closebutton.MouseButton1Down:Connect(function()
-							holderframe:Destroy()
-							--table.remove(holderframes, table.find(holderframes, holderframe))
-						end)
-
-						local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-						local maximizepressed = false
-
-						holderframe:AddChild(maximizebutton)
-						local unmaximizedsize = holderframe.Size
-						maximizebutton.MouseButton1Up:Connect(function()
-
-							local holderframe = holderframe
-							if not maximizepressed then
-								unmaximizedsize = holderframe.Size
-								if programholder2 then
-									programholder2:AddChild(holderframe)
-								end
-								holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-								holderframe:ChangeProperties({Active = false, Draggable = false;})
-								holderframe.Position = UDim2.new(0, 0, 1, 0)
-								if programholder1 then programholder1:AddChild(holderframe) end
-								holderframe.Position = UDim2.new(0, 0, 0, 0)
-								maximizebutton.Text = "-"
-								maximizepressed = true
-							else
-								if programholder1 then
-									programholder1:AddChild(holderframe)
-								end
-								holderframe.Size = unmaximizedsize
-								holderframe:ChangeProperties({Active = true, Draggable = true;})
-								maximizebutton.Text = "+"
-								maximizepressed = false
-							end
-						end)
+						local holderframe = CreateNewWindow(UDim2.new(0.5, 0, 0.5, 0), nil, false, false)
+				
 						local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,0.5,-25), Position = UDim2.new(0, 0, 0, 25), Text = "Using microcontroller:", TextWrapped = true, TextScaled = true})
 						holderframe:AddChild(txtlabel)
-
+						
 						local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,0.5,0), Position = UDim2.new(0, 0, 0.5, 0), Text = micronumber, TextWrapped = true, TextScaled = true})
 						holderframe:AddChild(txtlabel2)
-
+						
 						if runcodebutton then
 							runcodebutton.Text = "Code Ran"
 							task.wait(2)
@@ -784,134 +746,42 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 		end
 	end
 	if not success then
-		local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.5, 0, 0.5, 0)})
-		if programholder2 then programholder2:AddChild(holderframe) end
-		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-		holderframe:AddChild(closebutton)
-
-		table.insert(holderframes, holderframe)
-		closebutton.MouseButton1Down:Connect(function()
-			holderframe:Destroy()
-			--table.remove(holderframes, table.find(holderframes, holderframe))
-		end)
-
-		local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-		local maximizepressed = false
-
-		holderframe:AddChild(maximizebutton)
-		local unmaximizedsize = holderframe.Size
-		maximizebutton.MouseButton1Up:Connect(function()
-
-			local holderframe = holderframe
-			if not maximizepressed then
-				unmaximizedsize = holderframe.Size
-				if programholder2 then
-					programholder2:AddChild(holderframe)
-				end
-				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-				holderframe:ChangeProperties({Active = false, Draggable = false;})
-				holderframe.Position = UDim2.new(0, 0, 1, 0)
-				holderframe.Position = UDim2.new(0, 0, 0, 0)
-				maximizebutton.Text = "-"
-				maximizepressed = true
-			else
-				if programholder1 then
-					programholder1:AddChild(holderframe)
-				end
-				holderframe.Size = unmaximizedsize
-				holderframe:ChangeProperties({Active = true, Draggable = true;})
-				maximizebutton.Text = "+"
-				maximizepressed = false
-			end
-		end)
+		local holderframe = CreateNewWindow(UDim2.new(0.5, 0, 0.5, 0), nil, false, false)
 		local frame = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0, 0, 0, 25), Text = "No microcontrollers left.", TextWrapped = true, TextScaled = true})
 		holderframe:AddChild(frame)
 	end
 end
 
 local function readfile(txt, nameondisk, boolean, directory)
-	local filegui = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	local closebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true})
+	local filegui, closebutton, maximizebutton, textlabel = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false)
 	local deletebutton = nil
 
-	table.insert(holderframes, filegui)
-	programholder2:AddChild(filegui)
-
-	filegui:AddChild(closebutton)
-
-
-	closebutton.MouseButton1Down:Connect(function()
-		filegui:Destroy()
-		filegui = nil
-		--table.remove(holderframes, table.find(holderframes, filegui))
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	filegui:AddChild(maximizebutton)
-	local unmaximizedsize = filegui.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = filegui
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			programholder1:AddChild(holderframe)
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			programholder1:AddChild(holderframe)
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
-
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt), RichText = true})
-
+	
 	filegui:AddChild(disktext)
-
+	
 	print(txt)
-
+	
 	if boolean == true then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 		filegui:AddChild(deletebutton)
-
+		
 		deletebutton.MouseButton1Up:Connect(function()
-			local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-			if programholder2 then programholder2:AddChild(holdframe) end
-			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
-			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-			holdframe:AddChild(textlabel)
-			holdframe:AddChild(closebutton)
+			local holdframe = CreateNewWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, false)
 			local deletebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
 			holdframe:AddChild(deletebutton)
 			local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 			holdframe:AddChild(cancelbutton)
-			
-			table.insert(holderframes, holdframe)
-			closebutton.MouseButton1Down:Connect(function()
-				holdframe:Destroy()
-				holdframe = nil
-				--table.remove(holderframes, table.find(holderframes, holdframe))
-			end)	
-
+				
 			cancelbutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
 				holdframe = nil
-				--table.remove(holderframes, table.find(holderframes, holdframe))
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				disk:Write(nameondisk, nil)
 				holdframe:Destroy()
-				--table.remove(holderframes, table.find(holderframes, holdframe))
 				if filegui then
-					--table.remove(holderframes, table.find(holderframes, filegui))
 					filegui:Destroy()
 				end
 				filegui = nil
@@ -920,30 +790,16 @@ local function readfile(txt, nameondisk, boolean, directory)
 	elseif directory then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 		filegui:AddChild(deletebutton)
-
+		
 		deletebutton.MouseButton1Up:Connect(function()
-			local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-			if programholder2 then programholder2:AddChild(holdframe) end
-			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
-			local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-			holdframe:AddChild(textlabel)
-			holdframe:AddChild(closebutton)
+			local holdframe = CreateNewWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, false)
 			local deletebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
 			holdframe:AddChild(deletebutton)
 			local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 			holdframe:AddChild(cancelbutton)
-
-			table.insert(holderframes, holdframe)
-			table.insert(holderframes, holdframe)
-			closebutton.MouseButton1Down:Connect(function()
-				--table.remove(holderframes, table.find(holderframes, holdframe))
-				holdframe:Destroy()
-				holdframe = nil
-			end)	
-
+				
 			cancelbutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
-				--table.remove(holderframes, table.find(holderframes, holdframe))
 				holdframe = nil
 			end)
 
@@ -951,15 +807,13 @@ local function readfile(txt, nameondisk, boolean, directory)
 				createfileontable(disk, nameondisk, nil, directory)
 				holdframe:Destroy()
 				if filegui then
-					--table.remove(holderframes, table.find(holderframes, filegui))
 					filegui:Destroy()
 				end
-				--table.remove(holderframes, table.find(holderframes, holdframe))
 				filegui = nil
 			end)
 		end)
 	end
-
+	
 	if string.find(string.lower(tostring(nameondisk)), ".aud") then
 		local txt = string.lower(tostring(txt))
 		if string.find(tostring(txt), "pitch:") then
@@ -974,7 +828,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 			else
 				pitch = splitted[2]
 			end
-
+			
 			if string.find(tostring(txt), "length:") then
 				local splitted = string.split(tostring(txt), "length:")
 				if string.find(splitted[2], " ") then
@@ -983,25 +837,25 @@ local function readfile(txt, nameondisk, boolean, directory)
 					length = splitted[2]
 				end
 			end
-
+			
 			audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
-
+			
 		elseif string.find(tostring(txt), "length:") then
-
+			
 			local splitted = string.split(tostring(txt), "length:")
-
+			
 			local spacesplitted = string.split(tostring(txt), " ")
-
+			
 			local length = nil
-
+				
 			if string.find(splitted[2], " ") then
 				length = (string.split(splitted[2], " "))[1]
 			else
 				length = splitted[2]
 			end
-
+			
 			audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
-
+			
 		else
 			audioui(screen, disk, txt, speaker)
 		end
@@ -1014,7 +868,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 	if string.find(string.lower(tostring(nameondisk)), ".lua") then
 		loadluafile(microcontrollers, screen, tostring(txt))
 	end
-
 	if typeof(txt) == "table" then
 		local newdirectory = nil
 		if directory then
@@ -1025,133 +878,72 @@ local function readfile(txt, nameondisk, boolean, directory)
 		filegui:Destroy()
 		filegui = nil
 		
-		--table.remove(holderframes, table.find(holderframes, filegui))
 		local tableval = txt
 		local start = 0
-		local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-		programholder1:AddChild(holderframe)
-		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
+		local holderframe, closebutton, maximizebutton, textlabel = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Table Content", false, false)
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
-		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Table Content"})
-		holderframe:AddChild(textlabel)
-
-		table.insert(holderframes, holderframe)
-
+		textlabel.Size -= UDim2.new(0, 0, 0, 25)
+		
 		if boolean == true then
 			local alldata = disk:ReadEntireDisk()
 			local deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 			holderframe:AddChild(deletebutton)
 			textlabel.Size = UDim2.new(1,-75,0,25)
-
+			
 			deletebutton.MouseButton1Up:Connect(function()
-				local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-				if programholder2 then programholder2:AddChild(holdframe) end
-				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
-				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-				holdframe:AddChild(textlabel)
-				holdframe:AddChild(closebutton)
+				local holdframe = CreateNewWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, false)
 				local deletebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
 				holdframe:AddChild(deletebutton)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 				holdframe:AddChild(cancelbutton)
-
-				table.insert(holderframes, holdframe)
-				closebutton.MouseButton1Down:Connect(function()
-					holdframe:Destroy()
-					--table.remove(holderframes, table.find(holderframes, holdframe))
-					holdframe = nil
-				end)	
-
+					
 				cancelbutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
-					--table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe = nil
 				end)
-
+	
 				deletebutton.MouseButton1Up:Connect(function()
 					disk:Write(nameondisk, nil)
-					holdframe:Destroy()
 					if holderframe then
-						--table.remove(holderframes, table.find(holderframes, holderframe))
 						holderframe:Destroy()
 					end
-					--table.remove(holderframes, table.find(holderframes, holdframe))
+					holdframe:Destroy()
 					holderframe = nil
 				end)
 			end)
 		elseif directory then
 			deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 			holderframe:AddChild(deletebutton)
-
+			
 			deletebutton.MouseButton1Up:Connect(function()
-				local holdframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-				if programholder2 then programholder2:AddChild(holdframe) end
-				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
-				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-				holdframe:AddChild(textlabel)
-				holdframe:AddChild(closebutton)
+				local holdframe = CreateNewWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, false)
 				local deletebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
 				holdframe:AddChild(deletebutton)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 				holdframe:AddChild(cancelbutton)
-
-				table.insert(holderframes, holdframe)
-				closebutton.MouseButton1Down:Connect(function()
-					holdframe:Destroy()
-					--table.remove(holderframes, table.find(holderframes, holdframe))
-					holdframe = nil
-				end)	
-
+				
 				cancelbutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
-					--table.remove(holderframes, table.find(holderframes, holdframe))
 					holdframe = nil
 				end)
-
+	
 				deletebutton.MouseButton1Up:Connect(function()
 					createfileontable(disk, nameondisk, nil, directory)
+					holdframe:Destroy()
 					if holderframe then
-						--table.remove(holderframes, table.find(holderframes, holderframe))
 						holderframe:Destroy()
 					end
-					--table.remove(holderframes, table.find(holderframes, holdframe))
-					holdframe:Destroy()
 					holderframe = nil
 				end)
 			end)
 		end
-
+		
 		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 		holderframe:AddChild(closebutton)
-
+	
 		closebutton.MouseButton1Down:Connect(function()
 			holderframe:Destroy()
-			--table.remove(holderframes, table.find(holderframes, holderframe))
-		end)
-
-		local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-		local maximizepressed = false
-
-		holderframe:AddChild(maximizebutton)
-		local unmaximizedsize = holderframe.Size
-		maximizebutton.MouseButton1Up:Connect(function()
-			local holderframe = holderframe
-			if not maximizepressed then
-				unmaximizedsize = holderframe.Size
-				programholder2:AddChild(holderframe)
-				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-				holderframe:ChangeProperties({Active = false, Draggable = false;})
-				holderframe.Position = UDim2.new(0, 0, 1, 0)
-				holderframe.Position = UDim2.new(0, 0, 0, 0)
-				maximizebutton.Text = "-"
-				maximizepressed = true
-			else
-				programholder1:AddChild(holderframe)
-				holderframe.Size = unmaximizedsize
-				holderframe:ChangeProperties({Active = true, Draggable = true;})
-				maximizebutton.Text = "+"
-				maximizepressed = false
-			end
 		end)
 
 		for index, data in pairs(tableval) do
@@ -1164,54 +956,18 @@ local function readfile(txt, nameondisk, boolean, directory)
 			end)
 		end
 	end
-
+	
 	if string.find(string.lower(tostring(txt)), "<woshtml>") then
 		woshtmlfile(txt, screen)
 	end
-
+	
 end
 
 local function loaddisk(screen, disk)
 	local start = 0
-	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	programholder1:AddChild(holderframe)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25)})
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Disk Content", false, false)
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Disk Content"})
-	holderframe:AddChild(textlabel)
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	holderframe:AddChild(closebutton)
-
-	table.insert(holderframes, holderframe)
-	closebutton.MouseButton1Down:Connect(function()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-		holderframe:Destroy()
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			programholder2:AddChild(holderframe)
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			programholder1:AddChild(holderframe)
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
 		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
@@ -1228,62 +984,28 @@ local function loaddisk(screen, disk)
 end
 
 local function writedisk(screen, disk)
-	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	if programholder1 then programholder1:AddChild(holderframe) end
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Create File", false, false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create File"})
 	local filenamebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Name(Case Sensitive) (Click to update)"})
 	local filedatabutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File Data (Click to update)"})
 	local createfilebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Apply"})
-	holderframe:AddChild(textlabel)
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	holderframe:AddChild(closebutton)
 	scrollingframe:AddChild(filenamebutton)
 	scrollingframe:AddChild(filedatabutton)
 	scrollingframe:AddChild(createfilebutton)
 
-	table.insert(holderframes, holderframe)
 	local createtablebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2, 0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Create Table"})
 	scrollingframe:AddChild(createtablebutton)
 
 	local directorybutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.4, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]})
 	scrollingframe:AddChild(directorybutton)
-
+	
 	local data = nil
 	local filename = nil
 
-	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
+	
 	local directory = ""
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			if programholder2 then programholder2:AddChild(holderframe) end
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			holderframe.Size = unmaximizedsize
-			if programholder1 then programholder1:AddChild(holderframe) end
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
+	
 
 	filenamebutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
@@ -1391,7 +1113,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createtablebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
 			local split = nil
 			local returntable = nil
 			if directory ~= "" then
@@ -1423,50 +1145,16 @@ local function writedisk(screen, disk)
 end
 
 local function changecolor(screen, disk)
-	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false)
 	programholder1:AddChild(holderframe)
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Color"})
 	local color = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "RGB (Click to update)"})
 	local changecolorbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Color"})
-	holderframe:AddChild(textlabel)
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(changecolorbutton)
 	holderframe:AddChild(color)
-	holderframe:AddChild(closebutton)
 
-	table.insert(holderframes, holderframe)
+	
 	local data = nil
 	local filename = nil
-
-	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			programholder2:AddChild(holderframe)
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			programholder1:AddChild(holderframe)
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
 
 	color.MouseButton1Down:Connect(function()
 		if keyboardinput then
@@ -1494,57 +1182,22 @@ local function changecolor(screen, disk)
 end
 
 local function changebackgroundimage(screen, disk)
-	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	programholder1:AddChild(holderframe)
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Background Image"})
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Background Image", false, false)
 	local id = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Image ID"})
 	local tiletoggle = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Enable tile"})
 	local tilenumber = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.75,0,0.2,0), Position = UDim2.new(0.25, 0, 0.2, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "UDim2"})
 	local changebackimg = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Change Background Image"})
-	holderframe:AddChild(textlabel)
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	holderframe:AddChild(changebackimg)
 	holderframe:AddChild(id)
 	holderframe:AddChild(tiletoggle)
 	holderframe:AddChild(tilenumber)
-	holderframe:AddChild(closebutton)
 
-	table.insert(holderframes, holderframe)
+
 	local data = nil
 	local filename = nil
 	local tile = false
 	local tilenumb = "0.2, 0, 0.2, 0"
-
-	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			programholder2:AddChild(holderframe)
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			programholder1:AddChild(holderframe)
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
-
+	
 	id.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			id.Text = keyboardinput:gsub("\n", "")
@@ -1562,7 +1215,7 @@ local function changebackgroundimage(screen, disk)
 		end
 	end)
 
-
+	
 	tilenumber.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			tilenumber.Text = keyboardinput:gsub("\n", "")
@@ -1591,64 +1244,21 @@ local function changebackgroundimage(screen, disk)
 end
 
 local function chatthing(screen, disk, modem)
-	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	if programholder1 then
-		programholder1:AddChild(holderframe)
-	end
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false)
+	
 	local messagesent = nil
-	table.insert(holderframes, holderframe)
-
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	holderframe:AddChild(closebutton)
-
-	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-		if messagesent then
-			messagesent:Unbind()
-		end
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			if programholder2 then
-				programholder2:AddChild(holderframe)
-			end
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			if programholder1 then
-				programholder1:AddChild(holderframe)
-			end
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
 
 	if modem then
-
+	
 		local id = 0
 
 		local toggleanonymous = false
 		local togglea = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.1, 0), Position = UDim2.new(0,0,0,25), Text = "Enable anonymous mode", TextScaled = true})
 		holderframe:AddChild(togglea)
-
+		
 		local idui = screen:CreateElement("TextButton", {Size = UDim2.new(0.6, 0, 0.1, 0), Position = UDim2.new(0.4,0,0,25), Text = "Network id", TextScaled = true})
 		holderframe:AddChild(idui)
-
+		
 		idui.MouseButton1Up:Connect(function()
 			if tonumber(keyboardinput) then
 				idui.Text = tonumber(keyboardinput)
@@ -1666,16 +1276,16 @@ local function chatthing(screen, disk, modem)
 				togglea.Text = "Disable anonymous mode"
 			end
 		end)
-
-		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.8, -25), Position = UDim2.new(0, 0, 0.1, 25)})
+	
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.8, -25), Position = UDim2.new(0, 0, 0.1, 25), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
-
+	
 		local sendbox =  screen:CreateElement("TextButton", {Size = UDim2.new(0.8, 0, 0.1, 0), Position = UDim2.new(0,0,0.9,0), Text = "Message (Click to update)", TextScaled = true})
 		holderframe:AddChild(sendbox)
-
+	
 		local sendtext = nil
 		local player = nil
-
+		
 		sendbox.MouseButton1Up:Connect(function()
 			if keyboardinput then
 				sendbox.Text = keyboardinput:gsub("\n", "")
@@ -1683,10 +1293,10 @@ local function chatthing(screen, disk, modem)
 				player = playerthatinputted
 			end
 		end)
-
+	
 		local sendbutton =  screen:CreateElement("TextButton", {Size = UDim2.new(0.2, 0, 0.1, 0), Position = UDim2.new(0.8,0,0.9,0), Text = "Send", TextScaled = true})
 		holderframe:AddChild(sendbutton)
-
+	
 		sendbutton.MouseButton1Up:Connect(function()
 			if sendtext then
 				if not toggleanonymous then
@@ -1699,9 +1309,9 @@ local function chatthing(screen, disk, modem)
 				sendbutton.Text = "Send"
 			end
 		end)
-
+	
 		local start = 0
-
+		
 		messagesent = modem:Connect("MessageSent", function(text)
 			print(text)
 			local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
@@ -1716,54 +1326,20 @@ local function chatthing(screen, disk, modem)
 end
 
 local function calculator(screen)
-	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	programholder1:AddChild(holderframe)
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false)
 	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.1, 0), Position = UDim2.new(0, 0, 0, 25), Text = "0"})
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.1, 0, 0.1, 0), Position = UDim2.new(0.45, 0, 0, 25), Text = ""})
 	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.1, 0), Position = UDim2.new(0.55, 0, 0, 25), Text = ""})
 	holderframe:AddChild(part1)
 	holderframe:AddChild(part2)
 	holderframe:AddChild(part3)
-	holderframe:AddChild(closebutton)
 
-	table.insert(holderframes, holderframe)
 	local number1 = 0
 	local type = nil
 	local number2 = 0
 
 	local data = nil
 	local filename = nil
-
-	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			programholder2:AddChild(holderframe)
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			programholder1:AddChild(holderframe)
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
 
 	local  button1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.50, 0, 0.1, 25), Text = "9"})
 	holderframe:AddChild(button1)
@@ -1812,7 +1388,7 @@ local function calculator(screen)
 			part2.Text = number2
 		end
 	end)
-
+	
 	local  button5 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.25, 0, 0.2, 25), Text = "5"})
 	holderframe:AddChild(button5)
 	button5.MouseButton1Down:Connect(function()
@@ -1836,7 +1412,7 @@ local function calculator(screen)
 			part2.Text = number2
 		end
 	end)
-
+	
 	local  button7 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.50, 0, 0.3, 25), Text = "3"})
 	holderframe:AddChild(button7)
 	button7.MouseButton1Down:Connect(function()
@@ -1872,7 +1448,7 @@ local function calculator(screen)
 			part2.Text = number2
 		end
 	end)
-
+	
 	local  button10 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0.25, 0, 0.4, 25), Text = "0"})
 	holderframe:AddChild(button10)
 	button10.MouseButton1Down:Connect(function()
@@ -1991,7 +1567,7 @@ local function calculator(screen)
 			part3.Text = ""
 			type = nil
 		end
-
+		
 		if type == "-" then
 			part1.Text = tonumber(number1) - tonumber(number2)
 			number1 = tonumber(number1) - tonumber(number2)
@@ -2018,7 +1594,7 @@ local function calculator(screen)
 			part3.Text = ""
 			type = nil
 		end
-
+			
 		if type == "√" then
 			part1.Text = tonumber(number2) ^ (1 / tonumber(number1))
 			number1 = tonumber(number2) ^ (1 / tonumber(number1))
@@ -2027,7 +1603,7 @@ local function calculator(screen)
 			part3.Text = ""
 			type = nil
 		end
-
+			
 		if type == "^" then
 			part1.Text = tonumber(number1) ^ tonumber(number2)
 			number1 = tonumber(number1) ^ tonumber(number2)
@@ -2040,54 +1616,19 @@ local function calculator(screen)
 end
 
 local function mediaplayer(screen, disk, speaker)
-	local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Active = true, Draggable = true, TextTransparency = 1})
-	programholder1:AddChild(holderframe)
-	table.insert(holderframes, holderframe)
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Media player", false, false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
-	local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-50,0,25), Position = UDim2.new(0, 50, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Media Player"})
 	local Filename = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "File with id(Case Sensitive if on a table) (Click to update)"})
 	local openimage = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as image"})
 	local openaudio = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open as audio"})
-	holderframe:AddChild(textlabel)
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 	scrollingframe:AddChild(openimage)
 	scrollingframe:AddChild(Filename)
-	holderframe:AddChild(closebutton)
 	scrollingframe:AddChild(openaudio)
 
 	local data = nil
 	local filename = nil
 
-	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			programholder2:AddChild(holderframe)
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			programholder1:AddChild(holderframe)
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
 	local toggleopen = true
 	local Toggle1 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.2, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Open from File: Yes"})
 	scrollingframe:AddChild(Toggle1)
@@ -2101,7 +1642,7 @@ local function mediaplayer(screen, disk, speaker)
 			Toggle1.Text = "Open from File: Yes"
 		end
 	end)
-
+	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			Filename.Text = keyboardinput:gsub("\n", "")
@@ -2112,7 +1653,7 @@ local function mediaplayer(screen, disk, speaker)
 	local directorybutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(1,0,0.2,0), Position = UDim2.new(0, 0, 0.4, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = [[Directory (Click to update) example: "/sounds"]]})
 	scrollingframe:AddChild(directorybutton)
 	local directory = ""
-
+	
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
 			local inputtedtext = keyboardinput:gsub("\n", "")
@@ -2168,7 +1709,7 @@ local function mediaplayer(screen, disk, speaker)
 		end
 	end)
 
-
+	
 	openaudio.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
 			local readdata = nil
@@ -2186,20 +1727,20 @@ local function mediaplayer(screen, disk, speaker)
 				readdata = string.lower(tostring(data))
 			end
 			local data = readdata
-
+			
 			if string.find(tostring(data), "pitch:") then
 				local length = nil
-
+	
 				local pitch = nil
 				local splitted = string.split(tostring(data), "pitch:")
 				local spacesplitted = string.split(tostring(data), " ")
-
+	
 				if string.find(splitted[2], " ") then
 					pitch = (string.split(splitted[2], " "))[1]
 				else
 					pitch = splitted[2]
 				end
-
+				
 				if string.find(tostring(data), "length:") then
 					local splitted = string.split(tostring(data), "length:")
 					if string.find(splitted[2], " ") then
@@ -2208,31 +1749,31 @@ local function mediaplayer(screen, disk, speaker)
 						length = splitted[2]
 					end
 				end
-
+				
 				audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
-
+				
 			elseif string.find(tostring(data), "length:") then
-
+				
 				local splitted = string.split(tostring(data), "length:")
-
+				
 				local spacesplitted = string.split(tostring(data), " ")
-
+				
 				local length = nil
-
+					
 				if string.find(splitted[2], " ") then
 					length = (string.split(splitted[2], " "))[1]
 				else
 					length = splitted[2]
 				end
-
+				
 				audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
-
+				
 			else
 				audioui(screen, disk, data, speaker)
 			end
 		end
 	end)
-
+	
 	openimage.MouseButton1Down:Connect(function()
 		if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
 			local readdata = nil
@@ -2255,50 +1796,9 @@ local function mediaplayer(screen, disk, speaker)
 end
 
 local function shutdownmicros(screen, micros)
-	local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	holderframe:AddChild(closebutton)
-	table.insert(holderframes, holderframe)
+	local holderframe = CreateNewWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false ,false)
 	
-	if programholder1 then
-		programholder1:AddChild(holderframe)
-	end
-
-	closebutton.MouseButton1Down:Connect(function()
-		holderframe:Destroy()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-	end)
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			if programholder2 then
-				programholder2:AddChild(holderframe)
-			end
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			if programholder1 then
-				programholder1:AddChild(holderframe)
-			end
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
-
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25)})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 
 	local start = 0
@@ -2334,48 +1834,7 @@ end
 
 
 local function customprogramthing(screen, micros)
-	local holderframe = screen:CreateElement("TextButton", {Draggable = true, TextTransparency = 1, Size = UDim2.new(0.75, 0, 0.75, 0)})
-	local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-	holderframe:AddChild(closebutton)
-
-	table.insert(holderframes, holderframe)
-	closebutton.MouseButton1Down:Connect(function()
-		--table.remove(holderframes, table.find(holderframes, holderframe))
-		holderframe:Destroy()
-	end)
-
-	if programholder1 then
-		programholder1:AddChild(holderframe)
-	end
-
-	local maximizebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0)})
-	local maximizepressed = false
-
-	holderframe:AddChild(maximizebutton)
-	local unmaximizedsize = holderframe.Size
-	maximizebutton.MouseButton1Up:Connect(function()
-		local holderframe = holderframe
-		if not maximizepressed then
-			unmaximizedsize = holderframe.Size
-			if programholder2 then
-				programholder2:AddChild(holderframe)
-			end
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-			holderframe:ChangeProperties({Active = false, Draggable = false;})
-			holderframe.Position = UDim2.new(0, 0, 1, 0)
-			holderframe.Position = UDim2.new(0, 0, 0, 0)
-			maximizebutton.Text = "-"
-			maximizepressed = true
-		else
-			if programholder1 then
-				programholder1:AddChild(holderframe)
-			end
-			holderframe.Size = unmaximizedsize
-			holderframe:ChangeProperties({Active = true, Draggable = true;})
-			maximizebutton.Text = "+"
-			maximizepressed = false
-		end
-	end)
+	local holderframe = CreateNewWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false, false)
 
 	local code = ""
 
@@ -2407,15 +1866,15 @@ local function customprogramthing(screen, micros)
 end
 
 local keyboardevent = nil
-local keyboardreloadevent = nil
 
 local function loadmenu()
 	local pressed = false
 	local startui = nil
-
+	
 	backgroundframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = color})
-	window:AddChild(backgroundframe)
 	backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+
+	window:AddChild(backgroundframe)
 
 	if backgroundimage then
 		backgroundimageframe.Image = backgroundimage
@@ -2429,15 +1888,15 @@ local function loadmenu()
 		end
 	end
 	backgroundframe:AddChild(backgroundimageframe)
-
+	
 	local startmenu = screen:CreateElement("TextButton", {TextScaled = true, Text = "GustavOS", Size = UDim2.new(0.2,0,0.1,0), Position = UDim2.new(0, 0, 0.9, 0)})
 	backgroundframe:AddChild(startmenu)
 
-	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
-	backgroundframe:AddChild(programholder2)
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2:AddChild(programholder1)
-
+	window:AddChild(programholder1)
+	
 	disk:Write("GustavOSLibrary", {
 		CreateElement = function(element, properties)
 			local object = screen:CreateElement(element, properties)
@@ -2462,7 +1921,6 @@ local function loadmenu()
 			end
 		else
 			startui = screen:CreateElement("TextButton", {Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), TextTransparency = 1})
-			backgroundframe:AddChild(startui)
 			local programs = screen:CreateElement("TextButton", {Text = "Programs", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0)})
 			startui:AddChild(programs)
 			local settings = screen:CreateElement("TextButton", {Text = "Settings", TextScaled = true, Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.2, 0)})
@@ -2470,9 +1928,9 @@ local function loadmenu()
 
 			local shutdown = nil
 
-			local restart = screen:CreateElement("TextButton", {Text = "Restart", TextScaled = true, Size = UDim2.new(0.5, 0, 0.2, 0), Position = UDim2.new(0.5, 0, 0.8, 0)})
+			restart = screen:CreateElement("TextButton", {Text = "Restart", TextScaled = true, Size = UDim2.new(0.5, 0, 0.2, 0), Position = UDim2.new(0.5, 0, 0.8, 0)})
 			startui:AddChild(restart)
-
+			
 			shutdown = screen:CreateElement("TextButton", {Text = "Shutdown", TextScaled = true, Size = UDim2.new(0.5, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0)})
 			startui:AddChild(shutdown)
 
@@ -2486,7 +1944,7 @@ local function loadmenu()
 						holdingframe2:Destroy()
 						holdingframe2 = nil
 					end
-
+					
 					holdingframe = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(1, 0, 0, 0)})
 					startui:AddChild(holdingframe)
 					local opencalculator = screen:CreateElement("TextButton", {Text = "Calculator", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0)})
@@ -2507,7 +1965,7 @@ local function loadmenu()
 						pressed = false
 					end)
 
-
+							
 					openluaexecutor.MouseButton1Down:Connect(function()
 						customprogramthing(screen)
 						startui:Destroy()
@@ -2521,7 +1979,7 @@ local function loadmenu()
 						pressed = false
 						chatthing(screen, disk, modem)
 					end)
-
+							
 					openmediaplayer.MouseButton1Down:Connect(function()
 						mediaplayer(screen, disk, speaker)
 						startui:Destroy()
@@ -2585,39 +2043,23 @@ local function loadmenu()
 			--restart:
 
 			restart.MouseButton1Up:Connect(function()
-				local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-				if programholder2 then programholder2:AddChild(holderframe) end
-				table.insert(holderframes, holderframe)
-				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
-				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-				holderframe:AddChild(textlabel)
-				holderframe:AddChild(closebutton)
+				local holderframe = CreateNewWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, false)
 				local restartbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
 				holderframe:AddChild(restartbutton)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 				holderframe:AddChild(cancelbutton)
-
-				closebutton.MouseButton1Down:Connect(function()
-					holderframe:Destroy()
-					--table.remove(holderframes, table.find(holderframes, holderframe))
-					holderframe = nil
-				end)	
-
+					
 				cancelbutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
-					--table.remove(holderframes, table.find(holderframes, holderframe))
 					holderframe = nil
 				end)
-
+					
 				restartbutton.MouseButton1Down:Connect(function()
-					if backgroundframe then
-						backgroundframe:Destroy()
-					end
+					screen:ClearElements()
+					speaker:ClearSounds()
 					Beep(1)
 					backgroundimageframe = nil
 					backgroundimage = nil
-					--table.remove(holderframes, table.find(holderframes, holderframe))
-					local textbutton
 					getstuff()
 					if screen then
 						if disk then
@@ -2637,7 +2079,7 @@ local function loadmenu()
 							else
 								color = Color3.new(0, 128/255, 218/255)
 							end
-
+							
 							if diskbackgroundimage then
 								local idandbool = string.split(diskbackgroundimage, ",")
 								if tonumber(idandbool[1]) then
@@ -2674,31 +2116,16 @@ local function loadmenu()
 										keyboardevent:Unbind()
 										keyboardevent = nil
 									end
-									if keyboardreloadevent then
-										keyboardreloadevent:Unbind()
-										keyboardreloadevent = nil
-									end
 									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
 										keyboardinput = text
 										playerthatinputted = plr
 									end)
-									keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-										if string.lower(tostring(keystring)) == "r" then
-											for index, value in pairs(holderframes) do
-												if value then
-													value.Position = UDim2.new(1, 0, 0, 0)
-													value.Position = UDim2.new(0, 0, 0, 0)
-												end
-												task.wait()
-											end
-										end
-									end)
 								else
-									textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
+									local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 									Beep(1)
 									window:AddChild(textbutton)
 									textbutton.MouseButton1Down:Connect(function()
-										if textbutton then textbutton:Destroy() end
+										screen:ClearElements()
 										getstuff()
 										startload()
 									end)
@@ -2706,9 +2133,8 @@ local function loadmenu()
 							else
 								local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
 								Beep(1) 
-								window:AddChild(textbutton)
 								textbutton.MouseButton1Down:Connect(function()
-									if textbutton then textbutton:Destroy() end
+									screen:ClearElements()
 									getstuff()
 									startload()
 								end)
@@ -2718,7 +2144,7 @@ local function loadmenu()
 							Beep(1)
 							window:AddChild(textbutton)
 							textbutton.MouseButton1Down:Connect(function()
-								if textbutton then textbutton:Destroy() end
+								screen:ClearElements()
 								getstuff()
 								startload()
 							end)
@@ -2732,37 +2158,20 @@ local function loadmenu()
 			--shutdown:
 
 			shutdown.MouseButton1Up:Connect(function()
-				local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.4, 0, 0.25, 25), Active = true, Draggable = true, TextTransparency = 1})
-				if programholder2 then programholder2:AddChild(holderframe) end
-				table.insert(holderframes, holderframe)
-				local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Are you sure?"})
-				local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-				holderframe:AddChild(textlabel)
-				holderframe:AddChild(closebutton)
+				local holderframe = CreateNewWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, false)
 				local shutdownbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
 				holderframe:AddChild(shutdownbutton)
 				local cancelbutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5, 0, 0.75, -25), Position = UDim2.new(0.5, 0, 0.25, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
 				holderframe:AddChild(cancelbutton)
 
-				closebutton.MouseButton1Down:Connect(function()
-					holderframe:Destroy()
-					--table.remove(holderframes, table.find(holderframes, holderframe))
-					holderframe = nil
-				end)
-
 				cancelbutton.MouseButton1Down:Connect(function()
 					holderframe:Destroy()
-					--table.remove(holderframes, table.find(holderframes, holderframe))
 					holderframe = nil
 				end)
 
 				shutdownbutton.MouseButton1Down:Connect(function()
-					if backgroundframe then
-						backgroundframe:Destroy()
-					end
-					--table.remove(holderframes, table.find(holderframes, holderframe))
-					local frame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0)})
-					window:AddChild(frame)
+					screen:ClearElements()
+					speaker:ClearSounds()
 					Beep(1)
 					task.wait(0.1)
 					Beep(0.75)
@@ -2778,11 +2187,12 @@ local function loadmenu()
 						keyboardevent:Unbind()
 						keyboardevent = nil
 					end
-					local textlabel = screen:CreateElement("TextLabel", {TextColor3 = Color3.new(1,1,1), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, TextXAlignment = Enum.TextXAlignment.Left, TextWrapped = true, TextScaled = true, Text = "GustavOS was shutdown."})
-					frame:AddChild(textlabel)
+					if shutdownpoly then
+						TriggerPort(shutdownpoly)
+					end
 				end)
 			end)
-
+			
 		end
 	end)
 end
@@ -2796,24 +2206,9 @@ function startload()
 						keyboardevent:Unbind()
 						keyboardevent = nil
 					end
-					if keyboardreloadevent then
-						keyboardreloadevent:Unbind()
-						keyboardreloadevent = nil
-					end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
 						keyboardinput = text
 						playerthatinputted = plr
-					end)
-					keyboardreloadevent = keyboard:Connect("KeyPressed", function(key, keystring)
-						if string.lower(tostring(keystring)) == "r" then
-							for index, value in pairs(holderframes) do
-								if value then
-									value.Position = UDim2.new(1, 0, 0, 0)
-									value.Position = UDim2.new(0, 0, 0, 0)
-								end
-								task.wait()
-							end
-						end
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
 						loadmenu()
@@ -2829,27 +2224,26 @@ function startload()
 						task.wait(0.1)
 						Beep(1)
 					else
-
+						
 						Beep(1)
 						local backgroundimageframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Image = "rbxassetid://15185996180"})
+						programholder1 = backgroundimageframe
 						window:AddChild(backgroundimageframe)
-						local holderframe = screen:CreateElement("TextButton", {Size = UDim2.new(0.7, 0, 0.7, 0), Position = UDim2.new(0.15, 0, 0.15, 0), Active = true, TextTransparency = 1})
-						window:AddChild(holderframe)
-						local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,-25,0,25), Position = UDim2.new(0, 25, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Welcome to GustavOS"})
+						local holderframe, closebutton = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", true, true)
+						holderframe.Position = UDim2.new(0.15, 0, 0.15, 0)
 						local textlabel2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,-25), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add a background image and some sounds to the hard drive?"})
 						local yes = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Yes"})
 						local no = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.5,0,0.2,0), Position = UDim2.new(0.5, 0, 0.8, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "No"})
-						holderframe:AddChild(textlabel)
 						holderframe:AddChild(textlabel2)
-						local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
 						holderframe:AddChild(no)
-						holderframe:AddChild(closebutton)
 						holderframe:AddChild(yes)
-
+	
 						local function loados()
 							backgroundimageframe:Destroy()
-							holderframe:Destroy()
-							holderframe = nil
+							if holderframe then
+								holderframe:Destroy()
+								holderframe = nil
+							end
 							loadmenu()
 							Beep(0.25)
 							task.wait(0.1)
@@ -2863,15 +2257,15 @@ function startload()
 							task.wait(0.1)
 							Beep(1)
 						end
-
+						
 						closebutton.MouseButton1Up:Connect(function()
 							loados()
 						end)
-
+	
 						no.MouseButton1Up:Connect(function()
 							loados()
 						end)
-
+	
 						yes.MouseButton1Up:Connect(function()
 							disk:Read("BackgroundImage")
 							disk:Write("BackgroundImage", "15185998460,false,0.2,0,0.2,0")
@@ -2896,17 +2290,17 @@ function startload()
 								["4th-axis.aud"] = "8909965418",
 							})
 							disk:Write([[File "Extensions"]], [[There are 3 different File "Extensions", they are: .lua, .img and .aud.]])
-
+							
 							loados()
 						end)
-
+						
 					end
 				else
 					local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 					Beep(1)
 					window:AddChild(textbutton)
 					textbutton.MouseButton1Down:Connect(function()
-						if textbutton then textbutton:Destroy() end
+						screen:ClearElements()
 						getstuff()
 						startload()
 					end)
@@ -2919,10 +2313,10 @@ function startload()
 				end
 			else
 				local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No speaker was found.", TextScaled = true})
-				Beep(1)
+				Beep(1) 
 				window:AddChild(textbutton)
 				textbutton.MouseButton1Down:Connect(function()
-					if textbutton then textbutton:Destroy() end
+					screen:ClearElements()
 					getstuff()
 					startload()
 				end)
@@ -2936,7 +2330,7 @@ function startload()
 			Beep(1)
 			window:AddChild(textbutton)
 			textbutton.MouseButton1Down:Connect(function()
-				if textbutton then textbutton:Destroy() end
+				screen:ClearElements()
 				getstuff()
 				startload()
 			end)
