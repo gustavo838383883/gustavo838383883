@@ -356,6 +356,7 @@ local holding2 = false
 
 local prevCursorPos
 local uiStartPos
+local minimizedprograms = {}
 
 local function getCursorColliding(X, Y, ui)
 	if X and Y and ui then else return end
@@ -392,7 +393,7 @@ local programholder2
 
 local buttondown = false
 
-function createwindow(udim2, title, boolean, boolean2, boolean3)
+function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 
 	programholder1:AddChild(holderframe)
@@ -487,6 +488,29 @@ function createwindow(udim2, title, boolean, boolean2, boolean3)
 	end)
 
 	local maximizebutton
+	local minimizebutton
+	
+	if not boolean4 then
+		minimizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 70, 0, 0), BackgroundTransparency = 1})
+		holderframe:AddChild(minimizebutton)
+		local minimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "↓"})
+		minimizebutton:AddChild(minimizetext)
+		if title then
+			textlabel.Position += UDim2.new(0, 35, 0, 0)
+			textlabel.Size -= UDim2.new(0, 35, 0, 0)
+		end
+
+		maximizebutton.MouseButton1Down:Connect(function()
+			maximizebutton.Image = "rbxassetid://15617866125"
+		end)
+		
+		maximizebutton.MouseButton1Up:Connect(function()
+			if holding or holding2 then return end
+			speaker:PlaySound("rbxassetid://6977010128")
+			maximizebutton.Image = "rbxassetid://15617867263"
+		end)
+	end
+	
 	if not boolean then
 		maximizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 35, 0, 0), BackgroundTransparency = 1})
 		local maximizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "+"})
@@ -521,8 +545,8 @@ function createwindow(udim2, title, boolean, boolean2, boolean3)
 		end)
 	else
 		if title then
-			textlabel.Position = UDim2.new(0, 35, 0, 0)
-			textlabel.Size = UDim2.new(1, -35, 0, 25)
+			textlabel.Position -= UDim2.new(0, 35, 0, 0)
+			textlabel.Size += UDim2.new(0, -35, 0, 0)
 		end
 	end
 	return holderframe, closebutton, maximizebutton, textlabel, resizebutton
