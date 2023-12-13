@@ -266,7 +266,7 @@ end
 
 local commandline = {}
 
-local function commandline.new(boolean, udim2)
+function commandline.new(boolean, udim2)
 	local holderframe
 	local background
 	local lines = {
