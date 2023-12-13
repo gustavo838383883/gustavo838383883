@@ -435,6 +435,13 @@ function createwindow(udim2, title, boolean, boolean2, boolean3)
 	
 		holderframe.MouseButton1Down:Connect(function()
 			if holding then return end
+			if not maximizepressed then
+				programholder2:AddChild(holderframe)
+				programholder1:AddChild(holderframe)
+			else
+				programholder1:AddChild(holderframe)
+				programholder2:AddChild(holderframe)
+			end
 			if maximizepressed then return end
 			local cursors = screen:GetCursors()
 			local cursor
