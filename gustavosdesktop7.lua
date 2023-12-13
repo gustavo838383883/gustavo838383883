@@ -731,7 +731,7 @@ local function loaddesktop()
 					screen:ClearElements()
 					local commandlines = commandline.new(false, nil, screen)
 					commandlines:insert("Shutting Down...")
-					task.wait(1)
+					task.wait(2)
 					screen:ClearElements()
 					if shutdownpoly then
 						TriggerPort(shutdownpoly)
