@@ -549,6 +549,12 @@ local resolutionframe
 local name = "GustavOSDesktop7"
 
 local function loaddesktop()
+	disk:Write("GustavOSLibrary", {
+		Screen = screen,
+		Keyboard = keyboard,
+		Modem = modem,
+		Speaker = speaker,
+	})
 	resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
 	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15617469527", BackgroundTransparency = 1})
 	
