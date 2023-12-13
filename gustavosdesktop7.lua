@@ -661,6 +661,7 @@ local function loaddesktop()
 	local function openstartmenu()
 		if not pressed then
 			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), ImageTransparency = 0.2})
+			
 			local testopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(testopen)
 			local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Test"})
@@ -674,6 +675,41 @@ local function loaddesktop()
 				CreateWindow(UDim2.new(0.5, 0, 0.5, 0), "Test", false, false, false, "Test", false)
 				pressed = false
 				startmenu:Destroy()
+			end)
+
+			local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
+			startmenu:AddChild(shutdown)
+			local shutdowntext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Test"})
+			shutdown:AddChild(shutdowntext)
+			shutdown.MouseButton1Down:Connect(function()
+				shutdown.Image = "rbxassetid://15625805069"
+			end)
+
+			shutdown.MouseButton1Up:Connect(function()
+				speaker:PlaySound("rbxassetid://6977010128")
+				shutdown.Image = "rbxassetid://15625805900"
+				pressed = false
+				startmenu:Destroy()
+				startbutton7:Destroy()
+				taskbar:Destroy()
+				minimizedprograms = {}
+				minimizedammount = 0
+				task.wait(1)
+				speaker:ClearSounds()
+				speaker:PlaySound("rbxassetid://7762841318")
+				for i=0,1,0.1 do
+					task.wait(0.1)
+					wallpaper.ImageTransparency = i
+				end
+				task.wait(1)
+				screen:ClearElements()
+				local commandlines = commandline.new(false, nil, screen)
+				commandlines:insert("Shutting Down...")
+				task.wait(1)
+				screen:ClearElements()
+				if shutdownpoly then
+					TriggerPort(shutdownpoly)
+				end
 			end)
 			pressed = true
 		else
