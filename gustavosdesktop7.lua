@@ -723,6 +723,7 @@ function bootos()
 		if keyboard then
 			keyboard:Connect("KeyPressed", function(key)
 				if key == Enum.KeyCode.Return then
+					getstuff()
 					bootos()
 				end
 			end)
@@ -746,6 +747,7 @@ function bootos()
 		if keyboard then
 			keyboard:Connect("KeyPressed", function(key)
 				if key == Enum.KeyCode.Return then
+					getstuff()
 					bootos()
 				end
 			end)
