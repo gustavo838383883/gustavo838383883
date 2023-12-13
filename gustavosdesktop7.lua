@@ -722,7 +722,7 @@ function bootos()
 		end
 		if keyboard then
 			keyboard:Connect("KeyPressed", function(key)
-				if key == Enum.KeyCode.Enter then
+				if key == Enum.KeyCode.Return then
 					bootos()
 				end
 			end)
@@ -745,7 +745,7 @@ function bootos()
 		end
 		if keyboard then
 			keyboard:Connect("KeyPressed", function(key)
-				if key == Enum.KeyCode.Enter then
+				if key == Enum.KeyCode.Return then
 					bootos()
 				end
 			end)
