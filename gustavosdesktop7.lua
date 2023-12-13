@@ -707,26 +707,26 @@ local function loaddesktop()
 					window:Destroy()
 				end)
 				yes.MouseButton1Up:Connect(function()
-						startbutton7:Destroy()
-						taskbarholder:Destroy()
-						minimizedprograms = {}
-						minimizedammount = 0
-						task.wait(1)
-						speaker:ClearSounds()
-						speaker:PlaySound("rbxassetid://7762841318")
-						for i=0,1,0.1 do
-							task.wait(0.1)
-							wallpaper.ImageTransparency = i
-						end
-						task.wait(1)
-						screen:ClearElements()
-						local commandlines = commandline.new(false, nil, screen)
-						commandlines:insert("Shutting Down...")
-						task.wait(1)
-						screen:ClearElements()
-						if shutdownpoly then
-							TriggerPort(shutdownpoly)
-						end
+					startbutton7:Destroy()
+					taskbarholder:Destroy()
+					minimizedprograms = {}
+					minimizedammount = 0
+					task.wait(1)
+					speaker:ClearSounds()
+					speaker:PlaySound("rbxassetid://7762841318")
+					for i=0,1,0.1 do
+						task.wait(0.1)
+						wallpaper.ImageTransparency = i
+					end
+					task.wait(1)
+					screen:ClearElements()
+					local commandlines = commandline.new(false, nil, screen)
+					commandlines:insert("Shutting Down...")
+					task.wait(1)
+					screen:ClearElements()
+					if shutdownpoly then
+						TriggerPort(shutdownpoly)
+					end
 				end)
 			end)
 			pressed = true
