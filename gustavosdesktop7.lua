@@ -763,7 +763,9 @@ while true do
 				if newY + 0.1 > 0.9 then
 					newY = 0.8
 				end
-				holderframetouse.Position = UDim2.fromScale(newX, newY)
+				if holderframetouse then
+					holderframetouse.Position = UDim2.fromScale(newX, newY)
+				end
 			end
 		end
 	end
@@ -792,7 +794,9 @@ while true do
 				if newY/screenresolution.Y < 0.4 then newY = screenresolution.Y * 0.4 end
 				if newX/screenresolution.X > 1 then newX = screenresolution.X end
 				if newY/screenresolution.Y > 0.9 then newY = screenresolution.Y * 0.9 end
-				holderframetouse.Size = UDim2.fromScale(newX/screenresolution.X, newY/screenresolution.Y)
+				if holderframetouse then
+					holderframetouse.Size = UDim2.fromScale(newX/screenresolution.X, newY/screenresolution.Y)
+				end
 			end
 		end
 	end
