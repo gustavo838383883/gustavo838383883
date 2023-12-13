@@ -624,14 +624,21 @@ local name = "GustavOSDesktop7"
 
 local keyboardevent
 
-local function createnicebutton(udim2, pos, text, parent)
-	local button = screen:CreateElement("ImageButton", {udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
+local function createnicebutton(udim2, pos, text, Parent)
+	local txtbutton = screen:CreateElement("ImageButton", {udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
 	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
-	button:AddChild(txtlabel)
-	if parent then
-		parent:AddChild(button)
+	txtbutton:AddChild(txtlabel)
+	if Parent then
+		Parent:AddChild(txtbutton)
 	end
-	return button, txtlabel
+	txtbutton.MouseButton1Down:Connect(function()
+		txtbutton.Image = "rbxassetid://15625805069"
+	end)
+	txtbutton.MouseButton1Up:Connect(function()
+		speaker:PlaySound("rbxassetid://6977010128")
+		txtbutton.Image = "rbxassetid://15625805900"
+	end)
+	return txtbutton, txtlabel
 end
 
 local function loaddesktop()
@@ -701,8 +708,8 @@ local function loaddesktop()
 				pressed = false
 				startmenu:Destroy()
 				local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,false,false,nil,true)
-				local yes = createnicebutton(UDim2.new(1, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
-				local no = createnicebutton(UDim2.new(1, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "No", window)
+				local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
+				local no = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", window)
 				no.MouseButton1Up:Connect(function()
 					window:Destroy()
 				end)
