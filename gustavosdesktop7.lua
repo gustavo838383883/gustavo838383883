@@ -246,6 +246,8 @@ local rom = nil
 local disk = nil
 local microcontrollers = nil
 local regularscreen = nil
+local keyboardinput
+local playerthatinputted
 
 local shutdownpoly = nil
 
@@ -632,9 +634,9 @@ function bootos()
 		screen:ClearElements()
 		loaddesktop()
 		SpeakerHandler.PlaySound(182007357, 1, nil, speaker)
-		keyboard:Connect(function(text, player)
-			local keyboardinput = text
-			local playerthatinputted = player
+		keyboard:Connect("TextInputted", function(text, player)
+			keyboardinput = text
+			playerthatinputted = player
 		end)
 	elseif not screen and regularscreen then
 		regularscreen:ClearElements()
@@ -654,9 +656,12 @@ function bootos()
 			commandlines:insert("You need 2 or more disks on the same port.")
 		end
 		if keyboard then
-			keyboard:Connect("KeyPressed", function()
-				
+			keyboard:Connect("KeyPressed", function(key)
+				if key == Enum.KeyCode.Enter then
+					bootos()
+				end
 			end)
+		end
 	elseif screen then
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
@@ -672,6 +677,13 @@ function bootos()
 		task.wait(1)
 		if not disk then
 			commandlines:insert("You need 2 or more disks on the same port.")
+		end
+		if keyboard then
+			keyboard:Connect("KeyPressed", function(key)
+				if key == Enum.KeyCode.Enter then
+					bootos()
+				end
+			end)
 		end
 	elseif not regularscreen and not screen then
 		Beep(0.5)
