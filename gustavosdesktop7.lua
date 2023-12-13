@@ -700,7 +700,7 @@ local function loaddesktop()
 				shutdown.Image = "rbxassetid://15625805900"
 				pressed = false
 				startmenu:Destroy()
-				local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,false,false,nil,true,)
+				local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,false,false,nil,true)
 				local yes = createnicebutton(UDim2.new(1, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
 				local no = createnicebutton(UDim2.new(1, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "No", window)
 				no.MouseButton1Up:Connect(function()
