@@ -759,8 +759,8 @@ while true do
 			if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
 				if newX/screenresolution.X < 0.4 then newX = screenresolution.X * 0.4 end
 				if newY/screenresolution.Y < 0.4 then newY = screenresolution.Y * 0.4 end
-				if newX/screenresolution.X > 0.95 then newX = screenresolution.X * 0.95 end
-				if newY/screenresolution.Y > 0.95 then newY = screenresolution.Y * 0.95 end
+				if newX/screenresolution.X > 0.95 then newX = screenresolution.X * 1 end
+				if newY/screenresolution.Y > 0.95 then newY = screenresolution.Y * 0.9 end
 				holderframetouse.Size = UDim2.fromScale(newX/screenresolution.X, newY/screenresolution.Y)
 			end
 		end
