@@ -1888,18 +1888,12 @@ local function loadmenu()
 	programholder2:AddChild(programholder1)
 	
 	disk:Write("GustavOSLibrary", {
-		CreateElement = function(element, properties)
-			local object = screen:CreateElement(element, properties)
-			return object
-		end,
 		Screen = screen,
 		Keyboard = keyboard,
 		Modem = modem,
 		Speaker = speaker,
 		programholder1 = programholder1,
 		programholder2 = programholder2,
-		backgroundframe = backgroundframe,
-		backgroundimageframe = backgroundimageframe,
 	})
 
 	startmenu.MouseButton1Down:Connect(function()
