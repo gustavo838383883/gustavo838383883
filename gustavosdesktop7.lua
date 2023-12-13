@@ -497,8 +497,10 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		local minimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "↓"})
 		minimizebutton:AddChild(minimizetext)
 		if title then
-			textlabel.Position += UDim2.new(0, 35, 0, 0)
-			textlabel.Size -= UDim2.new(0, 35, 0, 0)
+			if textlabel then
+				textlabel.Position += UDim2.new(0, 35, 0, 0)
+				textlabel.Size -= UDim2.new(0, 35, 0, 0)
+			end
 		end
 		print("A")
 		minimizebutton.MouseButton1Down:Connect(function()
