@@ -403,7 +403,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 
 	programholder1:AddChild(holderframe)
 	local textlabel
-	if typeof(title) == "table" then
+	if typeof(title) == "string" then
 		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -70, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 70, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
 	end
 	local resizebutton
