@@ -500,7 +500,7 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			textlabel.Position += UDim2.new(0, 35, 0, 0)
 			textlabel.Size -= UDim2.new(0, 35, 0, 0)
 		end
-
+		print("A")
 		minimizebutton.MouseButton1Down:Connect(function()
 			minimizebutton.Image = "rbxassetid://15617866125"
 		end)
