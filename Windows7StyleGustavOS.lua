@@ -766,8 +766,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 	filegui:AddChild(disktext)
 	
 	print(txt)
-
-	textlabel.Size -= UDim2.new(0, 0, 0, 25)
 	
 	if boolean == true then
 		deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
@@ -869,7 +867,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".img") then
-			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+		woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 	end
 
 	if string.find(string.lower(tostring(nameondisk)), ".lua") then
