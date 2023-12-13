@@ -435,16 +435,18 @@ while true do
 			end
 		end
 	end
-	for i,v in pairs(cursorsinscreen) do
-		v:Destroy()
-		table.remove(cursorsinscreen, i)
-	end
-	local cursors = screen:GetCursors()
-	for i,v in pairs(cursors) do
-		local cursor = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.2, 0, 0.2, 0), BackgroundTransparency = 1, Image = "rbxassetid://8679825641"})
-		table.insert(cursorsinscreen, cursor)
-		if v then
-			cursor.Position = UDim2.new(0, tonumber(v.X) - cursor.AbsoluteSize.X/2, 0, tonumber(v.Y) - cursor.AbsoluteSize.Y/2)
+	if screen then
+		for i,v in pairs(cursorsinscreen) do
+			v:Destroy()
+			table.remove(cursorsinscreen, i)
+		end
+		local cursors = screen:GetCursors()
+		for i,v in pairs(cursors) do
+			local cursor = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.2, 0, 0.2, 0), BackgroundTransparency = 1, Image = "rbxassetid://8679825641"})
+			table.insert(cursorsinscreen, cursor)
+			if v then
+				cursor.Position = UDim2.new(0, tonumber(v.X) - cursor.AbsoluteSize.X/2, 0, tonumber(v.Y) - cursor.AbsoluteSize.Y/2)
+			end
 		end
 	end
 end
