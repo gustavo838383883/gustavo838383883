@@ -715,6 +715,7 @@ local function loaddesktop()
 					window:Destroy()
 				end)
 				yes.MouseButton1Up:Connect(function()
+					window:Destroy()
 					startbutton7:Destroy()
 					taskbarholder:Destroy()
 					minimizedprograms = {}
@@ -722,8 +723,8 @@ local function loaddesktop()
 					task.wait(1)
 					speaker:ClearSounds()
 					speaker:PlaySound("rbxassetid://7762841318")
-					for i=0,1,0.1 do
-						task.wait(0.1)
+					for i=0,1,0.05 do
+						task.wait(0.05)
 						wallpaper.ImageTransparency = i
 					end
 					task.wait(1)
