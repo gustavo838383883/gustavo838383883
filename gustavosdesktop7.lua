@@ -624,6 +624,16 @@ local name = "GustavOSDesktop7"
 
 local keyboardevent
 
+local function createnicebutton(udim2, pos, text, parent)
+	local button = screen:CreateElement("ImageButton", {udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
+	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
+	button:AddChild(txtlabel)
+	if parent then
+		parent:AddChild(button)
+	end
+	return button, txtlabel
+end
+
 local function loaddesktop()
 	minimizedammount = 0
 	minimizedprograms = {}
@@ -679,7 +689,7 @@ local function loaddesktop()
 
 			local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(shutdown)
-			local shutdowntext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Test"})
+			local shutdowntext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Shutdown"})
 			shutdown:AddChild(shutdowntext)
 			shutdown.MouseButton1Down:Connect(function()
 				shutdown.Image = "rbxassetid://15625805069"
@@ -690,26 +700,34 @@ local function loaddesktop()
 				shutdown.Image = "rbxassetid://15625805900"
 				pressed = false
 				startmenu:Destroy()
-				startbutton7:Destroy()
-				taskbar:Destroy()
-				minimizedprograms = {}
-				minimizedammount = 0
-				task.wait(1)
-				speaker:ClearSounds()
-				speaker:PlaySound("rbxassetid://7762841318")
-				for i=0,1,0.1 do
-					task.wait(0.1)
-					wallpaper.ImageTransparency = i
-				end
-				task.wait(1)
-				screen:ClearElements()
-				local commandlines = commandline.new(false, nil, screen)
-				commandlines:insert("Shutting Down...")
-				task.wait(1)
-				screen:ClearElements()
-				if shutdownpoly then
-					TriggerPort(shutdownpoly)
-				end
+				local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,false,false,nil,true,)
+				local yes = createnicebutton(UDim2.new(1, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
+				local no = createnicebutton(UDim2.new(1, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "No", window)
+				no.MouseButton1Up:Connect(function()
+					window:Destroy()
+				end)
+				yes.MouseButton1Up:Connect(function()
+						startbutton7:Destroy()
+						taskbarholder:Destroy()
+						minimizedprograms = {}
+						minimizedammount = 0
+						task.wait(1)
+						speaker:ClearSounds()
+						speaker:PlaySound("rbxassetid://7762841318")
+						for i=0,1,0.1 do
+							task.wait(0.1)
+							wallpaper.ImageTransparency = i
+						end
+						task.wait(1)
+						screen:ClearElements()
+						local commandlines = commandline.new(false, nil, screen)
+						commandlines:insert("Shutting Down...")
+						task.wait(1)
+						screen:ClearElements()
+						if shutdownpoly then
+							TriggerPort(shutdownpoly)
+						end
+				end)
 			end)
 			pressed = true
 		else
