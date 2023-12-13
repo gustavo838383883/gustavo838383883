@@ -516,7 +516,7 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			speaker:PlaySound("rbxassetid://6977010128")
 			minimizebutton.Image = "rbxassetid://15617867263"
 			resolutionframe:AddChild(holderframe)
-			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805069", BackgroundTransparency = 1, Size = UDim2.new(0, 35, 1, 0), Position = UDim2.new(0, minimizedammount * 35, 0, 0)})
+			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, 35, 1, 0), Position = UDim2.new(0, minimizedammount * 35, 0, 0)})
 			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
 			unminimizebutton:AddChild(unminimizetext)
 			table.insert(unminimizedprograms, unminimizebutton)
@@ -527,7 +527,7 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				unminimizebutton.Image = "rbxassetid://15625805069"
 			end)
 			unminimizebutton.MouseButton1Up:Connect(function()
-				unminimizebutton.Image = "rbxassetid://15625805069"
+				unminimizebutton.Image = "rbxassetid://15625805900"
 				unminimizebutton:Destroy()
 				minimizedammount -= 1
 				local start = 0
