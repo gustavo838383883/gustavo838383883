@@ -583,16 +583,16 @@ local function loaddesktop()
 	local function openstartmenu()
 		if not pressed then
 			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), ImageTransparency = 0.1})
-			local testopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
+			local testopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(testopen)
 			local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Test"})
 			testopen:AddChild(txtlabel)
 			testopen.MouseButton1Down:Connect(function()
-				testopen.Image = "rbxassetid://15617866125"
+				testopen.Image = "rbxassetid://15625805069"
 			end)
 			testopen.MouseButton1Up:Connect(function()
 				speaker:PlaySound("rbxassetid://6977010128")
-				testopen.Image = "rbxassetid://15617867263"
+				testopen.Image = "rbxassetid://15625805900"
 				createwindow(UDim2.new(0.5, 0, 0.5, 0), "Test", false, false, false)
 				pressed = false
 				startmenu:Destroy()
@@ -628,6 +628,7 @@ function bootos()
 		task.wait(1)
 		commandlines:insert("Welcome To "..name)
 		task.wait(2)
+		screen:ClearElements()
 		loaddesktop()
 		SpeakerHandler.PlaySound(182007357, 1, nil, speaker)
 		keyboard:Connect(function(text, player)
