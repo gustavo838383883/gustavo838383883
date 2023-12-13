@@ -393,6 +393,7 @@ local programholder2
 local taskbarholder
 
 local buttondown = false
+local taskbarholderscrollingframe
 
 local resolutionframe
 
@@ -494,7 +495,6 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 
 	local maximizebutton
 	local minimizebutton
-	local taskbarholderscrollingframe
 	
 	if not boolean4 then
 		minimizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 70, 0, 0), BackgroundTransparency = 1})
