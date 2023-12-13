@@ -542,7 +542,6 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				local start = 0
 				for index, value in pairs(minimizedprograms) do
 					if value.Size ~= UDim2.new(1,0,1,0) then
-						print(i, v)
 						value.Position = UDim2.new(0, start * 50, 0, 0)
 						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (50 * start) + 50, 1, 0)
 						start += 1
