@@ -401,14 +401,14 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
  	 local textlabel
  	 programholder1:AddChild(holderframe)
  	 if text then
-   		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -70, 0, 25), Position = UDim2.new(0, 70, 0, 0), BackgroundTransparency = 1, Text = tostring(text), TextWrapped = true, TextScaled = true})
+   		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -50, 0, 25), Position = UDim2.new(0, 50, 0, 0), BackgroundTransparency = 1, Text = tostring(text), TextWrapped = true, TextScaled = true})
    		holderframe:AddChild(textlabel)
-   		if boolean then textlabel.Position = UDim2.new(0, 35, 0, 0); textlabel.Size = UDim2.new(1, -35, 0, 25); end
+   		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
  	 end
   
  	local maximizepressed = false
   
-  	local closebutton = screen:CreateElement("TextButton", {BackgroundTransparency = 1, Size = UDim2.new(0, 35, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Text = "Close", TextScaled = true, TextWrapped = true})
+  	local closebutton = screen:CreateElement("TextButton", {BackgroundColor3 = Color3.new(1,0,0), Size = UDim2.new(0, 25, 0, 25), Text = "Close", TextScaled = true, TextWrapped = true})
   	holderframe:AddChild(closebutton)
   
   
@@ -419,7 +419,7 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
 	
 	local maximizebutton
 	if not boolean then
-		maximizebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0,35,0,25), Text = "+", Position = UDim2.new(0, 35, 0, 0), TextScaled = true, TextWrapped = true})
+		maximizebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0,25,0,25), Text = "+", Position = UDim2.new(0, 25, 0, 0), TextScaled = true, TextWrapped = true})
 		local maximizepressed = false
 	
 		holderframe:AddChild(maximizebutton)
