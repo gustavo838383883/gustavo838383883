@@ -1892,8 +1892,6 @@ local function loadmenu()
 		Keyboard = keyboard,
 		Modem = modem,
 		Speaker = speaker,
-		programholder1 = programholder1,
-		programholder2 = programholder2,
 	})
 
 	startmenu.MouseButton1Down:Connect(function()
