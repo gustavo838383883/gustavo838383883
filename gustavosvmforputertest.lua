@@ -388,6 +388,8 @@ local keyboardinput = nil
 local playerthatinputted = nil
 local backgroundframe = nil
 
+local windows = {}
+
 local function CreateNewWindow(udim2, text, boolean, boolean2)
 	local holderframe
 	if boolean2 == false then
@@ -396,6 +398,7 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
  		holderframe = screen:CreateElement("TextButton", {Size = udim2, TextTransparency = 1})
  	end
  	 if not holderframe then return end
+	table.insert(windows, holderframe)
  	 local textlabel
  	 programholder1:AddChild(holderframe)
  	 if text then
@@ -2102,6 +2105,14 @@ local function loadmenu()
 										keyboardinput = text
 										playerthatinputted = plr
 									end)
+									keyboard:Connect("KeyPressed", function(key)
+										if key == Enum.KeyCode.R then
+											for index, value in pairs(windows) do
+												if value then
+													value.Position = UDim2.new(1,0,0,0)
+													value.Position = UDim2.new(0,0,0,0)
+											end
+									end)
 								else
 									local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 									Beep(1)
@@ -2187,6 +2198,15 @@ function startload()
 					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
 						keyboardinput = text
 						playerthatinputted = plr
+					end)
+					
+					keyboard:Connect("KeyPressed", function(key)
+						if key == Enum.KeyCode.R then
+							for index, value in pairs(windows) do
+								if value then
+									value.Position = UDim2.new(1,0,0,0)
+									value.Position = UDim2.new(0,0,0,0)
+							end
 					end)
 					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
 						loadmenu()
