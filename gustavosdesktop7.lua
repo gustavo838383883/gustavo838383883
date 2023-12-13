@@ -247,6 +247,10 @@ local microcontrollers = nil
 local regularscreen = nil
 local keyboardinput
 local playerthatinputted
+local backgroundimage
+local color
+local tile = false
+local tilesize
 
 local shutdownpoly = nil
 
@@ -620,6 +624,7 @@ end
 
 local startbutton7
 local wallpaper
+local backgroundcolor
 
 local name = "GustavOSDesktop7"
 
@@ -646,7 +651,21 @@ local function loaddesktop()
 	minimizedammount = 0
 	minimizedprograms = {}
 	resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Position = UDim2.new(2,0,0,0)})
-	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15617469527", BackgroundTransparency = 1})
+	backgroundcolor = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
+	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
+	backgroundcolor:AddChild(wallpaper)
+
+	if backgroundimage then
+		wallpaper.Image = backgroundimage
+		if tile then
+			if tilesize then
+				wallpaper.ScaleType = Enum.ScaleType.Tile
+				wallpaper.TileSize = UDim2.new(tilesize.X.Scale, tilesize.X.Offset, tilesize.Y.Scale, tilesize.Y.Offset)
+			end
+		else
+			wallpaper.ScaleType = Enum.ScaleType.Stretch
+		end
+	end
 	
 	startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
 	local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Text = "G", TextScaled = true, TextWrapped = true})
@@ -777,6 +796,44 @@ function bootos()
 			keyboardinput = text
 			playerthatinputted = player
 		end)
+		if disk then
+			color = disk:Read("Color")
+			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false,0.2,0,0.2,0") end
+			local diskbackgroundimage = disk:Read("BackgroundImage")
+			if color then
+				color = string.split(color, ",")
+				if color then
+					if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
+						color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+					else
+						color = Color3.new(0, 128/255, 218/255)
+					end
+				else
+					color = Color3.new(0, 128/255, 218/255)
+				end
+			else
+				color = Color3.new(0, 128/255, 218/255)
+			end
+			
+			if diskbackgroundimage then
+				local idandbool = string.split(diskbackgroundimage, ",")
+				if tonumber(idandbool[1]) then
+					backgroundimage = "rbxthumb://type=Asset&id="..tonumber(idandbool[1]).."&w=420&h=420"
+					if idandbool[2] == "true" then
+						tile = true
+					else
+						tile = false
+					end
+					if tonumber(idandbool[3]) and tonumber(idandbool[4]) and tonumber(idandbool[5]) and tonumber(idandbool[6]) then
+						tilesize = UDim2.new(tonumber(idandbool[3]), tonumber(idandbool[4]), tonumber(idandbool[5]), tonumber(idandbool[6]))
+					end
+				else
+					backgroundimage = nil
+				end
+			else
+				backgroundimage = nil
+			end
+		end
 	elseif not screen and regularscreen then
 		regularscreen:ClearElements()
 		local commandlines = commandline.new(false, nil, regularscreen)
