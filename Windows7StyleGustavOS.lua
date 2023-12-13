@@ -401,9 +401,9 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
  	 local textlabel
  	 programholder1:AddChild(holderframe)
  	 if text then
-   		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -60, 0, 25), Position = UDim2.new(0, 60, 0, 0), BackgroundTransparency = 1, Text = tostring(text), TextWrapped = true, TextScaled = true})
+   		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -70, 0, 25), Position = UDim2.new(0, 60, 0, 0), BackgroundTransparency = 1, Text = tostring(text), TextWrapped = true, TextScaled = true})
    		holderframe:AddChild(textlabel)
-   		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
+   		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -35, 0, 25); end
  	 end
   
  	local maximizepressed = false
