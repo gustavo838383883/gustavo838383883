@@ -500,14 +500,14 @@ function createwindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			textlabel.Size -= UDim2.new(0, 35, 0, 0)
 		end
 
-		maximizebutton.MouseButton1Down:Connect(function()
-			maximizebutton.Image = "rbxassetid://15617866125"
+		minimizebutton.MouseButton1Down:Connect(function()
+			minimizebutton.Image = "rbxassetid://15617866125"
 		end)
 		
-		maximizebutton.MouseButton1Up:Connect(function()
+		minimizebutton.MouseButton1Up:Connect(function()
 			if holding or holding2 then return end
 			speaker:PlaySound("rbxassetid://6977010128")
-			maximizebutton.Image = "rbxassetid://15617867263"
+			minimizebutton.Image = "rbxassetid://15617867263"
 		end)
 	end
 	
