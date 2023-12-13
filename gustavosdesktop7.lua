@@ -603,7 +603,7 @@ local function loaddesktop()
 			pressed = false
 		end
 	end
-	startbutton7.MouseButton1Up:Connect(function()
+	startbutton7.MouseButton1Down:Connect(function()
 		startbutton7.Image = "rbxassetid://15617867263"
 		buttondown = true
 	end)
