@@ -4,7 +4,6 @@ local SpeakerHandler = {
 	_SoundCooldowns = {}, -- Sounds played by SpeakerHandler.PlaySound
 	DefaultSpeaker = nil,
 }
-
 function SpeakerHandler.Chat(text, cooldownTime, speaker)
 	speaker = speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler.Chat]: No speaker provided")
 
