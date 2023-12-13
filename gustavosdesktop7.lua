@@ -345,6 +345,7 @@ local function getstuff()
 			table.remove(disks, i)
 			break
 		end
+	end
 end
 getstuff()
 
@@ -594,58 +595,66 @@ local function loaddesktop()
 	end)
 end
 
-if #disks > 0 then
-	for i,v in pairs(disks) do
-		disk = v
-		break
+function bootos()
+	if #disks > 0 then
+		for i,v in pairs(disks) do
+			disk = v
+			break
+		end
+	end
+	if screen and keyboard and speaker and disk then
+		screen:ClearElements()
+		local commandlines = commandline.new(false, nil, screen)
+		commandlines:insert(name.." Command line")
+		task.wait(1)
+		commandlines:insert("Welcome To "..name)
+		task.wait(2)
+		Beep(1)
+		loaddesktop()
+		SpeakerHandler.PlaySound(182007357, 1, nil, speaker)
+		keyboard:Connect(function(text, player)
+			local keyboardinput = text
+			local playerthatinputted = player
+		end)
+	elseif not screen and regularscreen then
+		regularscreen:ClearElements()
+		local commandlines = commandline.new(false, nil, regularscreen)
+		commandlines:insert(name.." Command line")
+		task.wait(1)
+		commandlines:insert("Regular screen is not supported.")
+		if not speaker then
+			commandlines:insert("No speaker was found.")
+		end
+		task.wait(1)
+		if not keyboard then
+			commandlines:insert("No keyboard was found.")
+		end
+		task.wait(1)
+		if not disk then
+			commandlines:insert("You need 2 or more disks on the same port.")
+		end
+	elseif screen then
+		screen:ClearElements()
+		local commandlines = commandline.new(false, nil, screen)
+		commandlines:insert(name.." Command line")
+		task.wait(1)
+		if not speaker then
+			commandlines:insert("No speaker was found.")
+		end
+		task.wait(1)
+		if not keyboard then
+			commandlines:insert("No keyboard was found.")
+		end
+		task.wait(1)
+		if not disk then
+			commandlines:insert("You need 2 or more disks on the same port.")
+		end
+	elseif not regularscreen and not screen then
+		Beep(0.5)
+		print("No screen was found.")
 	end
 end
-if screen and keyboard and speaker and disk then
-	screen:ClearElements()
-	local commandlines = commandline.new(false, nil, screen)
-	commandlines:insert(name.." Command line")
-	task.wait(1)
-	commandlines:insert("Welcome To "..name)
-	task.wait(2)
-	Beep(1)
-	loaddesktop()
-elseif not screen and regularscreen then
-	regularscreen:ClearElements()
-	local commandlines = commandline.new(false, nil, regularscreen)
-	commandlines:insert(name.." Command line")
-	task.wait(1)
-	commandlines:insert("Regular screen is not supported.")
-	if not speaker then
-		commandlines:insert("No speaker was found.")
-	end
-	task.wait(1)
-	if not keyboard then
-		commandlines:insert("No keyboard was found.")
-	end
-	task.wait(1)
-	if not disk then
-		commandlines:insert("You need 2 or more disks on the same port.")
-	end
-elseif screen then
-	screen:ClearElements()
-	local commandlines = commandline.new(false, nil, screen)
-	commandlines:insert(name.." Command line")
-	task.wait(1)
-	if not speaker then
-		commandlines:insert("No speaker was found.")
-	end
-	task.wait(1)
-	if not keyboard then
-		commandlines:insert("No keyboard was found.")
-	end
-	task.wait(1)
-	if not disk then
-		commandlines:insert("You need 2 or more disks on the same port.")
-	end
-elseif not regularscreen and not screen then
-	Beep(0.5)
-	print("No screen was found.")
-end
+bootos()
 
 local cursorsinscreen = {}
 
