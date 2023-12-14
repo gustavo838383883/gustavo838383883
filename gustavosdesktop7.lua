@@ -858,7 +858,7 @@ local function woshtmlfile(txt, screen, boolean)
 		size = UDim2.new(0.5, 0, 0.5, 0)
 	end
 	local filegui = CreateWindow(size, nil, false, false, false, "File", false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -25), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -35), BackgroundTransparency = 1})
 	filegui:AddChild(scrollingframe)
 
 	StringToGui(screen, txt, scrollingframe)
@@ -1133,7 +1133,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	local filegui, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, "File", false)
 	local deletebutton = nil
 
-	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
+	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -35), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
 	
 	filegui:AddChild(disktext)
 	
@@ -1252,7 +1252,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		local tableval = txt
 		local start = 0
 		local holderframe, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Table Content", false, false, false, "Table Content", false)
-		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -35), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 		textlabel.Size -= UDim2.new(0, 0, 0, 25)
 		
@@ -1305,13 +1305,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 				end)
 			end)
 		end
-		
-		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-		holderframe:AddChild(closebutton)
-	
-		closebutton.MouseButton1Down:Connect(function()
-			holderframe:Destroy()
-		end)
 
 		for index, data in pairs(tableval) do
 			local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(index), scrollingframe)
