@@ -1613,6 +1613,7 @@ local function loaddesktop()
 		programholder1 = programholder1,
 		programholder2 = programholder2,
 		Taskbar = {taskbarholderscrollingframe, taskbarholder},
+		screenresolution = screenresolution,
 	})
 	
 	if not disk:Read("sounds") then
