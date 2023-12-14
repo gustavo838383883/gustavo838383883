@@ -650,7 +650,7 @@ local function createnicebutton(udim2, pos, text, Parent)
 end
 
 local function settings()
-	local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Settings", false, false, false, "Settings may require a restart", false)
+	local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Settings may require a restart", false, false, false, "Settings", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(1, 0, 0, 150)})
 	window:AddChild(scrollingframe)
 	local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.3), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
