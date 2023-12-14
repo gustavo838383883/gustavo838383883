@@ -1090,7 +1090,7 @@ local function loaddesktop()
 
 			local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.2, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(diskwriteopen)
-			local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Settings"})
+			local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create/Overwrite File"})
 			diskwriteopen:AddChild(txtlabel2)
 			diskwriteopen.MouseButton1Down:Connect(function()
 				diskwriteopen.Image = "rbxassetid://15625805069"
@@ -1105,7 +1105,7 @@ local function loaddesktop()
 
 			local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(shutdown)
-			local shutdowntext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create/Overwrite File"})
+			local shutdowntext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Shutdown"})
 			shutdown:AddChild(shutdowntext)
 			shutdown.MouseButton1Down:Connect(function()
 				shutdown.Image = "rbxassetid://15625805069"
