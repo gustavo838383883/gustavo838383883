@@ -1053,6 +1053,21 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
+			local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.2, 0), BackgroundTransparency = 1})
+			startmenu:AddChild(diskwriteopen)
+			local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Settings"})
+			diskwriteopen:AddChild(txtlabel2)
+			diskwriteopen.MouseButton1Down:Connect(function()
+				diskwriteopen.Image = "rbxassetid://15625805069"
+			end)
+			diskwriteopen.MouseButton1Up:Connect(function()
+				speaker:PlaySound(clicksound)
+				diskwriteopen.Image = "rbxassetid://15625805900"
+				writedisk()
+				pressed = false
+				startmenu:Destroy()
+			end)
+
 			local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(shutdown)
 			local shutdowntext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Shutdown"})
