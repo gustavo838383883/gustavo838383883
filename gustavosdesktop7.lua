@@ -608,7 +608,7 @@ function commandline.new(boolean, udim2, screen)
 		number = 0
 	}
 	if boolean then
-		holderframe = CreateWindow(udim2, "Command Line", false, false, false)
+		holderframe = CreateWindow(udim2, "Command Line", false, false, false, "Command Line", false)
 		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0)})
 		holderframe:AddChild(background)
 	else
@@ -1143,8 +1143,8 @@ local function loaddesktop()
 					task.wait(1)
 					speaker:ClearSounds()
 					SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
-					for i=0,1,0.05 do
-						task.wait(0.05)
+					for i=0,1,0.01 do
+						task.wait(0.01)
 						wallpaper.ImageTransparency = i
 						backgroundcolor.BackgroundTransparency = i
 					end
@@ -1178,7 +1178,7 @@ end
 
 function bootos()
 	if disks and #disks > 0 then
-		for i,v in pairs(disks) do
+		for i,v in ipairs(disks) do
 			if i > 1 then
 				disk = v
 				break
