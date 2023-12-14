@@ -654,7 +654,7 @@ local function settings()
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(1, 0, 0, 150)})
 	window:AddChild(scrollingframe)
 	local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.3), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
-	local saveclicksound = createnicebutton(UDim2.fromScale(0.4, 0.3), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
+	local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.3), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
 
 	local input1
 	changeclicksound.MouseButton1Up:Connect(function()
@@ -666,6 +666,9 @@ local function settings()
 	saveclicksound.MouseButton1Up:Connect(function()
 		if input1 then
 			disk:Write("ClickSound", tostring(input1))
+			text2.Text = "Saved"
+			task.wait(2)
+			text2.Text = "Save"
 		end
 	end)
 end
