@@ -816,6 +816,162 @@ local function settings()
 	end)
 end
 
+local function writedisk()
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Create File", false, false, false, "Disk Writer", false)
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1})
+	holderframe:AddChild(scrollingframe)
+	local filenamebutton, filenamebutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File Name(Case Sensitive) (Click to update)", scrollingframe)
+	local filedatabutton, filedatabutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "File Data (Click to update)", scrollingframe)
+	local createfilebutton, createfilebutton2 = createnicebutton(UDim2.new(0.5,0,0.2, 0), UDim2.new(0, 0, 0.8, 0),, "Save", scrollingframe)
+
+	local createtablebutton, createtablebutton2 = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Create Table", scrollingframe)
+
+	local directorybutton, directorybutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.4, 0), [[Directory(Case Sensitive) (Click to update) example: "/sounds"]], scrollingframe)
+	
+	local data = nil
+	local filename = nil
+
+	
+	local directory = ""
+	
+
+	filenamebutton.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			filenamebutton2.Text = keyboardinput:gsub("\n", ""):gsub("/", "")
+			filename = keyboardinput:gsub("\n", ""):gsub("/", "")
+		end
+	end)
+
+	directorybutton.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			local inputtedtext = keyboardinput:gsub("\n", "")
+			local tempsplit = string.split(inputtedtext, "/")
+			if tempsplit then
+				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+					inputtedtext = "/"..inputtedtext
+				end
+			end
+			local tempsplit2 = string.split(inputtedtext, "/")
+			if tempsplit2 then
+				if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
+			end
+			if inputtedtext == " " then inputtedtext = ""; end
+			local split = string.split(inputtedtext, "/")
+			if split and split[2] ~= "GustavOSLibrary" then
+				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
+				if #split >= 3 then
+					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
+						directorybutton2.Text = inputtedtext
+						directory = inputtedtext
+					else
+						directorybutton2.Text = "Invalid"
+						task.wait(2)
+						if directory ~= "" then
+							directorybutton2.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						else
+							directorybutton2.Text = directory
+						end
+					end
+				else
+					if disk:Read(split[#split]) or split[2] == "" then
+						directorybutton2.Text = inputtedtext
+						directory = inputtedtext
+					else
+						directorybutton2.Text = "Invalid"
+						task.wait(2)
+						if directory == "" then
+							directorybutton2.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						else
+							directorybutton2.Text = directory
+						end
+					end
+				end
+			elseif inputtedtext == "" then
+				directorybutton2.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+				directory = inputtedtext
+			else
+				directorybutton2.Text = "Invalid"
+				task.wait(2)
+				directorybutton2.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+			end
+		end
+	end)
+
+	filedatabutton.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			filedatabutton2.Text = keyboardinput
+			data = keyboardinput
+		end
+	end)
+
+	createfilebutton.MouseButton1Down:Connect(function()
+		if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
+			if filedatabutton2.Text ~= "File Data (Click to update)" then
+				local split = nil
+				local returntable = nil
+				if directory ~= "" then
+					split = string.split(directory, "/")
+				end
+				if not split or split[2] == "" then
+					disk:Write(filename, data)
+				else
+					returntable = createfileontable(disk, filename, data, directory)
+				end
+				if not split or split[2] == "" then
+					if disk:Read(filename) then
+						if disk:Read(filename) == data then
+							createfilebutton2.Text = "Success i think"
+						else
+							createfilebutton2.Text = "Failed"
+						end
+					else
+						createfilebutton2.Text = "Failed"
+					end
+				else
+					if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
+						createfilebutton2.Text = "Success i think"
+					else
+						createfilebutton2.Text = "Failed i think"
+					end	
+				end
+				task.wait(2)
+				createfilebutton2.Text = "Save"
+			end
+		end
+	end)
+
+	createtablebutton.MouseButton1Down:Connect(function()
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
+			local split = nil
+			local returntable = nil
+			if directory ~= "" then
+				split = string.split(directory, "/")
+			end
+			if not split or split[2] == "" then
+				disk:Write(filename, {
+				})
+			else
+				returntable = createfileontable(disk, filename, {}, directory)
+			end
+			if not split then
+				if disk:Read(filename) then
+					createtablebutton.Text = "Success i think"
+				else
+					createtablebutton.Text = "Failed"
+				end
+			else
+				if disk:Read(split[2]) == returntable then
+					createtablebutton.Text = "Success i think"
+				else
+					createtablebutton.Text = "Failed i think"
+				end	
+			end
+			task.wait(2)
+			createtablebutton.Text = "Create Table"
+		end
+	end)
+end
+
 local bootos
 
 local function loaddesktop()
