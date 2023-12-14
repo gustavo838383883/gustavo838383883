@@ -1329,7 +1329,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 	
 end
 
-local function loaddisk(screen, disk)
+local function loaddisk()
 	local start = 0
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Disk Content", false, false, false, "Files", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
@@ -1629,6 +1629,21 @@ local function loaddesktop()
 				speaker:PlaySound(clicksound)
 				diskwriteopen.Image = "rbxassetid://15625805900"
 				writedisk()
+				pressed = false
+				startmenu:Destroy()
+			end)
+
+			local filesopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.6/3,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6/2, 0), BackgroundTransparency = 1})
+			scrollingframe:AddChild(filesopen)
+			local txtlabel3 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create/Overwrite File"})
+			filesopen:AddChild(txtlabel3)
+			filesopen.MouseButton1Down:Connect(function()
+				filesopen.Image = "rbxassetid://15625805069"
+			end)
+			filesopen.MouseButton1Up:Connect(function()
+				speaker:PlaySound(clicksound)
+				filesopen.Image = "rbxassetid://15625805900"
+				loaddisk()
 				pressed = false
 				startmenu:Destroy()
 			end)
