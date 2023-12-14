@@ -653,6 +653,218 @@ local function createnicebutton(udim2, pos, text, Parent)
 	return txtbutton, txtlabel
 end
 
+local function createnicebutton2(udim2, pos, text, Parent)
+	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15617867263", Position = pos, BackgroundTransparency = 1})
+	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
+	txtbutton:AddChild(txtlabel)
+	if Parent then
+		Parent:AddChild(txtbutton)
+	end
+	txtbutton.MouseButton1Down:Connect(function()
+		txtbutton.Image = "rbxassetid://15617866125"
+	end)
+	txtbutton.MouseButton1Up:Connect(function()
+		speaker:PlaySound(clicksound)
+		txtbutton.Image = "rbxassetid://15617867263"
+	end)
+	return txtbutton, txtlabel
+end
+
+local function StringToGui(screen, text, parent)
+	local start = UDim2.new(0,0,0,0)
+	local source = string.lower(text)
+
+	for name, value in source:gmatch('<backimg(.-)(.-)>') do
+		local link = nil
+		if (string.find(value, 'src="')) then
+			local link = string.sub(value, string.find(value, 'src="') + string.len('src="'), string.len(value))
+			link = string.sub(link, 1, string.find(link, '"') - 1)
+			if not(string.find(value, "load")) then
+
+				local url = screen:CreateElement("ImageLabel", { })
+				url.BackgroundTransparency = 1
+				url.Image = "http://www.roblox.com/asset/?id=8552847009"
+				if (link ~= "") then
+					if tonumber(link) then
+						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
+					else
+						url.Image = "rbxthumb://type=Asset&id="..tonumber(string.match(link, "%d+")).."&w=420&h=420"
+						print(string.match(link, "%d+"))
+					end
+				end
+				url.ScaleType = Enum.ScaleType.Tile
+				url.TileSize = UDim2.new(0, 256, 0, 256)
+				url.Size = UDim2.new(1, 0, 1, 0)
+				url.Position = UDim2.new(0, 0, 0, 0)
+				if (string.find(value, [[tile="]])) then
+					local text = string.sub(value, string.find(value, [[tile="]]) + string.len([[tile="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					local udim2 = string.split(text, ",")
+					url.TileSize = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+				end
+				if (string.find(value, [[transparency="]])) then
+					local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					url.ImageTransparency = tonumber(text)
+				end
+
+				parent:AddChild(url)
+			end
+		end
+	end
+	for name, value in source:gmatch('<frame(.-)(.-)>') do
+		local link = nil
+		if not(string.find(value, "load")) then
+
+			local url = screen:CreateElement("Frame", { })
+			url.Size = UDim2.new(0, 50, 0, 50)
+			if (string.find(value, [[rotation="]])) then
+				local text = string.sub(value, string.find(value, [[rotation="]]) + string.len([[rotation="]]), string.len(value))
+				text = string.sub(text, 1, string.find(text, '"') - 1)
+				url.Rotation = tonumber(text)
+			end
+			if (string.find(value, [[transparency="]])) then
+				local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
+				text = string.sub(text, 1, string.find(text, '"') - 1)
+				url.Transparency = tonumber(text)
+			end
+			if (string.find(value, [[size="]])) then
+				local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
+				text = string.sub(text, 1, string.find(text, '"') - 1)
+				local udim2 = string.split(text, ",")
+				url.Size = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+			end
+			if (string.find(value, [[color="]])) then
+				local text = string.sub(value, string.find(value, [[color="]]) + string.len([[color="]]), string.len(value))
+				text = string.sub(text, 1, string.find(text, '"') - 1)
+				local color = string.split(text, ",")
+				url.BackgroundColor3 = Color3.new(tonumber(color[1])/255,tonumber(color[2])/255,tonumber(color[3])/255)
+			end
+			url.Position = start
+			if (string.find(value, [[position="]])) then
+				local text = string.sub(value, string.find(value, [[position="]]) + string.len([[position="]]), string.len(value))
+				text = string.sub(text, 1, string.find(text, '"') - 1)
+				local udim2 = string.split(text, ",")
+				url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+			else
+				start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
+			end
+			parent:AddChild(url)
+		end
+	end
+	for name, value in source:gmatch('<img(.-)(.-)>') do
+		local link = nil
+		if (string.find(value, 'src="')) then
+			local link = string.sub(value, string.find(value, 'src="') + string.len('src="'), string.len(value))
+			link = string.sub(link, 1, string.find(link, '"') - 1)
+			if not(string.find(value, "load")) then
+
+				local url = screen:CreateElement("ImageLabel", { })
+				url.BackgroundTransparency = 1
+				url.Image = "http://www.roblox.com/asset/?id=8552847009"
+				if (link ~= "") then
+					if tonumber(link) then
+						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
+					else
+						url.Image = "rbxthumb://type=Asset&id="..tonumber(string.match(link, "%d+")).."&w=420&h=420"
+						print(string.match(link, "%d+"))
+					end
+				end
+				url.Size = UDim2.new(0, 50, 0, 50)
+				if (string.find(value, [[rotation="]])) then
+					local text = string.sub(value, string.find(value, [[rotation="]]) + string.len([[rotation="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					url.Rotation = tonumber(text)
+				end
+				if (string.find(value, [[transparency="]])) then
+					local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					url.ImageTransparency = tonumber(text)
+				end
+				if (string.find(value, [[size="]])) then
+					local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					local udim2 = string.split(text, ",")
+					url.Size = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+				end
+				url.Position = start
+				if (string.find(value, [[position="]])) then
+					local text = string.sub(value, string.find(value, [[position="]]) + string.len([[position="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					local udim2 = string.split(text, ",")
+					url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+				else
+					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
+				end
+				parent:AddChild(url)
+			end
+		end
+	end
+	for name, value in source:gmatch('<txt(.-)(.-)>') do
+		local link = nil
+		if (string.find(value, 'display="')) then
+			local link = string.sub(value, string.find(value, 'display="') + string.len('display="'), string.len(value))
+			link = string.sub(link, 1, string.find(link, '"') - 1)
+			if not(string.find(value, "load")) then
+
+				local url = screen:CreateElement("TextLabel", { })
+				url.BackgroundTransparency = 1
+				url.Size = UDim2.new(0, 250, 0, 50)
+
+				link = string.gsub(link, "_quote_", '"')
+				link = string.gsub(link, "_higher_", '>')
+				link = string.gsub(link, "_lower_", '<')
+
+				url.Text = link
+				url.RichText = true
+				if (string.find(value, [[rotation="]])) then
+					local text = string.sub(value, string.find(value, [[rotation="]]) + string.len([[rotation="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					url.Rotation = tonumber(text)
+				end
+				if (string.find(value, [[size="]])) then
+					local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					local udim2 = string.split(text, ",")
+					url.Size = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+				end
+				if (string.find(value, [[color="]])) then
+					local text = string.sub(value, string.find(value, [[color="]]) + string.len([[color="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					local color = string.split(text, ",")
+					url.TextColor3 = Color3.new(tonumber(color[1])/255,tonumber(color[2])/255,tonumber(color[3])/255)
+				end
+				url.TextScaled = true
+				url.TextWrapped = true
+				url.Position = start
+				if (string.find(value, [[position="]])) then
+					local text = string.sub(value, string.find(value, [[position="]]) + string.len([[position="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					local udim2 = string.split(text, ",")
+					url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+				else
+					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
+				end
+				parent:AddChild(url)
+			end
+		end
+	end
+end
+
+local function woshtmlfile(txt, screen, boolean)
+	local size = UDim2.new(0.7, 0, 0.7, 0)
+	
+	if boolean then
+		size = UDim2.new(0.5, 0, 0.5, 0)
+	end
+	local filegui = CreateWindow(size, nil, false, false, false, "File", false)
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -25), BackgroundTransparency = 1})
+	filegui:AddChild(scrollingframe)
+
+	StringToGui(screen, txt, scrollingframe)
+
+end
+
 local function changecolor()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false)
 	programholder1:AddChild(holderframe)
@@ -821,6 +1033,319 @@ local function settings()
 	openchangeimage.MouseButton1Up:Connect(function()
 		changebackgroundimage()
 	end)
+end
+
+local function audioui(screen, disk, data, speaker, pitch, length)
+	local holderframe, closebutton = CreateWindow(UDim2.new(0.5, 0, 0.5, 0), nil, false, false, false, "Audio", false)
+	local sound = nil
+	closebutton.MouseButton1Down:Connect(function()
+		sound:Stop()
+		sound:Destroy()
+	end)
+
+	if not pitch then
+		pitch = 1
+	end
+	
+	local pausebutton, pausebutton2 = createnicebutton2(UDim2.new(0.2, 0, 0.2, 0), UDim2.new(0, 0, 0.8, 0), "Stop", holderframe)
+
+	
+	sound = SpeakerHandler.CreateSound({
+		Id = tonumber(data),
+		Pitch = tonumber(pitch),
+		Speaker = speaker,
+		Length = tonumber(length),
+	})
+
+
+	if length then
+		sound:Loop()
+	else
+		sound:Play()
+	end
+	
+	local soundplaying = true
+	
+	pausebutton.MouseButton1Down:Connect(function()
+		if soundplaying == true then
+			pausebutton2.Text = "Play"
+			soundplaying = false
+			sound:Stop()
+		else
+			pausebutton2.Text = "Stop"
+			soundplaying = true
+			if length then
+				sound:Loop()
+			else
+				sound:Play()
+			end
+		end
+	end)
+
+end
+
+local usedmicros = {}
+
+local function loadluafile(microcontrollers, screen, code, runcodebutton)
+	local success = false
+	local micronumber = 0
+	if typeof(microcontrollers) == "table" and #microcontrollers > 0 then
+		for index, value in pairs(microcontrollers) do
+			micronumber += 1
+			if not table.find(usedmicros, value) then
+				table.insert(usedmicros, value)
+				local polysilicon = GetPartFromPort(value, "Polysilicon")
+				local polyport = GetPartFromPort(polysilicon, "Port")
+				if polysilicon then
+					if polyport then
+						value:Configure({Code = code})
+						polysilicon:Configure({PolysiliconMode = 0})
+						TriggerPort(polyport)
+						success = true
+						local commandlines = commandline.new(true, UDim2.new(0.5, 0, 0.5, 0), screen)
+				
+						commandlines:insert("Using microcontroller:")
+						
+						commandlines:insert(micronumber)
+						
+						if runcodebutton then
+							runcodebutton.Text = "Code Ran"
+							task.wait(2)
+							runcodebutton.Text = "Run lua"
+						end
+						break
+					else
+						print("No port connected to polysilicon")
+					end
+				else
+					print("No polysilicon connected to microcontroller")
+				end
+			end
+		end
+	end
+	if not success then
+		local comandlines = commandline.new(true, UDim2.new(0.5, 0, 0.5, 0), screen)
+		commandlines:insert("No microcontrollers left.")
+	end
+end
+
+local function readfile(txt, nameondisk, boolean, directory)
+	local filegui, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, "File", false)
+	local deletebutton = nil
+
+	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
+	
+	filegui:AddChild(disktext)
+	
+	print(txt)
+	
+	if boolean == true then
+		deletebutton = createnicebutton2(UDim2.new(0, 25, 0, 25), UDim2.new(1, -25, 0, 0), "Delete", filegui)
+		
+		deletebutton.MouseButton1Up:Connect(function()
+			local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, true, false, nil, true)
+			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", holdframe)
+			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", holdframe)
+				
+			cancelbutton.MouseButton1Down:Connect(function()
+				holdframe:Destroy()
+				holdframe = nil
+			end)
+
+			deletebutton.MouseButton1Up:Connect(function()
+				disk:Write(nameondisk, nil)
+				holdframe:Destroy()
+				if filegui then
+					filegui:Destroy()
+				end
+				filegui = nil
+			end)
+		end)
+	elseif directory then
+		deletebutton = createnicebutton2(UDim2.new(0, 25, 0, 25), UDim2.new(1, -25, 0, 0), "Delete", filegui)
+		
+		deletebutton.MouseButton1Up:Connect(function()
+			local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, true, false, nil, true)
+			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", holdframe)
+			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", holdframe)
+				
+			cancelbutton.MouseButton1Down:Connect(function()
+				holdframe:Destroy()
+				holdframe = nil
+			end)
+
+			deletebutton.MouseButton1Up:Connect(function()
+				createfileontable(disk, nameondisk, nil, directory)
+				holdframe:Destroy()
+				if filegui then
+					filegui:Destroy()
+				end
+				filegui = nil
+			end)
+		end)
+	end
+	
+	if string.find(string.lower(tostring(nameondisk)), ".aud") then
+		local txt = string.lower(tostring(txt))
+		if string.find(tostring(txt), "pitch:") then
+			local length = nil
+
+			local pitch = nil
+			local splitted = string.split(tostring(txt), "pitch:")
+			local spacesplitted = string.split(tostring(txt), " ")
+
+			if string.find(splitted[2], " ") then
+				pitch = (string.split(splitted[2], " "))[1]
+			else
+				pitch = splitted[2]
+			end
+			
+			if string.find(tostring(txt), "length:") then
+				local splitted = string.split(tostring(txt), "length:")
+				if string.find(splitted[2], " ") then
+					length = (string.split(splitted[2], " "))[1]
+				else
+					length = splitted[2]
+				end
+			end
+			
+			audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
+			
+		elseif string.find(tostring(txt), "length:") then
+			
+			local splitted = string.split(tostring(txt), "length:")
+			
+			local spacesplitted = string.split(tostring(txt), " ")
+			
+			local length = nil
+				
+			if string.find(splitted[2], " ") then
+				length = (string.split(splitted[2], " "))[1]
+			else
+				length = splitted[2]
+			end
+			
+			audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
+			
+		else
+			audioui(screen, disk, txt, speaker)
+		end
+	end
+
+	if string.find(string.lower(tostring(nameondisk)), ".img") then
+		woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+	end
+
+	if string.find(string.lower(tostring(nameondisk)), ".lua") then
+		loadluafile(microcontrollers, screen, tostring(txt))
+	end
+	if typeof(txt) == "table" then
+		local newdirectory = nil
+		if directory then
+			newdirectory = directory.."/"..nameondisk
+		else
+			newdirectory = "/"..nameondisk
+		end
+		filegui:Destroy()
+		filegui = nil
+		
+		local tableval = txt
+		local start = 0
+		local holderframe, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Table Content", false, false, false, "Table Content", false)
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
+		holderframe:AddChild(scrollingframe)
+		textlabel.Size -= UDim2.new(0, 0, 0, 25)
+		
+		if boolean == true then
+			local alldata = disk:ReadEntireDisk()
+			local deletebutton = createnicebutton2(UDim2.new(0, 25, 0, 25), UDim2.new(1, -25, 0, 0), "Delete", holderframe)
+			textlabel.Size = UDim2.new(1,-130,0,25)
+			
+			deletebutton.MouseButton1Up:Connect(function()
+				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, true, false, nil, true)
+				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", holdframe)
+				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", holdframe)
+					
+				cancelbutton.MouseButton1Down:Connect(function()
+					holdframe:Destroy()
+					holdframe = nil
+				end)
+	
+				deletebutton.MouseButton1Up:Connect(function()
+					disk:Write(nameondisk, nil)
+					if holderframe then
+						holderframe:Destroy()
+					end
+					holdframe:Destroy()
+					holderframe = nil
+				end)
+			end)
+		elseif directory then
+			local alldata = disk:ReadEntireDisk()
+			local deletebutton = createnicebutton2(UDim2.new(0, 25, 0, 25), UDim2.new(1, -25, 0, 0), "Delete", holderframe)
+			textlabel.Size = UDim2.new(1,-130,0,25)
+			
+			deletebutton.MouseButton1Up:Connect(function()
+				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, true, false, nil, true)
+				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", holdframe)
+				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", holdframe)
+				
+				cancelbutton.MouseButton1Down:Connect(function()
+					holdframe:Destroy()
+					holdframe = nil
+				end)
+	
+				deletebutton.MouseButton1Up:Connect(function()
+					createfileontable(disk, nameondisk, nil, directory)
+					holdframe:Destroy()
+					if holderframe then
+						holderframe:Destroy()
+					end
+					holderframe = nil
+				end)
+			end)
+		end
+		
+		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
+		holderframe:AddChild(closebutton)
+	
+		closebutton.MouseButton1Down:Connect(function()
+			holderframe:Destroy()
+		end)
+
+		for index, data in pairs(tableval) do
+			local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(index), scrollingframe)
+			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+			start += 25
+			button.MouseButton1Down:Connect(function()
+				readfile(getfileontable(disk, index, newdirectory), index, false, newdirectory)
+			end)
+		end
+	end
+	
+	if string.find(string.lower(tostring(txt)), "<woshtml>") then
+		woshtmlfile(txt, screen)
+	end
+	
+end
+
+local function loaddisk(screen, disk)
+	local start = 0
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Disk Content", false, false, false, "Files", false)
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
+	holderframe:AddChild(scrollingframe)
+
+	for filename, data in pairs(disk:ReadEntireDisk()) do
+		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
+			local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
+			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+			start += 25
+			button.MouseButton1Down:Connect(function()
+				local data = disk:Read(filename)
+				readfile(data, filename, true)
+			end)
+		end
+	end
 end
 
 local function writedisk()
