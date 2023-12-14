@@ -955,19 +955,19 @@ local function writedisk()
 			end
 			if not split then
 				if disk:Read(filename) then
-					createtablebutton.Text = "Success i think"
+					createtablebutton2.Text = "Success i think"
 				else
-					createtablebutton.Text = "Failed"
+					createtablebutton2.Text = "Failed"
 				end
 			else
 				if disk:Read(split[2]) == returntable then
-					createtablebutton.Text = "Success i think"
+					createtablebutton2.Text = "Success i think"
 				else
-					createtablebutton.Text = "Failed i think"
+					createtablebutton2.Text = "Failed i think"
 				end	
 			end
 			task.wait(2)
-			createtablebutton.Text = "Create Table"
+			createtablebutton2.Text = "Create Table"
 		end
 	end)
 end
