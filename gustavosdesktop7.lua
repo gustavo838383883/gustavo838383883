@@ -1633,9 +1633,9 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
-			local filesopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.6/3,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6/2, 0), BackgroundTransparency = 1})
+			local filesopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.6/3,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6/1.5, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(filesopen)
-			local txtlabel3 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create/Overwrite File"})
+			local txtlabel3 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Files"})
 			filesopen:AddChild(txtlabel3)
 			filesopen.MouseButton1Down:Connect(function()
 				filesopen.Image = "rbxassetid://15625805069"
