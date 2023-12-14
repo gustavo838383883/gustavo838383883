@@ -1570,6 +1570,8 @@ end
 
 local bootos
 
+local players = {}
+
 local function loaddesktop()
 	minimizedammount = 0
 	minimizedprograms = {}
@@ -1822,6 +1824,87 @@ local function loaddesktop()
 		openstartmenu()
 		speaker:PlaySound(clicksound)
 	end)
+	screen:Connect("CursorMoved", function(cursor)
+		if screen then
+			if startbutton7 then
+				local cursors = screen:GetCursors()
+				local success = false
+				if not buttondown then
+					for index,cur in pairs(cursors) do
+						local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, startbutton7)
+						if boolean then
+							startbutton7.Image = "rbxassetid://15617866125"
+							success = true
+							break
+						end
+					end
+					if not success then
+						startbutton7.Image = "rbxassetid://15617867263"
+					end
+				end
+			end
+			if holding2 then
+				local cursors = screen:GetCursors()
+				local cursor
+				local x_axis
+				local y_axis
+				if not startCursorPos["Player"] then return end
+				for index,cur in pairs(cursors) do
+					if not cur["Player"] then return end
+					if cur.Player == startCursorPos.Player then
+						cursor = cur
+						break
+					end
+				end
+				if not cursor then holding2 = false end
+				if cursor then
+					local screenresolution = resolutionframe.AbsoluteSize
+					local startCursorPos = startCursorPos
+					if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
+						local newX = uiStartPos.X.Scale - (startCursorPos.X - cursor.X)/screenresolution.X
+						local newY = uiStartPos.Y.Scale - (startCursorPos.Y - cursor.Y)/screenresolution.Y
+						if newY + 0.1 > 0.9 then
+							newY = 0.8
+						end
+						if holderframetouse then
+							holderframetouse.Position = UDim2.fromScale(newX, newY)
+						end
+					end
+				end
+			end
+			
+			if holding then
+				if not holderframetouse then return end
+				local cursors = screen:GetCursors()
+				local cursor
+				local success = false
+				for index,cur in pairs(cursors) do
+					if startCursorPos and cur then
+						if cur.Player == startCursorPos.Player then
+							cursor = cur
+							success = true
+						end
+					end
+				end
+				if not success then holding = false end
+				if cursor then
+					local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +5
+					local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +5
+					local screenresolution = resolutionframe.AbsoluteSize
+		
+					if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
+						if newX < 130 then newX = 130 end
+						if newY < 130 then newY = 130 end
+						if newX/screenresolution.X > 1 then newX = screenresolution.X end
+						if newY/screenresolution.Y > 0.9 then newY = screenresolution.Y * 0.9 end
+						if holderframetouse then
+							holderframetouse.Size = UDim2.fromScale(newX/screenresolution.X, newY/screenresolution.Y)
+						end
+					end
+				end
+			end
+		end
+	end
 end
 
 function bootos()
@@ -1966,101 +2049,12 @@ function bootos()
 end
 bootos()
 
-local cursorsinscreen = {}
-
 while true do
-	task.wait(0.01)
-	if screen then
-		if startbutton7 then
-			local cursors = screen:GetCursors()
-			local success = false
-			if not buttondown then
-				for index,cur in pairs(cursors) do
-					local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, startbutton7)
-					if boolean then
-						startbutton7.Image = "rbxassetid://15617866125"
-						success = true
-						break
-					end
-				end
-				if not success then
-					startbutton7.Image = "rbxassetid://15617867263"
-				end
-			end
-		end
-		if holding2 then
-			local cursors = screen:GetCursors()
-			local cursor
-			local x_axis
-			local y_axis
-			if not startCursorPos["Player"] then return end
-			for index,cur in pairs(cursors) do
-				if not cur["Player"] then return end
-				if cur.Player == startCursorPos.Player then
-					cursor = cur
-					break
-				end
-			end
-			if not cursor then holding2 = false end
-			if cursor then
-				local screenresolution = resolutionframe.AbsoluteSize
-				local startCursorPos = startCursorPos
-				if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-					local newX = uiStartPos.X.Scale - (startCursorPos.X - cursor.X)/screenresolution.X
-					local newY = uiStartPos.Y.Scale - (startCursorPos.Y - cursor.Y)/screenresolution.Y
-					if newY + 0.1 > 0.9 then
-						newY = 0.8
-					end
-					if holderframetouse then
-						holderframetouse.Position = UDim2.fromScale(newX, newY)
-					end
-				end
-			end
-		end
-		
-		if holding then
-			if not holderframetouse then return end
-			local cursors = screen:GetCursors()
-			local cursor
-			local success = false
-			for index,cur in pairs(cursors) do
-				if startCursorPos and cur then
-					if cur.Player == startCursorPos.Player then
-						cursor = cur
-						success = true
-					end
-				end
-			end
-			if not success then holding = false end
-			if cursor then
-				local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +5
-				local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +5
-				local screenresolution = resolutionframe.AbsoluteSize
-	
-				if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-					if newX < 130 then newX = 130 end
-					if newY < 130 then newY = 130 end
-					if newX/screenresolution.X > 1 then newX = screenresolution.X end
-					if newY/screenresolution.Y > 0.9 then newY = screenresolution.Y * 0.9 end
-					if holderframetouse then
-						holderframetouse.Size = UDim2.fromScale(newX/screenresolution.X, newY/screenresolution.Y)
-					end
-				end
-			end
-		end
-	end
-	if screen then
-		for i,v in pairs(cursorsinscreen) do
-			v:Destroy()
-			table.remove(cursorsinscreen, i)
-		end
-		local cursors = screen:GetCursors()
-		for i,v in pairs(cursors) do
-			local cursor = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.2, 0, 0.2, 0), BackgroundTransparency = 1, Image = "rbxassetid://8679825641"})
-			table.insert(cursorsinscreen, cursor)
-			if v then
-				cursor.Position = UDim2.new(0, tonumber(v.X) - cursor.AbsoluteSize.X/2, 0, tonumber(v.Y) - cursor.AbsoluteSize.Y/2)
-			end
+	task.wait(0.125)
+	for i,v in pairs(players) do
+		if tick() - v[1] > 0.5 then
+			v[2]:Destroy()
+			players[i] = nil
 		end
 	end
 end
