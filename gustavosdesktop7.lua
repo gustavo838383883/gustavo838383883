@@ -694,6 +694,20 @@ local function loaddesktop()
 		programholder2 = programholder2,
 		Taskbar = {taskbarholderscrollingframe, taskbarholder},
 	})
+
+	if not rom:Read("GustavOSLibrary") then
+		rom:ClearDisk()
+		rom:Write("GustavOSLibrary", {
+			Screen = screen,
+			Keyboard = keyboard,
+			Modem = modem,
+			Speaker = speaker,
+			Disk = disk,
+			programholder1 = programholder1,
+			programholder2 = programholder2,
+			Taskbar = {taskbarholderscrollingframe, taskbarholder},
+		})
+	end
 	local pressed = false
 	local startmenu
 	local function openstartmenu()
