@@ -871,7 +871,7 @@ function bootos()
 			end
 		end
 	end
-	if screen and keyboard and speaker and disk and rom then
+	if screen and keyboard and speaker and disk then
 		speaker:ClearSounds()
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
@@ -926,6 +926,7 @@ function bootos()
 		end
 		loaddesktop()
 		SpeakerHandler.PlaySound(startsound, 1, nil, speaker)
+		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 			keyboardinput = text
 			playerthatinputted = player
