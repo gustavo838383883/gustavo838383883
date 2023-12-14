@@ -649,14 +649,118 @@ local function createnicebutton(udim2, pos, text, Parent)
 	return txtbutton, txtlabel
 end
 
+local function changecolor()
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false)
+	programholder1:AddChild(holderframe)
+	local color, color2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 25), "RGB (Click to update)", holderframe)
+	local changecolorbutton, changecolorbutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Color", holderframe)
+	
+	local data = nil
+	local filename = nil
+
+	color.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			color2.Text = keyboardinput:gsub("\n", "")
+			data = keyboardinput:gsub("\n", "")
+		end
+	end)
+
+	changecolorbutton.MouseButton1Down:Connect(function()
+		if color2.Text ~= "RGB (Click to update)" then
+			disk:Write("Color", data)
+			local colordata = string.split(data, ",")
+			if colordata then
+				if tonumber(colordata[1]) and tonumber(colordata[2]) and tonumber(colordata[3]) then
+					backgroundcolor.BackgroundColor3 = Color3.new(tonumber(colordata[1])/255, tonumber(colordata[2])/255, tonumber(colordata[3])/255)
+					changecolorbutton2.Text = "Success"
+					if backgroundimage then
+						disk:Write("BackgroundImage", "")
+						wallpaper.Image = ""
+					end
+					task.wait(2)
+					changecolorbutton2.Text = "Change Color"
+				end
+			end
+		end
+	end)
+end
+
+local function changebackgroundimage()
+	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Background Image", false, false, false, "Settings", false)
+	local id, id2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 25), "Image ID (Click to update)", holderframe)
+	local tiletoggle, tiletoggle2 = createnicebutton(UDim2.new(0.25,0,0.2,0), UDim2.new(0, 0, 0.2, 25), "Enable tile", holderframe)
+	local tilenumber, tilenumber2 = createnicebutton(UDim2.new(0.75,0,0.2,0), UDim2.new(0.25, 0, 0.2, 25), "UDim2 (Click to update)", holderframe)
+	local changebackimg, changebackimg2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Background Image", holderframe)
+
+
+	local data = nil
+	local filename = nil
+	local tile = false
+	local tilenumb = "0.2, 0, 0.2, 0"
+	
+	id.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			id2.Text = keyboardinput:gsub("\n", "")
+			data = keyboardinput:gsub("\n", "")
+		end
+	end)
+
+	tiletoggle.MouseButton1Down:Connect(function()
+		if tile then
+			tile = false
+			tiletoggle2.Text = "Enable tile"
+		else
+			tiletoggle2.Text = "Disable tile"
+			tile = true
+		end
+	end)
+
+	
+	tilenumber.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			tilenumber2.Text = keyboardinput:gsub("\n", "")
+			tilenumb = keyboardinput:gsub("\n", "")
+		end
+	end)
+
+	changebackimg.MouseButton1Down:Connect(function()
+		if id2.Text ~= "Image ID (Click to update)" then
+			if tonumber(data) then
+				disk:Write("BackgroundImage", data..","..tostring(tile)..","..tilenumb)
+				wallpaper.Image = "rbxthumb://type=Asset&id="..tonumber(data).."&w=420&h=420"
+				changebackimg2.Text = "Success"
+				if tile then
+					local tilenumb = string.split(tilenumb, ",")
+					if tonumber(tilenumb[1]) and tonumber(tilenumb[2]) and tonumber(tilenumb[3]) and tonumber(tilenumb[4]) then
+						wallpaper.ScaleType = Enum.ScaleType.Tile
+						wallpaper.TileSize = UDim2.new(tonumber(tilenumb[1]), tonumber(tilenumb[2]), tonumber(tilenumb[3]), tonumber(tilenumb[4]))
+					end
+				else
+					wallpaper.ScaleType = Enum.ScaleType.Stretch
+				end
+				task.wait(2)
+				changebackimg2.Text = "Change Background Image"
+			end
+		end
+	end)
+end
+
 local function settings()
 	local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Settings may require a restart", false, false, false, "Settings", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(1, 0, 0, 150)})
 	window:AddChild(scrollingframe)
-	local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.3), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
-	local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.3), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
+	local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
+	local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
+	
+	local changeshutdownsound, text2 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0.25,0), "Shutdown Sound ID (Click to update)", scrollingframe)
+	local saveshutdownsound, text3 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0.25,0), "Save", scrollingframe)
+	
+	local changestartsound, text4 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0.5,0), "Startup Sound ID (Click to update)", scrollingframe)
+	local savestartsound, text5 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0.5,0), "Save", scrollingframe)
 
 	local input1
+	local input2
+	local input3
 	changeclicksound.MouseButton1Up:Connect(function()
 		if tonumber(keyboardinput) then
 			input1 = tonumber(keyboardinput)
@@ -670,6 +774,45 @@ local function settings()
 			task.wait(2)
 			text2.Text = "Save"
 		end
+	end)
+
+	changeshutdownsound.MouseButton1Up:Connect(function()
+		if tonumber(keyboardinput) then
+			input2 = tonumber(keyboardinput)
+			text3.Text = tonumber(keyboardinput)
+		end
+	end)
+	saveshutdownsound.MouseButton1Up:Connect(function()
+		if input2 then
+			disk:Write("ShutdownSound", tostring(input2))
+			text4.Text = "Saved"
+			task.wait(2)
+			text4.Text = "Save"
+		end
+	end)
+	
+	changestartsound.MouseButton1Up:Connect(function()
+		if tonumber(keyboardinput) then
+			input3 = tonumber(keyboardinput)
+			text5.Text = tonumber(keyboardinput)
+		end
+	end)
+	savestartsound.MouseButton1Up:Connect(function()
+		if input1 then
+			disk:Write("ClickSound", tostring(input3))
+			text6.Text = "Saved"
+			task.wait(2)
+			text6.Text = "Save"
+		end
+	end)
+
+	local openchangecolor = createnicebutton(UDim2.fromScale(0.5, 0.25), UDim2.new(0,0,0.75,0), "Change Background Color", scrollingframe)
+	openchangecolor.MouseButton1Up:Connect(function()
+		changecolor()
+	end)
+	local openchangeimage = createnicebutton(UDim2.fromScale(0.5, 0.25), UDim2.new(0.5,0,0.75,0), "Change Background Image", scrollingframe)
+	openchangeimage.MouseButton1Up:Connect(function()
+		changebackgroundimage()
 	end)
 end
 
