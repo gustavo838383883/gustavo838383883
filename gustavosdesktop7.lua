@@ -967,6 +967,8 @@ local function loaddesktop()
 					startbutton7:Destroy()
 					taskbarholder:Destroy()
 					programholder2:Destroy()
+					keyboardinput = nil
+					playerthatinputted = nil
 					minimizedprograms = {}
 					minimizedammount = 0
 					task.wait(1)
