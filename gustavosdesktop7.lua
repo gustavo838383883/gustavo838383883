@@ -650,7 +650,7 @@ local function createnicebutton(udim2, pos, text, Parent)
 end
 
 local function changecolor()
-	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false)
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false)
 	programholder1:AddChild(holderframe)
 	local color, color2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 25), "RGB (Click to update)", holderframe)
 	local changecolorbutton, changecolorbutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Color", holderframe)
@@ -686,7 +686,7 @@ local function changecolor()
 end
 
 local function changebackgroundimage()
-	local holderframe = CreateNewWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Background Image", false, false, false, "Settings", false)
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Background Image", false, false, false, "Settings", false)
 	local id, id2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 25), "Image ID (Click to update)", holderframe)
 	local tiletoggle, tiletoggle2 = createnicebutton(UDim2.new(0.25,0,0.2,0), UDim2.new(0, 0, 0.2, 25), "Enable tile", holderframe)
 	local tilenumber, tilenumber2 = createnicebutton(UDim2.new(0.75,0,0.2,0), UDim2.new(0.25, 0, 0.2, 25), "UDim2 (Click to update)", holderframe)
@@ -752,11 +752,11 @@ local function settings()
 	local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
 	local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
 	
-	local changeshutdownsound, text2 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0.25,0), "Shutdown Sound ID (Click to update)", scrollingframe)
-	local saveshutdownsound, text3 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0.25,0), "Save", scrollingframe)
+	local changeshutdownsound, text3 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0.25,0), "Shutdown Sound ID (Click to update)", scrollingframe)
+	local saveshutdownsound, text4 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0.25,0), "Save", scrollingframe)
 	
-	local changestartsound, text4 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0.5,0), "Startup Sound ID (Click to update)", scrollingframe)
-	local savestartsound, text5 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0.5,0), "Save", scrollingframe)
+	local changestartsound, text5 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0.5,0), "Startup Sound ID (Click to update)", scrollingframe)
+	local savestartsound, text6 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0.5,0), "Save", scrollingframe)
 
 	local input1
 	local input2
@@ -799,7 +799,7 @@ local function settings()
 	end)
 	savestartsound.MouseButton1Up:Connect(function()
 		if input1 then
-			disk:Write("ClickSound", tostring(input3))
+			disk:Write("StartSound", tostring(input3))
 			text6.Text = "Saved"
 			task.wait(2)
 			text6.Text = "Save"
