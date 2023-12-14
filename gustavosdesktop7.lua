@@ -784,7 +784,7 @@ function bootos()
 			break
 		end
 	end
-	if screen and keyboard and speaker and disk then
+	if screen and keyboard and speaker and disk and rom then
 		speaker:ClearSounds()
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
