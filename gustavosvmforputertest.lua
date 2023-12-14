@@ -934,13 +934,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 			end)
 		end
 		
-		local closebutton = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0,25,0,25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Close", BackgroundColor3 = Color3.new(1, 0, 0)})
-		holderframe:AddChild(closebutton)
-	
-		closebutton.MouseButton1Down:Connect(function()
-			holderframe:Destroy()
-		end)
-
 		for index, data in pairs(tableval) do
 			local button = screen:CreateElement("TextButton", {TextScaled = true, Text = tostring(index), Size = UDim2.new(1,0,0,25), Position = UDim2.new(0, 0, 0, start)})
 			scrollingframe:AddChild(button)
