@@ -1093,7 +1093,7 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
-			local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.6*3,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6*3, 0), BackgroundTransparency = 1})
+			local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.6/3,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6/3, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(diskwriteopen)
 			local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create/Overwrite File"})
 			diskwriteopen:AddChild(txtlabel2)
