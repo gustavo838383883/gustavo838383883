@@ -548,7 +548,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				end
 				local start = 0
 				for index, value in pairs(minimizedprograms) do
-					if value.Size ~= UDim2.new(1,0,1,0) then
+					if value and value.Size ~= UDim2.new(1,0,1,0) then
 						value.Position = UDim2.new(0, start * 50, 0, 0)
 						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (50 * start) + 50, 1, 0)
 						start += 1
@@ -773,6 +773,7 @@ local function settings()
 			text2.Text = "Saved"
 			task.wait(2)
 			text2.Text = "Save"
+			ClickSound = "rbxassetid://"..tostring(input1)
 		end
 	end)
 
@@ -788,6 +789,7 @@ local function settings()
 			text4.Text = "Saved"
 			task.wait(2)
 			text4.Text = "Save"
+			ShutdownSound = "rbxassetid://"..tostring(input2)
 		end
 	end)
 	
@@ -803,6 +805,7 @@ local function settings()
 			text6.Text = "Saved"
 			task.wait(2)
 			text6.Text = "Save"
+			StartSound = "rbxassetid://"..tostring(input3)
 		end
 	end)
 
@@ -1029,6 +1032,40 @@ local function loaddesktop()
 			programholder2 = programholder2,
 			Taskbar = {taskbarholderscrollingframe, taskbarholder},
 		})
+	end
+	if not disk:Read("sounds") then
+		local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", true, true, false, "Welcome", false)
+		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,-25), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
+		window:AddChild(textlabel)
+		local yes = CreateNiceButton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Yes", window)
+		local no = CreateNiceButton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "No", window)
+
+		no.MouseButton1Up:Connect(function()
+			window:Destroy()
+		end)
+
+		yes.MouseButton1Up:Connect(function()
+			window:Destroy()
+			disk:Read("sounds")
+			disk:Write("sounds", {
+				["quiz.aud"] = "9042796147 length:197.982",
+				["meltdown.aud"] = "1845092181",
+				["Synthwar.aud"] = "4580911200",
+				["SynthBetter.aud"] = "4580911200 pitch:1.15",
+				["DISTANT.aud"] = "4611202823 pitch:1.15",
+				["blade.aud"] = "10951049295",
+				["Climber.aud"] = "10951047950",
+				["tune.aud"] = "1846897737",
+				["Synthwar-remix.aud"] = "9223412780",
+				["Wasting-Space.aud"] = "4715885427",
+				["Mobius.aud"] = "10951050091",
+				["Productive.aud"] = "10951166364",
+				["Landing.aud"] = "10951045010",
+				["Travel.aud"] = "10951043922",
+				["Solar-wind.aud"] = "8887201925",
+				["4th-axis.aud"] = "8909965418",
+			})
+		end)
 	end
 	local pressed = false
 	local startmenu
