@@ -808,10 +808,10 @@ function bootos()
 		task.wait(2)
 		screen:ClearElements()
 		if disk then
-			clicksound = "rbxassetid://"..disk:Read("ClickSound")
+			clicksound = disk:Read("ClickSound")
 			shutdownsound = disk:Read("ShutdownSound")
 			startsound = disk:Read("StartSound")
-			if not clicksound then clicksound = "rbxassetid://6977010128"; end
+			if not clicksound then clicksound = "rbxassetid://6977010128"; else clicksound = "rbxassetid://"..clicksound; end
 			if not startsound then startsound = 182007357; end
 			if not shutdownsound then shutdownsound = 7762841318; end
 			color = disk:Read("Color")
