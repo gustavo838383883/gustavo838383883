@@ -738,7 +738,7 @@ local function loaddesktop()
 			
 			local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(settingsopen)
-			local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Test"})
+			local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Settings"})
 			settingsopen:AddChild(txtlabel)
 			settingsopen.MouseButton1Down:Connect(function()
 				settingsopen.Image = "rbxassetid://15625805069"
