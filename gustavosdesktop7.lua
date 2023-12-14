@@ -1829,6 +1829,9 @@ function bootos()
 		if not disk then
 			commandlines:insert("You need 2 or more disks on the same port.")
 		end
+		if not rom then
+			commandlines:insert([[No empty disk or disk with the file "GustavOSLibrary" was found.]])
+		end
 		if keyboard then
 			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
 				if key == Enum.KeyCode.Return then
@@ -1856,6 +1859,7 @@ function bootos()
 		end
 		if not rom then
 			commandlines:insert([[No empty disk or disk with the file "GustavOSLibrary" was found.]])
+		end
 		if keyboard then
 			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
 				if key == Enum.KeyCode.Return then
