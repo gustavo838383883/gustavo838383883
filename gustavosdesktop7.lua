@@ -773,7 +773,7 @@ local function settings()
 	end)
 	saveclicksound.MouseButton1Up:Connect(function()
 		if input1 then
-			disk:Write("ClickSound", tostring(input1))
+			rom:Write("ClickSound", tostring(input1))
 			text2.Text = "Saved"
 			task.wait(2)
 			text2.Text = "Save"
@@ -789,7 +789,7 @@ local function settings()
 	end)
 	saveshutdownsound.MouseButton1Up:Connect(function()
 		if input2 then
-			disk:Write("ShutdownSound", tostring(input2))
+			rom:Write("ShutdownSound", tostring(input2))
 			text4.Text = "Saved"
 			task.wait(2)
 			text4.Text = "Save"
@@ -805,7 +805,7 @@ local function settings()
 	end)
 	savestartsound.MouseButton1Up:Connect(function()
 		if input3 then
-			disk:Write("StartSound", tostring(input3))
+			rom:Write("StartSound", tostring(input3))
 			text6.Text = "Saved"
 			task.wait(2)
 			text6.Text = "Save"
@@ -1236,9 +1236,9 @@ function bootos()
 		task.wait(2)
 		screen:ClearElements()
 		if disk then
-			clicksound = disk:Read("ClickSound")
-			shutdownsound = disk:Read("ShutdownSound")
-			startsound = disk:Read("StartSound")
+			clicksound = rom:Read("ClickSound")
+			shutdownsound = rom:Read("ShutdownSound")
+			startsound = rom:Read("StartSound")
 			if not clicksound then clicksound = "rbxassetid://6977010128"; else clicksound = "rbxassetid://"..tostring(clicksound); end
 			if not startsound then startsound = 182007357; end
 			if not shutdownsound then shutdownsound = 7762841318; end
