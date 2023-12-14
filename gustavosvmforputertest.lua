@@ -909,6 +909,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		elseif directory then
 			deletebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25),Position = UDim2.new(1, -25, 0, 0), Text = "Delete", TextScaled = true})
 			holderframe:AddChild(deletebutton)
+			textlabel.Size = UDim2.new(1,-75,0,25)
 			
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe = CreateNewWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?", true, false)
