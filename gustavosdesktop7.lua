@@ -735,7 +735,7 @@ local function loaddesktop()
 			end)
 
 			shutdown.MouseButton1Up:Connect(function()
-				SpeakerHandler.PlaySound(7762841318, 1, nil, speaker)
+				speaker:PlaySound(clicksound)
 				shutdown.Image = "rbxassetid://15625805900"
 				pressed = false
 				startmenu:Destroy()
@@ -753,7 +753,7 @@ local function loaddesktop()
 					minimizedammount = 0
 					task.wait(1)
 					speaker:ClearSounds()
-					speaker:PlaySound(clicksound)
+					SpeakerHandler.PlaySound(7762841318, 1, nil, speaker)
 					for i=0,1,0.05 do
 						task.wait(0.05)
 						wallpaper.ImageTransparency = i
