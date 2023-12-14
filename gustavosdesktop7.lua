@@ -793,7 +793,7 @@ local function settings()
 			text4.Text = "Saved"
 			task.wait(2)
 			text4.Text = "Save"
-			shutdownsound = "rbxassetid://"..input2
+			shutdownsound = input2
 		end
 	end)
 	
@@ -809,7 +809,7 @@ local function settings()
 			text6.Text = "Saved"
 			task.wait(2)
 			text6.Text = "Save"
-			startsound = "rbxassetid://"..input3
+			startsound = input3
 		end
 	end)
 
