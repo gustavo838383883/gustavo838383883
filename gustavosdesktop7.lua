@@ -654,7 +654,7 @@ local function loaddesktop()
 	backgroundcolor = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = color})
 	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
 	backgroundcolor:AddChild(wallpaper)
-
+	print(backgroundimage, disk, color)
 	if backgroundimage then
 		wallpaper.Image = backgroundimage
 		if tile then
