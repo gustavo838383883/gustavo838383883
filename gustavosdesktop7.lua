@@ -743,10 +743,10 @@ local function loaddesktop()
 					task.wait(1)
 					speaker:ClearSounds()
 					speaker:PlaySound("rbxassetid://7762841318")
-					backgroundcolor.BackgroundTransparency = 1
 					for i=0,1,0.05 do
 						task.wait(0.05)
 						wallpaper.ImageTransparency = i
+						backgroundcolor.BackgroundTransparency = i
 					end
 					task.wait(1)
 					screen:ClearElements()
