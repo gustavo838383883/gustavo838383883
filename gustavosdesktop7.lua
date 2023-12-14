@@ -518,7 +518,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		end)
 
 		if boolean then
-			minimizebutton.Position += UDim2.new(0, 35, 0, 0)
+			minimizebutton.Position -= UDim2.new(0, 35, 0, 0)
 		end
 		
 		minimizebutton.MouseButton1Up:Connect(function()
