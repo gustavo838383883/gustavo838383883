@@ -649,6 +649,27 @@ local function createnicebutton(udim2, pos, text, Parent)
 	return txtbutton, txtlabel
 end
 
+local function settings()
+	local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Settings", false, false, false, "Settings may require a restart", false)
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(1, 0, 0, 150)})
+	window:AddChild(scrollingframe)
+	local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.3), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", window)
+	local saveclicksound = createnicebutton(UDim2.fromScale(0.4, 0.3), UDim2.new(0.6,0,0,0), "Save", window)
+
+	local input1
+	changeclicksound.MouseButton1Up:Connect(function()
+		if tonumber(keyboardinput) then
+			input1 = tonumber(keyboardinput)
+			text1.Text = tonumber(keyboardinput)
+		end
+	end)
+	saveclicksound.MouseButton1Up:Connect(function()
+		if input1 then
+			disk:Write("ClickSound", tostring(input1))
+		end
+	end)
+end
+
 local bootos
 
 local function loaddesktop()
@@ -715,17 +736,17 @@ local function loaddesktop()
 		if not pressed then
 			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), ImageTransparency = 0.2})
 			
-			local testopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
-			startmenu:AddChild(testopen)
+			local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
+			startmenu:AddChild(settingsopen)
 			local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Test"})
-			testopen:AddChild(txtlabel)
-			testopen.MouseButton1Down:Connect(function()
-				testopen.Image = "rbxassetid://15625805069"
+			settingsopen:AddChild(txtlabel)
+			settingsopen.MouseButton1Down:Connect(function()
+				settingsopen.Image = "rbxassetid://15625805069"
 			end)
-			testopen.MouseButton1Up:Connect(function()
+			settingsopen.MouseButton1Up:Connect(function()
 				speaker:PlaySound(clicksound)
-				testopen.Image = "rbxassetid://15625805900"
-				CreateWindow(UDim2.new(0.5, 0, 0.5, 0), "Test", false, false, false, "Test", false)
+				settingsopen.Image = "rbxassetid://15625805900"
+				settings()
 				pressed = false
 				startmenu:Destroy()
 			end)
