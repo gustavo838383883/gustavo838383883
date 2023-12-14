@@ -1743,7 +1743,7 @@ end
 function bootos()
 	if disks and #disks > 0 then
 		for i,v in ipairs(disks) do
-			if i > 1 then
+			if v ~= rom then
 				disk = v
 				break
 			end
