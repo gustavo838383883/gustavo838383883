@@ -1904,7 +1904,7 @@ local function loaddesktop()
 				end
 			end
 		end
-	end
+	end)
 end
 
 function bootos()
