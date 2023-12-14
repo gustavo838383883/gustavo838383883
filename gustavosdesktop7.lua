@@ -251,7 +251,9 @@ local backgroundimage
 local color
 local tile = false
 local tilesize
-local clicksound = "rbxassetid://6977010128"
+local clicksound
+local startsound
+local shutdownsound
 
 local shutdownpoly = nil
 
@@ -753,7 +755,7 @@ local function loaddesktop()
 					minimizedammount = 0
 					task.wait(1)
 					speaker:ClearSounds()
-					SpeakerHandler.PlaySound(7762841318, 1, nil, speaker)
+					SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 					for i=0,1,0.05 do
 						task.wait(0.05)
 						wallpaper.ImageTransparency = i
@@ -806,6 +808,12 @@ function bootos()
 		task.wait(2)
 		screen:ClearElements()
 		if disk then
+			clicksound = "rbxassetid://"..disk:Read("ClickSound")
+			shutdownsound = disk:Read("ShutdownSound")
+			startsound = disk:Read("StartSound")
+			if not clicksound then clicksound = "rbxassetid://6977010128"; end
+			if not startsound then startsound = 182007357; end
+			if not shutdownsound then shutdownsound = 7762841318; end
 			color = disk:Read("Color")
 			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false") end
 			local diskbackgroundimage = disk:Read("BackgroundImage")
@@ -844,7 +852,7 @@ function bootos()
 			end
 		end
 		loaddesktop()
-		SpeakerHandler.PlaySound(182007357, 1, nil, speaker)
+		SpeakerHandler.PlaySound(startsound, 1, nil, speaker)
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 			keyboardinput = text
 			playerthatinputted = player
