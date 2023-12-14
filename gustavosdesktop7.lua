@@ -753,6 +753,7 @@ local function loaddesktop()
 					window:Destroy()
 					startbutton7:Destroy()
 					taskbarholder:Destroy()
+					programholder2:Destroy()
 					minimizedprograms = {}
 					minimizedammount = 0
 					task.wait(1)
@@ -798,6 +799,7 @@ local function loaddesktop()
 					window:Destroy()
 					startbutton7:Destroy()
 					taskbarholder:Destroy()
+					programholder2:Destroy()
 					minimizedprograms = {}
 					minimizedammount = 0
 					task.wait(1)
