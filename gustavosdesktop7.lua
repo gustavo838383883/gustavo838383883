@@ -1957,8 +1957,8 @@ while true do
 				local screenresolution = resolutionframe.AbsoluteSize
 	
 				if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-					if newX/screenresolution.X < 0.4 then newX = screenresolution.X * 0.4 end
-					if newY/screenresolution.Y < 0.4 then newY = screenresolution.Y * 0.4 end
+					if newX < 105 then newX = 105 end
+					if newY < 105 then newY = 105 end
 					if newX/screenresolution.X > 1 then newX = screenresolution.X end
 					if newY/screenresolution.Y > 0.9 then newY = screenresolution.Y * 0.9 end
 					if holderframetouse then
