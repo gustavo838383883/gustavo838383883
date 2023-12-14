@@ -347,7 +347,6 @@ local function getstuff()
 	if disks then
 		for i,v in pairs(disks) do
 			rom = v
-			table.remove(disks, i)
 			break
 		end
 	end
@@ -780,8 +779,10 @@ end
 function bootos()
 	if disks and #disks > 0 then
 		for i,v in pairs(disks) do
-			disk = v
-			break
+			if i > 1 then
+				disk = v
+				break
+			end
 		end
 	end
 	if screen and keyboard and speaker and disk and rom then
