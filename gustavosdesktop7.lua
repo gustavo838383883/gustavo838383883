@@ -798,7 +798,7 @@ local function settings()
 		end
 	end)
 	savestartsound.MouseButton1Up:Connect(function()
-		if input1 then
+		if input3 then
 			disk:Write("StartSound", tostring(input3))
 			text6.Text = "Saved"
 			task.wait(2)
