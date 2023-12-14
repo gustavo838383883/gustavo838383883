@@ -1340,6 +1340,15 @@ function bootos()
 	elseif not regularscreen and not screen then
 		Beep(0.5)
 		print("No screen was found.")
+		if keyboard then
+			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
+				if key == Enum.KeyCode.Return then
+					getstuff()
+					bootos()
+					keyboardevent:Unbind()
+				end
+			end)
+		end
 	end
 end
 bootos()
