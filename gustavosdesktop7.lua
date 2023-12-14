@@ -251,6 +251,7 @@ local backgroundimage
 local color
 local tile = false
 local tilesize
+local clicksound = "rbxassetid://6977010128"
 
 local shutdownpoly = nil
 
@@ -491,7 +492,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	
 	closebutton.MouseButton1Up:Connect(function()
 		closebutton.Image = "rbxassetid://15617983488"
-		speaker:PlaySound("rbxassetid://6977010128")
+		speaker:PlaySound(clicksound)
 		holderframe:Destroy()
 		holderframe = nil
 	end)
@@ -516,7 +517,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		
 		minimizebutton.MouseButton1Up:Connect(function()
 			if holding or holding2 then return end
-			speaker:PlaySound("rbxassetid://6977010128")
+			speaker:PlaySound(clicksound)
 			minimizebutton.Image = "rbxassetid://15617867263"
 			resolutionframe:AddChild(holderframe)
 			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, 50, 1, 0), Position = UDim2.new(0, minimizedammount * 50, 0, 0)})
@@ -534,7 +535,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			
 			unminimizebutton.MouseButton1Up:Connect(function()
 				unminimizebutton.Image = "rbxassetid://15625805900"
-				speaker:PlaySound("rbxassetid://6977010128")
+				speaker:PlaySound(clicksound)
 				unminimizebutton.Size = UDim2.new(1,0,1,0)
 				unminimizebutton:Destroy()
 				minimizedammount -= 1
@@ -569,7 +570,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		
 		maximizebutton.MouseButton1Up:Connect(function()
 			if holding or holding2 then return end
-			speaker:PlaySound("rbxassetid://6977010128")
+			speaker:PlaySound(clicksound)
 			maximizebutton.Image = "rbxassetid://15617867263"
 			local holderframe = holderframe
 			if not maximizepressed then
@@ -640,7 +641,7 @@ local function createnicebutton(udim2, pos, text, Parent)
 		txtbutton.Image = "rbxassetid://15625805069"
 	end)
 	txtbutton.MouseButton1Up:Connect(function()
-		speaker:PlaySound("rbxassetid://6977010128")
+		speaker:PlaySound(clicksound)
 		txtbutton.Image = "rbxassetid://15625805900"
 	end)
 	return txtbutton, txtlabel
@@ -722,7 +723,7 @@ local function loaddesktop()
 				testopen.Image = "rbxassetid://15625805069"
 			end)
 			testopen.MouseButton1Up:Connect(function()
-				speaker:PlaySound("rbxassetid://6977010128")
+				speaker:PlaySound(clicksound)
 				testopen.Image = "rbxassetid://15625805900"
 				CreateWindow(UDim2.new(0.5, 0, 0.5, 0), "Test", false, false, false, "Test", false)
 				pressed = false
@@ -738,7 +739,7 @@ local function loaddesktop()
 			end)
 
 			shutdown.MouseButton1Up:Connect(function()
-				speaker:PlaySound("rbxassetid://6977010128")
+				speaker:PlaySound(clicksound)
 				shutdown.Image = "rbxassetid://15625805900"
 				pressed = false
 				startmenu:Destroy()
@@ -756,7 +757,7 @@ local function loaddesktop()
 					minimizedammount = 0
 					task.wait(1)
 					speaker:ClearSounds()
-					speaker:PlaySound("rbxassetid://7762841318")
+					speaker:PlaySound(clicksound)
 					for i=0,1,0.05 do
 						task.wait(0.05)
 						wallpaper.ImageTransparency = i
@@ -786,7 +787,7 @@ local function loaddesktop()
 	startbutton7.MouseButton1Up:Connect(function()
 		buttondown = false
 		openstartmenu()
-		speaker:PlaySound("rbxassetid://6977010128")
+		speaker:PlaySound(clicksound)
 	end)
 end
 
