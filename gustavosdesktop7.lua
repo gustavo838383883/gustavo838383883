@@ -349,8 +349,10 @@ local function getstuff()
 	end
 	if disks then
 		for i,v in pairs(disks) do
-			rom = v
-			break
+			if v and #(v:ReadEntireDisk()) == 0 then
+				rom = v
+				break
+			end
 		end
 	end
 end
@@ -1541,20 +1543,7 @@ local function loaddesktop()
 		programholder2 = programholder2,
 		Taskbar = {taskbarholderscrollingframe, taskbarholder},
 	})
-
-	if not rom:Read("GustavOSLibrary") then
-		rom:ClearDisk()
-		rom:Write("GustavOSLibrary", {
-			Screen = screen,
-			Keyboard = keyboard,
-			Modem = modem,
-			Speaker = speaker,
-			Disk = disk,
-			programholder1 = programholder1,
-			programholder2 = programholder2,
-			Taskbar = {taskbarholderscrollingframe, taskbarholder},
-		})
-	end
+	
 	if not disk:Read("sounds") then
 		local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", true, true, false, "Welcome", false)
 		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,-25), Position = UDim2.new(0, 0, 0, 25), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
