@@ -1653,7 +1653,8 @@ local function loaddesktop()
 	local startmenu
 	local function openstartmenu()
 		if not pressed then
-			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), ImageTransparency = 0.2})
+			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
+			taskbar:AddChild(startmenu)
 			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 0.8, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 			startmenu:AddChild(scrollingframe)
 			local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
