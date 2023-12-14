@@ -807,15 +807,15 @@ function bootos()
 				color = string.split(color, ",")
 				if color then
 					if tonumber(color[1]) and tonumber(color[2]) and tonumber(color[3]) then
-						color = Color3.new(tonumber(color[1])/255, tonumber(color[2])/255, tonumber(color[3])/255)
+						color = Color3.fromRGB(tonumber(color[1]), tonumber(color[2]), tonumber(color[3]))
 					else
-						color = Color3.new(0, 128/255, 218/255)
+						color = Color3.fromRGB(0, 128, 218)
 					end
 				else
-					color = Color3.new(0, 128/255, 218/255)
+					color = Color3.fromRGB(0, 128, 218)
 				end
 			else
-				color = Color3.new(0, 128/255, 218/255)
+				color = Color3.fromRGB(0, 128, 218)
 			end
 			
 			if diskbackgroundimage then
