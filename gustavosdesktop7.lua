@@ -735,7 +735,7 @@ local function loaddesktop()
 			end)
 
 			shutdown.MouseButton1Up:Connect(function()
-				speaker:PlaySound(clicksound)
+				SpeakerHandler.PlaySound(7762841318, 1, nil, speaker)
 				shutdown.Image = "rbxassetid://15625805900"
 				pressed = false
 				startmenu:Destroy()
