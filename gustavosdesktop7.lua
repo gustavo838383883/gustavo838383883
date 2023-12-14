@@ -1069,7 +1069,7 @@ local function loaddesktop()
 				["4th-axis.aud"] = "8909965418",
 			})
 			window:Destroy()
-			print(disk:Read("Sounds"))
+			print(disk:Read("sounds"))
 		end)
 	end
 	local pressed = false
