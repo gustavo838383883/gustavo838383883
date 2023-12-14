@@ -654,7 +654,6 @@ local function loaddesktop()
 	backgroundcolor = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = color})
 	wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
 	backgroundcolor:AddChild(wallpaper)
-	print(backgroundimage, disk, color)
 	if backgroundimage then
 		wallpaper.Image = backgroundimage
 		if tile then
@@ -672,9 +671,6 @@ local function loaddesktop()
 	startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
 	local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Text = "G", TextScaled = true, TextWrapped = true})
 	startbutton7:AddChild(textlabel)
-	
-	local textlabel2 = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(0.5,0,0.5,0), Position = UDim2.new(0.25, 0, 0.25, 0), Text = "GustavOS 7", TextScaled = true, TextWrapped = true})
-	wallpaper:AddChild(textlabel2)
 
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
