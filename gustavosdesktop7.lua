@@ -1049,7 +1049,6 @@ local function loaddesktop()
 		end)
 
 		yes.MouseButton1Up:Connect(function()
-			window:Destroy()
 			disk:Read("sounds")
 			disk:Write("sounds", {
 				["quiz.aud"] = "9042796147 length:197.982",
@@ -1069,6 +1068,8 @@ local function loaddesktop()
 				["Solar-wind.aud"] = "8887201925",
 				["4th-axis.aud"] = "8909965418",
 			})
+			window:Destroy()
+			print(disk:Read("Sounds"))
 		end)
 	end
 	local pressed = false
