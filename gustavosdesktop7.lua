@@ -1135,7 +1135,7 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 end
 
 local function readfile(txt, nameondisk, boolean, directory)
-	local filegui, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, "File", false)
+	local filegui, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, "File", false)
 	local deletebutton = nil
 
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -35), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
@@ -1502,6 +1502,72 @@ local function writedisk()
 	end)
 end
 
+local function shutdownmicros(screen, micros)
+	local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false ,false, false, "Microcontroller manager", false)
+	
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
+	holderframe:AddChild(scrollingframe)
+
+	local start = 0
+	for index, value in pairs(microcontrollers) do
+		local button, button2 = createnicebutton(UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, start), (start/25)+1, scrollingframe)
+		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+		local oldstart = start + 25
+		button.MouseButton1Up:Connect(function()
+			local polysilicon = GetPartFromPort(value, "Polysilicon")
+			local polyport = GetPartFromPort(polysilicon, "Port")
+			if polysilicon then
+				if polyport then
+					value:Configure({Code = ""})
+					polysilicon:Configure({PolysiliconMode = 1})
+					TriggerPort(polyport)
+					if table.find(usedmicros, value) then
+						table.remove(usedmicros, table.find(usedmicros, value))
+					end
+					button2.Text = "Microcontroller turned off."
+					task.wait(2)
+					button2.Text = oldstart/25
+				else
+					print("No port connected to polysilicon")
+				end
+			else
+				print("No polysilicon connected to microcontroller")
+			end
+		end)
+		start += 25
+	end
+end
+
+
+local function customprogramthing(screen, micros)
+	local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false, false, false, "Lua executor", false)
+
+	local code = ""
+
+	local codebutton, codebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0, 25), "Enter lua here (Click to update)", holderframe)
+
+	codebutton.MouseButton1Up:Connect(function()
+		if keyboardinput then
+			codebutton2.Text = tostring(keyboardinput)
+			code = tostring(keyboardinput)
+		end
+	end)
+
+	local stopcodesbutton = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.6, 0), "Shutdown microcontrollers", holderframe)
+
+	stopcodesbutton.MouseButton1Up:Connect(function()
+		shutdownmicros(screen, microcontrollers)
+	end)
+
+	local runcodebutton, runcodebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.8, 0), "Run lua", holderframe)
+
+	runcodebutton.MouseButton1Up:Connect(function()
+		if code ~= "" then
+			loadluafile(microcontrollers, screen, code, runcodebutton2)
+		end
+	end)
+end
+
 local bootos
 
 local function loaddesktop()
@@ -1586,9 +1652,9 @@ local function loaddesktop()
 	local function openstartmenu()
 		if not pressed then
 			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 0.5, 0), Position = UDim2.new(0, 0, 0.4, 0), ImageTransparency = 0.2})
-			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 0.6, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
+			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 0.8, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 			startmenu:AddChild(scrollingframe)
-			local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.6/3,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
+			local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(settingsopen)
 			local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Settings"})
 			settingsopen:AddChild(txtlabel)
@@ -1603,7 +1669,7 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
-			local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.6/3,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6/3, 0), BackgroundTransparency = 1})
+			local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8/4, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(diskwriteopen)
 			local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create/Overwrite File"})
 			diskwriteopen:AddChild(txtlabel2)
@@ -1618,7 +1684,7 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
-			local filesopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.6/3,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6/1.5, 0), BackgroundTransparency = 1})
+			local filesopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8/2, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(filesopen)
 			local txtlabel3 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Files"})
 			filesopen:AddChild(txtlabel3)
@@ -1629,6 +1695,21 @@ local function loaddesktop()
 				speaker:PlaySound(clicksound)
 				filesopen.Image = "rbxassetid://15625805900"
 				loaddisk()
+				pressed = false
+				startmenu:Destroy()
+			end)
+
+			local luasopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1})
+			scrollingframe:AddChild(luasopen)
+			local txtlabel4 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Lua executor"})
+			luasopen:AddChild(txtlabel4)
+			luasopen.MouseButton1Down:Connect(function()
+				luasopen.Image = "rbxassetid://15625805069"
+			end)
+			luasopen.MouseButton1Up:Connect(function()
+				speaker:PlaySound(clicksound)
+				luasopen.Image = "rbxassetid://15625805900"
+				customprogramthing(screen, micros)
 				pressed = false
 				startmenu:Destroy()
 			end)
