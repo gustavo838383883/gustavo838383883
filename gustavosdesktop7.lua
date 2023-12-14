@@ -794,12 +794,6 @@ function bootos()
 		commandlines:insert("Welcome To "..name)
 		task.wait(2)
 		screen:ClearElements()
-		loaddesktop()
-		SpeakerHandler.PlaySound(182007357, 1, nil, speaker)
-		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
-			keyboardinput = text
-			playerthatinputted = player
-		end)
 		if disk then
 			color = disk:Read("Color")
 			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false") end
@@ -838,6 +832,12 @@ function bootos()
 				backgroundimage = nil
 			end
 		end
+		loaddesktop()
+		SpeakerHandler.PlaySound(182007357, 1, nil, speaker)
+		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
+			keyboardinput = text
+			playerthatinputted = player
+		end)
 	elseif not screen and regularscreen then
 		regularscreen:ClearElements()
 		local commandlines = commandline.new(false, nil, regularscreen)
