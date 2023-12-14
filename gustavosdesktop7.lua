@@ -649,6 +649,8 @@ local function createnicebutton(udim2, pos, text, Parent)
 	return txtbutton, txtlabel
 end
 
+local bootos
+
 local function loaddesktop()
 	minimizedammount = 0
 	minimizedprograms = {}
@@ -770,6 +772,50 @@ local function loaddesktop()
 					if shutdownpoly then
 						TriggerPort(shutdownpoly)
 					end
+				end)
+			end)
+
+			local restart = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0.5, 0, 0.8, 0), BackgroundTransparency = 1})
+			startmenu:AddChild(restart)
+			local restarttext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Restart"})
+			restart:AddChild(restarttext)
+			restart.MouseButton1Down:Connect(function()
+				restart.Image = "rbxassetid://15625805069"
+			end)
+
+			restart.MouseButton1Up:Connect(function()
+				speaker:PlaySound(clicksound)
+				restart.Image = "rbxassetid://15625805900"
+				pressed = false
+				startmenu:Destroy()
+				local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,true,false,nil,true)
+				local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
+				local no = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", window)
+				no.MouseButton1Up:Connect(function()
+					window:Destroy()
+				end)
+				yes.MouseButton1Up:Connect(function()
+					window:Destroy()
+					startbutton7:Destroy()
+					taskbarholder:Destroy()
+					minimizedprograms = {}
+					minimizedammount = 0
+					task.wait(1)
+					speaker:ClearSounds()
+					SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+					for i=0,1,0.05 do
+						task.wait(0.05)
+						wallpaper.ImageTransparency = i
+						backgroundcolor.BackgroundTransparency = i
+					end
+					task.wait(1)
+					screen:ClearElements()
+					local commandlines = commandline.new(false, nil, screen)
+					commandlines:insert("Restarting...")
+					task.wait(2)
+					screen:ClearElements()
+					getstuff()
+					bootos()
 				end)
 			end)
 			pressed = true
