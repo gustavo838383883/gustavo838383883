@@ -352,7 +352,10 @@ local function getstuff()
 			if v and #(v:ReadEntireDisk()) == 0 then
 				rom = v
 				break
-			elseif v and v:Read("GustavOSLibrary") then
+			elseif v and v:Read("GD7Library") or v:Read("GustavOSLibrary") then
+				if v:Read("GustavOSLibrary") then
+					v:Write("GustavOSLibrary", nil)
+				end
 				rom = v
 				break
 			end
@@ -2002,7 +2005,7 @@ function bootos()
 			commandlines:insert("You need 2 or more disks on the same port.")
 		end
 		if not rom then
-			commandlines:insert([[No empty disk or disk with the file "GustavOSLibrary" was found.]])
+			commandlines:insert([[No empty disk or disk with the file "GD7Library" was found.]])
 		end
 		if keyboard then
 			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
