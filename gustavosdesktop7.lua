@@ -1741,10 +1741,18 @@ local function loaddesktop()
 					window:Destroy()
 				end)
 				yes.MouseButton1Up:Connect(function()
+					if window then
 					window:Destroy()
-					startbutton7:Destroy()
-					taskbarholder:Destroy()
-					programholder2:Destroy()
+					end
+					if startbutton7 then
+						startbutton7:Destroy()
+					end
+					if taskbarholder then
+						taskbarholder:Destroy()
+					end
+					if programholder2 then
+						programholder2:Destroy()
+					end
 					minimizedprograms = {}
 					minimizedammount = 0
 					task.wait(1)
@@ -1787,10 +1795,18 @@ local function loaddesktop()
 					window:Destroy()
 				end)
 				yes.MouseButton1Up:Connect(function()
-					window:Destroy()
-					startbutton7:Destroy()
-					taskbarholder:Destroy()
-					programholder2:Destroy()
+					if window then
+						window:Destroy()
+					end
+					if startbutton7 then
+						startbutton7:Destroy()
+					end
+					if taskbarholder then
+						taskbarholder:Destroy()
+					end
+					if programholder2 then
+						programholder2:Destroy()
+					end
 					keyboardinput = nil
 					playerthatinputted = nil
 					minimizedprograms = {}
