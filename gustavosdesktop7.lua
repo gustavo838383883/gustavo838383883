@@ -272,6 +272,8 @@ local function getstuff()
 	modem = nil
 	microcontrollers = nil
 	regularscreen = nil
+	disksport = nil
+	romport = nil
 
 	for i=1, 128 do
 		if not disks then
@@ -1974,15 +1976,21 @@ end
 function bootos()
 	if disks and #disks > 0 then
 		print(romport, disksport)
-		for i,v in ipairs(disks) do
-			if romport ~= disksport and rom ~= v then
-				print("wth")
-				disk = v
-				break
-			elseif romport == disksport and rom ~= v then
-				print("Hello")
-				disk = v
-				break
+		if romport ~= disksport then
+			for i,v in ipairs(disks) do
+				if rom ~= v then
+					print("2")
+					disk = v
+					break
+				end
+			end
+		else
+			for i,v in ipairs(disks) do
+				if rom ~= v then
+					disk = v
+					print("1")
+					break
+				end
 			end
 		end
 	end
