@@ -656,7 +656,7 @@ function commandline.new(boolean, udim2, screen)
 	if boolean then
 		holderframe = CreateWindow(udim2, "Command Line", false, false, false, "Command Line", false)
 		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), BackgroundColor3 = Color3.new(0,0,0), Position = UDim2.new(0, 0, 0, 25)})
-		if not holderframe and or background then return end
+		if not holderframe or background then return end
 		holderframe:AddChild(background)
 	else
 		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0)})
