@@ -376,6 +376,7 @@ local function getstuff()
 		if tempromport then romport = i end
 	end
 	if not rom then
+		if i == disksport then return end
 		success, Error = pcall(GetPartFromPort, i, "Disk")
 		if success then
 			local temprom = GetPartFromPort(i, "Disk")
@@ -912,7 +913,7 @@ end
 local function changecolor()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false)
 	local color, color2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 25), "RGB (Click to update)", holderframe)
-	local changecolorbutton, changecolorbutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Color", holderframe)
+	local changecolorbutton, changecolorbutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, -10), "Change Color", holderframe)
 	
 	local data = nil
 	local filename = nil
@@ -949,7 +950,7 @@ local function changebackgroundimage()
 	local id, id2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 25), "Image ID (Click to update)", holderframe)
 	local tiletoggle, tiletoggle2 = createnicebutton(UDim2.new(0.25,0,0.2,0), UDim2.new(0, 0, 0.2, 25), "Enable tile", holderframe)
 	local tilenumber, tilenumber2 = createnicebutton(UDim2.new(0.75,0,0.2,0), UDim2.new(0.25, 0, 0.2, 25), "UDim2 (Click to update)", holderframe)
-	local changebackimg, changebackimg2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Background Image", holderframe)
+	local changebackimg, changebackimg2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, -10), "Change Background Image", holderframe)
 
 
 	local data = nil
