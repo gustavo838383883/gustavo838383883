@@ -254,6 +254,8 @@ local tilesize
 local clicksound
 local startsound
 local shutdownsound
+local romport
+local disksport
 
 local shutdownpoly = nil
 
@@ -279,6 +281,7 @@ local function getstuff()
 				if disktable then
 					if #disktable > 0 then
 						disks = disktable
+						disksport = i
 					end
 				end
 			end
@@ -348,24 +351,29 @@ local function getstuff()
 		end
 	end
 	if disks then
+		local tempromport
 		for i,v in ipairs(disks) do
 			if v then
 				if #(v:ReadEntireDisk()) == 0 then
 					rom = v
+					tempromport = true
 					break
 				elseif v:Read("GD7Library") then
 					if v:Read("GustavOSLibrary") then
 						v:Write("GustavOSLibrary", nil)
 					end
 					rom = v
+					tempromport = true
 					break
 				elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
 					v:Write("GustavOSLibrary", nil)
 					rom = v
+					tempromport = true
 					break
 				end
 			end
 		end
+		if tempromport then romport = i end
 	end
 	if not rom then
 		success, Error = pcall(GetPartFromPort, i, "Disk")
@@ -374,14 +382,17 @@ local function getstuff()
 			if temprom then
 				if #(temprom:ReadEntireDisk()) == 0 then
 					rom = temprom
+					romport = i
 				elseif temprom:Read("GD7Library") then
 					if temprom:Read("GustavOSLibrary") then
 						temprom:Write("GustavOSLibrary", nil)
 					end
 					rom = temprom
+					romport = i
 				elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") then
 					temprom:Write("GustavOSLibrary", nil)
 					rom = temprom
+					romport = i
 				end
 			end
 		end
@@ -1962,7 +1973,10 @@ end
 function bootos()
 	if disks and #disks > 0 then
 		for i,v in ipairs(disks) do
-			if v ~= rom then
+			if romport ~= disksport then
+				disk = v
+				break
+			elseif romport == disksport and i > 1 then
 				disk = v
 				break
 			end
