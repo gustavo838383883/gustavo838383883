@@ -1371,7 +1371,7 @@ local function loaddisk()
 	holderframe:AddChild(scrollingframe)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
-		if filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
+		if filename ~= "Color" and filename ~= "BackgroundImage" then
 			local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
@@ -1424,7 +1424,7 @@ local function writedisk()
 			end
 			if inputtedtext == " " then inputtedtext = ""; end
 			local split = string.split(inputtedtext, "/")
-			if split and split[2] ~= "GustavOSLibrary" then
+			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				if #split >= 3 then
 					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
@@ -1472,7 +1472,7 @@ local function writedisk()
 	end)
 
 	createfilebutton.MouseButton1Down:Connect(function()
-		if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
+		if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
 			if filedatabutton2.Text ~= "File Data (Click to update)" then
 				local split = nil
 				local returntable = nil
@@ -1641,7 +1641,7 @@ local function loaddesktop()
 
 	taskbarholderscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(0.9, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0.9, 0, 1, 0), Position = UDim2.new(0.1, 0, 0, 0), ScrollBarThickness = 2.5})
 	taskbarholder:AddChild(taskbarholderscrollingframe)
-	rom:Write("GustavOSLibrary", {
+	rom:Write("GD7Library", {
 		Screen = screen,
 		Keyboard = keyboard,
 		Modem = modem,
