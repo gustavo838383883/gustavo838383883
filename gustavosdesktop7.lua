@@ -348,7 +348,7 @@ local function getstuff()
 		end
 	end
 	if disks then
-		for i,v in pairs(disks) do
+		for i,v in ipairs(disks) do
 			if v and #(v:ReadEntireDisk()) == 0 then
 				rom = v
 				break
@@ -559,7 +559,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 					programholder1:AddChild(holderframe)
 				end
 				local start = 0
-				for index, value in pairs(minimizedprograms) do
+				for index, value in ipairs(minimizedprograms) do
 					if value and value.Size ~= UDim2.new(1,0,1,0) then
 						value.Position = UDim2.new(0, start * 50, 0, 0)
 						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (50 * start) + 50, 1, 0)
