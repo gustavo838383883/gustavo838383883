@@ -1977,7 +1977,7 @@ function bootos()
 			if romport ~= disksport then
 				disk = v
 				break
-			elseif romport == disksport and i > 1 then
+			elseif romport == disksport and rom ~= v then
 				disk = v
 				break
 			end
