@@ -439,19 +439,16 @@ local minimizedammount = 0
 
 function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
-	if not programholder1 or not holderframe then return end
 	programholder1:AddChild(holderframe)
 	local textlabel
 	if typeof(title) == "string" then
 		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -70, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 70, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
-		if not holderframe and not textlabel then return end
 		holderframe:AddChild(textlabel)
 	end
 	local resizebutton
 	local maximizepressed = false
 	if not boolean2 then
 		resizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,10,0,10), Image = "rbxassetid://15617867263", Position = UDim2.new(1, -10, 1, -10), BackgroundTransparency = 1})
-		if not holderframe or not resizebutton then return end
 		holderframe:AddChild(resizebutton)
 		
 		resizebutton.MouseButton1Down:Connect(function()
@@ -522,7 +519,6 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	end
 
 	local closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, 35, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
-	if not holderframe or not closebutton then return end
 	holderframe:AddChild(closebutton)
 	
 	closebutton.MouseButton1Down:Connect(function()
@@ -541,10 +537,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	
 	if not boolean4 then
 		minimizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 70, 0, 0), BackgroundTransparency = 1})
-		if not minimizebutton or not holderframe then return end
 		holderframe:AddChild(minimizebutton)
 		local minimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "↓"})
-		if not minimizebutton or not minimizetext then return end
 		minimizebutton:AddChild(minimizetext)
 		if title then
 			if textlabel then
@@ -564,11 +558,9 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			if holding or holding2 then return end
 			speaker:PlaySound(clicksound)
 			minimizebutton.Image = "rbxassetid://15617867263"
-			if not resolutionframe or not holderframe then return end
 			resolutionframe:AddChild(holderframe)
 			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, 50, 1, 0), Position = UDim2.new(0, minimizedammount * 50, 0, 0)})
 			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
-			if not unminimizebutton or not unminimizetext then return end
 			unminimizebutton:AddChild(unminimizetext)
 			taskbarholderscrollingframe:AddChild(unminimizebutton)
 			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * 50) + 50, 1, 0) 
@@ -606,7 +598,6 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	if not boolean then
 		maximizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 35, 0, 0), BackgroundTransparency = 1})
 		local maximizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "+"})
-		if not maximizebutton or not maximizetext or not holderframe then return end
 		maximizebutton:AddChild(maximizetext)
 		
 		holderframe:AddChild(maximizebutton)
@@ -656,7 +647,6 @@ function commandline.new(boolean, udim2, screen)
 	if boolean then
 		holderframe = CreateWindow(udim2, "Command Line", false, false, false, "Command Line", false)
 		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), BackgroundColor3 = Color3.new(0,0,0), Position = UDim2.new(0, 0, 0, 25)})
-		if not holderframe or background then return end
 		holderframe:AddChild(background)
 	else
 		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0)})
@@ -664,7 +654,6 @@ function commandline.new(boolean, udim2, screen)
 
 	function lines:insert(text)
 		local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextScaled = true, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, Size = UDim2.new(1, 0, 0, 25), Position = UDim2.fromOffset(0, lines.number * 25)})
-		if not background or not textlabel then return end
 		background:AddChild(textlabel)
 		background.CanvasSize = UDim2.new(1, 0, 0, (lines.number * 25) + 25)
 		lines.number += 1
@@ -684,10 +673,8 @@ local cursorevent
 local function createnicebutton(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
 	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
-	if not txtbutton or not txtlabel then return end
 	txtbutton:AddChild(txtlabel)
 	if Parent then
-		if not parent or not txtbutton then return end
 		Parent:AddChild(txtbutton)
 	end
 	txtbutton.MouseButton1Down:Connect(function()
@@ -703,10 +690,8 @@ end
 local function createnicebutton2(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15617867263", Position = pos, BackgroundTransparency = 1})
 	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
-	if not txtbutton or not txtlabel then return end
 	txtbutton:AddChild(txtlabel)
 	if Parent then
-		if not parent or not txtbutton then return end
 		Parent:AddChild(txtbutton)
 	end
 	txtbutton.MouseButton1Down:Connect(function()
@@ -756,7 +741,6 @@ local function StringToGui(screen, text, parent)
 					text = string.sub(text, 1, string.find(text, '"') - 1)
 					url.ImageTransparency = tonumber(text)
 				end
-				if not parent or not url then return end
 				parent:AddChild(url)
 			end
 		end
@@ -798,7 +782,6 @@ local function StringToGui(screen, text, parent)
 			else
 				start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
 			end
-			if not parent or not url then return end
 			parent:AddChild(url)
 		end
 	end
@@ -846,7 +829,6 @@ local function StringToGui(screen, text, parent)
 				else
 					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
 				end
-				if not parent or not url then return end
 				parent:AddChild(url)
 			end
 		end
@@ -896,7 +878,6 @@ local function StringToGui(screen, text, parent)
 				else
 					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
 				end
-				if not parent or not url then return end
 				parent:AddChild(url)
 			end
 		end
@@ -911,7 +892,6 @@ local function woshtmlfile(txt, screen, boolean)
 	end
 	local filegui = CreateWindow(size, nil, false, false, false, "File", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -35), BackgroundTransparency = 1})
-	if not filegui or not scrollingframe then return end
 	filegui:AddChild(scrollingframe)
 
 	StringToGui(screen, txt, scrollingframe)
@@ -1016,7 +996,6 @@ end
 local function settings()
 	local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Settings may require a restart", false, false, false, "Settings", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(1, 0, 0, 150)})
-	if not window or not scrollingframe then return end
 	window:AddChild(scrollingframe)
 	local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
 	local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
@@ -1187,7 +1166,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 	local deletebutton = nil
 
 	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -35), Position = UDim2.new(0, 0, 0, 25), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
-	if not filegui or not disktext then return end
 	filegui:AddChild(disktext)
 	
 	print(txt)
@@ -1306,7 +1284,6 @@ local function readfile(txt, nameondisk, boolean, directory)
 		local start = 0
 		local holderframe, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Table Content", false, false, false, "Table Content", false)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -35), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
-		if not holderframe or not scrollingframe then return end
 		holderframe:AddChild(scrollingframe)
 		textlabel.Size -= UDim2.new(0, 0, 0, 25)
 		
@@ -1380,7 +1357,6 @@ local function loaddisk()
 	local start = 0
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Disk Content", false, false, false, "Files", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -25), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
-	if not holderframe or not scrollingframe then return end
 	holderframe:AddChild(scrollingframe)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
@@ -1399,7 +1375,6 @@ end
 local function writedisk()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Create File", false, false, false, "File Creator", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1})
-	if not holderframe or not scrollingframe then return end
 	holderframe:AddChild(scrollingframe)
 	local filenamebutton, filenamebutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File Name(Case Sensitive) (Click to update)", scrollingframe)
 	local filedatabutton, filedatabutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "File Data (Click to update)", scrollingframe)
@@ -1557,7 +1532,6 @@ local function shutdownmicros(screen, micros)
 	local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false ,false, false, "Microcontroller manager", false)
 	
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
-	if not holderframe or not scrollingframe then return end
 	holderframe:AddChild(scrollingframe)
 
 	local start = 0
