@@ -349,15 +349,43 @@ local function getstuff()
 	end
 	if disks then
 		for i,v in ipairs(disks) do
-			if v and #(v:ReadEntireDisk()) == 0 then
-				rom = v
-				break
-			elseif v and v:Read("GD7Library") or v:Read("GustavOSLibrary") then
-				if v:Read("GustavOSLibrary") then
+			if v then
+				if #(v:ReadEntireDisk()) == 0 then
+					rom = v
+					break
+				elseif v:Read("GD7Library") then
+					if v:Read("GustavOSLibrary") then
+						v:Write("GustavOSLibrary", nil)
+					end
+					rom = v
+					break
+				elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
 					v:Write("GustavOSLibrary", nil)
+					rom = v
+					break
 				end
-				rom = v
-				break
+			end
+		end
+	end
+	if not rom then
+		success, Error = pcall(GetPartFromPort, i, "Disk")
+		if success then
+			local temprom = GetPartFromPort(i, "Disk")
+			if temprom then
+				if #(temprom:ReadEntireDisk()) == 0 then
+					rom = temprom
+					break
+				elseif temprom:Read("GD7Library") then
+					if temprom:Read("GustavOSLibrary") then
+						temprom:Write("GustavOSLibrary", nil)
+					end
+					rom = temprom
+					break
+				elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") then
+					temprom:Write("GustavOSLibrary", nil)
+					rom = temprom
+					break
+				end
 			end
 		end
 	end
