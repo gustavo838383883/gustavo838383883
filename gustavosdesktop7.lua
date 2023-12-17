@@ -1973,8 +1973,9 @@ end
 
 function bootos()
 	if disks and #disks > 0 then
+		print(romport, disksport)
 		for i,v in ipairs(disks) do
-			if romport ~= disksport then
+			if romport ~= disksport and rom ~= v then
 				print("wth")
 				disk = v
 				break
