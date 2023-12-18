@@ -2072,7 +2072,7 @@ function bootos()
 		end
 		task.wait(1)
 		if not disk then
-			commandlines:insert("You need 2 or more disks.")
+			commandlines:insert("You need 2 or more disks, 2 or more ports must not be connected to the same disks.")
 		end
 		if not rom then
 			commandlines:insert([[No empty disk or disk with the file "GD7Library" was found.]])
