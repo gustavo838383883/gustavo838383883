@@ -2561,7 +2561,7 @@ local function loaddesktop()
 			end
 		end
 		if not players[cursor.Player] then
-			local a = screen:CreateElement("ImageLabel", {AnchorPoint = Vector2.new(0.5, 0.5), Image = "rbxassetid://8679825641", BackgroundTransparency = 1, Size = UDim2.fromScale(0.2, 0.2), Position = UDim2.fromScale(0.5, 0.5)})
+			local a = screen:CreateElement("ImageLabel", {AnchorPoint = Vector2.new(0.5, 0.5), Image = "rbxassetid://8679825641", BackgroundTransparency = 1, Size = UDim2.fromScale(0.2, 0.2), Position = UDim2.fromScale(0.5, 0.5), ZIndex = 2^31})
 			players[cursor.Player] = {tick(), a}
 		end
 		players[cursor.Player][2].Position = UDim2.fromOffset(cursor.X, cursor.Y)
