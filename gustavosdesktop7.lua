@@ -374,8 +374,7 @@ local function getstuff()
 				end
 			end
 		end
-		if not rom then
-			if i == disksport then return end
+		if not rom and i ~= disksport then
 			success, Error = pcall(GetPartFromPort, i, "Disk")
 			if success then
 				local temprom = GetPartFromPort(i, "Disk")
