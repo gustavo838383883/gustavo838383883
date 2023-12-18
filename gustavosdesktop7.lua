@@ -524,7 +524,6 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				programholder1:AddChild(holderframe)
 				programholder2:AddChild(holderframe)
 			end
-			holderframe.ZIndex += 1
 			if maximizepressed then return end
 			local cursors = screen:GetCursors()
 			local cursor
