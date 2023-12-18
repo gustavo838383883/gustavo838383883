@@ -320,7 +320,7 @@ local function getstuff()
 			end
 		end
 
-		if disks and #disks > 1 and not rom then
+		if disks and #disks > 1 and romport == disksport then
 			for index,v in ipairs(disks) do
 				if v then
 					if #(v:ReadEntireDisk()) == 0 then
