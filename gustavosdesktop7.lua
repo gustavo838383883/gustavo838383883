@@ -1066,7 +1066,7 @@ local function settings()
 			text4.Text = "Saved"
 			task.wait(2)
 			text4.Text = "Save"
-			shutdownsound = "rbxassetid://"..input2
+			shutdownsound = input2
 		end
 	end)
 	
@@ -1082,7 +1082,7 @@ local function settings()
 			text6.Text = "Saved"
 			task.wait(2)
 			text6.Text = "Save"
-			startsound = "rbxassetid://"..input3
+			startsound = input3
 		end
 	end)
 
@@ -2092,7 +2092,7 @@ local function loaddesktop()
 					minimizedammount = 0
 					task.wait(1)
 					speaker:ClearSounds()
-					speaker:PlaySound(shutdownsound)
+					SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 					for i=0,1,0.05 do
 						task.wait(0.05)
 						backgroundcolor.BackgroundTransparency = i
@@ -2149,7 +2149,7 @@ local function loaddesktop()
 					minimizedammount = 0
 					task.wait(1)
 					speaker:ClearSounds()
-					speaker:PlaySound(shutdownsound)
+					SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 					for i=0,1,0.01 do
 						task.wait(0.01)
 						backgroundcolor.BackgroundTransparency = i
@@ -2295,7 +2295,6 @@ function bootos()
 		local commandlines = commandline.new(false, nil, screen)
 		commandlines:insert(name.." Command line")
 		task.wait(1)
-		speaker:PlaySound("rbxassetid://5289642056")
 		commandlines:insert("Welcome To "..name)
 		task.wait(2)
 		screen:ClearElements()
@@ -2304,8 +2303,8 @@ function bootos()
 			shutdownsound = rom:Read("ShutdownSound")
 			startsound = rom:Read("StartSound")
 			if not clicksound then clicksound = "rbxassetid://6977010128"; else clicksound = "rbxassetid://"..tostring(clicksound); end
-			if not startsound then startsound = 182007357; else startsound = "rbxassetid://"..startsound end
-			if not shutdownsound then shutdownsound = 7762841318; else shutdownsound = "rbxassetid://"..shutdownsound end
+			if not startsound then startsound = 182007357; end
+			if not shutdownsound then shutdownsound = 7762841318; end
 			color = disk:Read("Color")
 			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false") end
 			local diskbackgroundimage = disk:Read("BackgroundImage")
@@ -2344,7 +2343,7 @@ function bootos()
 			end
 		end
 		loaddesktop()
-		speaker:PlaySound(startsound)
+		SpeakerHandler.PlaySound(startsound, 1, nil, speaker)
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 			keyboardinput = text
