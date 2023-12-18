@@ -313,6 +313,9 @@ local function getstuff()
 						if tempport and tempport.PortID == romport then
 							cancel = true
 						end
+						if romport == i and #disktable == 1 then
+							cancel = true
+						end
 						if not cancel then
 							disks = disktable
 							disksport = i
