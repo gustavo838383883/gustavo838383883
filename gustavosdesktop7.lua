@@ -276,8 +276,8 @@ local function getstuff()
 	regularscreen = nil
 	disksport = nil
 	romport = nil
-	romindexusing
-	sharedport
+	romindexusing = nil
+	sharedport = nil
 
 	for i=1, 128 do
 		if not rom then
