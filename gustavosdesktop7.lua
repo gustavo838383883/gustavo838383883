@@ -548,6 +548,11 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		holderframe.MouseButton1Up:Connect(function()
 			holding2 = false
 		end)
+	else
+		holderframe.MouseButton1Down:Connect(function()
+			programholder2:AddChild(holderframe)
+			programholder1:AddChild(holderframe)
+		end)
 	end
 
 	local closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, 35, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
