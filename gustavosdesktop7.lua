@@ -304,8 +304,15 @@ local function getstuff()
 				local disktable = GetPartsFromPort(i, "Disk")
 				if disktable then
 					if #disktable > 0 then
-						disks = disktable
-						disksport = i
+						local cancel = false
+						local tempport = GetPartFromPort(i, "Port")
+						if tempport and tempport.PortID == romport then
+							cancel = true
+						end
+						if not cancel then
+							disks = disktable
+							disksport = i
+						end
 					end
 				end
 			end
