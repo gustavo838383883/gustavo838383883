@@ -1835,7 +1835,7 @@ local function chatthing()
 			end
 		end)
 	
-		local sendbutton, sendbutton2 = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8,0,0.9,0), "Send", holderframe})
+		local sendbutton, sendbutton2 = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8,0,0.9,0), "Send", holderframe)
 	
 		sendbutton.MouseButton1Up:Connect(function()
 			if sendtext then
