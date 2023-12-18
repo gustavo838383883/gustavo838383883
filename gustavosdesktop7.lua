@@ -1393,7 +1393,7 @@ end
 
 local function writedisk()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Create File", false, false, false, "File Creator", false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-25), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-35), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 	local filenamebutton, filenamebutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File Name(Case Sensitive) (Click to update)", scrollingframe)
 	local filedatabutton, filedatabutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "File Data (Click to update)", scrollingframe)
