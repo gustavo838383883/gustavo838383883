@@ -2178,7 +2178,7 @@ local function loaddesktop()
 
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
-	programholder2:AddChild(programholder1)
+	programholder1:AddChild(programholder2)
 
 	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.2})
 	taskbarholder:AddChild(startbutton7)
@@ -2373,8 +2373,8 @@ local function loaddesktop()
 					if taskbarholder then
 						taskbarholder:Destroy()
 					end
-					if programholder2 then
-						programholder2:Destroy()
+					if programholder1 then
+						programholder1:Destroy()
 					end
 					if cursorevent then cursorevent:Unbind() end
 					minimizedprograms = {}
@@ -2428,8 +2428,8 @@ local function loaddesktop()
 					if taskbarholder then
 						taskbarholder:Destroy()
 					end
-					if programholder2 then
-						programholder2:Destroy()
+					if programholder1 then
+						programholder1:Destroy()
 					end
 					if cursorevent then cursorevent:Unbind() end
 					keyboardinput = nil
