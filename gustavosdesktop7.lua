@@ -2149,7 +2149,7 @@ local function loaddesktop()
 					minimizedammount = 0
 					task.wait(1)
 					speaker:ClearSounds()
-					speaker.PlaySound("rbxassetid://"..tostring(shutdownsound))
+					speaker:PlaySound("rbxassetid://"..tostring(shutdownsound))
 					for i=0,1,0.01 do
 						task.wait(0.01)
 						backgroundcolor.BackgroundTransparency = i
@@ -2343,7 +2343,7 @@ function bootos()
 			end
 		end
 		loaddesktop()
-		speaker.PlaySound("rbxassetid://"..tostring(startsound))
+		speaker:PlaySound("rbxassetid://"..tostring(startsound))
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 			keyboardinput = text
