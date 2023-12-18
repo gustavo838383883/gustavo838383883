@@ -701,7 +701,7 @@ local cursorevent
 
 local function createnicebutton(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
-	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
+	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text), RichText = true})
 	txtbutton:AddChild(txtlabel)
 	if Parent then
 		Parent:AddChild(txtbutton)
@@ -718,7 +718,7 @@ end
 
 local function createnicebutton2(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15617867263", Position = pos, BackgroundTransparency = 1})
-	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
+	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text), RichText = true})
 	txtbutton:AddChild(txtlabel)
 	if Parent then
 		Parent:AddChild(txtbutton)
@@ -1873,6 +1873,280 @@ local function chatthing()
 		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0,0,0,25), BackgroundTransparency = 1})
 		holderframe:AddChild(textlabel)
 	end
+end
+
+local function calculator(screen)
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, "Calculator", false)
+	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.15, 0), Position = UDim2.new(0, 0, 0, 25), Text = "0", BackgroundTransparency = 1})
+	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.1, 0, 0.15, 0), Position = UDim2.new(0.45, 0, 0, 25), Text = "", BackgroundTransparency = 1})
+	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.15, 0), Position = UDim2.new(0.55, 0, 0, 25), Text = "", BackgroundTransparency = 1})
+	holderframe:AddChild(part1)
+	holderframe:AddChild(part2)
+	holderframe:AddChild(part3)
+
+	local number1 = 0
+	local type = nil
+	local number2 = 0
+
+	local data = nil
+	local filename = nil
+
+	local  button1 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.15, 25), "9", holderframe})
+	button1.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(9))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(9))
+			part2.Text = number2
+		end
+	end)
+
+	local  button2 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.15, 25), "8", holderframe})
+	button2.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(8))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(8))
+			part2.Text = number2
+		end
+	end)
+
+	local  button3 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.15, 25), "7", holderframe})
+	button3.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(7))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(7))
+			part2.Text = number2
+		end
+	end)
+
+	local  button4 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.3, 25), "6", holderframe})
+	button4.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(6))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(6))
+			part2.Text = number2
+		end
+	end)
+	
+	local  button5 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.3, 25), "5", holderframe})
+	button5.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(5))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(5))
+			part2.Text = number2
+		end
+	end)
+
+	local  button6 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.3, 25), "4", holderframe})
+	button6.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(4))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(4))
+			part2.Text = number2
+		end
+	end)
+	
+	local  button7 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.45, 25), "3", holderframe})
+	button7.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(3))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(3))
+			part2.Text = number2
+		end
+	end)
+
+	local  button8 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.45, 25), "2", holderframe})
+	button8.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(2))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(2))
+			part2.Text = number2
+		end
+	end)
+
+	local  button9 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.45, 25), "1", holderframe})
+	button9.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = tonumber(tostring(number1)..tostring(1))
+			part1.Text = number1
+		else
+			number2 = tonumber(tostring(number2)..tostring(1))
+			part2.Text = number2
+		end
+	end)
+	
+	local  button10 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.6, 25), "0", holderframe})
+	button10.MouseButton1Down:Connect(function()
+		if not type then
+			if tostring(number1) ~= "0" then
+				if tonumber(tostring(number1).."0") then
+					number1 = tostring(number1).."0"
+					part1.Text = number1
+				end
+			else
+				number1 = 0
+				part1.Text = number1
+			end
+		else
+			if tostring(number2) ~= "0" then
+				if tonumber(tostring(number2).."0") then
+					number2 = tostring(number2).."0"
+					part2.Text = number2
+				end
+			else
+				number2 = 0
+				part2.Text = number2
+			end
+		end
+	end)
+
+	local  button19 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.6, 25), ".", holderframe})
+	button19.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = string.gsub(tostring(number1), "%.", "")
+			number1 = tostring(number1).."."
+			part1.Text = number1
+		else
+			number2 = string.gsub(tostring(number2), "%.", "")
+			number2 = tostring(number2).."."
+			part2.Text = number2
+		end
+	end)
+
+	local  button20 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.75, 25), "(-)", holderframe})
+	button20.MouseButton1Down:Connect(function()
+		if not type then
+			number1 = string.gsub(tostring(number1), "-", "")
+			number1 = "-"..tostring(number1)
+			part1.Text = number1
+		else
+			number2 = string.gsub(tostring(number2), "-", "")
+			number2 = "-"..tostring(number2)
+			part2.Text = number2
+		end
+	end)
+
+	local  button11 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.6, 25), "CE", holderframe})
+	button11.MouseButton1Down:Connect(function()
+		number1 = 0
+		part1.Text = number1
+		number2 = 0
+		part2.Text = ""
+		type = nil
+		part3.Text = ""
+	end)
+
+	local  button12 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.15, 25), "+", holderframe})
+	button12.MouseButton1Down:Connect(function()
+		type = "+"
+		part3.Text = "+"
+	end)
+
+	local  button13 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.3, 25), "-", holderframe})
+	button13.MouseButton1Down:Connect(function()
+		type = "-"
+		part3.Text = "-"
+	end)
+
+	local  button14 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.45, 25), "*", holderframe})
+	button14.MouseButton1Down:Connect(function()
+		type = "*"
+		part3.Text = "*"
+	end)
+
+	local  button15 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.6, 25), "/", holderframe})
+	holderframe:AddChild(button15)
+	button15.MouseButton1Down:Connect(function()
+		type = "/"
+		part3.Text = "/"
+	end)
+
+	local  button17 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.75, 25), "√", holderframe})
+	holderframe:AddChild(button17)
+	button17.MouseButton1Down:Connect(function()
+		type = "√"
+		part3.Text = "√"
+	end)
+
+	local  button18 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.75, 25), "^", holderframe})
+	holderframe:AddChild(button18)
+	button18.MouseButton1Down:Connect(function()
+		type = "^"
+		part3.Text = "^"
+	end)
+
+	local  button16 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.75, 25), "=", holderframe})
+	holderframe:AddChild(button16)
+	button16.MouseButton1Down:Connect(function()
+		if type == "+" then
+			part1.Text = tonumber(number1) + tonumber(number2)
+			number1 = tonumber(number1) + tonumber(number2)
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+		
+		if type == "-" then
+			part1.Text = tonumber(number1) - tonumber(number2)
+			number1 = tonumber(number1) - tonumber(number2)
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+
+		if type == "*" then
+			part1.Text = tonumber(number1) * tonumber(number2)
+			number1 = tonumber(number1) * tonumber(number2)
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+
+		if type == "/" then
+			part1.Text = tonumber(number1) / tonumber(number2)
+			number1 = tonumber(number1) / tonumber(number2)
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+			
+		if type == "√" then
+			part1.Text = tonumber(number2) ^ (1 / tonumber(number1))
+			number1 = tonumber(number2) ^ (1 / tonumber(number1))
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+			
+		if type == "^" then
+			part1.Text = tonumber(number1) ^ tonumber(number2)
+			number1 = tonumber(number1) ^ tonumber(number2)
+			part2.Text = ""
+			number2 = 0
+			part3.Text = ""
+			type = nil
+		end
+	end)
 end
 
 local bootos
