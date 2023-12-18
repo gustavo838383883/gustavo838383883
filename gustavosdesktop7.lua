@@ -298,7 +298,7 @@ local function getstuff()
 				end
 			end
 		end
-		if not disks and i ~= romport then
+		if not disks then
 			success, Error = pcall(GetPartsFromPort, i, "Disk")
 			if success then
 				local disktable = GetPartsFromPort(i, "Disk")
