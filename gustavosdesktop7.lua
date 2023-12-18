@@ -257,6 +257,7 @@ local shutdownsound
 local romport
 local disksport
 local romindexusing
+local sharedport
 
 local shutdownpoly = nil
 
@@ -275,7 +276,8 @@ local function getstuff()
 	regularscreen = nil
 	disksport = nil
 	romport = nil
-	local romindexusing
+	romindexusing
+	sharedport
 
 	for i=1, 128 do
 		if not rom then
@@ -320,13 +322,14 @@ local function getstuff()
 			end
 		end
 
-		if disks and #disks > 1 and romport == disksport then
+		if disks and #disks > 1 and romport == disksport and not sharedport then
 			for index,v in ipairs(disks) do
 				if v then
 					if #(v:ReadEntireDisk()) == 0 then
 						rom = v
 						romport = i
 						romindexusing = index
+						sharedport = true
 						break
 					elseif v:Read("GD7Library") then
 						if v:Read("GustavOSLibrary") then
@@ -335,12 +338,14 @@ local function getstuff()
 						rom = v
 						romindexusing = index
 						romport = i
+						sharedport = true
 						break
 					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
 						v:Write("GustavOSLibrary", nil)
 						rom = v
 						romport = i
 						romindexusing = index
+						sharedport = true
 						break
 					end
 				end
