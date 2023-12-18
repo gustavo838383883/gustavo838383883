@@ -351,49 +351,49 @@ local function getstuff()
 				end
 			end
 		end
-	end
-	if disks then
-		for index,v in ipairs(disks) do
-			if v then
-				if #(v:ReadEntireDisk()) == 0 then
-					rom = v
-					romport = i
-					break
-				elseif v:Read("GD7Library") then
-					if v:Read("GustavOSLibrary") then
+		if disks and not rom then
+			for index,v in ipairs(disks) do
+				if v then
+					if #(v:ReadEntireDisk()) == 0 then
+						rom = v
+						romport = i
+						break
+					elseif v:Read("GD7Library") then
+						if v:Read("GustavOSLibrary") then
+							v:Write("GustavOSLibrary", nil)
+						end
+						rom = v
+						romport = i
+						break
+					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
 						v:Write("GustavOSLibrary", nil)
+						rom = v
+						romport = i
+						break
 					end
-					rom = v
-					romport = i
-					break
-				elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
-					v:Write("GustavOSLibrary", nil)
-					rom = v
-					romport = i
-					break
 				end
 			end
 		end
-	end
-	if not rom then
-		if i == disksport then return end
-		success, Error = pcall(GetPartFromPort, i, "Disk")
-		if success then
-			local temprom = GetPartFromPort(i, "Disk")
-			if temprom then
-				if #(temprom:ReadEntireDisk()) == 0 then
-					rom = temprom
-					romport = i
-				elseif temprom:Read("GD7Library") then
-					if temprom:Read("GustavOSLibrary") then
+		if not rom then
+			if i == disksport then return end
+			success, Error = pcall(GetPartFromPort, i, "Disk")
+			if success then
+				local temprom = GetPartFromPort(i, "Disk")
+				if temprom then
+					if #(temprom:ReadEntireDisk()) == 0 then
+						rom = temprom
+						romport = i
+					elseif temprom:Read("GD7Library") then
+						if temprom:Read("GustavOSLibrary") then
+							temprom:Write("GustavOSLibrary", nil)
+						end
+						rom = temprom
+						romport = i
+					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") then
 						temprom:Write("GustavOSLibrary", nil)
+						rom = temprom
+						romport = i
 					end
-					rom = temprom
-					romport = i
-				elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") then
-					temprom:Write("GustavOSLibrary", nil)
-					rom = temprom
-					romport = i
 				end
 			end
 		end
