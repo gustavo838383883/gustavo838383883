@@ -353,29 +353,27 @@ local function getstuff()
 		end
 	end
 	if disks then
-		local tempromport
-		for i,v in ipairs(disks) do
+		for index,v in ipairs(disks) do
 			if v then
 				if #(v:ReadEntireDisk()) == 0 then
 					rom = v
-					tempromport = true
+					romport = i
 					break
 				elseif v:Read("GD7Library") then
 					if v:Read("GustavOSLibrary") then
 						v:Write("GustavOSLibrary", nil)
 					end
 					rom = v
-					tempromport = true
+					romport = i
 					break
 				elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
 					v:Write("GustavOSLibrary", nil)
 					rom = v
-					tempromport = true
+					romport = i
 					break
 				end
 			end
 		end
-		if tempromport then romport = i end
 	end
 	if not rom then
 		if i == disksport then return end
