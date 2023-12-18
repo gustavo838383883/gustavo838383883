@@ -1614,12 +1614,12 @@ local function customprogramthing(screen, micros)
 end
 
 local function mediaplayer()
-	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 10), "Media player", false, false, false, "Media player", false)
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Media player", false, false, false, "Media player", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-35), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 	local Filename, Filename2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File with id(Case Sensitive) (Click to update)", scrollingframe)
-	local openimage = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, -10), "Open as image", scrollingframe)
-	local openaudio = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, -10), "Open as audio", scrollingframe)
+	local openimage = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Open as image", scrollingframe)
+	local openaudio = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Open as audio", scrollingframe)
 
 	local data = nil
 	local filename = nil
