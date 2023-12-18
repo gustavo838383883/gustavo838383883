@@ -1787,6 +1787,84 @@ local function mediaplayer()
 	end)
 end
 
+local function chatthing()
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, "Chat", false)
+	
+	local messagesent = nil
+
+	if modem then
+	
+		local id = 0
+
+		local toggleanonymous = false
+		local togglea, togglea2 = createnicebutton(UDim2.new(0.4, 0, 0.1, 0), UDim2.new(0,0,0,25), "Enable anonymous mode", holderframe)
+		
+		local idui, idui2 = createnicebutton(UDim2.new(0.6, 0, 0.1, 0), UDim2.new(0.4,0,0,25), "Network id", holderframe)
+		
+		idui.MouseButton1Up:Connect(function()
+			if tonumber(keyboardinput) then
+				idui2.Text = tonumber(keyboardinput)
+				id = tonumber(keyboardinput)
+				modem:Configure({NetworkID = tonumber(keyboardinput)})
+			end
+		end)
+
+		togglea.MouseButton1Up:Connect(function()
+			if toggleanonymous then
+				togglea2.Text = "Enable anonymous mode"
+				toggleanonymous = false
+			else
+				toggleanonymous = true
+				togglea2.Text = "Disable anonymous mode"
+			end
+		end)
+	
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.8, -25), Position = UDim2.new(0, 0, 0.1, 25), BackgroundTransparency = 1})
+		holderframe:AddChild(scrollingframe)
+	
+		local sendbox, sendbox2 = createnicebutton(UDim2.new(0.8, 0, 0.1, 0), UDim2.new(0,0,0.9,0), "Message (Click to update)", holderframe)
+	
+		local sendtext = nil
+		local player = nil
+		
+		sendbox.MouseButton1Up:Connect(function()
+			if keyboardinput then
+				sendbox2.Text = keyboardinput:gsub("\n", "")
+				sendtext = keyboardinput:gsub("\n", "")
+				player = playerthatinputted
+			end
+		end)
+	
+		local sendbutton, sendbutton2 = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8,0,0.9,0), "Send", holderframe})
+	
+		sendbutton.MouseButton1Up:Connect(function()
+			if sendtext then
+				if not toggleanonymous then
+					modem:SendMessage("[ "..player.." ]: "..sendtext, id)
+				else
+					modem:SendMessage(sendtext, id)
+				end
+				sendbutton2.Text = "Sent"
+				task.wait(2)
+				sendbutton2.Text = "Send"
+			end
+		end)
+	
+		local start = 0
+		
+		messagesent = modem:Connect("MessageSent", function(text)
+			print(text)
+			local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
+			scrollingframe:AddChild(textlabel)
+			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+			start += 25
+		end)
+	else
+		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,-25), Position = UDim2.new(0,0,0,25), BackgroundTransparency = 1})
+		holderframe:AddChild(textlabel)
+	end
+end
+
 local bootos
 
 local players = {}
@@ -1948,6 +2026,21 @@ local function loaddesktop()
 				speaker:PlaySound(clicksound)
 				mediaopen.Image = "rbxassetid://15625805900"
 				mediaplayer()
+				pressed = false
+				startmenu:Destroy()
+			end)
+
+			local chatopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*5, 0), BackgroundTransparency = 1})
+			scrollingframe:AddChild(chatopen)
+			local txtlabel6 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Chat"})
+			chatopen:AddChild(txtlabel6)
+			chatopen.MouseButton1Down:Connect(function()
+				chatopen.Image = "rbxassetid://15625805069"
+			end)
+			chatopen.MouseButton1Up:Connect(function()
+				speaker:PlaySound(clicksound)
+				chatopen.Image = "rbxassetid://15625805900"
+				chatthing()
 				pressed = false
 				startmenu:Destroy()
 			end)
