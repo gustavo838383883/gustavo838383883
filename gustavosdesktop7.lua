@@ -1066,7 +1066,7 @@ local function settings()
 			text4.Text = "Saved"
 			task.wait(2)
 			text4.Text = "Save"
-			shutdownsound = input2
+			shutdownsound = "rbxassetid://"..input2
 		end
 	end)
 	
@@ -1082,7 +1082,7 @@ local function settings()
 			text6.Text = "Saved"
 			task.wait(2)
 			text6.Text = "Save"
-			startsound = input3
+			startsound = "rbxassetid://"..input3
 		end
 	end)
 
@@ -2303,8 +2303,8 @@ function bootos()
 			shutdownsound = rom:Read("ShutdownSound")
 			startsound = rom:Read("StartSound")
 			if not clicksound then clicksound = "rbxassetid://6977010128"; else clicksound = "rbxassetid://"..tostring(clicksound); end
-			if not startsound then startsound = 182007357; end
-			if not shutdownsound then shutdownsound = 7762841318; end
+			if not startsound then startsound = 182007357; else startsound = "rbxassetid://"..startsound end
+			if not shutdownsound then shutdownsound = 7762841318; else shutdownsound = "rbxassetid://"..shutdownsound end
 			color = disk:Read("Color")
 			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false") end
 			local diskbackgroundimage = disk:Read("BackgroundImage")
@@ -2343,7 +2343,7 @@ function bootos()
 			end
 		end
 		loaddesktop()
-		speaker:PlaySound("rbxassetid://"..tostring(startsound))
+		speaker:PlaySound(startsound)
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 			keyboardinput = text
