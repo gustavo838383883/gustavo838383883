@@ -1882,8 +1882,8 @@ local function loadmenu()
 
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
-	programholder2:AddChild(programholder1)
-	window:AddChild(programholder2)
+	programholder1:AddChild(programholder2)
+	window:AddChild(programholder1)
 	
 	disk:Write("GustavOSLibrary", {
 		Screen = screen,
@@ -2037,6 +2037,7 @@ local function loadmenu()
 					
 				restartbutton.MouseButton1Down:Connect(function()
 					if backgroundframe then backgroundframe:Destroy() end
+					if programholder1 then programholder1:Destroy() end
 					Beep(1)
 					backgroundimageframe = nil
 					backgroundimage = nil
@@ -2159,6 +2160,7 @@ local function loadmenu()
 
 				shutdownbutton.MouseButton1Down:Connect(function()
 					if backgroundframe then backgroundframe:Destroy() end
+					if programholder1 then programholder1:Destroy() end
 					local frame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0)})
 					window:AddChild(frame)
 					Beep(1)
