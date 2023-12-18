@@ -351,7 +351,7 @@ local function getstuff()
 				end
 			end
 		end
-		if disks and not rom then
+		if disks and #disks > 1 and not rom then
 			for index,v in ipairs(disks) do
 				if v then
 					if #(v:ReadEntireDisk()) == 0 then
@@ -1977,7 +1977,6 @@ function bootos()
 		if romport ~= disksport then
 			for i,v in ipairs(disks) do
 				if rom ~= v then
-					print("2")
 					disk = v
 					break
 				end
@@ -1986,7 +1985,6 @@ function bootos()
 			for i,v in ipairs(disks) do
 				if rom ~= v then
 					disk = v
-					print("1")
 					break
 				end
 			end
@@ -2067,7 +2065,7 @@ function bootos()
 		end
 		task.wait(1)
 		if not disk then
-			commandlines:insert("You need 2 or more disks on the same port.")
+			commandlines:insert("You need 2 or more disks.")
 		end
 		if not rom then
 			commandlines:insert([[No empty disk or disk with the file "GD7Library" was found.]])
@@ -2095,7 +2093,7 @@ function bootos()
 		end
 		task.wait(1)
 		if not disk then
-			commandlines:insert("You need 2 or more disks on the same port.")
+			commandlines:insert("You need 2 or more disks.")
 		end
 		if not rom then
 			commandlines:insert([[No empty disk or disk with the file "GustavOSLibrary" was found.]])
