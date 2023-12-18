@@ -256,6 +256,7 @@ local startsound
 local shutdownsound
 local romport
 local disksport
+local romindexusing
 
 local shutdownpoly = nil
 
@@ -274,6 +275,7 @@ local function getstuff()
 	regularscreen = nil
 	disksport = nil
 	romport = nil
+	local romindexusing
 
 	for i=1, 128 do
 		if not rom then
@@ -324,18 +326,21 @@ local function getstuff()
 					if #(v:ReadEntireDisk()) == 0 then
 						rom = v
 						romport = i
+						romindexusing = index
 						break
 					elseif v:Read("GD7Library") then
 						if v:Read("GustavOSLibrary") then
 							v:Write("GustavOSLibrary", nil)
 						end
 						rom = v
+						romindexusing = index
 						romport = i
 						break
 					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
 						v:Write("GustavOSLibrary", nil)
 						rom = v
 						romport = i
+						romindexusing = index
 						break
 					end
 				end
@@ -2272,7 +2277,7 @@ function bootos()
 			end
 		else
 			for i,v in ipairs(disks) do
-				if rom ~= v then
+				if rom ~= v and i ~= romindexusing then
 					disk = v
 					break
 				end
