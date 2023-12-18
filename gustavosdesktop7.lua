@@ -1613,6 +1613,180 @@ local function customprogramthing(screen, micros)
 	end)
 end
 
+local function mediaplayer()
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 10), "Media player", false, false, false, "Media player", false)
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, 25), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-35), BackgroundTransparency = 1})
+	holderframe:AddChild(scrollingframe)
+	local Filename, Filename2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File with id(Case Sensitive) (Click to update)", scrollingframe)
+	local openimage = createnicebutton(UDim2.new(0,0,0.2,0), UDim2.new(0.5, 0, 0.8, -10), "Open as image", scrollingframe)
+	local openaudio = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, -10), "Open as audio", scrollingframe)
+
+	local data = nil
+	local filename = nil
+
+	local toggleopen = true
+	local Toggle1, Toggle12 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "Open from File: Yes", scrollingframe)
+	Toggle1.MouseButton1Up:Connect(function()
+		if toggleopen then
+			toggleopen = false
+			Toggle12.Text = "Open from File: No"
+		else
+			toggleopen = true
+			Toggle12.Text = "Open from File: Yes"
+		end
+	end)
+	
+	Filename.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			Filename2.Text = keyboardinput:gsub("\n", "")
+			data = keyboardinput:gsub("\n", "")
+		end
+	end)
+
+	local directorybutton2, directorybutton = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.4, 0), [[Directory (Click to update) example: "/sounds"]], scrollingframe)
+	local directory = ""
+	
+	directorybutton2.MouseButton1Down:Connect(function()
+		if keyboardinput then
+			local inputtedtext = keyboardinput:gsub("\n", "")
+			local tempsplit = string.split(inputtedtext, "/")
+			if tempsplit then
+				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+					inputtedtext = "/"..inputtedtext
+				end
+			end
+			local tempsplit2 = string.split(inputtedtext, "/")
+			if tempsplit2 then
+				if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
+			end
+			if inputtedtext == " " then inputtedtext = ""; end
+			local split = string.split(inputtedtext, "/")
+			if split then
+				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
+				if #split >= 3 then
+					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
+						directorybutton.Text = inputtedtext
+						directory = inputtedtext
+					else
+						directorybutton.Text = "Invalid"
+						task.wait(2)
+						if directory ~= "" then
+							directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						else
+							directorybutton.Text = directory
+						end
+					end
+				else
+					if disk:Read(split[#split]) or split[2] == "" then
+						directorybutton.Text = inputtedtext
+						directory = inputtedtext
+					else
+						directorybutton.Text = "Invalid"
+						task.wait(2)
+						if directory == "" then
+							directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+						else
+							directorybutton.Text = directory
+						end
+					end
+				end
+			elseif inputtedtext == "" then
+				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+				directory = inputtedtext
+			else
+				directorybutton.Text = "Invalid"
+				task.wait(2)
+				directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
+			end
+		end
+	end)
+
+	
+	openaudio.MouseButton1Down:Connect(function()
+		if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
+			local readdata = nil
+			if toggleopen then
+				local split = nil
+				if directory ~= "" then
+					split = string.split(directory, "/")
+				end
+				if not split or split[2] == "" then
+					readdata = tostring(disk:Read(data))
+				else
+					readdata = tostring(getfileontable(disk, data, directory))
+				end
+			else
+				readdata = string.lower(tostring(data))
+			end
+			local data = readdata
+			
+			if string.find(tostring(data), "pitch:") then
+				local length = nil
+	
+				local pitch = nil
+				local splitted = string.split(tostring(data), "pitch:")
+				local spacesplitted = string.split(tostring(data), " ")
+	
+				if string.find(splitted[2], " ") then
+					pitch = (string.split(splitted[2], " "))[1]
+				else
+					pitch = splitted[2]
+				end
+				
+				if string.find(tostring(data), "length:") then
+					local splitted = string.split(tostring(data), "length:")
+					if string.find(splitted[2], " ") then
+						length = (string.split(splitted[2], " "))[1]
+					else
+						length = splitted[2]
+					end
+				end
+				
+				audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
+				
+			elseif string.find(tostring(data), "length:") then
+				
+				local splitted = string.split(tostring(data), "length:")
+				
+				local spacesplitted = string.split(tostring(data), " ")
+				
+				local length = nil
+					
+				if string.find(splitted[2], " ") then
+					length = (string.split(splitted[2], " "))[1]
+				else
+					length = splitted[2]
+				end
+				
+				audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
+				
+			else
+				audioui(screen, disk, data, speaker)
+			end
+		end
+	end)
+	
+	openimage.MouseButton1Down:Connect(function()
+		if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
+			local readdata = nil
+			if toggleopen then
+				local split = nil
+				if directory ~= "" then
+					split = string.split(directory, "/")
+				end
+				if not split or split[2] == "" then
+					readdata = disk:Read(data)
+				else
+					readdata = getfileontable(disk, data, directory)
+				end
+			else
+				readdata = tostring(data)
+			end
+			woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+		end
+	end)
+end
+
 local bootos
 
 local players = {}
@@ -1701,9 +1875,9 @@ local function loaddesktop()
 		if not pressed then
 			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
 			taskbarholder:AddChild(startmenu)
-			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 0.8, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
+			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 1.4, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 			startmenu:AddChild(scrollingframe)
-			local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
+			local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(settingsopen)
 			local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Settings"})
 			settingsopen:AddChild(txtlabel)
@@ -1718,7 +1892,7 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
-			local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8/4, 0), BackgroundTransparency = 1})
+			local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.2, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(diskwriteopen)
 			local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create/Overwrite File"})
 			diskwriteopen:AddChild(txtlabel2)
@@ -1733,7 +1907,7 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
-			local filesopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8/2, 0), BackgroundTransparency = 1})
+			local filesopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.4, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(filesopen)
 			local txtlabel3 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Files"})
 			filesopen:AddChild(txtlabel3)
@@ -1748,7 +1922,7 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
-			local luasopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.8/4,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1})
+			local luasopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(luasopen)
 			local txtlabel4 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Lua executor"})
 			luasopen:AddChild(txtlabel4)
@@ -1759,6 +1933,21 @@ local function loaddesktop()
 				speaker:PlaySound(clicksound)
 				luasopen.Image = "rbxassetid://15625805900"
 				customprogramthing(screen, micros)
+				pressed = false
+				startmenu:Destroy()
+			end)
+
+			local mediaopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
+			scrollingframe:AddChild(mediaopen)
+			local txtlabel5 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Mediaplayer"})
+			mediaopen:AddChild(txtlabel5)
+			mediaopen.MouseButton1Down:Connect(function()
+				mediaopen.Image = "rbxassetid://15625805069"
+			end)
+			mediaopen.MouseButton1Up:Connect(function()
+				speaker:PlaySound(clicksound)
+				mediaopen.Image = "rbxassetid://15625805900"
+				mediaplayer()
 				pressed = false
 				startmenu:Destroy()
 			end)
