@@ -1550,7 +1550,7 @@ end
 local function shutdownmicros(screen, micros)
 	local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false ,false, false, "Microcontroller manager", false)
 	
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 
 	local start = 0
@@ -1585,7 +1585,7 @@ end
 
 
 local function customprogramthing(screen, micros)
-	local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false, false, false, "Lua executor", false)
+	local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 10), nil, false, false, false, "Lua executor", false)
 
 	local code = ""
 
@@ -1598,13 +1598,13 @@ local function customprogramthing(screen, micros)
 		end
 	end)
 
-	local stopcodesbutton = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.6, 0), "Shutdown microcontrollers", holderframe)
+	local stopcodesbutton = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.6, -10), "Shutdown microcontrollers", holderframe)
 
 	stopcodesbutton.MouseButton1Up:Connect(function()
 		shutdownmicros(screen, microcontrollers)
 	end)
 
-	local runcodebutton, runcodebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.8, 0), "Run lua", holderframe)
+	local runcodebutton, runcodebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.8, -10), "Run lua", holderframe)
 
 	runcodebutton.MouseButton1Up:Connect(function()
 		if code ~= "" then
