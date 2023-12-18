@@ -1877,9 +1877,9 @@ end
 
 local function calculator()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 10), nil, false, false, false, "Calculator", false)
-	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.15, 0), Position = UDim2.new(0, 0, 0, 25), Text = "0", BackgroundTransparency = 1})
-	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.1, 0, 0.15, 0), Position = UDim2.new(0.45, 0, 0, 25), Text = "", BackgroundTransparency = 1})
-	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.15, 0), Position = UDim2.new(0.55, 0, 0, 25), Text = "", BackgroundTransparency = 1})
+	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.15, -10), Position = UDim2.new(0, 0, 0, 25), Text = "0", BackgroundTransparency = 1})
+	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.1, 0, 0.15, -10), Position = UDim2.new(0.45, 0, 0, 25), Text = "", BackgroundTransparency = 1})
+	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.15, -10), Position = UDim2.new(0.55, 0, 0, 25), Text = "", BackgroundTransparency = 1})
 	holderframe:AddChild(part1)
 	holderframe:AddChild(part2)
 	holderframe:AddChild(part3)
@@ -1891,7 +1891,7 @@ local function calculator()
 	local data = nil
 	local filename = nil
 
-	local  button1 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.15, 25), "9", holderframe)
+	local  button1 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.50, 0, 0.15, 15), "9", holderframe)
 	button1.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(9))
@@ -1902,7 +1902,7 @@ local function calculator()
 		end
 	end)
 
-	local  button2 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.15, 25), "8", holderframe)
+	local  button2 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.25, 0, 0.15, 15), "8", holderframe)
 	button2.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(8))
@@ -1913,7 +1913,7 @@ local function calculator()
 		end
 	end)
 
-	local  button3 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.15, 25), "7", holderframe)
+	local  button3 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0, 0, 0.15, 15), "7", holderframe)
 	button3.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(7))
@@ -1924,7 +1924,7 @@ local function calculator()
 		end
 	end)
 
-	local  button4 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.3, 25), "6", holderframe)
+	local  button4 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.50, 0, 0.3, 15), "6", holderframe)
 	button4.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(6))
@@ -1935,7 +1935,7 @@ local function calculator()
 		end
 	end)
 	
-	local  button5 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.3, 25), "5", holderframe)
+	local  button5 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.25, 0, 0.3, 15), "5", holderframe)
 	button5.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(5))
@@ -1946,7 +1946,7 @@ local function calculator()
 		end
 	end)
 
-	local  button6 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.3, 25), "4", holderframe)
+	local  button6 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0, 0, 0.3, 15), "4", holderframe)
 	button6.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(4))
@@ -1957,7 +1957,7 @@ local function calculator()
 		end
 	end)
 	
-	local  button7 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.45, 25), "3", holderframe)
+	local  button7 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.50, 0, 0.45, 15), "3", holderframe)
 	button7.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(3))
@@ -1968,7 +1968,7 @@ local function calculator()
 		end
 	end)
 
-	local  button8 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.45, 25), "2", holderframe)
+	local  button8 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.25, 0, 0.45, 15), "2", holderframe)
 	button8.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(2))
@@ -1979,7 +1979,7 @@ local function calculator()
 		end
 	end)
 
-	local  button9 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.45, 25), "1", holderframe)
+	local  button9 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0, 0, 0.45, 15), "1", holderframe)
 	button9.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = tonumber(tostring(number1)..tostring(1))
@@ -1990,7 +1990,7 @@ local function calculator()
 		end
 	end)
 	
-	local  button10 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.6, 25), "0", holderframe)
+	local  button10 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.25, 0, 0.6, 15), "0", holderframe)
 	button10.MouseButton1Down:Connect(function()
 		if not type then
 			if tostring(number1) ~= "0" then
@@ -2015,7 +2015,7 @@ local function calculator()
 		end
 	end)
 
-	local  button19 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.6, 25), ".", holderframe)
+	local  button19 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.50, 0, 0.6, 15), ".", holderframe)
 	button19.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = string.gsub(tostring(number1), "%.", "")
@@ -2028,7 +2028,7 @@ local function calculator()
 		end
 	end)
 
-	local  button20 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.75, 25), "(-)", holderframe)
+	local  button20 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.50, 0, 0.75, 15), "(-)", holderframe)
 	button20.MouseButton1Down:Connect(function()
 		if not type then
 			number1 = string.gsub(tostring(number1), "-", "")
@@ -2041,7 +2041,7 @@ local function calculator()
 		end
 	end)
 
-	local  button11 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.6, 25), "CE", holderframe)
+	local  button11 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0, 0, 0.6, 15), "CE", holderframe)
 	button11.MouseButton1Down:Connect(function()
 		number1 = 0
 		part1.Text = number1
@@ -2051,46 +2051,46 @@ local function calculator()
 		part3.Text = ""
 	end)
 
-	local  button12 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.15, 25), "+", holderframe)
+	local  button12 = createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.75, 0, 0.15, 15), "+", holderframe)
 	button12.MouseButton1Down:Connect(function()
 		type = "+"
 		part3.Text = "+"
 	end)
 
-	local  button13 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.3, 25), "-", holderframe)
+	local  button13 =  createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.75, 0, 0.3, 15), "-", holderframe)
 	button13.MouseButton1Down:Connect(function()
 		type = "-"
 		part3.Text = "-"
 	end)
 
-	local  button14 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.45, 25), "*", holderframe)
+	local  button14 =  createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.75, 0, 0.45, 15), "*", holderframe)
 	button14.MouseButton1Down:Connect(function()
 		type = "*"
 		part3.Text = "*"
 	end)
 
-	local  button15 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.6, 25), "/", holderframe)
+	local  button15 =  createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.75, 0, 0.6, 15), "/", holderframe)
 	holderframe:AddChild(button15)
 	button15.MouseButton1Down:Connect(function()
 		type = "/"
 		part3.Text = "/"
 	end)
 
-	local  button17 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.75, 25), "√", holderframe)
+	local  button17 =  createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0, 0, 0.75, 15), "√", holderframe)
 	holderframe:AddChild(button17)
 	button17.MouseButton1Down:Connect(function()
 		type = "√"
 		part3.Text = "√"
 	end)
 
-	local  button18 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.75, 25), "^", holderframe)
+	local  button18 =  createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.25, 0, 0.75, 15), "^", holderframe)
 	holderframe:AddChild(button18)
 	button18.MouseButton1Down:Connect(function()
 		type = "^"
 		part3.Text = "^"
 	end)
 
-	local  button16 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.75, 0, 0.75, 25), "=", holderframe)
+	local  button16 =  createnicebutton(UDim2.new(0.25, 0, 0.15, -10), UDim2.new(0.75, 0, 0.75, 15), "=", holderframe)
 	holderframe:AddChild(button16)
 	button16.MouseButton1Down:Connect(function()
 		if type == "+" then
