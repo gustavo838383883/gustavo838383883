@@ -1958,8 +1958,8 @@ local function loaddesktop()
 					local screenresolution = resolutionframe.AbsoluteSize
 		
 					if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-						if newX < 130 then newX = 130 end
-						if newY < 130 then newY = 130 end
+						if newX < 135 then newX = 135 end
+						if newY < 100 then newY = 100 end
 						if newX/screenresolution.X > 1 then newX = screenresolution.X end
 						if newY/screenresolution.Y > 0.9 then newY = screenresolution.Y * 0.9 end
 						if holderframetouse then
