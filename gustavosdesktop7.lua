@@ -2329,6 +2329,21 @@ local function loaddesktop()
 				startmenu:Destroy()
 			end)
 
+			local calculatoropen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*6, 0), BackgroundTransparency = 1})
+			scrollingframe:AddChild(calculatoropen)
+			local txtlabel7 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Calculator"})
+			calculatoropen:AddChild(txtlabel7)
+			calculatoropen.MouseButton1Down:Connect(function()
+				calculatoropen.Image = "rbxassetid://15625805069"
+			end)
+			calculatoropen.MouseButton1Up:Connect(function()
+				speaker:PlaySound(clicksound)
+				calculatoropen.Image = "rbxassetid://15625805900"
+				calculator()
+				pressed = false
+				startmenu:Destroy()
+			end)
+
 			local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
 			startmenu:AddChild(shutdown)
 			local shutdowntext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Shutdown"})
