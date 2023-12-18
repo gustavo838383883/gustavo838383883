@@ -276,7 +276,29 @@ local function getstuff()
 	romport = nil
 
 	for i=1, 128 do
-		if not disks then
+		if not rom then
+			success, Error = pcall(GetPartFromPort, i, "Disk")
+			if success then
+				local temprom = GetPartFromPort(i, "Disk")
+				if temprom then
+					if #(temprom:ReadEntireDisk()) == 0 then
+						rom = temprom
+						romport = i
+					elseif temprom:Read("GD7Library") then
+						if temprom:Read("GustavOSLibrary") then
+							temprom:Write("GustavOSLibrary", nil)
+						end
+						rom = temprom
+						romport = i
+					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") then
+						temprom:Write("GustavOSLibrary", nil)
+						rom = temprom
+						romport = i
+					end
+				end
+			end
+		end
+		if not disks and i ~= romport then
 			success, Error = pcall(GetPartsFromPort, i, "Disk")
 			if success then
 				local disktable = GetPartsFromPort(i, "Disk")
@@ -284,6 +306,30 @@ local function getstuff()
 					if #disktable > 0 then
 						disks = disktable
 						disksport = i
+					end
+				end
+			end
+		end
+
+		if disks and #disks > 1 and not rom then
+			for index,v in ipairs(disks) do
+				if v then
+					if #(v:ReadEntireDisk()) == 0 then
+						rom = v
+						romport = i
+						break
+					elseif v:Read("GD7Library") then
+						if v:Read("GustavOSLibrary") then
+							v:Write("GustavOSLibrary", nil)
+						end
+						rom = v
+						romport = i
+						break
+					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
+						v:Write("GustavOSLibrary", nil)
+						rom = v
+						romport = i
+						break
 					end
 				end
 			end
@@ -348,51 +394,6 @@ local function getstuff()
 			if success then
 				if GetPartFromPort(i, "Keyboard") then
 					keyboard = GetPartFromPort(i, "Keyboard")
-				end
-			end
-		end
-		if disks and #disks > 1 and not rom then
-			for index,v in ipairs(disks) do
-				if v then
-					if #(v:ReadEntireDisk()) == 0 then
-						rom = v
-						romport = i
-						break
-					elseif v:Read("GD7Library") then
-						if v:Read("GustavOSLibrary") then
-							v:Write("GustavOSLibrary", nil)
-						end
-						rom = v
-						romport = i
-						break
-					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
-						v:Write("GustavOSLibrary", nil)
-						rom = v
-						romport = i
-						break
-					end
-				end
-			end
-		end
-		if not rom and i ~= disksport then
-			success, Error = pcall(GetPartFromPort, i, "Disk")
-			if success then
-				local temprom = GetPartFromPort(i, "Disk")
-				if temprom then
-					if #(temprom:ReadEntireDisk()) == 0 then
-						rom = temprom
-						romport = i
-					elseif temprom:Read("GD7Library") then
-						if temprom:Read("GustavOSLibrary") then
-							temprom:Write("GustavOSLibrary", nil)
-						end
-						rom = temprom
-						romport = i
-					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") then
-						temprom:Write("GustavOSLibrary", nil)
-						rom = temprom
-						romport = i
-					end
 				end
 			end
 		end
