@@ -632,6 +632,7 @@ end
 
 local usedmicros = {}
 
+local background
 local commandlines
 
 local function loadluafile(microcontrollers, screen, code)
@@ -724,7 +725,8 @@ local function runtext(text)
 	elseif text:lower():sub(1, 5) == "clear" then
 		task.wait(1)
 		screen:ClearElements()
-		commandlines = commandline.new(screen)
+		commandlines, background = commandline.new(screen)
+		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 6) == "reboot" then
 		task.wait(1)
 		Beep(1)
@@ -742,6 +744,7 @@ local function runtext(text)
 		end
 	elseif text:lower():sub(1, 6) == "print " then
 		commandlines:insert(text:sub(7, string.len(text)))
+		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 10) == "showmicros" then
 		if microcontrollers then
 			local start = 0
@@ -750,7 +753,10 @@ local function runtext(text)
 				commandlines:insert("Microcontroller")
 				commandlines:insert(start)
 			end
+		else
+			commandlines:insert("No microcontrollers found.")
 		end
+		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 13) == "turnoffmicro " then
 		local number = tonumber(text:sub(14, string.len(text)))
 		local start = 0
@@ -781,8 +787,10 @@ local function runtext(text)
 		if not success then
 			commandlines:insert("Invalid microcontroller number")
 		end
+		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 7) == "runlua " then
 		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
+		commandlines:insert(dir..":")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 	end
@@ -823,7 +831,7 @@ function bootos()
 			Speaker = speaker,
 			Disk = disk,
 		})
-		commandlines = commandline.new(screen)
+		commandlines, background = commandline.new(screen)
 		task.wait(1)
 		Beep(1)
 		commandlines:insert(name.." Command line")
