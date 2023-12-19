@@ -692,8 +692,13 @@ local function runtext(text)
 				end
 			else
 				if disk:Read(split[#split]) or split[2] == "" then
-					commandlines:insert(inputtedtext..":")
-					dir = inputtedtext
+					if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+						commandlines:insert(inputtedtext..":")
+						dir = inputtedtext
+					else
+						commandlines:insert("Invalid directory")
+						commandlines:insert(dir..":")
+					end
 				else
 					commandlines:insert("Invalid directory")
 					commandlines:insert(dir..":")
