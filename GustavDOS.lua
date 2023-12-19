@@ -729,11 +729,13 @@ local function runtext(text)
 		commandlines = commandline.new(screen)
 	elseif text:sub(1, 6) == "reboot" then
 		task.wait(1)
+		Beep(1)
 		getstuff()
 		dir = "/"
 		bootos()
 	elseif text:sub(1, 8) == "shutdown" then
 		task.wait(1)
+		Beep(1)
 		screen:ClearElements()
 		if speaker then speaker:ClearSounds() end
 		if shutdownpoly then
@@ -783,6 +785,7 @@ function bootos()
 		})
 		commandlines = commandline.new(screen)
 		task.wait(1)
+		Beep(1)
 		commandlines:insert(name.." Command line")
 		task.wait(1)
 		commandlines:insert("/:")
