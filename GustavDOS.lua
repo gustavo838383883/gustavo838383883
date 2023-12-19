@@ -751,8 +751,8 @@ local function runtext(text)
 				commandlines:insert(start)
 			end
 		end
-	elseif text:sub(1, 11) == "shutdownmicro " then
-		local number = tonumber(text:sub(12, string.len(text)))
+	elseif text:sub(1, 13) == "turnoffmicro " then
+		local number = tonumber(text:sub(14, string.len(text)))
 		local start = 0
 		local success = false
 		for i,v in pairs(microcontrollers) do
