@@ -1044,7 +1044,7 @@ local function runtext(text)
 				txt = disk:Read(filename)
 			else
 				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)))
-				txt = disk:Read(getfileontable(disk, filename, dir))
+				txt = getfileontable(disk, filename, dir)
 			end
 		else
 			commandlines:insert("No filename specified")
