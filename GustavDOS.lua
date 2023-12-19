@@ -717,10 +717,12 @@ local function runtext(text)
 		screen:ClearElements()
 		commandlines = commandline.new(screen)
 	elseif text:sub(1, 6) == "reboot" then
+		task.wait(1)
 		getstuff()
 		dir = "/"
 		bootos()
 	elseif text:sub(1, 8) == "shutdown" then
+		task.wait(1)
 		screen:ClearElements()
 		if speaker then speaker:ClearSounds() end
 		if shutdownpoly then
