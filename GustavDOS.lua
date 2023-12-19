@@ -438,7 +438,7 @@ function commandline.new(screen)
 end
 
 
-local name = "GustavOSDesktop7"
+local name = "GustavDOS"
 
 local keyboardevent
 
