@@ -723,6 +723,11 @@ local function runtext(text)
 					elseif tempsplit[1] == "" and tempsplit[2] == "" then
 						commandlines:insert(inputtedtext..":")
 						dir = inputtedtext
+					elseif tempsplit[1] == "" and tempsplit[2] ~= "" then
+						if typeof(disk:Read(split[#split])) == "table" then
+							commandlines:insert(inputtedtext..":")
+							dir = inputtedtext
+						end
 					else
 						commandlines:insert("Invalid directory")
 						commandlines:insert(dir..":")
@@ -854,6 +859,12 @@ local function runtext(text)
 					elseif tempsplit[1] == "" and tempsplit[2] == "" then
 						for i,v in pairs(disk:ReadEntireDisk()) do
 							commandlines:insert(tostring(i))
+						end
+					elseif tempsplit[1] == "" and tempsplit[2] ~= "" then
+						if typeof(disk:Read(split[#split])) == "table" then
+							for i,v in pairs(disk:Read(split[#split])) do
+								commandlines:insert(tostring(i))
+							end
 						end
 					else
 						commandlines:insert("Invalid directory")
