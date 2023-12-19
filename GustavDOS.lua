@@ -995,9 +995,23 @@ local function runtext(text)
 				split = string.split(dir, "/")
 			end
 			if not split or split[2] == "" then
-				commandlines:insert(tostring(disk:Read(filename)))
+				local output = disk:Read(filename)
+				if string.find(tostring(output):lower()), "<woshtml>") then
+					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					StringToGui(screen, tostring(output):lower(), textlabel)
+					textlabel.TextTransparency = 1
+				else
+					commandlines:insert(tostring(output))
+				end
 			else
-				commandlines:insert(tostring(getfileontable(disk, filename, dir)))
+				local output = getfileontable(disk, filename, dir)
+				if string.find(tostring(output):lower()), "<woshtml>") then
+					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					StringToGui(screen, tostring(output):lower(), textlabel)
+					textlabel.TextTransparency = 1
+				else
+					commandlines:insert(tostring(output)
+				end
 			end
 		else
 			commandlines:insert("No filename specified")
