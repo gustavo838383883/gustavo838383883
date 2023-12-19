@@ -811,9 +811,13 @@ local function runtext(text)
 		local number = tonumber(text:sub(6, string.len(text)))
 		if number then
 			Beep(number)
+		else
+			commandlines:insert("Invalid number")
 		end
+		commandlines:insert(dir..":")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
+		commandlines:insert(dir..":")
 	end
 end
 
