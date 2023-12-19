@@ -1,9 +1,6 @@
 --next updates:
 --create/delete file
 --showdir command
---runlua command
---shutdownmicro command
---showmicros command
 --read command
 --readmusic command
 --stopmusics command
