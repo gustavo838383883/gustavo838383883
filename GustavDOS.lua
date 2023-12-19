@@ -848,6 +848,7 @@ local function runtext(text)
 				if typeof(output) == "table" then
 					for i,v in pairs(output) do
 						commandlines:insert(tostring(i))
+						print(i)
 					end
 				else
 					commandlines:insert("Invalid directory")
@@ -859,16 +860,19 @@ local function runtext(text)
 						if typeof(output) == "table" then
 							for i,v in pairs(output) do
 								commandlines:insert(tostring(i))
+								print(i)
 							end
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] == "" then
 						for i,v in pairs(disk:ReadEntireDisk()) do
 							commandlines:insert(tostring(i))
+							print(i)
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] ~= "" then
 						if typeof(disk:Read(split[#split])) == "table" then
 							for i,v in pairs(disk:Read(split[#split])) do
 								commandlines:insert(tostring(i))
+								print(i)
 							end
 						end
 					else
