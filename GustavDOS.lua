@@ -888,7 +888,7 @@ local function runtext(text)
 			commandlines:insert("Invalid directory")
 		end
 		commandlines:insert(dir..":")
-	elseif text:lower():sub(1, 10) == "createdir " then
+	elseif text:lower():sub(1, 10) == "writedir " then
 		local filename = text:sub(11, string.len(text))
 		print(filename)
 		if filename and filename ~= "" then
