@@ -763,6 +763,8 @@ local function runtext(text)
 			if shutdownpoly then
 				TriggerPort(shutdownpoly)
 			end
+		else
+			commandlines:insert(dir..":")
 		end
 	elseif text:lower():sub(1, 6) == "print " then
 		commandlines:insert(text:sub(7, string.len(text)))
