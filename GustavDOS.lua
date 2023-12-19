@@ -811,6 +811,23 @@ local function runtext(text)
 		print(text)
 		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
 		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 8) == "readlua " then
+		local filename = text:sub(9, string.len(text))
+		print(filename)
+		if filename and filename ~= "" then
+			local split = nil
+			if dir ~= "" then
+				split = string.split(dir, "/")
+			end
+			if not split or split[2] == "" then
+				loadluafile(microcontrollers, screen, disk:Read(filename))
+			else
+				loadluafile(microcontrollers, screen, getfileontable(disk, filename, dir))
+			end
+		else
+			commandlines:insert("No filename specified")
+		end
+		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 5) == "beep " then
 		local number = tonumber(text:sub(6, string.len(text)))
 		print(number)
@@ -1127,6 +1144,7 @@ local function runtext(text)
 		commandlines:insert("turnoffmicro number")
 		commandlines:insert("runlua lua")
 		commandlines:insert("showmicros")
+		commandlines:insert("readlua")
 		commandlines:insert("beep number")
 		commandlines:insert("print text")
 		commandlines:insert(dir..":")
