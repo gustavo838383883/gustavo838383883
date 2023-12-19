@@ -1018,12 +1018,13 @@ local function runtext(text)
 			end
 			if not split or split[2] == "" then
 				local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
-				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id="..tonumber(disk:Read(filename)).."&w=420&h=420"})
+				StringToGui(screen, [[<img src="]]..tonumber(disk:Read(filename))..[[" size="1,0,1,0">]], textlabel)
 				textlabel:AddChild(imagelabel)
+				background.CanvasPosition = Vector2.new(0, commandlines.number.Y.Offset - 25)
 			else
 				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
-				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "rbxthumb://type=Asset&id="..tonumber(getfileontable(disk, filename, dir)).."&w=420&h=420"})
-				textlabel:AddChild(imagelabel)
+				StringToGui(screen, [[<img src="]]..tonumber(disk:Read(filename))..[[" size="1,0,1,0">]], textlabel)
+				background.CanvasPosition = Vector2.new(0, commandlines.number.Y.Offset - 25)
 			end
 		else
 			commandlines:insert("No filename specified")
