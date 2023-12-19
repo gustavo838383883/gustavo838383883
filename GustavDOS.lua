@@ -952,6 +952,36 @@ local function runtext(text)
 			commandlines:insert("No filename specified")
 		end
 		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 7) == "delete " then
+		local filename = text:sub(8, string.len(text))
+		if filename and filename ~= "" then
+			local split = nil
+			local returntable = nil
+			if dir ~= "" then
+				split = string.split(dir, "/")
+			end
+			if not split or split[2] == "" then
+				disk:Write(filename, nil)
+			else
+				returntable = createfileontable(disk, filename, nil, dir)
+			end
+			if not split then
+				if disk:Read(filename) then
+					commandlines:insert("Success i think")
+				else
+					commandlines:insert("Failed")
+				end
+			else
+				if disk:Read(split[2]) == returntable then
+					commandlines:insert("Success i think")
+				else
+					commandlines:insert("Failed i think")
+				end	
+			end
+		else
+			commandlines:insert("No filename specified")
+		end
+		commandlines:insert(dir..":")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 		commandlines:insert(dir..":")
