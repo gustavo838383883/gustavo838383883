@@ -714,6 +714,7 @@ local function runtext(text)
 			commandlines:insert(dir..":")
 		end
 	elseif text:sub(1, 5) == "clear" then
+		task.wait(1)
 		screen:ClearElements()
 		commandlines = commandline.new(screen)
 	elseif text:sub(1, 6) == "reboot" then
