@@ -423,7 +423,7 @@ getstuff()
 local commandline = {}
 
 function commandline.new(screen)
-	local background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0)})
+	local background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
 	local lines = {
 		number = 0
 	}
