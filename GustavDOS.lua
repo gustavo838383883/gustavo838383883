@@ -996,7 +996,7 @@ local function runtext(text)
 			end
 			if not split or split[2] == "" then
 				local output = disk:Read(filename)
-				if string.find(tostring(output):lower()), "<woshtml>") then
+				if string.find(string.lower(tostring(output))), "<woshtml>") then
 					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
@@ -1005,7 +1005,7 @@ local function runtext(text)
 				end
 			else
 				local output = getfileontable(disk, filename, dir)
-				if string.find(tostring(output):lower()), "<woshtml>") then
+				if string.find(string.lower(tostring(output))), "<woshtml>") then
 					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
