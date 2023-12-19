@@ -692,6 +692,7 @@ local function runtext(text)
 		local txt = text:sub(5, string.len(text))
 		local inputtedtext = txt
 		local tempsplit = string.split(inputtedtext, "/")
+		print(inputtedtext)
 		if tempsplit then
 			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
 				inputtedtext = "/"..inputtedtext
@@ -767,6 +768,7 @@ local function runtext(text)
 		end
 	elseif text:lower():sub(1, 6) == "print " then
 		commandlines:insert(text:sub(7, string.len(text)))
+		print(text:sub(7, string.len(text)))
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 10) == "showmicros" then
 		if microcontrollers then
@@ -782,6 +784,7 @@ local function runtext(text)
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 13) == "turnoffmicro " then
 		local number = tonumber(text:sub(14, string.len(text)))
+		print(number)
 		local start = 0
 		local success = false
 		for index,value in pairs(microcontrollers) do
@@ -812,10 +815,12 @@ local function runtext(text)
 		end
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 7) == "runlua " then
+		print(text)
 		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 5) == "beep " then
 		local number = tonumber(text:sub(6, string.len(text)))
+		print(number)
 		if number then
 			Beep(number)
 		else
@@ -883,6 +888,7 @@ local function runtext(text)
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 10) == "createdir " then
 		local filename = text:sub(11, string.len(text))
+		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			local returntable = nil
@@ -916,6 +922,7 @@ local function runtext(text)
 		local texts = text:sub(8, string.len(text))
 		local filename = texts:split(":")[1]
 		local filedata = texts:split(":")[2]
+		print(filename, filedata)
 		if filename and filename ~= "" then
 			if filedata and filedata ~= "" then
 				local split = nil
@@ -954,6 +961,7 @@ local function runtext(text)
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 7) == "delete " then
 		local filename = text:sub(8, string.len(text))
+		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			local returntable = nil
