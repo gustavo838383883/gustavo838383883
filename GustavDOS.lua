@@ -788,7 +788,7 @@ local function runtext(text)
 						if table.find(usedmicros, value) then
 							table.remove(usedmicros, table.find(usedmicros, value))
 						end
-						local success = true
+						success = true
 						commandlines:insert("Microcontroller turned off.")
 					else
 						commandlines:insert("No port connected to polysilicon")
