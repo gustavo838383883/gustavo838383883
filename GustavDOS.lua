@@ -1,8 +1,3 @@
---[[
-Next updates:
-readaudio command
-stopaudios command
-]]--
 local SpeakerHandler = {
 	_LoopedSounds = {},
 	_ChatCooldowns = {}, -- Cooldowns of Speaker:Chat
@@ -1093,7 +1088,7 @@ local function runtext(text)
 				SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
 				
 			else
-				SpeakerHandler.PlaySound(spacesplitted[1], nil, nil, speaker)
+				SpeakerHandler.PlaySound(txt, nil, nil, speaker)
 			end
 		end
 		commandlines:insert(dir..":")
