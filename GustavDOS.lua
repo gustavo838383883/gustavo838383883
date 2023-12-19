@@ -922,8 +922,8 @@ local function runtext(text)
 			commandlines:insert("No filename specified")
 		end
 		commandlines:insert(dir..":")
-	elseif text:lower():sub(1, 7) == "create " then
-		local texts = text:sub(8, string.len(text))
+	elseif text:lower():sub(1, 6) == "write " then
+		local texts = text:sub(7, string.len(text))
 		local filename = texts:split(":")[1]
 		local filedata = texts:split(":")[2]
 		print(filename, filedata)
