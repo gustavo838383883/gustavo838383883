@@ -2,8 +2,8 @@
 --create/delete command
 --showdir command
 --read command
---readmusic command
---stopmusics command
+--readaudio command
+--stopaudios command
 --readimage command
 local SpeakerHandler = {
 	_LoopedSounds = {},
