@@ -912,6 +912,46 @@ local function runtext(text)
 			commandlines:insert("No filename specified")
 		end
 		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 7) == "create " then
+		local texts = text:sub(8, string.len(text))
+		local filename = texts:split(":")[1]
+		local filedata = texts:split(":")[2]
+		if filename and filename ~= "" then
+			if filedata and filedata ~= "" then
+				local split = nil
+				local returntable = nil
+				if directory ~= "" then
+					split = string.split(dir, "/")
+				end
+				if not split or split[2] == "" then
+					disk:Write(filename, filedata)
+				else
+					returntable = createfileontable(disk, filename, filedata, dir)
+				end
+				if not split or split[2] == "" then
+					if disk:Read(filename) then
+						if disk:Read(filename) == filedata then
+							commandlines:insert("Success i think")
+						else
+							commandlines:insert("Failed")
+						end
+					else
+						commandlines:insert("Failed")
+					end
+				else
+					if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
+						createfilebutton2.Text = "Success i think"
+					else
+						commandlines:insert("Failed i think")
+					end	
+				end
+			else
+				commandlines:insert("No filedata specified")
+			end
+		else
+			commandlines:insert("No filename specified")
+		end
+		commandlines:insert(dir..":")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 		commandlines:insert(dir..":")
