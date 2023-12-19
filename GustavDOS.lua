@@ -921,8 +921,8 @@ local function runtext(text)
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 6) == "write " then
 		local texts = text:sub(7, string.len(text))
-		local filename = texts:split(":")[1]
-		local filedata = texts:split(":")[2]
+		local filename = texts:split("::")[1]
+		local filedata = texts:split("::")[2]
 		print(filename, filedata)
 		if filename and filename ~= "" then
 			if filedata and filedata ~= "" then
