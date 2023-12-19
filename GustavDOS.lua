@@ -751,12 +751,14 @@ local function runtext(text)
 		if keyboardevent then keyboardevent:Unbind() end
 		bootos()
 	elseif text:lower():sub(1, 8) == "shutdown" then
-		task.wait(1)
-		Beep(1)
-		screen:ClearElements()
-		if speaker then speaker:ClearSounds() end
-		if shutdownpoly then
-			TriggerPort(shutdownpoly)
+		if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
+			task.wait(1)
+			Beep(1)
+			screen:ClearElements()
+			if speaker then speaker:ClearSounds() end
+			if shutdownpoly then
+				TriggerPort(shutdownpoly)
+			end
 		end
 	elseif text:lower():sub(1, 6) == "print " then
 		commandlines:insert(text:sub(7, string.len(text)))
