@@ -726,8 +726,10 @@ local function runtext(text)
 		if shutdownpoly then
 			TriggerPort(shutdownpoly)
 		end
+	elseif text:sub(1, 5) == "print" then
+		commandlines:insert(text:sub(5, string.len(text)))
 	else
-		commandlines:insert("Invalid syntax")
+		commandlines:insert("Syntax error")
 	end
 end
 
