@@ -1039,10 +1039,10 @@ local function runtext(text)
 				split = string.split(dir, "/")
 			end
 			if not split or split[2] == "" then
-				local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines:insert(tostring(disk:Read(filename)))
 				txt = disk:Read(filename)
 			else
-				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)))
 				txt = disk:Read(getfileontable(disk, filename, dir))
 			end
 		else
