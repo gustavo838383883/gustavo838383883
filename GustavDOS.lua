@@ -662,6 +662,54 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 end
 
 local bootos
+local dir = "/"
+
+local function runtext(text)
+	if text:sub(1, 4) == "dir " then
+		local txt = text:sub(5, string.len(text))
+		local inputtedtext = txt
+		local tempsplit = string.split(inputtedtext, "/")
+		if tempsplit then
+			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+				inputtedtext = "/"..inputtedtext
+			end
+		end
+		local tempsplit2 = string.split(inputtedtext, "/")
+		if tempsplit2 then
+			if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
+		end
+		if inputtedtext == " " then inputtedtext = ""; end
+		local split = string.split(inputtedtext, "/")
+		if split then
+			local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
+			if #split >= 3 then
+				if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
+					commandlines:insert(inputtedtext..":")
+					dir = inputtedtext
+				else
+					commandlines:insert("Invalid directory")
+					commandlines:insert(dir..":")
+				end
+			else
+				if disk:Read(split[#split]) or split[2] == "" then
+					commandlines:insert(inputtedtext..":")
+					dir = inputtedtext
+				else
+					commandlines:insert("Invalid directory")
+					commandlines:insert(dir..":")
+				end
+			end
+		elseif inputtedtext == "" then
+			commandlines:insert(dir..":")
+		else
+			commandlines:insert("Invalid directory")
+			commandlines:insert(dir..":")
+		end
+		
+	else
+		commandlines:insert("Invalid syntax")
+	end
+end
 
 function bootos()
 	if disks and #disks > 0 then
@@ -705,8 +753,8 @@ function bootos()
 		commandlines:insert("/:")
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
-			keyboardinput = text
-			playerthatinputted = player
+			commandlines:insert(tostring(text):gsub("\n", ""))
+			runtext(tostring(text):gsub("\n", ""))
 		end)
 	elseif screen then
 		screen:ClearElements()
