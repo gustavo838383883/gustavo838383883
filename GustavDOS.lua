@@ -713,7 +713,19 @@ local function runtext(text)
 			commandlines:insert("Invalid directory")
 			commandlines:insert(dir..":")
 		end
-		
+	elseif if text:sub(1, 5) == "clear" then
+		screen:ClearElements()
+		commandlines = commandline.new(screen)
+	elseif if text:sub(1, 6) == "reboot" then
+		getstuff()
+		dir = "/"
+		bootos()
+	elseif if text:sub(1, 8) == "shutdown" then
+		screen:ClearElements()
+		if speaker then speaker:ClearSounds() end
+		if shutdownpoly then
+			TriggerPort(shutdownpoly)
+		end
 	else
 		commandlines:insert("Invalid syntax")
 	end
