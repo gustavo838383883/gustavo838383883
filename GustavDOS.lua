@@ -883,7 +883,7 @@ local function runtext(text)
 			commandlines:insert("Invalid directory")
 		end
 		commandlines:insert(dir..":")
-	elseif text:lower():sub(1, 9) == "writedir " then
+	elseif text:lower():sub(1, 9) == "createdir " then
 		local filename = text:sub(10, string.len(text))
 		print(filename)
 		if filename and filename ~= "" then
@@ -1095,6 +1095,27 @@ local function runtext(text)
 	elseif text:lower():sub(1, 10) == "stopsounds" then
 		speaker.ClearSounds()
 		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
+	elseif text:lower():sub(1, 4) == "cmds" then
+		commandlines:insert("Commands:")
+		commandlines:insert("cmds")
+		commandlines:insert("stopsounds")
+		commandlines:insert("readsound filename")
+		commandlines:insert("read filename")
+		commandlines:insert("readimage filename")
+		commandlines:insert("dir directory")
+		commandlines:insert("showdir")
+		commandlines:insert("write filename::filedata")
+		commandlines:insert("shutdown")
+		commandlines:insert("clear")
+		commandlines:insert("reboot")
+		commandlines:insert("delete filename")
+		commandlines:insert("createdir filename")
+		commandlines:insert("turnoffmicro number")
+		commandlines:insert("runlua lua")
+		commandlines:insert("showmicros")
+		commandlines:insert("beep number")
+		commandlines:insert("print text")
+		commandlines:insert(dir..":")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 		commandlines:insert(dir..":")
