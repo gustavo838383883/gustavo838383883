@@ -784,7 +784,7 @@ local function runtext(text)
 	elseif text:lower():sub(1, 7) == "runlua " then
 		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
 	else
-		commandlines:insert("Command was not found.")
+		commandlines:insert("Imcomplete or Command was not found.")
 	end
 end
 
