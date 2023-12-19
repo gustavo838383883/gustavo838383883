@@ -805,6 +805,11 @@ local function runtext(text)
 	elseif text:lower():sub(1, 7) == "runlua " then
 		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
 		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 5) == "beep " then
+		local number = tonumber(text:sub(6, string.len(text)))
+		if number then
+			Beep(number)
+		end
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 	end
