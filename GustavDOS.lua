@@ -972,12 +972,11 @@ local function runtext(text)
 			if dir ~= "" then
 				split = string.split(dir, "/")
 			end
-			if not split or split[2] == "" then
-				disk:Write(filename, nil)
-			else
+			if split and split[2] ~= "" then
 				returntable = createfileontable(disk, filename, nil, dir)
 			end
 			if not split or split[2] == "" then
+				disk:Write(filename, nil)
 				if not disk:Read(filename) then
 					commandlines:insert("Success i think")
 				else
