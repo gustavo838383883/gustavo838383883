@@ -977,8 +977,8 @@ local function runtext(text)
 			else
 				returntable = createfileontable(disk, filename, nil, dir)
 			end
-			if not split then
-				if disk:Read(filename) then
+			if not split or split[2] == "" then
+				if not disk:Read(filename) then
 					commandlines:insert("Success i think")
 				else
 					commandlines:insert("Failed")
