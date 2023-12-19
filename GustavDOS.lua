@@ -817,6 +817,59 @@ local function runtext(text)
 			commandlines:insert("Invalid number")
 		end
 		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 7) == "showdir" then
+		local inputtedtext = dir
+		local tempsplit = string.split(inputtedtext, "/")
+		if tempsplit then
+			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+				inputtedtext = "/"..inputtedtext
+			end
+		end
+		local tempsplit2 = string.split(inputtedtext, "/")
+		if tempsplit2 then
+			if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
+		end
+		if inputtedtext == " " then inputtedtext = ""; end
+		local split = string.split(inputtedtext, "/")
+		if split then
+			local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
+			if #split >= 3 then
+				local output = getfileontable(disk, split[#split], removedlast)
+				if typeof(output) == "table" then
+					for i,v in pairs(output) do
+						commandlines:insert(tostring(i))
+					end
+				else
+					commandlines:insert("Invalid directory")
+				end
+			else
+				local output = disk:Read(split[#split])
+				if output or split[2] == "" then
+					if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
+						if typeof(output) == "table" then
+							for i,v in pairs(output) do
+								commandlines:insert(tostring(i))
+							end
+						end
+					elseif tempsplit[1] == "" and tempsplit[2] == "" then
+						for i,v in pairs(disk:ReadEntireDisk()) do
+							commandlines:insert(tostring(i))
+						end
+					else
+						commandlines:insert("Invalid directory")
+					end
+				else
+					commandlines:insert("Invalid directory")
+				end
+			end
+		elseif inputtedtext == "" then
+			for i,v in pairs(disk:ReadEntireDisk()) do
+				commandlines:insert(tostring(i))
+			end
+		else
+			commandlines:insert("Invalid directory")
+		end
+		commandlines:insert(dir..":")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 		commandlines:insert(dir..":")
