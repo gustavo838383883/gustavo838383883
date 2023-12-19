@@ -5,8 +5,8 @@
 --shutdownmicro command
 --showmicros command
 --read command
---playmusic command
---stopmusic command
+--readmusic command
+--stopmusics command
 --readimage command
 local SpeakerHandler = {
 	_LoopedSounds = {},
@@ -443,6 +443,7 @@ function commandline.new(screen)
 		background:AddChild(textlabel)
 		background.CanvasSize = UDim2.new(1, 0, 0, (lines.number * 25) + 25)
 		lines.number += 1
+		return textlabel
 	end
 	return lines, background
 end
@@ -636,7 +637,7 @@ local usedmicros = {}
 
 local commandlines
 
-local function loadluafile(microcontrollers, screen, code, runcodebutton)
+local function loadluafile(microcontrollers, screen, code)
 	local success = false
 	local micronumber = 0
 	if typeof(microcontrollers) == "table" and #microcontrollers > 0 then
@@ -658,10 +659,10 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 						commandlines:insert(micronumber)
 						break
 					else
-						print("No port connected to polysilicon")
+						commandlines:insert("No port connected to polysilicon")
 					end
 				else
-					print("No polysilicon connected to microcontroller")
+					commandlines:insert("No polysilicon connected to microcontroller")
 				end
 			end
 		end
@@ -744,8 +745,49 @@ local function runtext(text)
 		end
 	elseif text:sub(1, 6) == "print " then
 		commandlines:insert(text:sub(7, string.len(text)))
+	elseif text:sub(1, 10) == "showmicros" then
+		if microcontrollers then
+			local start = 0
+			for i,v in pairs(microcontrollers) do
+				start += 1
+				commandlines:insert("Microcontroller")
+				commandlines:insert(start)
+			end
+		end
+	elseif text:sub(1, 11) == "shutdownmicro " then
+		local number = tonumber(text:sub(12, string.len(text)))
+		local start = 0
+		local success = false
+		for i,v in pairs(microcontrollers) do
+			start += 1
+			if start == number then
+				local polysilicon = GetPartFromPort(value, "Polysilicon")
+				local polyport = GetPartFromPort(polysilicon, "Port")
+				if polysilicon then
+					if polyport then
+						value:Configure({Code = ""})
+						polysilicon:Configure({PolysiliconMode = 1})
+						TriggerPort(polyport)
+						if table.find(usedmicros, value) then
+							table.remove(usedmicros, table.find(usedmicros, value))
+						end
+						local success = true
+						commandlines:insert("Microcontroller turned off.")
+					else
+						commandlines:insert("No port connected to polysilicon")
+					end
+				else
+					commandlines:insert("No polysilicon connected to microcontroller")
+				end
+			end
+		end
+		if not success then
+			commandlines:insert("Invalid microcontroller number")
+		end
+	elseif text:sub(1, 7) == "runlua " then
+		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
 	else
-		commandlines:insert("Syntax error")
+		commandlines:insert("Command was not found.")
 	end
 end
 
