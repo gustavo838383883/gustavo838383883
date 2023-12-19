@@ -1010,7 +1010,7 @@ local function runtext(text)
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
 				else
-					commandlines:insert(tostring(output)
+					commandlines:insert(tostring(output))
 				end
 			end
 		else
