@@ -1,5 +1,5 @@
 --next updates:
---create/delete file
+--create/delete command
 --showdir command
 --read command
 --readmusic command
@@ -673,7 +673,7 @@ local bootos
 local dir = "/"
 
 local function runtext(text)
-	if text:sub(1, 4) == "dir " then
+	if text:lower():sub(1, 4) == "dir " then
 		local txt = text:sub(5, string.len(text))
 		local inputtedtext = txt
 		local tempsplit = string.split(inputtedtext, "/")
@@ -721,18 +721,18 @@ local function runtext(text)
 			commandlines:insert("Invalid directory")
 			commandlines:insert(dir..":")
 		end
-	elseif text:sub(1, 5) == "clear" then
+	elseif text:lower():sub(1, 5) == "clear" then
 		task.wait(1)
 		screen:ClearElements()
 		commandlines = commandline.new(screen)
-	elseif text:sub(1, 6) == "reboot" then
+	elseif text:lower():sub(1, 6) == "reboot" then
 		task.wait(1)
 		Beep(1)
 		getstuff()
 		dir = "/"
 		if keyboardevent then keyboardevent:Unbind() end
 		bootos()
-	elseif text:sub(1, 8) == "shutdown" then
+	elseif text:lower():sub(1, 8) == "shutdown" then
 		task.wait(1)
 		Beep(1)
 		screen:ClearElements()
@@ -740,9 +740,9 @@ local function runtext(text)
 		if shutdownpoly then
 			TriggerPort(shutdownpoly)
 		end
-	elseif text:sub(1, 6) == "print " then
+	elseif text:lower():sub(1, 6) == "print " then
 		commandlines:insert(text:sub(7, string.len(text)))
-	elseif text:sub(1, 10) == "showmicros" then
+	elseif text:lower():sub(1, 10) == "showmicros" then
 		if microcontrollers then
 			local start = 0
 			for i,v in pairs(microcontrollers) do
@@ -751,7 +751,7 @@ local function runtext(text)
 				commandlines:insert(start)
 			end
 		end
-	elseif text:sub(1, 13) == "turnoffmicro " then
+	elseif text:lower():sub(1, 13) == "turnoffmicro " then
 		local number = tonumber(text:sub(14, string.len(text)))
 		local start = 0
 		local success = false
@@ -781,7 +781,7 @@ local function runtext(text)
 		if not success then
 			commandlines:insert("Invalid microcontroller number")
 		end
-	elseif text:sub(1, 7) == "runlua " then
+	elseif text:lower():sub(1, 7) == "runlua " then
 		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
 	else
 		commandlines:insert("Command was not found.")
