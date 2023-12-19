@@ -775,7 +775,7 @@ local function runtext(text)
 		local number = tonumber(text:sub(14, string.len(text)))
 		local start = 0
 		local success = false
-		for i,v in pairs(microcontrollers) do
+		for index,value in pairs(microcontrollers) do
 			start += 1
 			if start == number then
 				local polysilicon = GetPartFromPort(value, "Polysilicon")
