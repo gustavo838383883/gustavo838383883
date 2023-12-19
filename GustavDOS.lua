@@ -59,12 +59,13 @@ function SpeakerHandler:LoopSound(id, soundLength, pitch, speaker)
 	end
 	
 	speaker:Configure({Audio = id, Pitch = pitch})
-	
-	SpeakerHandler._LoopedSounds[speaker.GUID] = {
-		Speaker = speaker,
-		Length = soundLength / pitch,
-		TimePlayed = tick()
-	}
+	if typeof(soundLength) == "number" then
+		SpeakerHandler._LoopedSounds[speaker.GUID] = {
+			Speaker = speaker,
+			Length = soundLength / pitch,
+			TimePlayed = tick()
+		}
+	end
 	
 	speaker:Trigger()
 	return true
