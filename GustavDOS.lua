@@ -699,7 +699,9 @@ function bootos()
 			Disk = disk,
 		})
 		commandlines = commandline.new(screen)
+		task.wait(1)
 		commandlines:insert(name.." Command line")
+		task.wait(1)
 		commandlines:insert("/:")
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
