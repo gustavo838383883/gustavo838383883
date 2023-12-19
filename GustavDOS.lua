@@ -940,7 +940,7 @@ local function runtext(text)
 					end
 				else
 					if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
-						createfilebutton2.Text = "Success i think"
+						commandlines:insert("Success i think")
 					else
 						commandlines:insert("Failed i think")
 					end	
