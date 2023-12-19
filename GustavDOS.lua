@@ -1,6 +1,5 @@
 --next updates:
 --create/delete command
---showdir command
 --read command
 --readaudio command
 --stopaudios command
@@ -880,6 +879,37 @@ local function runtext(text)
 			end
 		else
 			commandlines:insert("Invalid directory")
+		end
+		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 10) == "createdir " then
+		local filename = text:sub(11, string.len(text))
+		if filename and filename ~= "" then
+			local split = nil
+			local returntable = nil
+			if dir ~= "" then
+				split = string.split(dir, "/")
+			end
+			if not split or split[2] == "" then
+				disk:Write(filename, {
+				})
+			else
+				returntable = createfileontable(disk, filename, {}, dir)
+			end
+			if not split then
+				if disk:Read(filename) then
+					commandlines:insert("Success i think")
+				else
+					commandlines:insert("Failed")
+				end
+			else
+				if disk:Read(split[2]) == returntable then
+					commandlines:insert("Success i think")
+				else
+					commandlines:insert("Failed i think")
+				end	
+			end
+		else
+			commandlines:insert("No filename specified")
 		end
 		commandlines:insert(dir..":")
 	else
