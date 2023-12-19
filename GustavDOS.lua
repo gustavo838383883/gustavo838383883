@@ -1024,12 +1024,14 @@ local function runtext(text)
 			else
 				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(getfileontable(disk, filename, dir)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
-				background.CanvasPosition -= Vector2.new(0, 25)
 			end
 		else
 			commandlines:insert("No filename specified")
 		end
 		commandlines:insert(dir..":")
+		if filename and filename ~= "" then
+			background.CanvasPosition -= Vector2.new(0, 25)
+		end
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 		commandlines:insert(dir..":")
