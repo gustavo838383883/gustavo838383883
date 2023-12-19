@@ -883,8 +883,8 @@ local function runtext(text)
 			commandlines:insert("Invalid directory")
 		end
 		commandlines:insert(dir..":")
-	elseif text:lower():sub(1, 9) == "createdir " then
-		local filename = text:sub(10, string.len(text))
+	elseif text:lower():sub(1, 10) == "createdir " then
+		local filename = text:sub(11, string.len(text))
 		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
