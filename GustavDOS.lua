@@ -741,7 +741,7 @@ local function runtext(text)
 			commandlines:insert(dir..":")
 		end
 	elseif text:lower():sub(1, 5) == "clear" then
-		task.wait(1)
+		task.wait(0.1)
 		screen:ClearElements()
 		commandlines, background = commandline.new(screen)
 		commandlines:insert(dir..":")
