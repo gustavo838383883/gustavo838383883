@@ -1,3 +1,13 @@
+--next updates:
+--create/delete file
+--showdir command
+--runlua command
+--shutdownmicro command
+--showmicros command
+--read command
+--playmusic command
+--stopmusic command
+--readimage command
 local SpeakerHandler = {
 	_LoopedSounds = {},
 	_ChatCooldowns = {}, -- Cooldowns of Speaker:Chat
