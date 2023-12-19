@@ -437,24 +437,26 @@ function commandline.new(screen, udim2)
 	
 	function lines:insert(text)
 		local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextScaled = true, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, Size = UDim2.new(1, 0, 0, 25), Position = lines.number})
-		background:AddChild(textlabel)
-		background.CanvasSize = UDim2.new(1, 0, lines.number.Y.Scale, lines.number.Y.Offset + 25)
-		if typeof(udim2) == "UDim2" then
-			textlabel.Size = udim2
-			background.CanvasSize -= UDim2.fromOffset(0, 25)
-			background.CanvasSize += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
-			if udim2.X.Scale > 1 then
-				background.CanvasSize += UDim2.new(udim2.X.Scale - 1, udim2.X.Offset, 0, 0)
-			elseif udim2.X.Offset > screen:GetDimensions().X then
-				background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
+		if textlabel then
+			background:AddChild(textlabel)
+			background.CanvasSize = UDim2.new(1, 0, lines.number.Y.Scale, lines.number.Y.Offset + 25)
+			if typeof(udim2) == "UDim2" then
+				textlabel.Size = udim2
+				background.CanvasSize -= UDim2.fromOffset(0, 25)
+				background.CanvasSize += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
+				if udim2.X.Scale > 1 then
+					background.CanvasSize += UDim2.new(udim2.X.Scale - 1, udim2.X.Offset, 0, 0)
+				elseif udim2.X.Offset > screen:GetDimensions().X then
+					background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
+				end
 			end
+			lines.number += UDim2.new(0, 0, 0, 25)
+			if typeof(udim2) == "UDim2" then
+				lines.number -= UDim2.new(0,0,0,25)
+				lines.number += udim2
+			end
+			return textlabel
 		end
-		lines.number += UDim2.new(0, 0, 0, 25)
-		if typeof(udim2) == "UDim2" then
-			lines.number -= UDim2.new(0,0,0,25)
-			lines.number += udim2
-		end
-		return textlabel
 	end
 	return lines, background
 end
