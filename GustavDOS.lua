@@ -1093,7 +1093,7 @@ local function runtext(text)
 				SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
 				
 			else
-				audioui(screen, disk, txt, speaker)
+				SpeakerHandler.PlaySound(spacesplitted[1], nil, nil, speaker)
 			end
 		end
 		commandlines:insert(dir..":")
