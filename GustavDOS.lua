@@ -446,15 +446,13 @@ function commandline.new(screen)
 				if udim2.X.Offset > screen:GetDimensions().X then
 					background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
 				end
+				lines.number -= UDim2.new(0,0,0,25)
+				lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
 			end
 			lines.number += UDim2.new(0, 0, 0, 25)
-			if typeof(udim2) == "UDim2" then
-				lines.number -= UDim2.new(0,0,0,25)
-				lines.number += udim2
-			end
 			background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
-			return textlabel
 		end
+		return textlabel
 	end
 	return lines, background
 end
