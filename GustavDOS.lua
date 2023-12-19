@@ -2,7 +2,6 @@
 Next updates:
 readaudio command
 stopaudios command
-readimage command
 ]]--
 local SpeakerHandler = {
 	_LoopedSounds = {},
@@ -1030,6 +1029,76 @@ local function runtext(text)
 		if filename and filename ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
+	elseif text:lower():sub(1, 10) == "readsound " then
+		local filename = text:sub(11, string.len(text))
+		local txt
+		print(filename)
+		if filename and filename ~= "" then
+			local split = nil
+			if dir ~= "" then
+				split = string.split(dir, "/")
+			end
+			if not split or split[2] == "" then
+				local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				txt = disk:Read(filename)
+			else
+				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				txt = disk:Read(getfileontable(disk, filename, dir))
+			end
+		else
+			commandlines:insert("No filename specified")
+		end
+		if txt then
+			if string.find(tostring(txt), "pitch:") then
+				local length = nil
+	
+				local pitch = nil
+				local splitted = string.split(tostring(txt), "pitch:")
+				local spacesplitted = string.split(tostring(txt), " ")
+	
+				if string.find(splitted[2], " ") then
+					pitch = (string.split(splitted[2], " "))[1]
+				else
+					pitch = splitted[2]
+				end
+				
+				if string.find(tostring(txt), "length:") then
+					local splitted = string.split(tostring(txt), "length:")
+					if string.find(splitted[2], " ") then
+						length = (string.split(splitted[2], " "))[1]
+					else
+						length = splitted[2]
+					end
+				end
+				if not length then
+					SpeakerHandler.PlaySound(spacesplitted[1], tonumber(pitch), nil, speaker)
+				else
+					SpeakerHandler:LoopSound(spacesplitted[1], tonumber(length), tonumber(pitch), speaker)
+				end
+			elseif string.find(tostring(txt), "length:") then
+				
+				local splitted = string.split(tostring(txt), "length:")
+				
+				local spacesplitted = string.split(tostring(txt), " ")
+				
+				local length = nil
+					
+				if string.find(splitted[2], " ") then
+					length = (string.split(splitted[2], " "))[1]
+				else
+					length = splitted[2]
+				end
+				
+				SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
+				
+			else
+				audioui(screen, disk, txt, speaker)
+			end
+		end
+		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 10) == "stopsounds" then
+		speaker.ClearSounds()
+		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 		commandlines:insert(dir..":")
