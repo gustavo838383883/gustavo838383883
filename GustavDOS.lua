@@ -1,5 +1,4 @@
 --next updates:
---create/delete command
 --read command
 --readaudio command
 --stopaudios command
@@ -988,6 +987,23 @@ local function runtext(text)
 				else
 					commandlines:insert("Failed i think")
 				end	
+			end
+		else
+			commandlines:insert("No filename specified")
+		end
+		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 5) == "read " then
+		local filename = text:sub(6, string.len(text))
+		print(filename)
+		if filename and filename ~= "" then
+			local split = nil
+			if dir ~= "" then
+				split = string.split(dir, "/")
+			end
+			if not split or split[2] == "" then
+				commandlines:insert(tostring(disk:Read(filename)))
+			else
+				commandlines:insert(tostring(getfileontable(disk, filename, dir)))
 			end
 		else
 			commandlines:insert("No filename specified")
