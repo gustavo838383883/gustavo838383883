@@ -732,6 +732,7 @@ local function runtext(text)
 		Beep(1)
 		getstuff()
 		dir = "/"
+		if keyboardevent then keyboardevent:Unbind() end
 		bootos()
 	elseif text:sub(1, 8) == "shutdown" then
 		task.wait(1)
