@@ -339,13 +339,17 @@ local function getstuff()
 						if v:Read("GustavOSLibrary") then
 							v:Write("GustavOSLibrary", nil)
 						end
+						if v:Read("GD7Library") then
+							v:Write("GD7Library", nil)
+						end
 						rom = v
 						romindexusing = index
 						romport = i
 						sharedport = true
 						break
-					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
+					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") or v:Read("GD7Library") then
 						v:Write("GustavOSLibrary", nil)
+						v:Write("GD7Library", nil)
 						rom = v
 						romport = i
 						romindexusing = index
