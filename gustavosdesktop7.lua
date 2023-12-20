@@ -2892,10 +2892,10 @@ local function terminal()
 			commandlines:insert("readvideo id")
 			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 4) == "help" then
-			keyboard:SimulateTextInput("cmds", "Microcontroller")
+			commandlines:insert("Did you mean cmds")
 			
 		elseif text:lower():sub(1, 10) == "stopmicro " then
-			keyboard:SimulateTextInput("stoplua "..text:sub(11, string.len(text)), "Microcontroller")
+			commandlines:insert("Did you mean stoplua "..text:sub(11, string.len(text)))
 			
 		elseif text:lower():sub(1, 10) == "playvideo " then
 			commandlines:insert("Did you mean displayvideo "..text:sub(11, string.len(text)))
