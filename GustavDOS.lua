@@ -680,6 +680,56 @@ end
 local bootos
 local dir = "/"
 
+local function playsound(txt)
+	if txt then
+		if string.find(tostring(txt), "pitch:") then
+			local length = nil
+
+			local pitch = nil
+			local splitted = string.split(tostring(txt), "pitch:")
+			local spacesplitted = string.split(tostring(txt), " ")
+
+			if string.find(splitted[2], " ") then
+				pitch = (string.split(splitted[2], " "))[1]
+			else
+				pitch = splitted[2]
+			end
+			
+			if string.find(tostring(txt), "length:") then
+				local splitted = string.split(tostring(txt), "length:")
+				if string.find(splitted[2], " ") then
+					length = (string.split(splitted[2], " "))[1]
+				else
+					length = splitted[2]
+				end
+			end
+			if not length then
+				SpeakerHandler.PlaySound(spacesplitted[1], tonumber(pitch), nil, speaker)
+			else
+				SpeakerHandler:LoopSound(spacesplitted[1], tonumber(length), tonumber(pitch), speaker)
+			end
+		elseif string.find(tostring(txt), "length:") then
+			
+			local splitted = string.split(tostring(txt), "length:")
+			
+			local spacesplitted = string.split(tostring(txt), " ")
+			
+			local length = nil
+				
+			if string.find(splitted[2], " ") then
+				length = (string.split(splitted[2], " "))[1]
+			else
+				length = splitted[2]
+			end
+			
+			SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
+			
+		else
+			SpeakerHandler.PlaySound(txt, nil, nil, speaker)
+		end
+	end
+end
+
 local function runtext(text)
 	if text:lower():sub(1, 4) == "dir " then
 		local txt = text:sub(5, string.len(text))
@@ -1148,103 +1198,11 @@ local function runtext(text)
 		else
 			commandlines:insert("No filename specified")
 		end
-		if txt then
-			if string.find(tostring(txt), "pitch:") then
-				local length = nil
-	
-				local pitch = nil
-				local splitted = string.split(tostring(txt), "pitch:")
-				local spacesplitted = string.split(tostring(txt), " ")
-	
-				if string.find(splitted[2], " ") then
-					pitch = (string.split(splitted[2], " "))[1]
-				else
-					pitch = splitted[2]
-				end
-				
-				if string.find(tostring(txt), "length:") then
-					local splitted = string.split(tostring(txt), "length:")
-					if string.find(splitted[2], " ") then
-						length = (string.split(splitted[2], " "))[1]
-					else
-						length = splitted[2]
-					end
-				end
-				if not length then
-					SpeakerHandler.PlaySound(spacesplitted[1], tonumber(pitch), nil, speaker)
-				else
-					SpeakerHandler:LoopSound(spacesplitted[1], tonumber(length), tonumber(pitch), speaker)
-				end
-			elseif string.find(tostring(txt), "length:") then
-				
-				local splitted = string.split(tostring(txt), "length:")
-				
-				local spacesplitted = string.split(tostring(txt), " ")
-				
-				local length = nil
-					
-				if string.find(splitted[2], " ") then
-					length = (string.split(splitted[2], " "))[1]
-				else
-					length = splitted[2]
-				end
-				
-				SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
-				
-			else
-				SpeakerHandler.PlaySound(txt, nil, nil, speaker)
-			end
-		end
+		playsound(txt)
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 10) == "playsound " then
 		local txt = text:sub(11, string.len(text))
-		if txt then
-			if string.find(tostring(txt), "pitch:") then
-				local length = nil
-	
-				local pitch = nil
-				local splitted = string.split(tostring(txt), "pitch:")
-				local spacesplitted = string.split(tostring(txt), " ")
-	
-				if string.find(splitted[2], " ") then
-					pitch = (string.split(splitted[2], " "))[1]
-				else
-					pitch = splitted[2]
-				end
-				
-				if string.find(tostring(txt), "length:") then
-					local splitted = string.split(tostring(txt), "length:")
-					if string.find(splitted[2], " ") then
-						length = (string.split(splitted[2], " "))[1]
-					else
-						length = splitted[2]
-					end
-				end
-				if not length then
-					SpeakerHandler.PlaySound(spacesplitted[1], tonumber(pitch), nil, speaker)
-				else
-					SpeakerHandler:LoopSound(spacesplitted[1], tonumber(length), tonumber(pitch), speaker)
-				end
-			elseif string.find(tostring(txt), "length:") then
-				
-				local splitted = string.split(tostring(txt), "length:")
-				
-				local spacesplitted = string.split(tostring(txt), " ")
-				
-				local length = nil
-					
-				if string.find(splitted[2], " ") then
-					length = (string.split(splitted[2], " "))[1]
-				else
-					length = splitted[2]
-				end
-				
-				SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
-				
-			else
-				SpeakerHandler.PlaySound(txt, nil, nil, speaker)
-			end
-		end
+		playsound(txt)
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 10) == "stopsounds" then
 		speaker.ClearSounds()
@@ -1299,14 +1257,34 @@ local function runtext(text)
 		if not split or split[2] == "" then
 			local output = disk:Read(filename)
 			if output then
-				if string.find(string.lower(tostring(output)), "<woshtml>") then
-					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
-					StringToGui(screen, tostring(output):lower(), textlabel)
-					textlabel.TextTransparency = 1
-					print(disk:Read(output))
-				else
+				if string.find(filename, ".aud") then
 					commandlines:insert(tostring(output))
+					playsound(output)
+					commandlines:insert(dir..":")
+					print(output)
+				elseif string.find(filename, ".img") then
+					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+					commandlines:insert(dir..":")
+					background.CanvasPosition -= Vector2.new(0, 25)
 					print(disk:Read(output))
+				elseif string.find(filename, ".lua") then
+					commandlines:insert(tostring(output))
+					loadluafile(microcontrollers, screen, output)
+					commandlines:insert(dir..":")
+				else
+					if string.find(string.lower(tostring(output)), "<woshtml>") then
+						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						StringToGui(screen, tostring(output):lower(), textlabel)
+						textlabel.TextTransparency = 1
+						commandlines:insert(dir..":")
+						background.CanvasPosition -= Vector2.new(0, 25)
+						print(disk:Read(output))
+					else
+						commandlines:insert(tostring(output))
+						commandlines:insert(dir..":")
+						print(disk:Read(output))
+					end
 				end
 			else
 				commandlines:insert("Imcomplete or Command was not found.")
@@ -1315,14 +1293,34 @@ local function runtext(text)
 		else
 			local output = getfileontable(disk, filename, dir)
 			if output then
-				if string.find(string.lower(tostring(output)), "<woshtml>") then
-					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
-					StringToGui(screen, tostring(output):lower(), textlabel)
-					textlabel.TextTransparency = 1
-					print(disk:Read(output))
-				else
+				if string.find(filename, ".aud") then
 					commandlines:insert(tostring(output))
+					playsound(output)
+					commandlines:insert(dir..":")
+					print(output)
+				elseif string.find(filename, ".img") then
+					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+					commandlines:insert(dir..":")
+					background.CanvasPosition -= Vector2.new(0, 25)
 					print(disk:Read(output))
+				elseif string.find(filename, ".lua") then
+					commandlines:insert(tostring(output))
+					loadluafile(microcontrollers, screen, output)
+					commandlines:insert(dir..":")
+				else
+					if string.find(string.lower(tostring(output)), "<woshtml>") then
+						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						StringToGui(screen, tostring(output):lower(), textlabel)
+						textlabel.TextTransparency = 1
+						commandlines:insert(dir..":")
+						background.CanvasPosition -= Vector2.new(0, 25)
+						print(disk:Read(output))
+					else
+						commandlines:insert(tostring(output))
+						commandlines:insert(dir..":")
+						print(disk:Read(output))
+					end
 				end
 			else
 				commandlines:insert("Imcomplete or Command was not found.")
