@@ -1291,8 +1291,44 @@ local function runtext(text)
 	elseif text:lower():sub(1, 5) == "echo " then
 		keyboard:SimulateTextInput("print "..text:sub(6, string.len(text)), "Microcontroller")
 	else
-		commandlines:insert("Imcomplete or Command was not found.")
-		commandlines:insert(dir..":")
+		local filename = text
+		local split = nil
+		if dir ~= "" then
+			split = string.split(dir, "/")
+		end
+		if not split or split[2] == "" then
+			local output = disk:Read(filename)
+			if output then
+				if string.find(string.lower(tostring(output)), "<woshtml>") then
+					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					StringToGui(screen, tostring(output):lower(), textlabel)
+					textlabel.TextTransparency = 1
+					print(disk:Read(output))
+				else
+					commandlines:insert(tostring(output))
+					print(disk:Read(output))
+				end
+			else
+				commandlines:insert("Imcomplete or Command was not found.")
+				commandlines:insert(dir..":")
+			end
+		else
+			local output = getfileontable(disk, filename, dir)
+			if output then
+				if string.find(string.lower(tostring(output)), "<woshtml>") then
+					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					StringToGui(screen, tostring(output):lower(), textlabel)
+					textlabel.TextTransparency = 1
+					print(disk:Read(output))
+				else
+					commandlines:insert(tostring(output))
+					print(disk:Read(output))
+				end
+			else
+				commandlines:insert("Imcomplete or Command was not found.")
+				commandlines:insert(dir..":")
+			end
+		end
 	end
 end
 
