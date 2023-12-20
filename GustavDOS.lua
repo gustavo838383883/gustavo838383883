@@ -1260,12 +1260,12 @@ local function runtext(text)
 		keyboard:SimulateTextInput("playsound "..text:sub(11, string.len(text)), "Microcontroller")
 	elseif text:lower():sub(1, 10) == "readaudio " then
 		keyboard:SimulateTextInput("readsound "..text:sub(11, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 11) == "stopaudios " then
-		keyboard:SimulateTextInput("stopsounds "..text:sub(12, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 10) == "stopaudio " then
-		keyboard:SimulateTextInput("stopsounds "..text:sub(11, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 10) == "stopsound " then
-		keyboard:SimulateTextInput("stopsounds "..text:sub(11, string.len(text)), "Microcontroller")
+	elseif text:lower():sub(1, 10) == "stopaudios" then
+		keyboard:SimulateTextInput("stopsounds", "Microcontroller")
+	elseif text:lower():sub(1, 9) == "stopaudio" then
+		keyboard:SimulateTextInput("stopsounds", "Microcontroller")
+	elseif text:lower():sub(1, 9) == "stopsound" then
+		keyboard:SimulateTextInput("stopsounds", "Microcontroller")
 	else
 		local filename = text
 		local split = nil
