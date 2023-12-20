@@ -1379,7 +1379,9 @@ function bootos()
 			speaker:ClearSounds()
 		end
 		screen:ClearElements()
-	
+
+		rom:Write("GustavOSLibrary", nil)
+		rom:Write("GD7Library", nil)
 		rom:Write("GDOSLibrary", {
 			Screen = screen,
 			Keyboard = keyboard,
@@ -1387,8 +1389,6 @@ function bootos()
 			Speaker = speaker,
 			Disk = disk,
 		})
-		rom:Write("GustavOSLibrary", nil)
-		rom:Write("GD7Library", nil)
 		commandlines, background = commandline.new(screen)
 		task.wait(1)
 		Beep(1)
