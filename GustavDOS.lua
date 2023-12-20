@@ -1017,8 +1017,10 @@ local function runtext(text)
 					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
+					print(disk:Read(output))
 				else
 					commandlines:insert(tostring(output))
+					print(disk:Read(output))
 				end
 			else
 				local output = getfileontable(disk, filename, dir)
@@ -1026,8 +1028,10 @@ local function runtext(text)
 					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
+					print(disk:Read(output))
 				else
 					commandlines:insert(tostring(output))
+					print(disk:Read(output))
 				end
 			end
 		else
@@ -1045,9 +1049,11 @@ local function runtext(text)
 			if not split or split[2] == "" then
 				local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(disk:Read(filename)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+				print(disk:Read(filename))
 			else
 				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(getfileontable(disk, filename, dir)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+				print(getfileontable(disk, filename, dir))
 			end
 		else
 			commandlines:insert("No filename specified")
@@ -1081,9 +1087,11 @@ local function runtext(text)
 			if not split or split[2] == "" then
 				local textlabel = commandlines:insert(tostring(disk:Read(filename)))
 				txt = disk:Read(filename)
+				print(disk:Read(filename))
 			else
 				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)))
 				txt = getfileontable(disk, filename, dir)
+				print(getfileontable(disk, filename, dir))
 			end
 		else
 			commandlines:insert("No filename specified")
