@@ -1891,6 +1891,8 @@ local function loadmenu()
 		Modem = modem,
 		Speaker = speaker,
 	})
+	disk:Write("GD7Library", nil)
+	disk:Write("GDOSLibrary", nil)
 
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
