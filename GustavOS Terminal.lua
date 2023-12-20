@@ -10,7 +10,7 @@ local textinput
 
 textbox.MouseButton1Up:Connect(function()
 	textinput = tostring(keyboardinput)
-end
+end)
 
 local background
 local commandlines
