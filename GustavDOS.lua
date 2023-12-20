@@ -1062,12 +1062,55 @@ local function runtext(text)
 		if filename and filename ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
+	elseif text:lower():sub(1, 10) == "readvideo " then
+		local filename = text:sub(11, string.len(text))
+		print(filename)
+		if filename and filename ~= "" then
+			local split = nil
+			if dir ~= "" then
+				split = string.split(dir, "/")
+			end
+			if not split or split[2] == "" then
+				local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id}
+				textlabel:AddChild(videoframe)
+				videoframe.Playing = true
+				print(disk:Read(filename))
+			else
+				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id}
+				textlabel:AddChild(videoframe)
+				videoframe.Playing = true
+				print(getfileontable(disk, filename, dir))
+			end
+		else
+			commandlines:insert("No filename specified")
+		end
+		commandlines:insert(dir..":")
+		if filename and filename ~= "" then
+			background.CanvasPosition -= Vector2.new(0, 25)
+		end
 	elseif text:lower():sub(1, 13) == "displayimage " then
 		local id = text:sub(14, string.len(text))
 		print(id)
 		if id and id ~= "" then
 			local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 			StringToGui(screen, [[<img src="]]..tostring(tonumber(id))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+		else
+			commandlines:insert("No id specified")
+		end
+		commandlines:insert(dir..":")
+		if id and id ~= "" then
+			background.CanvasPosition -= Vector2.new(0, 25)
+		end
+	elseif text:lower():sub(1, 13) == "displayvideo " then
+		local id = text:sub(14, string.len(text))
+		print(id)
+		if id and id ~= "" then
+			local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+			local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id}
+			textlabel:AddChild(videoframe)
+			videoframe.Playing = true
 		else
 			commandlines:insert("No id specified")
 		end
@@ -1220,6 +1263,8 @@ local function runtext(text)
 		commandlines:insert("print text")
 		commandlines:insert("playsound id")
 		commandlines:insert("displayimage id")
+		commandlines:insert("displayvideo id")
+		commandlines:insert("readvideo id")
 		commandlines:insert(dir..":")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
