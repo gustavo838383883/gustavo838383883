@@ -1284,6 +1284,8 @@ local function runtext(text)
 		keyboard:SimulateTextInput("createdir "..text:sub(9, string.len(text)), "Microcontroller")
 	elseif text:lower():sub(1, 6) == "mkdir " then
 		keyboard:SimulateTextInput("createdir "..text:sub(7, string.len(text)), "Microcontroller")
+	elseif text:lower():sub(1, 5) == "echo " then
+		keyboard:SimulateTextInput("print "..text:sub(6, string.len(text)), "Microcontroller")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 		commandlines:insert(dir..":")
