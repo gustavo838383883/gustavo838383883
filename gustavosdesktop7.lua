@@ -2196,14 +2196,17 @@ local function terminal()
 		end
 		return lines, background
 	end
-	local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
+
+	local window = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,-35)})
+	holderframe:AddChild(window)
 	
 	local name = "GustavDOS For GustavOSDesktop7"
 	local usedmicros = {}
 	
-	local button = createnicebutton(UDim2.new(0.2, 0, 0.2, -15), UDim2.new(0.8, 0, 0.8, -10), "Run", window)
+	local button = createnicebutton(UDim2.new(0.2, 0, 0.2, 0), UDim2.new(0.8, 0, 0.8, 0), "Run", window)
 	
-	local textbox, textboxtext = createnicebutton(UDim2.new(0.8, 0, 0.2, -15), UDim2.new(0, 0, 0.8, -10), "Command (Click to update)", window)
+	local textbox, textboxtext = createnicebutton(UDim2.new(0.8, 0, 0.2, 0), UDim2.new(0, 0, 0.8, 0), "Command (Click to update)", window)
 	local textinput
 	
 	textbox.MouseButton1Up:Connect(function()
@@ -2359,8 +2362,7 @@ local function terminal()
 			task.wait(0.1)
 			if background then background:Destroy() end
 			commandlines, background = commandline.new(screen)
-			background.Size = UDim2.new(1, 0, 0.8, -15)
-			background.Position = UDim2.new(0, 0, 0, 25)
+			background.Size = UDim2.new(1, 0, 0.8, 0)
 			window:AddChild(background)
 			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 6) == "reboot" then
@@ -2646,7 +2648,7 @@ local function terminal()
 				if not split or split[2] == "" then
 					local output = disk:Read(filename)
 					if string.find(string.lower(tostring(output)), "<woshtml>") then
-						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 						StringToGui(screen, tostring(output):lower(), textlabel)
 						textlabel.TextTransparency = 1
 						print(disk:Read(output))
@@ -2657,7 +2659,7 @@ local function terminal()
 				else
 					local output = getfileontable(disk, filename, dir)
 					if string.find(string.lower(tostring(output)), "<woshtml>") then
-						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 						StringToGui(screen, tostring(output):lower(), textlabel)
 						textlabel.TextTransparency = 1
 						print(disk:Read(output))
@@ -2679,11 +2681,11 @@ local function terminal()
 					split = string.split(dir, "/")
 				end
 				if not split or split[2] == "" then
-					local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(disk:Read(filename)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 					print(disk:Read(filename))
 				else
-					local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(getfileontable(disk, filename, dir)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 					print(getfileontable(disk, filename, dir))
 				end
@@ -2703,13 +2705,13 @@ local function terminal()
 					split = string.split(dir, "/")
 				end
 				if not split or split[2] == "" then
-					local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 					local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 					textlabel:AddChild(videoframe)
 					videoframe.Playing = true
 					print(disk:Read(filename))
 				else
-					local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 					local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 					textlabel:AddChild(videoframe)
 					videoframe.Playing = true
@@ -2726,7 +2728,7 @@ local function terminal()
 			local id = text:sub(14, string.len(text))
 			print(id)
 			if id and id ~= "" then
-				local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(id))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 			else
 				commandlines:insert("No id specified")
@@ -2739,7 +2741,7 @@ local function terminal()
 			local id = text:sub(14, string.len(text))
 			print(id)
 			if id and id ~= "" then
-				local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 				textlabel:AddChild(videoframe)
 				videoframe.Playing = true
@@ -2846,7 +2848,7 @@ local function terminal()
 						commandlines:insert(dir..":")
 						print(output)
 					elseif string.find(filename, ".img") then
-						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 						StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 						commandlines:insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
@@ -2857,7 +2859,7 @@ local function terminal()
 						commandlines:insert(dir..":")
 					else
 						if string.find(string.lower(tostring(output)), "<woshtml>") then
-							local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+							local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 							StringToGui(screen, tostring(output):lower(), textlabel)
 							textlabel.TextTransparency = 1
 							commandlines:insert(dir..":")
@@ -2882,7 +2884,7 @@ local function terminal()
 						commandlines:insert(dir..":")
 						print(output)
 					elseif string.find(filename, ".img") then
-						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 						StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 						commandlines:insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
@@ -2893,7 +2895,7 @@ local function terminal()
 						commandlines:insert(dir..":")
 					else
 						if string.find(string.lower(tostring(output)), "<woshtml>") then
-							local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+							local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(window.AbsoluteSize.X, window.AbsoluteSize.Y))
 							StringToGui(screen, tostring(output):lower(), textlabel)
 							textlabel.TextTransparency = 1
 							commandlines:insert(dir..":")
@@ -2939,8 +2941,7 @@ local function terminal()
 		if screen and keyboard and disk and rom then
 			commandlines, background = commandline.new(screen)
 			window:AddChild(background)
-			background.Size = UDim2.new(1, 0, 0.8, -15)
-			background.Position = UDim2.new(0, 0, 0, 25)
+			background.Size = UDim2.new(1, 0, 0.8, 0)
 			task.wait(1)
 			Beep(1)
 			commandlines:insert(name.." Command line")
