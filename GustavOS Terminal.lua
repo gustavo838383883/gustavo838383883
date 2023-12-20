@@ -1,3 +1,5 @@
+local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
+
 local usedmicros = {}
 
 local background
@@ -150,6 +152,7 @@ local function runtext(text)
 		task.wait(0.1)
 		screen:ClearElements()
 		commandlines, background = commandline.new(screen)
+		window:AddChild(background)
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 6) == "reboot" then
 		task.wait(1)
@@ -162,11 +165,7 @@ local function runtext(text)
 		if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
 			task.wait(1)
 			Beep(1)
-			screen:ClearElements()
-			if speaker then speaker:ClearSounds() end
-			if shutdownpoly then
-				TriggerPort(shutdownpoly)
-			end
+			background:Destroy()
 		else
 			commandlines:insert(dir..":")
 		end
@@ -406,11 +405,15 @@ local function runtext(text)
 				returntable = createfileontable(disk, filename, nil, dir)
 			end
 			if not split or split[2] == "" then
-				disk:Write(filename, nil)
-				if not disk:Read(filename) then
-					commandlines:insert("Success i think")
+				if disk:Read(filename) then
+					disk:Write(filename, nil)
+					if not disk:Read(filename) then
+						commandlines:insert("Success i think")
+					else
+						commandlines:insert("Failed")
+					end
 				else
-					commandlines:insert("Failed")
+					commandlines:insert("File does not exist.")
 				end
 			else
 				if disk:Read(split[2]) == returntable then
@@ -724,10 +727,6 @@ function bootos()
 		if regularscreen then screen = regularscreen end
 	end
 	if screen and keyboard and disk and rom then
-		if speaker then
-			speaker:ClearSounds()
-		end
-		screen:ClearElements()
 	
 		rom:Write("GDOSLibrary", {
 			Screen = screen,
@@ -737,6 +736,7 @@ function bootos()
 			Disk = disk,
 		})
 		commandlines, background = commandline.new(screen)
+		window:AddChild(background)
 		task.wait(1)
 		Beep(1)
 		commandlines:insert(name.." Command line")
