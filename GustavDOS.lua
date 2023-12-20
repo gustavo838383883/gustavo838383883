@@ -936,6 +936,11 @@ local function runtext(text)
 		local texts = text:sub(7, string.len(text))
 		local filename = texts:split("::")[1]
 		local filedata = texts:split("::")[2]
+		for i,v in ipairs(texts:split("::")) do
+			if i > 2 then
+				filedata = filedata.."::"..v
+			end
+		end
 		print(filename, filedata)
 		if filename and filename ~= "" then
 			if filedata and filedata ~= "" then
