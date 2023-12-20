@@ -5,11 +5,12 @@ local usedmicros = {}
 
 local button = createnicebutton(UDim2.new(0.2, 0, 0.2, -35), UDim2.new(0.8, 0, 1, -10), "Run", window)
 
-local textbox = createnicebutton(UDim2.new(0.8, 0, 0.2, -35), UDim2.new(0, 0, 1, -10), "Command (Click to update)", window)
+local textbox, textboxtext = createnicebutton(UDim2.new(0.8, 0, 0.2, -35), UDim2.new(0, 0, 1, -10), "Command (Click to update)", window)
 local textinput
 
 textbox.MouseButton1Up:Connect(function()
 	textinput = tostring(keyboardinput)
+	textboxtext.Text = tostring(keyboardinput)
 end)
 
 local background
