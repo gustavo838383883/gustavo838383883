@@ -2358,6 +2358,7 @@ local function terminal()
 		elseif text:lower():sub(1, 5) == "clear" then
 			task.wait(0.1)
 			screen:ClearElements()
+			if background then background:Destroy() end
 			commandlines, background = commandline.new(screen)
 			background.Size = UDim2.new(1, 0, 0.8, -15)
 			background.Position = UDim2.new(0, 0, 0, 25)
@@ -2914,6 +2915,7 @@ local function terminal()
 	end
 	
 	function bootos()
+		if background then background:Destroy() end
 		if disks and #disks > 0 then
 			print(tostring(romport).."\\"..tostring(disksport))
 			if romport ~= disksport then
