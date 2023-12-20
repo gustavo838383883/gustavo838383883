@@ -1056,6 +1056,19 @@ local function runtext(text)
 		if filename and filename ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
+	elseif text:lower():sub(1, 10) == "displayimage " then
+		local id = text:sub(11, string.len(text))
+		print(id)
+		if id and id ~= "" then
+			local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+			StringToGui(screen, [[<img src="]]..tostring(tonumber(id))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+		else
+			commandlines:insert("No id specified")
+		end
+		commandlines:insert(dir..":")
+		if id and id ~= "" then
+			background.CanvasPosition -= Vector2.new(0, 25)
+		end
 	elseif text:lower():sub(1, 10) == "readsound " then
 		local filename = text:sub(11, string.len(text))
 		local txt
@@ -1075,6 +1088,56 @@ local function runtext(text)
 		else
 			commandlines:insert("No filename specified")
 		end
+		if txt then
+			if string.find(tostring(txt), "pitch:") then
+				local length = nil
+	
+				local pitch = nil
+				local splitted = string.split(tostring(txt), "pitch:")
+				local spacesplitted = string.split(tostring(txt), " ")
+	
+				if string.find(splitted[2], " ") then
+					pitch = (string.split(splitted[2], " "))[1]
+				else
+					pitch = splitted[2]
+				end
+				
+				if string.find(tostring(txt), "length:") then
+					local splitted = string.split(tostring(txt), "length:")
+					if string.find(splitted[2], " ") then
+						length = (string.split(splitted[2], " "))[1]
+					else
+						length = splitted[2]
+					end
+				end
+				if not length then
+					SpeakerHandler.PlaySound(spacesplitted[1], tonumber(pitch), nil, speaker)
+				else
+					SpeakerHandler:LoopSound(spacesplitted[1], tonumber(length), tonumber(pitch), speaker)
+				end
+			elseif string.find(tostring(txt), "length:") then
+				
+				local splitted = string.split(tostring(txt), "length:")
+				
+				local spacesplitted = string.split(tostring(txt), " ")
+				
+				local length = nil
+					
+				if string.find(splitted[2], " ") then
+					length = (string.split(splitted[2], " "))[1]
+				else
+					length = splitted[2]
+				end
+				
+				SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
+				
+			else
+				SpeakerHandler.PlaySound(txt, nil, nil, speaker)
+			end
+		end
+		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 10) == "playsound " then
+		local txt = text:sub(11, string.len(text))
 		if txt then
 			if string.find(tostring(txt), "pitch:") then
 				local length = nil
@@ -1147,6 +1210,8 @@ local function runtext(text)
 		commandlines:insert("readlua filename")
 		commandlines:insert("beep number")
 		commandlines:insert("print text")
+		commandlines:insert("playsound id")
+		commandlines:insert("displayimage id")
 		commandlines:insert(dir..":")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
