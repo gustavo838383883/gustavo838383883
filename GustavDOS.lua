@@ -820,9 +820,13 @@ local function runtext(text)
 				split = string.split(dir, "/")
 			end
 			if not split or split[2] == "" then
-				loadluafile(microcontrollers, screen, disk:Read(filename))
+				local output = disk:Read(filename)
+				commandlines:insert(output)
+				loadluafile(microcontrollers, screen, output)
 			else
-				loadluafile(microcontrollers, screen, getfileontable(disk, filename, dir))
+				local output = getfileontable(disk, filename, dir)
+				commandlines:insert(output)
+				loadluafile(microcontrollers, screen, output)
 			end
 		else
 			commandlines:insert("No filename specified")
