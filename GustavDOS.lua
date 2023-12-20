@@ -1056,8 +1056,8 @@ local function runtext(text)
 		if filename and filename ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
-	elseif text:lower():sub(1, 10) == "displayimage " then
-		local id = text:sub(11, string.len(text))
+	elseif text:lower():sub(1, 13) == "displayimage " then
+		local id = text:sub(14, string.len(text))
 		print(id)
 		if id and id ~= "" then
 			local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
