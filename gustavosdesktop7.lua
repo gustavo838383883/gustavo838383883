@@ -2165,6 +2165,36 @@ local function calculator()
 end
 
 local function terminal()
+	local commandline = {}
+
+	function commandline.new(screen)
+		local background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
+		local lines = {
+			number = UDim2.new(0,0,0,0)
+		}
+		
+		function lines:insert(text, udim2)
+			local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextScaled = true, RichText = true, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Size = UDim2.new(1, 0, 0, 25), Position = lines.number})
+			if textlabel then
+				background:AddChild(textlabel)
+				background.CanvasSize = UDim2.new(1, 0, 0, lines.number.Y.Offset + 25)
+				if typeof(udim2) == "UDim2" then
+					textlabel.Size = udim2
+					background.CanvasSize -= UDim2.fromOffset(0, 25)
+					background.CanvasSize += UDim2.new(0, 0, 0, udim2.Y.Offset)
+					if udim2.X.Offset > screen:GetDimensions().X then
+						background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
+					end
+					lines.number -= UDim2.new(0,0,0,25)
+					lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
+				end
+				lines.number += UDim2.new(0, 0, 0, 25)
+				background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
+			end
+			return textlabel
+		end
+		return lines, background
+	end
 	local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
 	
 	local name = "GustavDOS For GustavOSDesktop7"
@@ -2176,8 +2206,10 @@ local function terminal()
 	local textinput
 	
 	textbox.MouseButton1Up:Connect(function()
-		textinput = tostring(keyboardinput)
-		textboxtext.Text = tostring(keyboardinput)
+		if keyboardinput then
+			textinput = tostring(keyboardinput):gsub("\n", "")
+			textboxtext.Text = tostring(keyboardinput):gsub("\n", "")
+		end
 	end)
 	
 	local background
