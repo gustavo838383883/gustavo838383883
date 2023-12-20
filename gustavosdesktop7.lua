@@ -3197,9 +3197,9 @@ local function loaddesktop()
 			terminalopen.MouseButton1Up:Connect(function()
 				speaker:PlaySound(clicksound)
 				terminalopen.Image = "rbxassetid://15625805900"
-				terminal()
 				pressed = false
 				startmenu:Destroy()
+				terminal()
 			end)
 
 			local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
