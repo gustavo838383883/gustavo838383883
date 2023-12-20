@@ -2164,6 +2164,98 @@ local function calculator()
 	end)
 end
 
+local bootos
+
+local players = {}
+
+local function shutdownprompt()
+	local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,true,false,nil,true)
+	local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
+	local no = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", window)
+	no.MouseButton1Up:Connect(function()
+		window:Destroy()
+	end)
+	yes.MouseButton1Up:Connect(function()
+		if window then
+		window:Destroy()
+		end
+		if startbutton7 then
+			startbutton7:Destroy()
+		end
+		if taskbarholder then
+			taskbarholder:Destroy()
+		end
+		if programholder1 then
+			programholder1:Destroy()
+		end
+		if cursorevent then cursorevent:Unbind() end
+		minimizedprograms = {}
+		minimizedammount = 0
+		task.wait(1)
+		speaker:ClearSounds()
+		SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+		for i=0,1,0.05 do
+			task.wait(0.05)
+			backgroundcolor.BackgroundTransparency = i
+			wallpaper.ImageTransparency = i
+		end
+		task.wait(1)
+		screen:ClearElements()
+		local commandlines = commandline.new(false, nil, screen)
+		commandlines:insert("Shutting Down...")
+		task.wait(2)
+		screen:ClearElements()
+		if shutdownpoly then
+			TriggerPort(shutdownpoly)
+		end
+	end)
+end
+
+local function restartprompt()
+	local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,true,false,nil,true)
+	local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
+	local no = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", window)
+	no.MouseButton1Up:Connect(function()
+		window:Destroy()
+	end)
+	yes.MouseButton1Up:Connect(function()
+		if window then
+			window:Destroy()
+		end
+		if startbutton7 then
+			startbutton7:Destroy()
+		end
+		if taskbarholder then
+			taskbarholder:Destroy()
+		end
+		if programholder1 then
+			programholder1:Destroy()
+		end
+		if cursorevent then cursorevent:Unbind() end
+		keyboardinput = nil
+		playerthatinputted = nil
+		minimizedprograms = {}
+		minimizedammount = 0
+		task.wait(1)
+		speaker:ClearSounds()
+		SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+		for i=0,1,0.01 do
+			task.wait(0.01)
+			backgroundcolor.BackgroundTransparency = i
+			wallpaper.ImageTransparency = i
+		end
+		task.wait(1)
+		screen:ClearElements()
+		local commandlines = commandline.new(false, nil, screen)
+		commandlines:insert("Restarting...")
+		task.wait(2)
+		screen:ClearElements()
+		getstuff()
+		task.wait(1)
+		bootos()
+	end)
+end
+	
 local function terminal()
 	local keyboardevent
 	local commandline = {}
@@ -2254,7 +2346,7 @@ local function terminal()
 		end
 	end
 	
-	local bootos
+	local bootdos
 	local dir = "/"
 	
 	local function playsound(txt)
@@ -2366,20 +2458,11 @@ local function terminal()
 			window:AddChild(background)
 			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 6) == "reboot" then
-			task.wait(1)
-			Beep(1)
-			dir = "/"
-			if keyboardevent then keyboardevent:Unbind() end
-			if background then background:Destroy() end
-			bootos()
+			restartprompt()
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 8) == "shutdown" then
-			if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
-				task.wait(1)
-				Beep(1)
-				background:Destroy()
-			else
-				commandlines:insert(dir..":")
-			end
+			shutdownprompt()
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 6) == "print " then
 			commandlines:insert(text:sub(7, string.len(text)))
 			print(text:sub(7, string.len(text)))
@@ -2915,7 +2998,7 @@ local function terminal()
 		end
 	end
 	
-	function bootos()
+	function bootdos()
 		if disks and #disks > 0 then
 			print(tostring(romport).."\\"..tostring(disksport))
 			if romport ~= disksport then
@@ -2973,7 +3056,7 @@ local function terminal()
 			if keyboard then
 				local keyboardevent = button.MouseButton1Up:Connect(function()
 					getstuff()
-					bootos()
+					bootdos()
 					keyboardevent:Unbind()
 				end)
 			end
@@ -2983,18 +3066,14 @@ local function terminal()
 			if keyboard then
 				local keyboardevent = button.MouseButton1Up:Connect(function()
 					getstuff()
-					bootos()
+					bootdos()
 					keyboardevent:Unbind()
 				end)
 			end
 		end
 	end
-	bootos()
+	bootdos()
 end
-
-local bootos
-
-local players = {}
 
 local function loaddesktop()
 	minimizedammount = 0
@@ -3215,46 +3294,7 @@ local function loaddesktop()
 				shutdown.Image = "rbxassetid://15625805900"
 				pressed = false
 				startmenu:Destroy()
-				local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,true,false,nil,true)
-				local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
-				local no = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", window)
-				no.MouseButton1Up:Connect(function()
-					window:Destroy()
-				end)
-				yes.MouseButton1Up:Connect(function()
-					if window then
-					window:Destroy()
-					end
-					if startbutton7 then
-						startbutton7:Destroy()
-					end
-					if taskbarholder then
-						taskbarholder:Destroy()
-					end
-					if programholder1 then
-						programholder1:Destroy()
-					end
-					if cursorevent then cursorevent:Unbind() end
-					minimizedprograms = {}
-					minimizedammount = 0
-					task.wait(1)
-					speaker:ClearSounds()
-					SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
-					for i=0,1,0.05 do
-						task.wait(0.05)
-						backgroundcolor.BackgroundTransparency = i
-						wallpaper.ImageTransparency = i
-					end
-					task.wait(1)
-					screen:ClearElements()
-					local commandlines = commandline.new(false, nil, screen)
-					commandlines:insert("Shutting Down...")
-					task.wait(2)
-					screen:ClearElements()
-					if shutdownpoly then
-						TriggerPort(shutdownpoly)
-					end
-				end)
+				shutdownprompt()
 			end)
 
 			local restart = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0.5, 0, 0.8, 0), BackgroundTransparency = 1})
@@ -3270,48 +3310,7 @@ local function loaddesktop()
 				restart.Image = "rbxassetid://15625805900"
 				pressed = false
 				startmenu:Destroy()
-				local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 25), "Are you sure?",true,true,false,nil,true)
-				local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0, 0, 0.25, 25), "Yes", window)
-				local no = createnicebutton(UDim2.new(0.5, 0, 0.75, -25), UDim2.new(0.5, 0, 0.25, 25), "No", window)
-				no.MouseButton1Up:Connect(function()
-					window:Destroy()
-				end)
-				yes.MouseButton1Up:Connect(function()
-					if window then
-						window:Destroy()
-					end
-					if startbutton7 then
-						startbutton7:Destroy()
-					end
-					if taskbarholder then
-						taskbarholder:Destroy()
-					end
-					if programholder1 then
-						programholder1:Destroy()
-					end
-					if cursorevent then cursorevent:Unbind() end
-					keyboardinput = nil
-					playerthatinputted = nil
-					minimizedprograms = {}
-					minimizedammount = 0
-					task.wait(1)
-					speaker:ClearSounds()
-					SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
-					for i=0,1,0.01 do
-						task.wait(0.01)
-						backgroundcolor.BackgroundTransparency = i
-						wallpaper.ImageTransparency = i
-					end
-					task.wait(1)
-					screen:ClearElements()
-					local commandlines = commandline.new(false, nil, screen)
-					commandlines:insert("Restarting...")
-					task.wait(2)
-					screen:ClearElements()
-					getstuff()
-					task.wait(1)
-					bootos()
-				end)
+				restartprompt()
 			end)
 			pressed = true
 		else
