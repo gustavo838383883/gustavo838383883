@@ -294,8 +294,9 @@ local function getstuff()
 						end
 						rom = temprom
 						romport = i
-					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") then
+					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") or v:Read("GDOSLibrary") then
 						temprom:Write("GustavOSLibrary", nil)
+						v:Write("GDOSLibrary", nil)
 						rom = temprom
 						romport = i
 					end
@@ -338,13 +339,17 @@ local function getstuff()
 						if v:Read("GustavOSLibrary") then
 							v:Write("GustavOSLibrary", nil)
 						end
+						if v:Read("GDOSLibrary") then
+							v:Write("GDOSLibrary", nil)
+						end
 						rom = v
 						romindexusing = index
 						romport = i
 						sharedport = true
 						break
-					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") then
+					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") or v:Read("GDOSLibrary") then
 						v:Write("GustavOSLibrary", nil)
+						v:Write("GDOSLibrary", nil)
 						rom = v
 						romport = i
 						romindexusing = index
