@@ -775,8 +775,8 @@ local function runtext(text)
 			commandlines:insert("No microcontrollers found.")
 		end
 		commandlines:insert(dir..":")
-	elseif text:lower():sub(1, 13) == "turnoffmicro " then
-		local number = tonumber(text:sub(14, string.len(text)))
+	elseif text:lower():sub(1, 8) == "stoplua " then
+		local number = tonumber(text:sub(9, string.len(text)))
 		print(number)
 		local start = 0
 		local success = false
@@ -1141,7 +1141,7 @@ local function runtext(text)
 		commandlines:insert("reboot")
 		commandlines:insert("delete filename")
 		commandlines:insert("createdir filename")
-		commandlines:insert("turnoffmicro number")
+		commandlines:insert("stoplua number")
 		commandlines:insert("runlua lua")
 		commandlines:insert("showmicros")
 		commandlines:insert("readlua filename")
