@@ -2390,7 +2390,7 @@ local function terminal()
 				audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
 				
 			else
-				audioui(screen, disk, data, speaker)
+				audioui(screen, disk, txt, speaker)
 			end
 		end
 	end
