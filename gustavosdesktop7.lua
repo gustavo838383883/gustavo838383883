@@ -2165,6 +2165,7 @@ local function calculator()
 end
 
 local function terminal()
+	local keyboardevent
 	local commandline = {}
 
 	function commandline.new(screen)
