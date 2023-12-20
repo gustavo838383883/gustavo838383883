@@ -1888,6 +1888,9 @@ local function loadmenu()
 		Speaker = speaker,
 	})
 
+	disk:Write("GD7Library", nil)
+	disk:Write("GDOSLibrary", nil)
+
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
 			if startui then
