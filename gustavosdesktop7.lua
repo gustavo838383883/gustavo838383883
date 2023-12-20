@@ -2368,9 +2368,9 @@ local function terminal()
 		elseif text:lower():sub(1, 6) == "reboot" then
 			task.wait(1)
 			Beep(1)
-			getstuff()
 			dir = "/"
 			if keyboardevent then keyboardevent:Unbind() end
+			if background then background:Destroy() end
 			bootos()
 		elseif text:lower():sub(1, 8) == "shutdown" then
 			if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
@@ -2916,7 +2916,6 @@ local function terminal()
 	end
 	
 	function bootos()
-		if background then background:Destroy() end
 		if disks and #disks > 0 then
 			print(tostring(romport).."\\"..tostring(disksport))
 			if romport ~= disksport then
