@@ -286,7 +286,7 @@ local function getstuff()
 			if success then
 				local temprom = GetPartFromPort(i, "Disk")
 				if temprom then
-					if #(temprom:ReadEntireDisk()) == 0 then
+					if #temprom:ReadEntireDisk() == 0 then
 						rom = temprom
 						romport = i
 					elseif temprom:Read("GDOSLibrary") then
@@ -333,7 +333,7 @@ local function getstuff()
 		if disks and #disks > 1 and romport == disksport and not sharedport then
 			for index,v in ipairs(disks) do
 				if v then
-					if #(v:ReadEntireDisk()) == 0 then
+					if #v:ReadEntireDisk() == 0 then
 						rom = v
 						romport = i
 						romindexusing = index
@@ -1387,6 +1387,8 @@ function bootos()
 			Speaker = speaker,
 			Disk = disk,
 		})
+		rom:Write("GustavOSLibrary", nil)
+		rom:Write("GD7Library", nil)
 		commandlines, background = commandline.new(screen)
 		task.wait(1)
 		Beep(1)
