@@ -3107,6 +3107,8 @@ local function loaddesktop()
 
 	taskbarholderscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(0.9, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0.9, 0, 1, 0), Position = UDim2.new(0.1, 0, 0, 0), ScrollBarThickness = 2.5})
 	taskbarholder:AddChild(taskbarholderscrollingframe)
+	rom:Write("GustavOSLibrary", nil)
+	rom:Write("GD7Library", nil)
 	rom:Write("GD7Library", {
 		Screen = screen,
 		Keyboard = keyboard,
