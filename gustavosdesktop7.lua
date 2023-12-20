@@ -2815,24 +2815,24 @@ local function terminal()
 			keyboard:SimulateTextInput("stoplua "..text:sub(11, string.len(text)), "Microcontroller")
 			
 		elseif text:lower():sub(1, 10) == "playvideo " then
-			keyboard:SimulateTextInput("displayvideo "..text:sub(11, string.len(text)), "Microcontroller")
+			commandlines:insert("Did you mean displayvideo "..text:sub(11, string.len(text)))
 			
 		elseif text:lower():sub(1, 8) == "makedir " then
-			keyboard:SimulateTextInput("createdir "..text:sub(9, string.len(text)), "Microcontroller")
+			commandlines:insert("Did you mean createdir "..text:sub(9, string.len(text)))
 		elseif text:lower():sub(1, 6) == "mkdir " then
-			keyboard:SimulateTextInput("createdir "..text:sub(7, string.len(text)), "Microcontroller")
+			commandlines:insert("Did you mean createdir "..text:sub(7, string.len(text)))
 		elseif text:lower():sub(1, 5) == "echo " then
-			keyboard:SimulateTextInput("print "..text:sub(6, string.len(text)), "Microcontroller")
+			commandlines:insert("Did you mean print "..text:sub(6, string.len(text)))
 		elseif text:lower():sub(1, 10) == "playaudio " then
-			keyboard:SimulateTextInput("playsound "..text:sub(11, string.len(text)), "Microcontroller")
+			commandlines:insert("Did you mean playsound "..text:sub(11, string.len(text)))
 		elseif text:lower():sub(1, 10) == "readaudio " then
-			keyboard:SimulateTextInput("readsound "..text:sub(11, string.len(text)), "Microcontroller")
+			commandlines:insert("Did you mean readsound "..text:sub(11, string.len(text)))
 		elseif text:lower():sub(1, 10) == "stopaudios" then
-			keyboard:SimulateTextInput("stopsounds", "Microcontroller")
+			commandlines:insert("Did you mean stopsounds")
 		elseif text:lower():sub(1, 9) == "stopaudio" then
-			keyboard:SimulateTextInput("stopsounds", "Microcontroller")
+			commandlines:insert("Did you mean stopsounds")
 		elseif text:lower():sub(1, 9) == "stopsound" then
-			keyboard:SimulateTextInput("stopsounds", "Microcontroller")
+			commandlines:insert("Did you mean stopsounds")
 		else
 			local filename = text
 			local split = nil
