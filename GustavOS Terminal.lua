@@ -1,6 +1,16 @@
 local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
 
+local name = "GustavDOS For GustavOSDesktop7"
 local usedmicros = {}
+
+local button = createnicebutton(UDim2.new(0.2, 0, 0.2, -35), UDim2.new(0.8, 0, 1, -10), "Run", window)
+
+local textbox = createnicebutton(UDim2.new(0.8, 0, 0.2, -35), UDim2.new(0, 0, 1, -10), "Command (Click to update)", window)
+local textinput
+
+textbox.MouseButton1Up:Connect(function()
+	textinput = tostring(keyboardinput)
+end
 
 local background
 local commandlines
@@ -66,11 +76,7 @@ local function playsound(txt)
 					length = splitted[2]
 				end
 			end
-			if not length then
-				SpeakerHandler.PlaySound(spacesplitted[1], tonumber(pitch), nil, speaker)
-			else
-				SpeakerHandler:LoopSound(spacesplitted[1], tonumber(length), tonumber(pitch), speaker)
-			end
+			audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
 		elseif string.find(tostring(txt), "length:") then
 			
 			local splitted = string.split(tostring(txt), "length:")
@@ -85,10 +91,10 @@ local function playsound(txt)
 				length = splitted[2]
 			end
 			
-			SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
+			audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
 			
 		else
-			SpeakerHandler.PlaySound(txt, nil, nil, speaker)
+			audioui(screen, disk, data, speaker)
 		end
 	end
 end
@@ -152,6 +158,8 @@ local function runtext(text)
 		task.wait(0.1)
 		screen:ClearElements()
 		commandlines, background = commandline.new(screen)
+		background.Size = UDim2.new(1, 0, 0.8, -35)
+		background.Position = UDim2.new(0, 0, 0, 25)
 		window:AddChild(background)
 		commandlines:insert(dir..":")
 	elseif text:lower():sub(1, 6) == "reboot" then
@@ -727,25 +735,19 @@ function bootos()
 		if regularscreen then screen = regularscreen end
 	end
 	if screen and keyboard and disk and rom then
-	
-		rom:Write("GDOSLibrary", {
-			Screen = screen,
-			Keyboard = keyboard,
-			Modem = modem,
-			Speaker = speaker,
-			Disk = disk,
-		})
 		commandlines, background = commandline.new(screen)
 		window:AddChild(background)
+		background.Size = UDim2.new(1, 0, 0.8, -35)
+		background.Position = UDim2.new(0, 0, 0, 25)
 		task.wait(1)
 		Beep(1)
 		commandlines:insert(name.." Command line")
 		task.wait(1)
 		commandlines:insert("/:")
 		if keyboardevent then keyboardevent:Unbind() end
-		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
-			commandlines:insert(tostring(text):gsub("\n", ""))
-			runtext(tostring(text):gsub("\n", ""))
+		keyboardevent = button.MouseButton1Up:Connect(function()
+			commandlines:insert(tostring(textinput):gsub("\n", ""))
+			runtext(tostring(textinput):gsub("\n", ""))
 		end)
 	elseif screen then
 		screen:ClearElements()
@@ -767,24 +769,20 @@ function bootos()
 			commandlines:insert([[No empty disk or disk with the file "GDOSLibrary" was found.]])
 		end
 		if keyboard then
-			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
-				if key == Enum.KeyCode.Return then
-					getstuff()
-					bootos()
-					keyboardevent:Unbind()
-				end
+			local keyboardevent = button.MouseButton1Up:Connect(function()
+				getstuff()
+				bootos()
+				keyboardevent:Unbind()
 			end)
 		end
 	elseif not screen then
 		Beep(0.5)
 		print("No screen was found.")
 		if keyboard then
-			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
-				if key == Enum.KeyCode.Return then
-					getstuff()
-					bootos()
-					keyboardevent:Unbind()
-				end
+			local keyboardevent = button.MouseButton1Up:Connect(function()
+				getstuff()
+				bootos()
+				keyboardevent:Unbind()
 			end)
 		end
 	end
