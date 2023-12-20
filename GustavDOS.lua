@@ -1266,6 +1266,14 @@ local function runtext(text)
 		commandlines:insert("displayvideo id")
 		commandlines:insert("readvideo id")
 		commandlines:insert(dir..":")
+	elseif text:lower():sub(1, 4) == "help" then
+		keyboard:SimulateTextInput("cmds", "Microcontroller")
+		
+	elseif text:lower():sub(1, 10) == "stopmicro " then
+		keyboard:SimulateTextInput("stoplua "..text:sub(11, string.len(text)), "Microcontroller")
+		
+	elseif text:lower():sub(1, 10) == "playvideo " then
+		keyboard:SimulateTextInput("displayvideo "..text:sub(11, string.len(text)), "Microcontroller")
 	else
 		commandlines:insert("Imcomplete or Command was not found.")
 		commandlines:insert(dir..":")
