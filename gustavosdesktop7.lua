@@ -2207,7 +2207,7 @@ local function terminal()
 	
 	textbox.MouseButton1Up:Connect(function()
 		if keyboardinput then
-			textinput = tostring(keyboardinput):gsub("\n", "")
+			textinput = tostring(keyboardinput)
 			textboxtext.Text = tostring(keyboardinput):gsub("\n", "")
 		end
 	end)
