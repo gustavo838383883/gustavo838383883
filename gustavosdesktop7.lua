@@ -2892,29 +2892,37 @@ local function terminal()
 			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 4) == "help" then
 			commandlines:insert("Did you mean cmds")
-			
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 10) == "stopmicro " then
 			commandlines:insert("Did you mean stoplua "..text:sub(11, string.len(text)))
-			
+			commandlines:insert(dir..":")			
 		elseif text:lower():sub(1, 10) == "playvideo " then
 			commandlines:insert("Did you mean displayvideo "..text:sub(11, string.len(text)))
-			
+			commandlines:insert(dir..":")			
 		elseif text:lower():sub(1, 8) == "makedir " then
 			commandlines:insert("Did you mean createdir "..text:sub(9, string.len(text)))
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 6) == "mkdir " then
 			commandlines:insert("Did you mean createdir "..text:sub(7, string.len(text)))
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 5) == "echo " then
 			commandlines:insert("Did you mean print "..text:sub(6, string.len(text)))
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 10) == "playaudio " then
 			commandlines:insert("Did you mean playsound "..text:sub(11, string.len(text)))
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 10) == "readaudio " then
 			commandlines:insert("Did you mean readsound "..text:sub(11, string.len(text)))
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 10) == "stopaudios" then
 			commandlines:insert("Did you mean stopsounds")
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 9) == "stopaudio" then
 			commandlines:insert("Did you mean stopsounds")
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 9) == "stopsound" then
 			commandlines:insert("Did you mean stopsounds")
+			commandlines:insert(dir..":")
 		else
 			local filename = text
 			local split = nil
