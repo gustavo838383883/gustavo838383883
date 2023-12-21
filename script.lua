@@ -1880,6 +1880,10 @@ local function loadmenu()
 	programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder1:AddChild(programholder2)
+
+	disk:Write("GD7Library", nil)
+	disk:Write("GDOSLibrary", nil)
+	disk:Write("GustavOSLibrary", nil)
 	
 	disk:Write("GustavOSLibrary", {
 		Screen = screen,
@@ -1887,9 +1891,6 @@ local function loadmenu()
 		Modem = modem,
 		Speaker = speaker,
 	})
-
-	disk:Write("GD7Library", nil)
-	disk:Write("GDOSLibrary", nil)
 
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
