@@ -431,15 +431,16 @@ end
 getstuff()
 local commandline = {}
 
+local position = UDim2.new(0,0,0,0),
+
 function commandline.new(screen)
 	local background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
 	local lines = {
-		number = UDim2.new(0,0,0,0),
 		insert = function(text, udim2)
 			local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextScaled = true, RichText = true, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Size = UDim2.new(1, 0, 0, 25), Position = lines.number})
 			if textlabel then
 				background:AddChild(textlabel)
-				background.CanvasSize = UDim2.new(1, 0, 0, lines.number.Y.Offset + 25)
+				background.CanvasSize = UDim2.new(1, 0, 0, position.Y.Offset + 25)
 				if typeof(udim2) == "UDim2" then
 					textlabel.Size = udim2
 					background.CanvasSize -= UDim2.fromOffset(0, 25)
@@ -447,11 +448,11 @@ function commandline.new(screen)
 					if udim2.X.Offset > screen:GetDimensions().X then
 						background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
 					end
-					lines.number -= UDim2.new(0,0,0,25)
-					lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
+					position -= UDim2.new(0,0,0,25)
+					position += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
 				end
-				lines.number += UDim2.new(0, 0, 0, 25)
-				background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
+				position += UDim2.new(0, 0, 0, 25)
+				background.CanvasPosition = Vector2.new(0, position.Y.Offset)
 			end
 			return textlabel
 		end,
