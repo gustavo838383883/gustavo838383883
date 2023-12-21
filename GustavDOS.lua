@@ -434,29 +434,28 @@ local commandline = {}
 function commandline.new(screen)
 	local background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
 	local lines = {
-		number = UDim2.new(0,0,0,0)
-	}
-	
-	function lines:insert(text, udim2)
-		local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextScaled = true, RichText = true, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Size = UDim2.new(1, 0, 0, 25), Position = lines.number})
-		if textlabel then
-			background:AddChild(textlabel)
-			background.CanvasSize = UDim2.new(1, 0, 0, lines.number.Y.Offset + 25)
-			if typeof(udim2) == "UDim2" then
-				textlabel.Size = udim2
-				background.CanvasSize -= UDim2.fromOffset(0, 25)
-				background.CanvasSize += UDim2.new(0, 0, 0, udim2.Y.Offset)
-				if udim2.X.Offset > screen:GetDimensions().X then
-					background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
+		number = UDim2.new(0,0,0,0),
+		insert = function(text, udim2)
+			local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextScaled = true, RichText = true, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Size = UDim2.new(1, 0, 0, 25), Position = lines.number})
+			if textlabel then
+				background:AddChild(textlabel)
+				background.CanvasSize = UDim2.new(1, 0, 0, lines.number.Y.Offset + 25)
+				if typeof(udim2) == "UDim2" then
+					textlabel.Size = udim2
+					background.CanvasSize -= UDim2.fromOffset(0, 25)
+					background.CanvasSize += UDim2.new(0, 0, 0, udim2.Y.Offset)
+					if udim2.X.Offset > screen:GetDimensions().X then
+						background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
+					end
+					lines.number -= UDim2.new(0,0,0,25)
+					lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
 				end
-				lines.number -= UDim2.new(0,0,0,25)
-				lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
+				lines.number += UDim2.new(0, 0, 0, 25)
+				background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
 			end
-			lines.number += UDim2.new(0, 0, 0, 25)
-			background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
-		end
-		return textlabel
-	end
+			return textlabel
+		end,
+	}
 	return lines, background
 end
 
@@ -667,21 +666,21 @@ local function loadluafile(microcontrollers, screen, code)
 						TriggerPort(polyport)
 						success = true
 				
-						commandlines:insert("Using microcontroller:")
+						commandlines.insert("Using microcontroller:")
 						
-						commandlines:insert(micronumber)
+						commandlines.insert(micronumber)
 						break
 					else
-						commandlines:insert("No port connected to polysilicon")
+						commandlines.insert("No port connected to polysilicon")
 					end
 				else
-					commandlines:insert("No polysilicon connected to microcontroller")
+					commandlines.insert("No polysilicon connected to microcontroller")
 				end
 			end
 		end
 	end
 	if not success then
-		commandlines:insert("No microcontrollers left.")
+		commandlines.insert("No microcontrollers left.")
 	end
 end
 
@@ -759,45 +758,45 @@ local function runtext(text)
 			local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 			if #split >= 3 then
 				if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
-					commandlines:insert(inputtedtext..":")
+					commandlines.insert(inputtedtext..":")
 					dir = inputtedtext
 				else
-					commandlines:insert("Invalid directory")
-					commandlines:insert(dir..":")
+					commandlines.insert("Invalid directory")
+					commandlines.insert(dir..":")
 				end
 			else
 				if disk:Read(split[#split]) or split[2] == "" then
 					if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
-						commandlines:insert(inputtedtext..":")
+						commandlines.insert(inputtedtext..":")
 						dir = inputtedtext
 					elseif tempsplit[1] == "" and tempsplit[2] == "" then
-						commandlines:insert(inputtedtext..":")
+						commandlines.insert(inputtedtext..":")
 						dir = inputtedtext
 					elseif tempsplit[1] == "" and tempsplit[2] ~= "" then
 						if typeof(disk:Read(split[#split])) == "table" then
-							commandlines:insert(inputtedtext..":")
+							commandlines.insert(inputtedtext..":")
 							dir = inputtedtext
 						end
 					else
-						commandlines:insert("Invalid directory")
-						commandlines:insert(dir..":")
+						commandlines.insert("Invalid directory")
+						commandlines.insert(dir..":")
 					end
 				else
-					commandlines:insert("Invalid directory")
-					commandlines:insert(dir..":")
+					commandlines.insert("Invalid directory")
+					commandlines.insert(dir..":")
 				end
 			end
 		elseif inputtedtext == "" then
-			commandlines:insert(dir..":")
+			commandlines.insert(dir..":")
 		else
-			commandlines:insert("Invalid directory")
-			commandlines:insert(dir..":")
+			commandlines.insert("Invalid directory")
+			commandlines.insert(dir..":")
 		end
 	elseif text:lower():sub(1, 5) == "clear" then
 		task.wait(0.1)
 		screen:ClearElements()
 		commandlines, background = commandline.new(screen)
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 6) == "reboot" then
 		task.wait(1)
 		Beep(1)
@@ -815,24 +814,24 @@ local function runtext(text)
 				TriggerPort(shutdownpoly)
 			end
 		else
-			commandlines:insert(dir..":")
+			commandlines.insert(dir..":")
 		end
 	elseif text:lower():sub(1, 6) == "print " then
-		commandlines:insert(text:sub(7, string.len(text)))
+		commandlines.insert(text:sub(7, string.len(text)))
 		print(text:sub(7, string.len(text)))
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "showmicros" then
 		if microcontrollers then
 			local start = 0
 			for i,v in pairs(microcontrollers) do
 				start += 1
-				commandlines:insert("Microcontroller")
-				commandlines:insert(start)
+				commandlines.insert("Microcontroller")
+				commandlines.insert(start)
 			end
 		else
-			commandlines:insert("No microcontrollers found.")
+			commandlines.insert("No microcontrollers found.")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 8) == "stoplua " then
 		local number = tonumber(text:sub(9, string.len(text)))
 		print(number)
@@ -852,23 +851,23 @@ local function runtext(text)
 							table.remove(usedmicros, table.find(usedmicros, value))
 						end
 						success = true
-						commandlines:insert("Microcontroller turned off.")
+						commandlines.insert("Microcontroller turned off.")
 					else
-						commandlines:insert("No port connected to polysilicon")
+						commandlines.insert("No port connected to polysilicon")
 					end
 				else
-					commandlines:insert("No polysilicon connected to microcontroller")
+					commandlines.insert("No polysilicon connected to microcontroller")
 				end
 			end
 		end
 		if not success then
-			commandlines:insert("Invalid microcontroller number")
+			commandlines.insert("Invalid microcontroller number")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "runlua " then
 		print(text)
 		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 8) == "readlua " then
 		local filename = text:sub(9, string.len(text))
 		print(filename)
@@ -879,26 +878,26 @@ local function runtext(text)
 			end
 			if not split or split[2] == "" then
 				local output = disk:Read(filename)
-				commandlines:insert(output)
+				commandlines.insert(output)
 				loadluafile(microcontrollers, screen, output)
 			else
 				local output = getfileontable(disk, filename, dir)
-				commandlines:insert(output)
+				commandlines.insert(output)
 				loadluafile(microcontrollers, screen, output)
 			end
 		else
-			commandlines:insert("No filename specified")
+			commandlines.insert("No filename specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 5) == "beep " then
 		local number = tonumber(text:sub(6, string.len(text)))
 		print(number)
 		if number then
 			Beep(number)
 		else
-			commandlines:insert("Invalid number")
+			commandlines.insert("Invalid number")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "showdir" then
 		local inputtedtext = dir
 		local tempsplit = string.split(inputtedtext, "/")
@@ -919,11 +918,11 @@ local function runtext(text)
 				local output = getfileontable(disk, split[#split], removedlast)
 				if typeof(output) == "table" then
 					for i,v in pairs(output) do
-						commandlines:insert(tostring(i))
+						commandlines.insert(tostring(i))
 						print(i)
 					end
 				else
-					commandlines:insert("Invalid directory")
+					commandlines.insert("Invalid directory")
 				end
 			else
 				local output = disk:Read(split[#split])
@@ -931,37 +930,37 @@ local function runtext(text)
 					if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
 						if typeof(output) == "table" then
 							for i,v in pairs(output) do
-								commandlines:insert(tostring(i))
+								commandlines.insert(tostring(i))
 								print(i)
 							end
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] == "" then
 						for i,v in pairs(disk:ReadEntireDisk()) do
-							commandlines:insert(tostring(i))
+							commandlines.insert(tostring(i))
 							print(i)
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] ~= "" then
 						if typeof(disk:Read(split[#split])) == "table" then
 							for i,v in pairs(disk:Read(split[#split])) do
-								commandlines:insert(tostring(i))
+								commandlines.insert(tostring(i))
 								print(i)
 							end
 						end
 					else
-						commandlines:insert("Invalid directory")
+						commandlines.insert("Invalid directory")
 					end
 				else
-					commandlines:insert("Invalid directory")
+					commandlines.insert("Invalid directory")
 				end
 			end
 		elseif inputtedtext == "" then
 			for i,v in pairs(disk:ReadEntireDisk()) do
-				commandlines:insert(tostring(i))
+				commandlines.insert(tostring(i))
 			end
 		else
-			commandlines:insert("Invalid directory")
+			commandlines.insert("Invalid directory")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "createdir " then
 		local filename = text:sub(11, string.len(text))
 		print(filename)
@@ -979,21 +978,21 @@ local function runtext(text)
 			end
 			if not split then
 				if disk:Read(filename) then
-					commandlines:insert("Success i think")
+					commandlines.insert("Success i think")
 				else
-					commandlines:insert("Failed")
+					commandlines.insert("Failed")
 				end
 			else
 				if disk:Read(split[2]) == returntable then
-					commandlines:insert("Success i think")
+					commandlines.insert("Success i think")
 				else
-					commandlines:insert("Failed i think")
+					commandlines.insert("Failed i think")
 				end	
 			end
 		else
-			commandlines:insert("No filename specified")
+			commandlines.insert("No filename specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 6) == "write " then
 		local texts = text:sub(7, string.len(text))
 		local filename = texts:split("::")[1]
@@ -1019,27 +1018,27 @@ local function runtext(text)
 				if not split or split[2] == "" then
 					if disk:Read(filename) then
 						if disk:Read(filename) == filedata then
-							commandlines:insert("Success i think")
+							commandlines.insert("Success i think")
 						else
-							commandlines:insert("Failed")
+							commandlines.insert("Failed")
 						end
 					else
-						commandlines:insert("Failed")
+						commandlines.insert("Failed")
 					end
 				else
 					if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
-						commandlines:insert("Success i think")
+						commandlines.insert("Success i think")
 					else
-						commandlines:insert("Failed i think")
+						commandlines.insert("Failed i think")
 					end	
 				end
 			else
-				commandlines:insert("No filedata specified")
+				commandlines.insert("No filedata specified")
 			end
 		else
-			commandlines:insert("No filename specified")
+			commandlines.insert("No filename specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "delete " then
 		local filename = text:sub(8, string.len(text))
 		print(filename)
@@ -1056,24 +1055,24 @@ local function runtext(text)
 				if disk:Read(filename) then
 					disk:Write(filename, nil)
 					if not disk:Read(filename) then
-						commandlines:insert("Success i think")
+						commandlines.insert("Success i think")
 					else
-						commandlines:insert("Failed")
+						commandlines.insert("Failed")
 					end
 				else
-					commandlines:insert("File does not exist")
+					commandlines.insert("File does not exist")
 				end
 			else
 				if disk:Read(split[2]) == returntable then
-					commandlines:insert("Success i think")
+					commandlines.insert("Success i think")
 				else
-					commandlines:insert("Failed i think")
+					commandlines.insert("Failed i think")
 				end	
 			end
 		else
-			commandlines:insert("No filename specified")
+			commandlines.insert("No filename specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 5) == "read " then
 		local filename = text:sub(6, string.len(text))
 		print(filename)
@@ -1085,30 +1084,30 @@ local function runtext(text)
 			if not split or split[2] == "" then
 				local output = disk:Read(filename)
 				if string.find(string.lower(tostring(output)), "<woshtml>") then
-					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
 					print(disk:Read(output))
 				else
-					commandlines:insert(tostring(output))
+					commandlines.insert(tostring(output))
 					print(disk:Read(output))
 				end
 			else
 				local output = getfileontable(disk, filename, dir)
 				if string.find(string.lower(tostring(output)), "<woshtml>") then
-					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
 					print(disk:Read(output))
 				else
-					commandlines:insert(tostring(output))
+					commandlines.insert(tostring(output))
 					print(disk:Read(output))
 				end
 			end
 		else
-			commandlines:insert("No filename specified")
+			commandlines.insert("No filename specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "readimage " then
 		local filename = text:sub(11, string.len(text))
 		print(filename)
@@ -1118,18 +1117,18 @@ local function runtext(text)
 				split = string.split(dir, "/")
 			end
 			if not split or split[2] == "" then
-				local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines.insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(disk:Read(filename)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 				print(disk:Read(filename))
 			else
-				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines.insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(getfileontable(disk, filename, dir)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 				print(getfileontable(disk, filename, dir))
 			end
 		else
-			commandlines:insert("No filename specified")
+			commandlines.insert("No filename specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 		if filename and filename ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
@@ -1142,22 +1141,22 @@ local function runtext(text)
 				split = string.split(dir, "/")
 			end
 			if not split or split[2] == "" then
-				local textlabel = commandlines:insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines.insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 				textlabel:AddChild(videoframe)
 				videoframe.Playing = true
 				print(disk:Read(filename))
 			else
-				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines.insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 				textlabel:AddChild(videoframe)
 				videoframe.Playing = true
 				print(getfileontable(disk, filename, dir))
 			end
 		else
-			commandlines:insert("No filename specified")
+			commandlines.insert("No filename specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 		if filename and filename ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
@@ -1165,12 +1164,12 @@ local function runtext(text)
 		local id = text:sub(14, string.len(text))
 		print(id)
 		if id and id ~= "" then
-			local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 			StringToGui(screen, [[<img src="]]..tostring(tonumber(id))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 		else
-			commandlines:insert("No id specified")
+			commandlines.insert("No id specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 		if id and id ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
@@ -1178,14 +1177,14 @@ local function runtext(text)
 		local id = text:sub(14, string.len(text))
 		print(id)
 		if id and id ~= "" then
-			local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 			local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 			textlabel:AddChild(videoframe)
 			videoframe.Playing = true
 		else
-			commandlines:insert("No id specified")
+			commandlines.insert("No id specified")
 		end
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 		if id and id ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
@@ -1199,52 +1198,52 @@ local function runtext(text)
 				split = string.split(dir, "/")
 			end
 			if not split or split[2] == "" then
-				local textlabel = commandlines:insert(tostring(disk:Read(filename)))
+				local textlabel = commandlines.insert(tostring(disk:Read(filename)))
 				txt = disk:Read(filename)
 				print(disk:Read(filename))
 			else
-				local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)))
+				local textlabel = commandlines.insert(tostring(getfileontable(disk, filename, dir)))
 				txt = getfileontable(disk, filename, dir)
 				print(getfileontable(disk, filename, dir))
 			end
 		else
-			commandlines:insert("No filename specified")
+			commandlines.insert("No filename specified")
 		end
 		playsound(txt)
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "playsound " then
 		local txt = text:sub(11, string.len(text))
 		playsound(txt)
-		commandlines:insert(dir..":")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "stopsounds" then
 		speaker.ClearSounds()
 		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 	elseif text:lower():sub(1, 4) == "cmds" then
-		commandlines:insert("Commands:")
-		commandlines:insert("cmds")
-		commandlines:insert("stopsounds")
-		commandlines:insert("readsound filename")
-		commandlines:insert("read filename")
-		commandlines:insert("readimage filename")
-		commandlines:insert("dir directory")
-		commandlines:insert("showdir")
-		commandlines:insert("write filename::filedata")
-		commandlines:insert("shutdown")
-		commandlines:insert("clear")
-		commandlines:insert("reboot")
-		commandlines:insert("delete filename")
-		commandlines:insert("createdir filename")
-		commandlines:insert("stoplua number")
-		commandlines:insert("runlua lua")
-		commandlines:insert("showmicros")
-		commandlines:insert("readlua filename")
-		commandlines:insert("beep number")
-		commandlines:insert("print text")
-		commandlines:insert("playsound id")
-		commandlines:insert("displayimage id")
-		commandlines:insert("displayvideo id")
-		commandlines:insert("readvideo id")
-		commandlines:insert(dir..":")
+		commandlines.insert("Commands:")
+		commandlines.insert("cmds")
+		commandlines.insert("stopsounds")
+		commandlines.insert("readsound filename")
+		commandlines.insert("read filename")
+		commandlines.insert("readimage filename")
+		commandlines.insert("dir directory")
+		commandlines.insert("showdir")
+		commandlines.insert("write filename::filedata")
+		commandlines.insert("shutdown")
+		commandlines.insert("clear")
+		commandlines.insert("reboot")
+		commandlines.insert("delete filename")
+		commandlines.insert("createdir filename")
+		commandlines.insert("stoplua number")
+		commandlines.insert("runlua lua")
+		commandlines.insert("showmicros")
+		commandlines.insert("readlua filename")
+		commandlines.insert("beep number")
+		commandlines.insert("print text")
+		commandlines.insert("playsound id")
+		commandlines.insert("displayimage id")
+		commandlines.insert("displayvideo id")
+		commandlines.insert("readvideo id")
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 4) == "help" then
 		keyboard:SimulateTextInput("cmds", "Microcontroller")
 		
@@ -1280,73 +1279,73 @@ local function runtext(text)
 			local output = disk:Read(filename)
 			if output then
 				if string.find(filename, ".aud") then
-					commandlines:insert(tostring(output))
+					commandlines.insert(tostring(output))
 					playsound(output)
-					commandlines:insert(dir..":")
+					commandlines.insert(dir..":")
 					print(output)
 				elseif string.find(filename, ".img") then
-					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
-					commandlines:insert(dir..":")
+					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
 					print(disk:Read(output))
 				elseif string.find(filename, ".lua") then
-					commandlines:insert(tostring(output))
+					commandlines.insert(tostring(output))
 					loadluafile(microcontrollers, screen, output)
-					commandlines:insert(dir..":")
+					commandlines.insert(dir..":")
 				else
 					if string.find(string.lower(tostring(output)), "<woshtml>") then
-						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 						StringToGui(screen, tostring(output):lower(), textlabel)
 						textlabel.TextTransparency = 1
-						commandlines:insert(dir..":")
+						commandlines.insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
 						print(disk:Read(output))
 					else
-						commandlines:insert(tostring(output))
-						commandlines:insert(dir..":")
+						commandlines.insert(tostring(output))
+						commandlines.insert(dir..":")
 						print(disk:Read(output))
 					end
 				end
 			else
-				commandlines:insert("Imcomplete or Command was not found.")
-				commandlines:insert(dir..":")
+				commandlines.insert("Imcomplete or Command was not found.")
+				commandlines.insert(dir..":")
 			end
 		else
 			local output = getfileontable(disk, filename, dir)
 			if output then
 				if string.find(filename, ".aud") then
-					commandlines:insert(tostring(output))
+					commandlines.insert(tostring(output))
 					playsound(output)
-					commandlines:insert(dir..":")
+					commandlines.insert(dir..":")
 					print(output)
 				elseif string.find(filename, ".img") then
-					local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
-					commandlines:insert(dir..":")
+					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
 					print(disk:Read(output))
 				elseif string.find(filename, ".lua") then
-					commandlines:insert(tostring(output))
+					commandlines.insert(tostring(output))
 					loadluafile(microcontrollers, screen, output)
-					commandlines:insert(dir..":")
+					commandlines.insert(dir..":")
 				else
 					if string.find(string.lower(tostring(output)), "<woshtml>") then
-						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 						StringToGui(screen, tostring(output):lower(), textlabel)
 						textlabel.TextTransparency = 1
-						commandlines:insert(dir..":")
+						commandlines.insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
 						print(disk:Read(output))
 					else
-						commandlines:insert(tostring(output))
-						commandlines:insert(dir..":")
+						commandlines.insert(tostring(output))
+						commandlines.insert(dir..":")
 						print(disk:Read(output))
 					end
 				end
 			else
-				commandlines:insert("Imcomplete or Command was not found.")
-				commandlines:insert(dir..":")
+				commandlines.insert("Imcomplete or Command was not found.")
+				commandlines.insert(dir..":")
 			end
 		end
 	end
@@ -1394,32 +1393,32 @@ function bootos()
 		commandlines, background = commandline.new(screen)
 		task.wait(1)
 		Beep(1)
-		commandlines:insert(name.." Command line")
+		commandlines.insert(name.." Command line")
 		task.wait(1)
-		commandlines:insert("/:")
+		commandlines.insert("/:")
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
-			commandlines:insert(tostring(text):gsub("\n", ""))
+			commandlines.insert(tostring(text):gsub("\n", ""))
 			runtext(tostring(text):gsub("\n", ""))
 		end)
 	elseif screen then
 		screen:ClearElements()
 		local commandlines = commandline.new(screen)
-		commandlines:insert(name.." Command line")
+		commandlines.insert(name.." Command line")
 		task.wait(1)
 		if not speaker then
-			commandlines:insert("No speaker was found. (Optional)")
+			commandlines.insert("No speaker was found. (Optional)")
 		end
 		task.wait(1)
 		if not keyboard then
-			commandlines:insert("No keyboard was found.")
+			commandlines.insert("No keyboard was found.")
 		end
 		task.wait(1)
 		if not disk then
-			commandlines:insert("You need 2 or more disks, 2 or more ports must not be connected to the same disks.")
+			commandlines.insert("You need 2 or more disks, 2 or more ports must not be connected to the same disks.")
 		end
 		if not rom then
-			commandlines:insert([[No empty disk or disk with the file "GDOSLibrary" was found.]])
+			commandlines.insert([[No empty disk or disk with the file "GDOSLibrary" was found.]])
 		end
 		if keyboard then
 			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
