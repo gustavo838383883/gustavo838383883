@@ -1388,6 +1388,8 @@ function bootos()
 			Modem = modem,
 			Speaker = speaker,
 			Disk = disk,
+			lines = commandlines,
+			background = background,
 		})
 		commandlines, background = commandline.new(screen)
 		task.wait(1)
