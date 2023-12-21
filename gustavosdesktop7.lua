@@ -3108,6 +3108,7 @@ local function loaddesktop()
 	taskbarholder:AddChild(taskbarholderscrollingframe)
 	rom:Write("GustavOSLibrary", nil)
 	rom:Write("GD7Library", nil)
+	rom:Write("GDOSLibrary", nil)
 	rom:Write("GD7Library", {
 		Screen = screen,
 		Keyboard = keyboard,
