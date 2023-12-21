@@ -431,7 +431,7 @@ end
 getstuff()
 local commandline = {}
 
-local position = UDim2.new(0,0,0,0),
+local position = UDim2.new(0,0,0,0)
 
 function commandline.new(screen)
 	local background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
