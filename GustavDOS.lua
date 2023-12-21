@@ -298,7 +298,7 @@ local function getstuff()
 						end
 						rom = temprom
 						romport = i
-					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GustavOSLibrary") or temprom:Read("GD7Library") then
+					elseif #temprom:ReadEntireDisk() == 1 and temprom:Read("GustavOSLibrary") or temprom:Read("GD7Library") then
 						temprom:Write("GustavOSLibrary", nil)
 						temprom:Write("GD7Library", nil)
 						rom = temprom
@@ -351,7 +351,7 @@ local function getstuff()
 						romport = i
 						sharedport = true
 						break
-					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") or v:Read("GD7Library") then
+					elseif #v:ReadEntireDisk() == 1 and v:Read("GustavOSLibrary") or v:Read("GD7Library") then
 						v:Write("GustavOSLibrary", nil)
 						v:Write("GD7Library", nil)
 						rom = v
