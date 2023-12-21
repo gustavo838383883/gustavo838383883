@@ -3454,7 +3454,7 @@ function bootos()
 			if not startsound then startsound = 182007357; end
 			if not shutdownsound then shutdownsound = 7762841318; end
 			color = disk:Read("Color")
-			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false") end
+			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15705296956,false") end
 			local diskbackgroundimage = disk:Read("BackgroundImage")
 			if color then
 				color = string.split(color, ",")
