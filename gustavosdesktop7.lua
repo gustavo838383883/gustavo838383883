@@ -2294,7 +2294,6 @@ local function terminal()
 	holderframe:AddChild(window)
 	
 	local name = "GustavDOS For GustavOSDesktop7"
-	local usedmicros = {}
 	
 	local button = createnicebutton(UDim2.new(0.2, 0, 0.2, 0), UDim2.new(0.8, 0, 0.8, 0), "Run", window)
 	
