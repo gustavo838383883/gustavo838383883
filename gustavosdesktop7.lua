@@ -3398,8 +3398,8 @@ local function loaddesktop()
 				end
 				if not cursor then holding = false end
 				if cursor then
-					local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +5
-					local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +5
+					local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +(defaultbuttonsize.Y/2)
+					local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +(defaultbuttonsize.Y/2)
 					local screenresolution = resolutionframe.AbsoluteSize
 		
 					if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
