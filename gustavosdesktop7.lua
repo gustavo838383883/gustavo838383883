@@ -3381,25 +3381,25 @@ local function loaddesktop()
 						end
 						if holderframetouse then
 							holderframetouse.Position = UDim2.fromScale(newX, newY)
+						else
+							holding2 = false
 						end
 					end
 				end
 			end
 			
 			if holding then
-				if not holderframetouse then return end
+				if not holderframetouse then holding = false; return end
 				local cursors = screen:GetCursors()
 				local cursor
-				local success = false
 				for index,cur in pairs(cursors) do
 					if startCursorPos and cur then
 						if cur.Player == startCursorPos.Player then
 							cursor = cur
-							success = true
 						end
 					end
 				end
-				if not success then holding = false end
+				if not cursor then holding = false end
 				if cursor then
 					local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +5
 					local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +5
