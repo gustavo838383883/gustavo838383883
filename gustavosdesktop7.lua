@@ -524,13 +524,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	
 		holderframe.MouseButton1Down:Connect(function()
 			if holding then return end
-			if not maximizepressed then
-				programholder2:AddChild(holderframe)
-				programholder1:AddChild(holderframe)
-			else
-				programholder1:AddChild(holderframe)
-				programholder2:AddChild(holderframe)
-			end
+			programholder2:AddChild(holderframe)
+			programholder1:AddChild(holderframe)
 			if maximizepressed then return end
 			local cursors = screen:GetCursors()
 			local cursor
@@ -661,13 +656,11 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 				holderframe.Position = UDim2.new(0, 0, 1, 0)
 				holderframe.Position = UDim2.new(0, 0, 0, 0)
-				programholder2:AddChild(holderframe)
 				maximizetext.Text = "-"
 				maximizepressed = true
 			else
 				holderframe.Size = unmaximizedsize
 				maximizetext.Text = "+"
-				programholder1:AddChild(holderframe)
 				maximizepressed = false
 			end
 		end)
