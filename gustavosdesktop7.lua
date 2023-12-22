@@ -2290,7 +2290,7 @@ local function terminal()
 	end
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
 
-	local window = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,-(defaultbuttonsize.Y + defaultbuttonsize.Y/2))})
+	local window = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,-(defaultbuttonsize.Y + defaultbuttonsize.Y/2))})
 	holderframe:AddChild(window)
 	
 	local name = "GustavDOS For GustavOSDesktop7"
