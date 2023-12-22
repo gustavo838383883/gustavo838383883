@@ -1191,16 +1191,20 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 						end
 						break
 					else
-						print("No port connected to polysilicon")
+						local commandlines = commandline.new(true, UDim2.new(0.5, 0, 0.5, 0), screen)
+				
+						commandlines:insert("No port connected to polysilicon")
 					end
 				else
-					print("No polysilicon connected to microcontroller")
+					local commandlines = commandline.new(true, UDim2.new(0.5, 0, 0.5, 0), screen)
+				
+					commandlines:insert("No polysilicon connected to microcontroller")
 				end
 			end
 		end
 	end
 	if not success then
-		local comandlines = commandline.new(true, UDim2.new(0.5, 0, 0.5, 0), screen)
+		local commandlines = commandline.new(true, UDim2.new(0.5, 0, 0.5, 0), screen)
 		commandlines:insert("No microcontrollers left.")
 	end
 end
