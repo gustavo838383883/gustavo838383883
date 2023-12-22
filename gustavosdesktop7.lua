@@ -474,18 +474,20 @@ local resolutionframe
 
 local minimizedammount = 0
 
+local defaultbuttonsize = Vector2.new(0,0)
+
 function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 	programholder1:AddChild(holderframe)
 	local textlabel
 	if typeof(title) == "string" then
-		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -70, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 70, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
+		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -(defaultbuttonsize.X*2), 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
 		holderframe:AddChild(textlabel)
 	end
 	local resizebutton
 	local maximizepressed = false
 	if not boolean2 then
-		resizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,10,0,10), Image = "rbxassetid://15617867263", Position = UDim2.new(1, -10, 1, -10), BackgroundTransparency = 1})
+		resizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,defaultbuttonsize.Y,0,defaultbuttonsize.Y), Image = "rbxassetid://15617867263", Position = UDim2.new(1, -defaultbuttonsize.Y, 1, -defaultbuttonsize.Y), BackgroundTransparency = 1})
 		holderframe:AddChild(resizebutton)
 		
 		resizebutton.MouseButton1Down:Connect(function()
@@ -560,7 +562,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		end)
 	end
 
-	local closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, 35, 0, 25), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
+	local closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X, 0, defaultbuttonsize.Y), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
 	holderframe:AddChild(closebutton)
 	
 	closebutton.MouseButton1Down:Connect(function()
@@ -578,14 +580,14 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	local minimizebutton
 	
 	if not boolean4 then
-		minimizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 70, 0, 0), BackgroundTransparency = 1})
+		minimizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,defaultbuttonsize.X,0,defaultbuttonsize.Y), Image = "rbxassetid://15617867263", Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(minimizebutton)
 		local minimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "↓"})
 		minimizebutton:AddChild(minimizetext)
 		if title then
 			if textlabel then
-				textlabel.Position += UDim2.new(0, 35, 0, 0)
-				textlabel.Size -= UDim2.new(0, 35, 0, 0)
+				textlabel.Position += UDim2.new(0, defaultbuttonsize.X, 0, 0)
+				textlabel.Size -= UDim2.new(0, defaultbuttonsize.X, 0, 0)
 			end
 		end
 		minimizebutton.MouseButton1Down:Connect(function()
@@ -601,11 +603,11 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			speaker:PlaySound(clicksound)
 			minimizebutton.Image = "rbxassetid://15617867263"
 			resolutionframe:AddChild(holderframe)
-			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, 50, 1, 0), Position = UDim2.new(0, minimizedammount * 50, 0, 0)})
+			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
 			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
 			unminimizebutton:AddChild(unminimizetext)
 			taskbarholderscrollingframe:AddChild(unminimizebutton)
-			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * 50) + 50, 1, 0) 
+			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * defaultbuttonsize.X) + defaultbuttonsize.X, 1, 0) 
 
 			table.insert(minimizedprograms, unminimizebutton)
 			minimizedammount += 1
@@ -628,8 +630,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				local start = 0
 				for index, value in ipairs(minimizedprograms) do
 					if value and value.Size ~= UDim2.new(1,0,1,0) then
-						value.Position = UDim2.new(0, start * 50, 0, 0)
-						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (50 * start) + 50, 1, 0)
+						value.Position = UDim2.new(0, start * defaultbuttonsize.X, 0, 0)
+						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (defaultbuttonsize.X * start) + defaultbuttonsize.X, 1, 0)
 						start += 1
 					end
 				end
@@ -638,7 +640,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	end
 	
 	if not boolean then
-		maximizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,35,0,25), Image = "rbxassetid://15617867263", Position = UDim2.new(0, 35, 0, 0), BackgroundTransparency = 1})
+		maximizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,defaultbuttonsize.X,0,defaultbuttonsize.Y), Image = "rbxassetid://15617867263", Position = UDim2.new(0, defaultbuttonsize.X, 0, 0), BackgroundTransparency = 1})
 		local maximizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "+"})
 		maximizebutton:AddChild(maximizetext)
 		
@@ -671,8 +673,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		end)
 	else
 		if textlabel then
-			textlabel.Position -= UDim2.new(0, 35, 0, 0)
-			textlabel.Size += UDim2.new(0, 35, 0, 0)
+			textlabel.Position -= UDim2.new(0, defaultbuttonsize.X, 0, 0)
+			textlabel.Size += UDim2.new(0, defaultbuttonsize.X, 0, 0)
 		end
 	end
 	return holderframe, closebutton, maximizebutton, textlabel, resizebutton
@@ -688,7 +690,7 @@ function commandline.new(boolean, udim2, screen)
 	}
 	if boolean then
 		holderframe = CreateWindow(udim2, "Command Line", false, false, false, "Command Line", false)
-		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -35), BackgroundColor3 = Color3.new(0,0,0), Position = UDim2.new(0, 0, 0, 25)})
+		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -defaultbuttonsize.X), BackgroundColor3 = Color3.new(0,0,0), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y)})
 		holderframe:AddChild(background)
 	else
 		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0)})
@@ -3406,8 +3408,8 @@ local function loaddesktop()
 					local screenresolution = resolutionframe.AbsoluteSize
 		
 					if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-						if newX < 135 then newX = 135 end
-						if newY < 100 then newY = 100 end
+						if newX < defaultbuttonsize.X*4 then newX = defaultbuttonsize.Y*4 end
+						if newY < defaultbuttonsize.Y*4 then newY = defaultbuttonsize.Y*4 end
 						if newX/screenresolution.X > 1 then newX = screenresolution.X end
 						if newY/screenresolution.Y > 0.9 then newY = screenresolution.Y * 0.9 end
 						if holderframetouse then
@@ -3498,6 +3500,7 @@ function bootos()
 				backgroundimage = nil
 			end
 		end
+		defaultbuttonsize = Vector2.new(screen:GetDimensions().X*0.15,screen:GetDimensions().Y*0.1)
 		loaddesktop()
 		SpeakerHandler.PlaySound(startsound, 1, nil, speaker)
 		if keyboardevent then keyboardevent:Unbind() end
