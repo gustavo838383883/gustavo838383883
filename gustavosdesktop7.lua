@@ -3406,7 +3406,7 @@ local function loaddesktop()
 					local screenresolution = resolutionframe.AbsoluteSize
 		
 					if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-						if newX < defaultbuttonsize.X*4 then newX = defaultbuttonsize.Y*4 end
+						if newX < defaultbuttonsize.X*4 then newX = defaultbuttonsize.X*4 end
 						if newY < defaultbuttonsize.Y*4 then newY = defaultbuttonsize.Y*4 end
 						if newX/screenresolution.X > 1 then newX = screenresolution.X end
 						if newY/screenresolution.Y > 0.9 then newY = screenresolution.Y * 0.9 end
