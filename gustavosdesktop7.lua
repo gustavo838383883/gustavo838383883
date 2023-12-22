@@ -1334,7 +1334,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		if boolean == true then
 			local alldata = disk:ReadEntireDisk()
 			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", holderframe)
-			textlabel.Size = UDim2.new(1,-130,0,defaultbuttonsize.Y)
+			textlabel.Size = UDim2.new(1,-(defaultbuttonsize.X + defaultbuttonsize.X + defaultbuttonsize.X + defaultbuttonsize.Y),0,defaultbuttonsize.Y)
 			
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, defaultbuttonsize.Y), "Are you sure?", true, true, false, nil, true)
@@ -1358,7 +1358,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		elseif directory then
 			local alldata = disk:ReadEntireDisk()
 			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", holderframe)
-			textlabel.Size = UDim2.new(1,-130,0,defaultbuttonsize.Y)
+			textlabel.Size = UDim2.new(1,-(defaultbuttonsize.X + defaultbuttonsize.X + defaultbuttonsize.X + defaultbuttonsize.Y),0,defaultbuttonsize.Y),0,defaultbuttonsize.Y)
 			
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, defaultbuttonsize.Y), "Are you sure?", true, true, false, nil, true)
