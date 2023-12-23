@@ -148,7 +148,7 @@ local function CreateWindow(udim2, title, boolean, boolean2, boolean3)
 	
 	closebutton.MouseButton1Up:Connect(function()
 		closebutton.Image = "rbxassetid://15617983488"
-		speaker:PlaySound(clicksound)
+		Speaker:PlaySound(clicksound)
 		holderframe:Destroy()
 		holderframe = nil
 	end)
@@ -169,7 +169,7 @@ local function CreateWindow(udim2, title, boolean, boolean2, boolean3)
 		
 		maximizebutton.MouseButton1Up:Connect(function()
 			if holding or holding2 then return end
-			speaker:PlaySound(clicksound)
+			Speaker:PlaySound(clicksound)
 			maximizebutton.Image = "rbxassetid://15617867263"
 			local holderframe = holderframe
 			if not maximizepressed then
