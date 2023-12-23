@@ -47,6 +47,8 @@ local function printd(text)
 end
 local gputer = GetPartFromPort(1, "Disk"):Read("GD7Library")
 local Modem = gputer.Modem
+local programholder1 = gputer.programholder1
+local programholder2 = gputer.programholder2
 local Sign = GetPartFromPort(1, "Sign")
 local Screen = gputer.Screen
 local Keyboard = gputer.Keyboard
