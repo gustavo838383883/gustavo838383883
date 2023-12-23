@@ -57,7 +57,7 @@ local holding2
 local holderframetouse
 local startCursorPos
 local uiStartPos
-local clicksound = disk:Read("ClickSound") or "rbxassetid://6977010128"
+local clicksound = GetPartFromPort(1, "Disk"):Read("ClickSound") or "rbxassetid://6977010128"
 if tonumber(clicksound) then clicksound = "rbxassetid://"..clicksound end
 
 local function CreateWindow(udim2, title, boolean, boolean2, boolean3)
