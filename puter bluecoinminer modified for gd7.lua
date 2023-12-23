@@ -1106,10 +1106,7 @@ end)
 openAccountManagement()
 
 while true do 
-		local curTime = tick()
 		task.wait(0.02)
-		local difference = tick() - curTime
-		framerate.Text = tostring(math.floor((60 / difference)/31))
 		if screen then
 			if holding2 then
 				local cursors = screen:GetCursors()
