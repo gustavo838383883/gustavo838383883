@@ -192,7 +192,7 @@ local function CreateWindow(udim2, title, boolean, boolean2, boolean3)
 		end
 	end
 	local windowz = Screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + (defaultbuttonsize.Y/2))), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
-	holderframe:AddChild(window)
+	holderframe:AddChild(windowz)
 	local window = {}
 	function window:CreateElement(name, properties)
 		local object = Screen:CreateElement(name, properties)
