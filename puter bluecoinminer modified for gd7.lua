@@ -57,6 +57,8 @@ local holding2
 local holderframetouse
 local startCursorPos
 local uiStartPos
+local clicksound = disk:Read("ClickSound") or "rbxassetid://6977010128"
+if tonumber(clicksound) then clicksound = "rbxassetid://"..clicksound end
 
 local function CreateWindow(udim2, title, boolean, boolean2, boolean3)
 	local holderframe = Screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
