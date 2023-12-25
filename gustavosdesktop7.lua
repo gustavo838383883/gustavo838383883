@@ -3496,6 +3496,8 @@ function bootos()
 			end
 		end
 		defaultbuttonsize = Vector2.new(screen:GetDimensions().X*0.15,screen:GetDimensions().Y*0.1)
+		if defaultbuttonsize.X > 35 then defaultbuttonsize = Vector2.new(35, defaultbuttonsize.Y); end
+		if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsize.X, 25); end
 		loaddesktop()
 		SpeakerHandler.PlaySound(startsound, 1, nil, speaker)
 		if keyboardevent then keyboardevent:Unbind() end
