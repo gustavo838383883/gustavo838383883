@@ -429,9 +429,6 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
 			local holderframe = holderframe
 			if not maximizepressed then
 				unmaximizedsize = holderframe.Size
-				if programholder2 then
-					programholder2:AddChild(holderframe)
-				end
 				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 				holderframe:ChangeProperties({Active = false, Draggable = false;})
 				holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -440,9 +437,6 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
 				maximizebutton.Text = "-"
 				maximizepressed = true
 			else
-				if programholder1 then
-					programholder1:AddChild(holderframe)
-				end
 				holderframe.Size = unmaximizedsize
 				holderframe:ChangeProperties({Active = true, Draggable = true;})
 				maximizebutton.Text = "+"
