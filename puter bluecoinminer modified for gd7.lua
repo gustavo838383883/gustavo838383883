@@ -193,7 +193,7 @@ local function CreateWindow(udim2, title, boolean, boolean2, boolean3)
 			textlabel.Size += UDim2.new(0, defaultbuttonsize.X, 0, 0)
 		end
 	end
-	local windowz = Screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + (defaultbuttonsize.Y/2))), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
+	local windowz = Screen:CreateElement("ScrollingFrame", {CanvasSize = UDim2.new(udim2.X.Scale, udim2.X.Offset,udim2.Y.Scale,udim2.Y.Offset), Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + (defaultbuttonsize.Y/2))), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
 	holderframe:AddChild(windowz)
 	local window = {}
 	function window:CreateElement(name, properties)
@@ -207,6 +207,8 @@ local function CreateWindow(udim2, title, boolean, boolean2, boolean3)
 	return window, closebutton, holderframe, maximizebutton, textlabel, resizebutton
 end
 defaultbuttonsize = Vector2.new(Screen:GetDimensions().X*0.15,Screen:GetDimensions().Y*0.1)
+if defaultbuttonsize.X > 35 then defaultbuttonsize = Vector2.new(35, defaultbuttonsize.Y); end
+if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsize.X, 25); end
 
 local function AddElement(parent, name, properties)
 	local object = screen:CreateElement(name, properties)
