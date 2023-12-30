@@ -598,6 +598,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			speaker:PlaySound(clicksound)
 			minimizebutton.Image = "rbxassetid://15617867263"
 			resolutionframe:AddChild(holderframe)
+			holderframe.Visible = false
 			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
 			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
 			unminimizebutton:AddChild(unminimizetext)
@@ -617,11 +618,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				unminimizebutton.Size = UDim2.new(1,0,1,0)
 				unminimizebutton:Destroy()
 				minimizedammount -= 1
-				if maximizepressed then
-					programholder2:AddChild(holderframe)
-				else
-					programholder1:AddChild(holderframe)
-				end
+				programholder1:AddChild(holderframe)
+				holderframe.Visible = true
 				local start = 0
 				for index, value in ipairs(minimizedprograms) do
 					if value and value.Size ~= UDim2.new(1,0,1,0) then
@@ -641,6 +639,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		
 		holderframe:AddChild(maximizebutton)
 		local unmaximizedsize = holderframe.Size
+		local unmaximizedpos = holderframe.Position
 		
 		maximizebutton.MouseButton1Down:Connect(function()
 			maximizebutton.Image = "rbxassetid://15617866125"
@@ -653,6 +652,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			local holderframe = holderframe
 			if not maximizepressed then
 				unmaximizedsize = holderframe.Size
+				unmaximizedpos = holderframe.Position
 				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 				holderframe.Position = UDim2.new(0, 0, 1, 0)
 				holderframe.Position = UDim2.new(0, 0, 0, 0)
@@ -660,6 +660,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				maximizepressed = true
 			else
 				holderframe.Size = unmaximizedsize
+				holderframe.Position = unmaximizedpos
 				maximizetext.Text = "+"
 				maximizepressed = false
 			end
@@ -3106,7 +3107,7 @@ local function loaddesktop()
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder1:AddChild(programholder2)
 
-	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.2})
+	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.25})
 	taskbarholder:AddChild(startbutton7)
 
 	taskbarholderscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(0.9, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0.9, 0, 1, 0), Position = UDim2.new(0.1, 0, 0, 0), ScrollBarThickness = 2.5})
