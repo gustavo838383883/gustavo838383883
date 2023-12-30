@@ -405,6 +405,11 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
    		holderframe:AddChild(textlabel)
    		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
  	 end
+
+	holderframe.MouseButton1Up:Connect(function()
+		programholder2:AddChild(holderframe)
+		programholder1:AddChild(holderframe)
+	end)
   
  	local maximizepressed = false
   
@@ -1295,7 +1300,7 @@ local function chatthing(screen, disk, modem)
 		
 		messagesent = modem:Connect("MessageSent", function(text)
 			print(text)
-			local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
+			local textlabel = screen:CreateElement("TextLabel", {RichText = true, Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
 			scrollingframe:AddChild(textlabel)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
