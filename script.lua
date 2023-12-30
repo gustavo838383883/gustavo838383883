@@ -406,7 +406,7 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
    		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
  	 end
 
-	holderframe.MouseButton1Up:Connect(function()
+	holderframe.MouseButton1Down:Connect(function()
 		programholder2:AddChild(holderframe)
 		programholder1:AddChild(holderframe)
 	end)
