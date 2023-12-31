@@ -2015,7 +2015,7 @@ local function calculator()
 				part1.Text = number1
 			end
 		else
-			if tostring(number2) ~= "0" then
+			if tostring(number2) ~= "0" and tostring(number2) ~= "-0" then
 				if tonumber(tostring(number2).."0") then
 					number2 = tostring(number2).."0"
 					part2.Text = number2
@@ -2053,7 +2053,7 @@ local function calculator()
 		end
 	end)
 
-	local  button11 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.6, 0), "CE", holderframe)
+	local  button11 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.6, 0), "C", holderframe)
 	button11.MouseButton1Down:Connect(function()
 		number1 = 0
 		part1.Text = number1
