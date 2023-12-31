@@ -1441,7 +1441,7 @@ local function calculator(screen)
 	holderframe:AddChild(button10)
 	button10.MouseButton1Down:Connect(function()
 		if not type then
-			if tostring(number1) ~= "0" then
+			if tostring(number2) ~= "0" and tostring(number2) ~= "-0" then
 				if tonumber(tostring(number1).."0") then
 					number1 = tostring(number1).."0"
 					part1.Text = number1
@@ -1451,7 +1451,7 @@ local function calculator(screen)
 				part1.Text = number1
 			end
 		else
-			if tostring(number2) ~= "0" then
+			if tostring(number2) ~= "0" and tostring(number2) ~= "-0" then
 				if tonumber(tostring(number2).."0") then
 					number2 = tostring(number2).."0"
 					part2.Text = number2
@@ -1491,7 +1491,7 @@ local function calculator(screen)
 		end
 	end)
 
-	local  button11 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.4, 25), Text = "CE"})
+	local  button11 = screen:CreateElement("TextButton", {TextScaled = true, Size = UDim2.new(0.25, 0, 0.1, 0), Position = UDim2.new(0, 0, 0.4, 25), Text = "C"})
 	holderframe:AddChild(button11)
 	button11.MouseButton1Down:Connect(function()
 		number1 = 0
