@@ -406,6 +406,11 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
    		holderframe:AddChild(textlabel)
    		if boolean then textlabel.Position = UDim2.new(0, 25, 0, 0); textlabel.Size = UDim2.new(1, -25, 0, 25); end
  	 end
+
+	holderframe.MouseButton1Up:Connect(function()
+		programholder2:AddChild(holderframe)
+		programholder1:AddChild(holderframe)
+	end)
   
  	local maximizepressed = false
   
@@ -430,9 +435,6 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
 			local holderframe = holderframe
 			if not maximizepressed then
 				unmaximizedsize = holderframe.Size
-				if programholder2 then
-					programholder2:AddChild(holderframe)
-				end
 				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
 				holderframe:ChangeProperties({Active = false, Draggable = false;})
 				holderframe.Position = UDim2.new(0, 0, 1, 0)
@@ -441,9 +443,6 @@ local function CreateNewWindow(udim2, text, boolean, boolean2)
 				maximizebutton.Text = "-"
 				maximizepressed = true
 			else
-				if programholder1 then
-					programholder1:AddChild(holderframe)
-				end
 				holderframe.Size = unmaximizedsize
 				holderframe:ChangeProperties({Active = true, Draggable = true;})
 				maximizebutton.Text = "+"
@@ -997,14 +996,14 @@ local function writedisk(screen, disk)
 
 	filenamebutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filenamebutton.Text = keyboardinput:gsub("\n", ""):gsub("/", "")
-			filename = keyboardinput:gsub("\n", ""):gsub("/", "")
+			filenamebutton.Text = keyboardinput:gsub("\n", ""):gsub("/", ""):gsub("/n\\", "\n")
+			filename = keyboardinput:gsub("\n", ""):gsub("/", ""):gsub("/n\\", "\n")
 		end
 	end)
 
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			local inputtedtext = keyboardinput:gsub("\n", "")
+			local inputtedtext = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 			local tempsplit = string.split(inputtedtext, "/")
 			if tempsplit then
 				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
@@ -1059,8 +1058,8 @@ local function writedisk(screen, disk)
 
 	filedatabutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filedatabutton.Text = keyboardinput
-			data = keyboardinput
+			filedatabutton.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 		end
 	end)
 
@@ -1633,8 +1632,8 @@ local function mediaplayer(screen, disk, speaker)
 	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			Filename.Text = keyboardinput:gsub("\n", "")
-			data = keyboardinput:gsub("\n", "")
+			Filename.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 		end
 	end)
 
@@ -1644,7 +1643,7 @@ local function mediaplayer(screen, disk, speaker)
 	
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			local inputtedtext = keyboardinput:gsub("\n", "")
+			local inputtedtext = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 			local tempsplit = string.split(inputtedtext, "/")
 			if tempsplit then
 				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
