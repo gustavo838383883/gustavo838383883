@@ -1411,7 +1411,7 @@ local function loaddisk()
 	end
 end
 
-local function writedisk()
+local function disk()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Create File", false, false, false, "File Creator", false)
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
@@ -1439,7 +1439,7 @@ local function writedisk()
 
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			local inputtedtext = keyboardinput:gsub("\n", "")
+			local inputtedtext = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 			local tempsplit = string.split(inputtedtext, "/")
 			if tempsplit then
 				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
@@ -1494,8 +1494,8 @@ local function writedisk()
 
 	filedatabutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filedatabutton2.Text = keyboardinput
-			data = keyboardinput
+			filedatabutton2.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 		end
 	end)
 
@@ -1658,8 +1658,8 @@ local function mediaplayer()
 	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			Filename2.Text = keyboardinput:gsub("\n", "")
-			data = keyboardinput:gsub("\n", "")
+			Filename2.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 		end
 	end)
 
@@ -1668,7 +1668,7 @@ local function mediaplayer()
 	
 	directorybutton2.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			local inputtedtext = keyboardinput:gsub("\n", "")
+			local inputtedtext = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 			local tempsplit = string.split(inputtedtext, "/")
 			if tempsplit then
 				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
