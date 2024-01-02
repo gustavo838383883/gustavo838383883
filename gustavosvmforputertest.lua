@@ -1267,7 +1267,7 @@ local function chatthing(screen, disk, modem)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.8, -25), Position = UDim2.new(0, 0, 0.1, 25), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 	
-		local sendbox =  screen:CreateElement("TextButton", {Size = UDim2.new(0.8, 0, 0.1, 0), Position = UDim2.new(0,0,0.9,0), Text = "Message (Click to update)", TextScaled = true})
+		local sendbox =  screen:CreateElement("TextButton", {RichText = true, Size = UDim2.new(0.8, 0, 0.1, 0), Position = UDim2.new(0,0,0.9,0), Text = "Message (Click to update)", TextScaled = true})
 		holderframe:AddChild(sendbox)
 	
 		local sendtext = nil
@@ -1301,7 +1301,7 @@ local function chatthing(screen, disk, modem)
 		
 		messagesent = modem:Connect("MessageSent", function(text)
 			print(text)
-			local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
+			local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true, RichText = true})
 			scrollingframe:AddChild(textlabel)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			start += 25
