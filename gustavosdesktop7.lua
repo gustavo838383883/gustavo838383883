@@ -477,12 +477,15 @@ local defaultbuttonsize = Vector2.new(0,0)
 
 function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+	if not holderframe then return end
 	programholder1:AddChild(holderframe)
 	local textlabel
 	if typeof(title) == "string" then
 		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -(defaultbuttonsize.X*2), 0, defaultbuttonsize.Y), BackgroundTransparency = 1, Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
 		holderframe:AddChild(textlabel)
 	end
+	local window = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,1,-(defaultbuttonsize.Y + (defaultbuttonsize.Y/2))), CanvasSize = UDim2.new(1,0,1,-(defaultbuttonsize.Y + (defaultbuttonsize.Y/2))), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
+	holderframe:AddChild(window)
 	local resizebutton
 	local maximizepressed = false
 	if not boolean2 then
@@ -517,6 +520,9 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			resizebutton.Image = "rbxassetid://15617867263"
 			holding = false
 		end)
+	else
+		window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+		window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 	end
 
 	if not boolean3 then
@@ -670,7 +676,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			textlabel.Size += UDim2.new(0, defaultbuttonsize.X, 0, 0)
 		end
 	end
-	return holderframe, closebutton, maximizebutton, textlabel, resizebutton
+	return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton
 end
 
 local commandline = {}
@@ -683,7 +689,7 @@ function commandline.new(boolean, udim2, screen)
 	}
 	if boolean then
 		holderframe = CreateWindow(udim2, "Command Line", false, false, false, "Command Line", false)
-		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -defaultbuttonsize.X), BackgroundColor3 = Color3.new(0,0,0), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y)})
+		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), Position = UDim2.new(0, 0, 0, 0)})
 		holderframe:AddChild(background)
 	else
 		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0)})
@@ -928,7 +934,7 @@ local function woshtmlfile(txt, screen, boolean)
 		size = UDim2.new(0.5, 0, 0.5, 0)
 	end
 	local filegui = CreateWindow(size, nil, false, false, false, "File", false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), CanvasSize = UDim2.new(0, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), CanvasSize = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	filegui:AddChild(scrollingframe)
 
 	StringToGui(screen, txt, scrollingframe)
@@ -937,8 +943,8 @@ end
 
 local function changecolor()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false, false, "Change Desktop Color", false)
-	local color, color2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, defaultbuttonsize.Y), "RGB (Click to update)", holderframe)
-	local changecolorbutton, changecolorbutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, -defaultbuttonsize.Y/2), "Change Color", holderframe)
+	local color, color2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "RGB (Click to update)", holderframe)
+	local changecolorbutton, changecolorbutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Color", holderframe)
 	
 	local data = nil
 	local filename = nil
@@ -972,10 +978,10 @@ end
 
 local function changebackgroundimage()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Background Image", false, false, false, "Settings", false)
-	local id, id2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, defaultbuttonsize.Y), "Image ID (Click to update)", holderframe)
-	local tiletoggle, tiletoggle2 = createnicebutton(UDim2.new(0.25,0,0.2,0), UDim2.new(0, 0, 0.2, defaultbuttonsize.Y), "Enable tile", holderframe)
-	local tilenumber, tilenumber2 = createnicebutton(UDim2.new(0.75,0,0.2,0), UDim2.new(0.25, 0, 0.2, defaultbuttonsize.Y), "UDim2 (Click to update)", holderframe)
-	local changebackimg, changebackimg2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, -(defaultbuttonsize.Y/2)), "Change Background Image", holderframe)
+	local id, id2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "Image ID (Click to update)", holderframe)
+	local tiletoggle, tiletoggle2 = createnicebutton(UDim2.new(0.25,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "Enable tile", holderframe)
+	local tilenumber, tilenumber2 = createnicebutton(UDim2.new(0.75,0,0.2,0), UDim2.new(0.25, 0, 0.2, 0), "UDim2 (Click to update)", holderframe)
+	local changebackimg, changebackimg2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Background Image", holderframe)
 
 
 	local data = nil
@@ -1032,7 +1038,7 @@ end
 
 local function settings()
 	local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Settings", false, false, false, "Settings", false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), CanvasSize = UDim2.new(1, 0, 0, 150), ScrollBarThickness = 5})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 0), CanvasSize = UDim2.new(1, 0, 0, 150), ScrollBarThickness = 5})
 	window:AddChild(scrollingframe)
 	local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
 	local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
@@ -1105,7 +1111,7 @@ local function settings()
 end
 
 local function audioui(screen, disk, data, speaker, pitch, length)
-	local holderframe, closebutton = CreateWindow(UDim2.new(0.5, 0, 0.5, 0), nil, false, false, false, "Audio", false)
+	local holderframe, window, closebutton = CreateWindow(UDim2.new(0.5, 0, 0.5, 0), nil, false, false, false, "Audio", false)
 	local sound = nil
 	closebutton.MouseButton1Down:Connect(function()
 		sound:Stop()
@@ -1203,21 +1209,21 @@ local function loadluafile(microcontrollers, screen, code, runcodebutton)
 end
 
 local function readfile(txt, nameondisk, boolean, directory)
-	local filegui, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, "File", false)
+	local filegui, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, "File", false)
 	local deletebutton = nil
 
-	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
+	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
 	filegui:AddChild(disktext)
 	
 	print(txt)
 	
 	if boolean == true then
-		deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", filegui)
+		deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
 		
 		deletebutton.MouseButton1Up:Connect(function()
-			local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, defaultbuttonsize.Y), "Are you sure?", true, true, false, nil, true)
-			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0, 0, 0.25, defaultbuttonsize.Y), "Yes", holdframe)
-			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0.5, 0, 0.25, defaultbuttonsize.Y), "No", holdframe)
+			local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
+			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 				
 			cancelbutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
@@ -1234,12 +1240,12 @@ local function readfile(txt, nameondisk, boolean, directory)
 			end)
 		end)
 	elseif directory then
-		deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", filegui)
+		deletebutton = createnicebutton2(UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 0, 0), "Delete", window)
 		
 		deletebutton.MouseButton1Up:Connect(function()
-			local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, defaultbuttonsize.Y), "Are you sure?", true, true, false, nil, true)
-			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0, 0, 0.25, defaultbuttonsize.Y), "Yes", holdframe)
-			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0.5, 0, 0.25, defaultbuttonsize.Y), "No", holdframe)
+			local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
+			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 				
 			cancelbutton.MouseButton1Down:Connect(function()
 				holdframe:Destroy()
@@ -1323,19 +1329,19 @@ local function readfile(txt, nameondisk, boolean, directory)
 		
 		local tableval = txt
 		local start = 0
-		local holderframe, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Table Content", false, false, false, "Table Content", false)
-		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
+		local holderframe, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Table Content", false, false, false, "Table Content", false)
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 		textlabel.Size -= UDim2.new(0, defaultbuttonsize.Y, 0, 0)
 		
 		if boolean == true then
 			local alldata = disk:ReadEntireDisk()
-			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", holderframe)
+			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
 			
 			deletebutton.MouseButton1Up:Connect(function()
-				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, defaultbuttonsize.Y), "Are you sure?", true, true, false, nil, true)
-				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0, 0, 0.25, defaultbuttonsize.Y), "Yes", holdframe)
-				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0.5, 0, 0.25, defaultbuttonsize.Y), "No", holdframe)
+				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
+				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 					
 				cancelbutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
@@ -1353,12 +1359,12 @@ local function readfile(txt, nameondisk, boolean, directory)
 			end)
 		elseif directory then
 			local alldata = disk:ReadEntireDisk()
-			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", holderframe)
+			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
 			
 			deletebutton.MouseButton1Up:Connect(function()
-				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, defaultbuttonsize.Y), "Are you sure?", true, true, false, nil, true)
-				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0, 0, 0.25, defaultbuttonsize.Y), "Yes", holdframe)
-				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0.5, 0, 0.25, defaultbuttonsize.Y), "No", holdframe)
+				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
+				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 				
 				cancelbutton.MouseButton1Down:Connect(function()
 					holdframe:Destroy()
@@ -1395,7 +1401,7 @@ end
 local function loaddisk()
 	local start = 0
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Disk Content", false, false, false, "Files", false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 
 	for filename, data in pairs(disk:ReadEntireDisk()) do
@@ -1411,10 +1417,9 @@ local function loaddisk()
 	end
 end
 
-local function disk()
+local function writedisk()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Create File", false, false, false, "File Creator", false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), BackgroundTransparency = 1})
-	holderframe:AddChild(scrollingframe)
+	local scrollingframe = holderframe
 	local filenamebutton, filenamebutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File Name(Case Sensitive) (Click to update)", scrollingframe)
 	local filedatabutton, filedatabutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "File Data (Click to update)", scrollingframe)
 	local createfilebutton, createfilebutton2 = createnicebutton(UDim2.new(0.5,0,0.2, 0), UDim2.new(0, 0, 0.8, 0), "Save", scrollingframe)
@@ -1568,9 +1573,9 @@ local function disk()
 end
 
 local function shutdownmicros(screen, micros)
-	local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false ,false, false, "Microcontroller manager", false)
+	local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), "Microcontroller Manager", false ,false, false, "Microcontroller Manager", false)
 	
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 
 	local start = 0
@@ -1609,7 +1614,7 @@ local function customprogramthing(screen, micros)
 
 	local code = ""
 
-	local codebutton, codebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0, defaultbuttonsize.Y), "Enter lua here (Click to update)", holderframe)
+	local codebutton, codebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0, 0), "Enter lua here (Click to update)", holderframe)
 
 	codebutton.MouseButton1Up:Connect(function()
 		if keyboardinput then
@@ -1618,13 +1623,13 @@ local function customprogramthing(screen, micros)
 		end
 	end)
 
-	local stopcodesbutton = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.6, -(defaultbuttonsize.Y/2)), "Shutdown microcontrollers", holderframe)
+	local stopcodesbutton = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.6, 0), "Shutdown microcontrollers", holderframe)
 
 	stopcodesbutton.MouseButton1Up:Connect(function()
 		shutdownmicros(screen, microcontrollers)
 	end)
 
-	local runcodebutton, runcodebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.8, -(defaultbuttonsize.Y/2)), "Run lua", holderframe)
+	local runcodebutton, runcodebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.8, 0), "Run lua", holderframe)
 
 	runcodebutton.MouseButton1Up:Connect(function()
 		if code ~= "" then
@@ -1635,8 +1640,7 @@ end
 
 local function mediaplayer()
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Media player", false, false, false, "Media player", false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), ScrollBarThickness = 5, CanvasSize = UDim2.new(1, 0, 0, 150), Size = UDim2.new(1,0,1,-(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), BackgroundTransparency = 1})
-	holderframe:AddChild(scrollingframe)
+	local scrollingframe = holderframe
 	local Filename, Filename2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File with id(Case Sensitive) (Click to update)", scrollingframe)
 	local openimage = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Open as image", scrollingframe)
 	local openaudio = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Open as audio", scrollingframe)
@@ -1817,9 +1821,9 @@ local function chatthing()
 		local id = 0
 
 		local toggleanonymous = false
-		local togglea, togglea2 = createnicebutton(UDim2.new(0.4, 0, 0.1, 0), UDim2.new(0,0,0,defaultbuttonsize.Y), "Enable anonymous mode", holderframe)
+		local togglea, togglea2 = createnicebutton(UDim2.new(0.4, 0, 0.1, 0), UDim2.new(0,0,0,0), "Enable anonymous mode", holderframe)
 		
-		local idui, idui2 = createnicebutton(UDim2.new(0.6, 0, 0.1, 0), UDim2.new(0.4,0,0,defaultbuttonsize.Y), "Network id", holderframe)
+		local idui, idui2 = createnicebutton(UDim2.new(0.6, 0, 0.1, 0), UDim2.new(0.4,0,0,0), "Network id", holderframe)
 		
 		idui.MouseButton1Up:Connect(function()
 			if tonumber(keyboardinput) then
@@ -1839,7 +1843,7 @@ local function chatthing()
 			end
 		end)
 	
-		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.8, -defaultbuttonsize.Y), Position = UDim2.new(0, 0, 0.1, defaultbuttonsize.Y), BackgroundTransparency = 1})
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.8, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 	
 		local sendbox, sendbox2 = createnicebutton(UDim2.new(0.8, 0, 0.1, 0), UDim2.new(0,0,0.9,0), "Message (Click to update)", holderframe)
@@ -1880,15 +1884,14 @@ local function chatthing()
 			start += 25
 		end)
 	else
-		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,-(defaultbuttonsize.Y/2)), Position = UDim2.new(0,0,0,defaultbuttonsize.Y), BackgroundTransparency = 1})
+		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,0), Position = UDim2.new(0,0,0,0), BackgroundTransparency = 1})
 		holderframe:AddChild(textlabel)
 	end
 end
 
 local function calculator()
 	local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 10), nil, false, false, false, "Calculator", false)
-	local holderframe = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,-(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y)})
-	window:AddChild(holderframe)
+	local holderframe = window
 	local part1 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.15, 0), Position = UDim2.new(0, 0, 0, 0), Text = "0", BackgroundTransparency = 1})
 	local part3 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.1, 0, 0.15, 0), Position = UDim2.new(0.45, 0, 0, 0), Text = "", BackgroundTransparency = 1})
 	local part2 = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(0.45, 0, 0.15, 0), Position = UDim2.new(0.55, 0, 0, 0), Text = "", BackgroundTransparency = 1})
@@ -2166,9 +2169,9 @@ local bootos
 local players = {}
 
 local function shutdownprompt()
-	local window = CreateWindow(UDim2.new(0.4, 0, 0.25, defaultbuttonsize.Y), "Are you sure?",true,true,false,nil,true)
-	local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0, 0, 0.25, defaultbuttonsize.Y), "Yes", window)
-	local no = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0.5, 0, 0.25, defaultbuttonsize.Y), "No", window)
+	local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
+	local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
+	local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 	no.MouseButton1Up:Connect(function()
 		window:Destroy()
 	end)
@@ -2209,9 +2212,9 @@ local function shutdownprompt()
 end
 
 local function restartprompt()
-	local window = CreateWindow(UDim2.new(0.4, 0, 0.25, defaultbuttonsize.Y), "Are you sure?",true,true,false,nil,true)
-	local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0, 0, 0.25, defaultbuttonsize.Y), "Yes", window)
-	local no = createnicebutton(UDim2.new(0.5, 0, 0.75, -defaultbuttonsize.Y), UDim2.new(0.5, 0, 0.25, defaultbuttonsize.Y), "No", window)
+	local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
+	local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
+	local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 	no.MouseButton1Up:Connect(function()
 		window:Destroy()
 	end)
@@ -2287,8 +2290,7 @@ local function terminal()
 	end
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
 
-	local window = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -(defaultbuttonsize.Y + defaultbuttonsize.Y/2)), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1, CanvasSize = UDim2.new(1,0,1,-(defaultbuttonsize.Y + defaultbuttonsize.Y/2))})
-	holderframe:AddChild(window)
+	local window = holderframe
 	
 	local name = "GustavDOS For GustavOSDesktop7"
 	
@@ -3128,7 +3130,7 @@ local function loaddesktop()
 	
 	if not disk:Read("sounds") then
 		local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", true, true, false, "Welcome", false)
-		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,-defaultbuttonsize.Y), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
+		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
 		window:AddChild(textlabel)
 		local yes = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Yes", window)
 		local no = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "No", window)
