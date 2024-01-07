@@ -521,8 +521,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			holding = false
 		end)
 	else
-		window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-		window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+		window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+		window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 	end
 
 	if not boolean3 then
@@ -3129,7 +3129,7 @@ local function loaddesktop()
 	})
 	
 	if not disk:Read("sounds") then
-		local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", true, true, false, "Welcome", false)
+		local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
 		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
 		window:AddChild(textlabel)
 		local yes = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Yes", window)
@@ -3400,8 +3400,8 @@ local function loaddesktop()
 				end
 				if not cursor then holding = false end
 				if cursor then
-					local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +(defaultbuttonsize.Y/2)
-					local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +(defaultbuttonsize.Y/2)
+					local newX = (cursor.X - holderframetouse.AbsolutePosition.X) -(defaultbuttonsize.Y/2)
+					local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) -(defaultbuttonsize.Y/2)
 					local screenresolution = resolutionframe.AbsoluteSize
 		
 					if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
