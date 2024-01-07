@@ -1221,44 +1221,40 @@ local function readfile(txt, nameondisk, boolean, directory)
 		deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
 		
 		deletebutton.MouseButton1Up:Connect(function()
-			local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+			local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 				
 			cancelbutton.MouseButton1Down:Connect(function()
-				holdframe:Destroy()
-				holdframe = nil
+				windowz:Destroy()
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				disk:Write(nameondisk, nil)
-				holdframe:Destroy()
-				if filegui then
-					filegui:Destroy()
+				windowz:Destroy()
+				if window then
+					window:Destroy()
 				end
-				filegui = nil
 			end)
 		end)
 	elseif directory then
 		deletebutton = createnicebutton2(UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 0, 0), "Delete", window)
 		
 		deletebutton.MouseButton1Up:Connect(function()
-			local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+			local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 				
 			cancelbutton.MouseButton1Down:Connect(function()
-				holdframe:Destroy()
-				holdframe = nil
+				windowz:Destroy()
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
 				createfileontable(disk, nameondisk, nil, directory)
-				holdframe:Destroy()
-				if filegui then
-					filegui:Destroy()
+				windowz:Destroy()
+				if window then
+					window:Destroy()
 				end
-				filegui = nil
 			end)
 		end)
 	end
@@ -1339,22 +1335,20 @@ local function readfile(txt, nameondisk, boolean, directory)
 			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
 			
 			deletebutton.MouseButton1Up:Connect(function()
-				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 					
 				cancelbutton.MouseButton1Down:Connect(function()
-					holdframe:Destroy()
-					holdframe = nil
+					window:Destroy()
 				end)
 	
 				deletebutton.MouseButton1Up:Connect(function()
 					disk:Write(nameondisk, nil)
 					if holderframe then
-						holderframe:Destroy()
+						window:Destroy()
 					end
-					holdframe:Destroy()
-					holderframe = nil
+					windowz:Destroy()
 				end)
 			end)
 		elseif directory then
@@ -1362,22 +1356,20 @@ local function readfile(txt, nameondisk, boolean, directory)
 			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
 			
 			deletebutton.MouseButton1Up:Connect(function()
-				local holdframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 				
 				cancelbutton.MouseButton1Down:Connect(function()
-					holdframe:Destroy()
-					holdframe = nil
+					windowz:Destroy()
 				end)
 	
 				deletebutton.MouseButton1Up:Connect(function()
 					createfileontable(disk, nameondisk, nil, directory)
-					holdframe:Destroy()
-					if holderframe then
-						holderframe:Destroy()
+					windowz:Destroy()
+					if window then
+						window:Destroy()
 					end
-					holderframe = nil
 				end)
 			end)
 		end
@@ -2173,11 +2165,11 @@ local function shutdownprompt()
 	local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
 	local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 	no.MouseButton1Up:Connect(function()
-		window:Destroy()
+		holderframe:Destroy()
 	end)
 	yes.MouseButton1Up:Connect(function()
-		if window then
-		window:Destroy()
+		if holderframe then
+			holderframe:Destroy()
 		end
 		if startbutton7 then
 			startbutton7:Destroy()
@@ -2212,15 +2204,15 @@ local function shutdownprompt()
 end
 
 local function restartprompt()
-	local window = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
+	local window, holderframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 	local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
 	local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 	no.MouseButton1Up:Connect(function()
-		window:Destroy()
+		holderframe:Destroy()
 	end)
 	yes.MouseButton1Up:Connect(function()
-		if window then
-			window:Destroy()
+		if holderframe then
+			holderframe:Destroy()
 		end
 		if startbutton7 then
 			startbutton7:Destroy()
@@ -3129,14 +3121,14 @@ local function loaddesktop()
 	})
 	
 	if not disk:Read("sounds") then
-		local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
+		local window, holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
 		local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
 		window:AddChild(textlabel)
 		local yes = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Yes", window)
 		local no = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "No", window)
 
 		no.MouseButton1Up:Connect(function()
-			window:Destroy()
+			holderframe:Destroy()
 		end)
 
 		yes.MouseButton1Up:Connect(function()
@@ -3159,7 +3151,7 @@ local function loaddesktop()
 				["Solar-wind.aud"] = "8887201925",
 				["4th-axis.aud"] = "8909965418",
 			})
-			window:Destroy()
+			holderframe:Destroy()
 		end)
 	end
 	local pressed = false
@@ -3400,8 +3392,8 @@ local function loaddesktop()
 				end
 				if not cursor then holding = false end
 				if cursor then
-					local newX = (cursor.X - holderframetouse.AbsolutePosition.X) -(defaultbuttonsize.Y/2)
-					local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) -(defaultbuttonsize.Y/2)
+					local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +((defaultbuttonsize.Y/2)/2)
+					local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +((defaultbuttonsize.Y/2)/2)
 					local screenresolution = resolutionframe.AbsoluteSize
 		
 					if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
