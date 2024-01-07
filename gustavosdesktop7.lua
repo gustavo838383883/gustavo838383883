@@ -658,6 +658,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			if not maximizepressed then
 				if not boolean2 then
 					resizebutton.Visible = false
+					resizebutton.ImageTransparency = 1
+					resizebutton.Size = UDim2.new(0,0,0,0)
 					window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 					window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 				end
@@ -671,6 +673,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			else
 				if not boolean2 then
 					resizebutton.Visible = true
+					resizebutton.ImageTransparency = 0
+					resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
 					window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 					window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 				end
@@ -3499,7 +3503,7 @@ function bootos()
 				backgroundimage = nil
 			end
 		end
-		defaultbuttonsize = Vector2.new(screen:GetDimensions().X*0.15,screen:GetDimensions().Y*0.1)
+		defaultbuttonsize = Vector2.new(screen:GetDimensions().X*(0.1 + (0.1/3)),screen:GetDimensions().Y*0.1)
 		if defaultbuttonsize.X > 35 then defaultbuttonsize = Vector2.new(35, defaultbuttonsize.Y); end
 		if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsize.X, 25); end
 		loaddesktop()
