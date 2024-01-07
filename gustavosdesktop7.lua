@@ -656,6 +656,11 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			maximizebutton.Image = "rbxassetid://15617867263"
 			local holderframe = holderframe
 			if not maximizepressed then
+				if not boolean2 then
+					resizebutton.Visible = false
+					window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+					window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+				end
 				unmaximizedsize = holderframe.Size
 				unmaximizedpos = holderframe.Position
 				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
@@ -664,6 +669,11 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				maximizetext.Text = "-"
 				maximizepressed = true
 			else
+				if not boolean2 then
+					resizebutton.Visible = true
+					window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+					window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+				end
 				holderframe.Size = unmaximizedsize
 				holderframe.Position = unmaximizedpos
 				maximizetext.Text = "+"
