@@ -640,7 +640,7 @@ local function woshtmlfile(txt, screen, boolean)
 		size = UDim2.new(0.5, 0, 0.5, 0)
 	end
 	local filegui = CreateNewWindow(size, nil, false, false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(0, 0, 1, -25), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), CanvasSize = UDim2.new(1, 0, 1, -25), BackgroundTransparency = 1})
 	filegui:AddChild(scrollingframe)
 
 	StringToGui(screen, txt, scrollingframe)
