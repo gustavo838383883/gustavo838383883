@@ -2869,7 +2869,7 @@ local function terminal()
 		elseif text:lower():sub(1, 10) == "stopsounds" then
 			speaker.ClearSounds()
 			SpeakerHandler:RemoveSpeakerFromLoop(speaker)
-			commandlines.insert(dir..":")
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 4) == "cmds" then
 			commandlines:insert("Commands:")
 			commandlines:insert("cmds")
