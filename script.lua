@@ -995,8 +995,8 @@ local function writedisk(screen, disk)
 
 	filenamebutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filenamebutton.Text = keyboardinput:gsub("\n", ""):gsub("/", ""):gsub("/n\\", "\n")
-			filename = keyboardinput:gsub("\n", ""):gsub("/", ""):gsub("/n\\", "\n")
+			filenamebutton.Text = keyboardinput:gsub("/n\\", "\n"):gsub("\n", ""):gsub("/", "")
+			filename = keyboardinput:gsub("/n\\", "\n"):gsub("\n", ""):gsub("/", "")
 		end
 	end)
 
@@ -1631,8 +1631,8 @@ local function mediaplayer(screen, disk, speaker)
 	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			Filename.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
-			data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			Filename.Text = keyboardinput:gsub("/n\\", "\n"):gsub("\n", "")
+			data = keyboardinput:gsub("/n\\", "\n"):gsub("\n", "")
 		end
 	end)
 
