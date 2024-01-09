@@ -996,8 +996,8 @@ local function writedisk(screen, disk)
 
 	filenamebutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filenamebutton.Text = keyboardinput:gsub("\n", ""):gsub("/", ""):gsub("/n\\", "\n")
-			filename = keyboardinput:gsub("\n", ""):gsub("/", ""):gsub("/n\\", "\n")
+			filenamebutton.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n"):gsub("/", "")
+			filename = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n"):gsub("/", "")
 		end
 	end)
 
