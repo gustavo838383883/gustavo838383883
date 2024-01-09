@@ -1668,8 +1668,8 @@ local function mediaplayer()
 	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			Filename2.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
-			data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			Filename2.Text = keyboardinput:gsub("\n", ""):gsub("n\\", "\n")
+			data = keyboardinput:gsub("\n", ""):gsub("n\\", "\n")
 		end
 	end)
 
