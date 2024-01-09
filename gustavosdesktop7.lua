@@ -608,10 +608,10 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
 			unminimizebutton:AddChild(unminimizetext)
 			taskbarholderscrollingframe:AddChild(unminimizebutton)
-			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * defaultbuttonsize.X) + defaultbuttonsize.X, 1, 0) 
+			minimizedammount += 1
+			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * (defaultbuttonsize.X*2)) + (defaultbuttonsize.X*2), 1, 0) 
 
 			table.insert(minimizedprograms, unminimizebutton)
-			minimizedammount += 1
 			
 			unminimizebutton.MouseButton1Down:Connect(function()
 				unminimizebutton.Image = "rbxassetid://15625805069"
@@ -628,8 +628,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 				local start = 0
 				for index, value in ipairs(minimizedprograms) do
 					if value and value.Size ~= UDim2.new(1,0,1,0) then
-						value.Position = UDim2.new(0, start * defaultbuttonsize.X, 0, 0)
-						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (defaultbuttonsize.X * start) + defaultbuttonsize.X, 1, 0)
+						value.Position = UDim2.new(0, start * (defaultbuttonsize.X*2), 0, 0)
+						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, ((defaultbuttonsize.X*2) * start) + defaultbuttonsize.X, 1, 0)
 						start += 1
 					end
 				end
