@@ -806,4 +806,4 @@ end)
 transactionbutton.MouseButton1Click:Connect(function()
 	openTransaction()
 end)
-openAccountManagement()
+
