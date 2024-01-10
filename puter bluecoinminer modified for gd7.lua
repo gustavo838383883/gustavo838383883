@@ -206,7 +206,7 @@ local function CreateWindow(udim2, title, boolean, boolean2, boolean3)
 	end
 	return window, closebutton, holderframe, maximizebutton, textlabel, resizebutton
 end
-defaultbuttonsize = Vector2.new(screen:GetDimensions().X*(0.1 + (0.1/3)),screen:GetDimensions().Y*0.1)
+defaultbuttonsize = Vector2.new(screen:GetDimensions().X*0.14, screen:GetDimensions().Y*0.1)
 if defaultbuttonsize.X > 35 then defaultbuttonsize = Vector2.new(35, defaultbuttonsize.Y); end
 if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsize.X, 25); end
 
