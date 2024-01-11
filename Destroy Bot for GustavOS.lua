@@ -313,7 +313,8 @@ function Talk()
 	if Message == "They should add Freddy Fazbear to this game." then
 		task.wait(1)
 		FEDDY.ImageTransparency = 0
-		puter.PlayAudio("8490844479", Speaker)
+		speaker:Configure({Audio = "rbxassetid://8490844479"})
+		speaker:Trigger()
 		for i = 1,100 do
 			FEDDY.ImageTransparency += 0.01
 			task.wait(0.05)
