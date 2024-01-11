@@ -658,8 +658,11 @@ local function loadluafile(microcontrollers, screen, code)
 			if polyport then
 				if microdisk then
 					local text = ""
+
+					polysilicon:Configure({PolysiliconMode = 1})
+					TriggerPort(polyport)
 	
-					text = text..`GetPartFromPort({polyport.PortID}):Write("secmicro", function(); {code} end))`
+					text = text.."GetPartFromPort("..polyport.PortID.."):Write('secmicro', function(); "..code.." end))"
 					
 					value:Configure({Code = text})
 					polysilicon:Configure({PolysiliconMode = 0})
