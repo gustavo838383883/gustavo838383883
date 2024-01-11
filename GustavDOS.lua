@@ -689,7 +689,7 @@ local function loadluafile(microcontrollers, screen, code)
 			local secmicro = rom:Read("secmicro")
 			commandlines.insert("Success")
 			local returnvalue = secmicro()
-			commandlines.insert(tostring(secmicro))
+			commandlines.insert(tostring(returnvalue))
 		else
 			commandlines.insert("Failed.")
 		end
