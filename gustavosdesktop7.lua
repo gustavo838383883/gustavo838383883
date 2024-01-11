@@ -3298,7 +3298,7 @@ local function loaddesktop()
 
 			local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*8, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(restartkeyboardinput)
-			local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Restart Keyboard Event"})
+			local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reset Keyboard Event"})
 			restartkeyboardinput:AddChild(txtlabel9)
 			restartkeyboardinput.MouseButton1Up:Connect(function()
 				if keyboardevent then keyboardevent:Unbind() end
