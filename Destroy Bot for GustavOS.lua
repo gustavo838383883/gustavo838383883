@@ -90,7 +90,7 @@ local neutralQuotes = {
 	"3 ionrockets clearly cant go faster than the speed of light, hyperdrive is just a scam afterall.",
 	"AD BREAK: Selling 3 sticks for 5 aliencores. Great deal, I know.",
 	"Shout out to my dad Cyber_leopard, i think he made me. And my teacher FAAndrr, he taught me how to talk in English.",
-	"Puter? You mean that big tablet that can store music? Don't have high hopes on me, I can't store music.",
+	"GPuter? You mean that tablet that can store music? Don't have high hopes on me, I can't store music.",
 	"0mori is a great person, I like him.",
 	"Deh den da doo dee da do don da.. Oh sorry, I was singing the menu theme.",
 	"Space is pretty warm, 50F I'd say so.",
@@ -313,8 +313,8 @@ function Talk()
 	if Message == "They should add Freddy Fazbear to this game." then
 		task.wait(1)
 		FEDDY.ImageTransparency = 0
-		speaker:Configure({Audio = "rbxassetid://8490844479"})
-		speaker:Trigger()
+		Speaker:Configure({Audio = "rbxassetid://8490844479"})
+		Speaker:Trigger()
 		for i = 1,100 do
 			FEDDY.ImageTransparency += 0.01
 			task.wait(0.05)
@@ -331,7 +331,8 @@ function SayText(Message,Expression)
 	if Message == "They should add Freddy Fazbear to this game." then
 		task.wait(1)
 		FEDDY.ImageTransparency = 0
-		puter.PlayAudio("8490844479", Speaker)
+		Speaker:Configure({Audio = "rbxassetid://8490844479"})
+		Speaker:Trigger()
 		for i = 1,100 do
 			FEDDY.ImageTransparency += 0.01
 			task.wait(0.05)
