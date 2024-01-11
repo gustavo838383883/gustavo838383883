@@ -661,10 +661,12 @@ local function loadluafile(microcontrollers, screen, code)
 
 					polysilicon:Configure({PolysiliconMode = 1})
 					TriggerPort(polyport)
-
-					print(polyport.PortID)
+					local id = "1"
+					if polyport.PortID then
+						id = polyport.PortID
+					end
 	
-					text = text.."GetPartFromPort("..polyport.PortID.."):Write('secmicro', function(); "..code.." end))"
+					text = text.."GetPartFromPort("..id.."):Write('secmicro', function(); "..code.." end))"
 					
 					value:Configure({Code = text})
 					polysilicon:Configure({PolysiliconMode = 0})
@@ -686,7 +688,8 @@ local function loadluafile(microcontrollers, screen, code)
 		if rom:Read("secmicro") then
 			local secmicro = rom:Read("secmicro")
 			commandlines.insert("Success")
-			secmicro()
+			local returnvalue = secmicro()
+			commandlines.insert(tostring(secmicro))
 		else
 			commandlines.insert("Failed.")
 		end
