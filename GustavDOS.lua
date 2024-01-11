@@ -670,7 +670,7 @@ local function loadluafile(microcontrollers, screen, code)
 
 					Beep(1)
 					
-					text = text.."GetPartFromPort("..id.."):Write('secmicro', function(); "..code.." end))"
+					text = text.."GetPartFromPort("..id..", 'Disk'):Write('secmicro', function(); "..code.." end))"
 					
 					value:Configure({Code = text})
 					polysilicon:Configure({PolysiliconMode = 0})
