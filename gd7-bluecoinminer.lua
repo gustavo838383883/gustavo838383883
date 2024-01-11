@@ -173,47 +173,29 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			if holding or holding2 then return end
 			speaker:PlaySound(clicksound)
 			minimizebutton.Image = "rbxassetid://15617867263"
-			resolutionframe:AddChild(holderframe)
-			holderframe.Visible = false
-			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
-			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text)})
-			unminimizebutton:AddChild(unminimizetext)
-			taskbarholderscrollingframe:AddChild(unminimizebutton)
-			minimizedammount += 1
-			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * (defaultbuttonsize.X*2)) + (defaultbuttonsize.X*2), 1, 0) 
-
-			table.insert(minimizedprograms, unminimizebutton)
-			
-			unminimizebutton.MouseButton1Down:Connect(function()
-				unminimizebutton.Image = "rbxassetid://15625805069"
-			end)
-			
-            local minimizepressed = false
-            local unminizedsize = UDim2.new(0,0,0,0)
-
-			unminimizebutton.MouseButton1Up:Connect(function()
-                if minimizepressed == false then
-                    unminimizedsize = holderframe.Size
-                    holderframe.Size = UDim2.new(holderframe.Size.X.Scale, holderframe.Size.X.Offset, defaultbuttonsize.Y)
-                    if not boolean2 then
-                        resizebutton.Visible = false
-                        resizebutton.ImageTransparency = 1
-                        resizebutton.Size = UDim2.new(0,0,0,0)
-                        window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-                        window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-                    end
-                else
-                    holderframe.Size = unminimizedsize
-                    if not boolean2 then
-                        resizebutton.Visible = true
-                        resizebutton.ImageTransparency = 0
-                        resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
-                        window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-                        window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-                    end
-                end
-                minimizepressed = not minimizepressed
-			end)
+			window.Visible = false
+	                if minimizepressed == false then
+	                	unminimizedsize = holderframe.Size
+	                	holderframe.Size = UDim2.new(holderframe.Size.X.Scale, holderframe.Size.X.Offset, defaultbuttonsize.Y)
+	                	if not boolean2 then
+		                        resizebutton.Visible = false
+		                        resizebutton.ImageTransparency = 1
+		                        resizebutton.Size = UDim2.new(0,0,0,0)
+		                        window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+		                        window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+		        	end
+	                else
+	                    holderframe.Size = unminimizedsize
+	                    if not boolean2 then
+	                        resizebutton.Visible = true
+	                        resizebutton.ImageTransparency = 0
+	                        resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
+	                        window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+	                        window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+	                    end
+	                end
+			window.Visible = not wimdow.Visible
+	                minimizepressed = not minimizepressed
 		end)
 	end
 	
