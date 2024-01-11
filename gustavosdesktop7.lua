@@ -3301,12 +3301,13 @@ local function loaddesktop()
 			local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reset Keyboard Event"})
 			restartkeyboardinput:AddChild(txtlabel9)
 			restartkeyboardinput.MouseButton1Up:Connect(function()
+				speaker:PlaySound(clicksound)
 				if keyboardevent then keyboardevent:Unbind() end
 				keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 					keyboardinput = text
 					playerthatinputted = player
 				end)
-				terminalopen.Image = "rbxassetid://15625805900"
+				restartkeyboardinput.Image = "rbxassetid://15625805900"
 				pressed = false
 				startmenu:Destroy()
 			end)
