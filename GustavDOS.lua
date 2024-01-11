@@ -661,6 +661,8 @@ local function loadluafile(microcontrollers, screen, code)
 
 					polysilicon:Configure({PolysiliconMode = 1})
 					TriggerPort(polyport)
+
+					print(polyport.PortID)
 	
 					text = text.."GetPartFromPort("..polyport.PortID.."):Write('secmicro', function(); "..code.." end))"
 					
@@ -679,7 +681,7 @@ local function loadluafile(microcontrollers, screen, code)
 		end
 	end
 	if not success then
-		commandlines.insert("No secondary microcontroller found.")
+		commandlines.insert("No secondary microcontroller found or failed.")
 	else
 		if rom:Read("secmicro") then
 			local secmicro = rom:Read("secmicro")
