@@ -653,32 +653,27 @@ local function loadluafile(microcontrollers, screen, code)
 	if microcontroller then
 		local polysilicon = GetPartFromPort(value, "Polysilicon")
 		local polyport = GetPartFromPort(polysilicon, "Port")
-		local microdisk = GetPartFromPort(polyport, "Disk")
 		if polysilicon then
 			if polyport then
-				if microdisk then
-					local text = ""
+				local text = ""
 
-					Beep(1)
+				Beep(1)
 
-					polysilicon:Configure({PolysiliconMode = 1})
-					TriggerPort(polyport)
-					local id = "1"
-					--if polyport.PortID then
-					--	id = polyport.PortID
-					--end
+				polysilicon:Configure({PolysiliconMode = 1})
+				TriggerPort(polyport)
+				local id = "1"
+				--if polyport.PortID then
+				--	id = polyport.PortID
+				--end
 
-					Beep(1)
-					
-					text = text.."GetPartFromPort("..id..", 'Disk'):Write('secmicro', function(); "..code.." end))"
-					
-					value:Configure({Code = text})
-					polysilicon:Configure({PolysiliconMode = 0})
-					TriggerPort(polyport)
-					success = true
-				else
-					commandlines.insert("No Disk connected to microcontroller port")
-				end
+				Beep(1)
+				
+				text = text.."GetPartFromPort("..id..", 'Disk'):Write('secmicro', function(); "..code.." end))"
+				
+				value:Configure({Code = text})
+				polysilicon:Configure({PolysiliconMode = 0})
+				TriggerPort(polyport)
+				success = true
 			else
 				commandlines.insert("No port connected to polysilicon")
 			end
@@ -695,7 +690,7 @@ local function loadluafile(microcontrollers, screen, code)
 			local returnvalue = secmicro()
 			commandlines.insert(tostring(returnvalue))
 		else
-			commandlines.insert("Failed.")
+			commandlines.insert("Failed or no disk connected to secondary microcontroller.")
 		end
 	end
 end
