@@ -1334,8 +1334,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		else
 			newdirectory = "/"..nameondisk
 		end
-		filegui:Destroy()
-		filegui = nil
+		window:Destroy()
 		
 		local tableval = txt
 		local start = 0
