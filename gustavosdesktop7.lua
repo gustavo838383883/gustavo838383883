@@ -3174,7 +3174,7 @@ local function loaddesktop()
 		if not pressed then
 			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
 			taskbarholder:AddChild(startmenu)
-			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 1.6, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
+			local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 1.8, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 			startmenu:AddChild(scrollingframe)
 			local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 			scrollingframe:AddChild(settingsopen)
@@ -3294,6 +3294,21 @@ local function loaddesktop()
 				pressed = false
 				startmenu:Destroy()
 				terminal()
+			end)
+
+			local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*8, 0), BackgroundTransparency = 1})
+			scrollingframe:AddChild(restartkeyboardinput)
+			local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Restart Keyboard Event"})
+			restartkeyboardinput:AddChild(txtlabel9)
+			restartkeyboardinput.MouseButton1Up:Connect(function()
+				if keyboardevent then keyboardevent:Unbind() end
+				keyboardevent = keyboard:Connect("TextInputted", function(text, player)
+					keyboardinput = text
+					playerthatinputted = player
+				end)
+				terminalopen.Image = "rbxassetid://15625805900"
+				pressed = false
+				startmenu:Destroy()
 			end)
 
 			local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
