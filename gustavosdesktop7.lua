@@ -1354,7 +1354,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 					
 				cancelbutton.MouseButton1Down:Connect(function()
-					window:Destroy()
+					windowz:Destroy()
 				end)
 	
 				deletebutton.MouseButton1Up:Connect(function()
@@ -1375,7 +1375,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 				
 				cancelbutton.MouseButton1Down:Connect(function()
-					window:Destroy()
+					windowz:Destroy()
 				end)
 	
 				deletebutton.MouseButton1Up:Connect(function()
