@@ -670,7 +670,7 @@ local function loadluafile(microcontrollers, screen, code)
 				
 				text = text.."GetPartFromPort("..id..", 'Disk'):Write('secmicro', function(); "..code.." end))"
 				
-				value:Configure({Code = text})
+				microcontroller:Configure({Code = text})
 				polysilicon:Configure({PolysiliconMode = 0})
 				TriggerPort(polyport)
 				success = true
