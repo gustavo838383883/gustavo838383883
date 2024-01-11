@@ -1939,6 +1939,9 @@ local function loadmenu()
 					holdingframe:AddChild(openchat)
 					local openluaexecutor = screen:CreateElement("TextButton", {Text = "Lua executor", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0), Position = UDim2.new(0, 0, 1/5*4, 0)})
 					holdingframe:AddChild(openluaexecutor)
+					local resetkeyboardinput = screen:CreateElement("TextButton", {Text = "Reset Keyboard Input", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0), Position = UDim2.new(1, 0, 0, 0)})
+					holdingframe:AddChild(resetkeyboardinput)
+
 
 					opencalculator.MouseButton1Down:Connect(function()
 						calculator(screen)
@@ -1955,6 +1958,20 @@ local function loadmenu()
 						pressed = false
 					end)
 
+					resetkeyboardinput.MouseButton1Down:Connect(function()
+						if keyboardevent then
+							keyboardevent:Unbind()
+							keyboardevent = nil
+						end
+						keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
+							keyboardinput = text
+							playerthatinputted = plr
+						end)
+						startui:Destroy()
+						startui = nil
+						pressed = false
+					end)
+							
 					openchat.MouseButton1Down:Connect(function()
 						startui:Destroy()
 						startui = nil
