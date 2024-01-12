@@ -53,16 +53,16 @@ local function AddElement(window, name, properties)
 	return guiobject
 end
 
-local window, closebutton = CreateWindow(250, 300, "DestroyBot for GustavOS")
+local window, closebutton = CreateWindow(Screen:GetDimensions().X*0.35, screen:GetDimensions().Y*0.5, "DestroyBot for GustavOS")
 local destroyBotFace = AddWindowElement(window, "Frame", {
-	Size = UDim2.fromOffset(250,250);
-	Position = UDim2.fromOffset(0,0);
+	Size = UDim2.fromScale(1,0.8);
+	Position = UDim2.fromScale(0,0);
 	BackgroundColor3 = Color3.fromRGB(0,0,0);
 	BorderSizePixel = 0;
 })
 local destroyBotReaction = AddWindowElement(window, "TextLabel", {
-	Size = UDim2.fromOffset(200,50);
-	Position = UDim2.fromOffset(0,250);
+	Size = UDim2.fromScale(0.8,0.2);
+	Position = UDim2.fromScale(0,0.8);
 	BackgroundColor3 = Color3.fromRGB(0,0,0);
 	BorderSizePixel = 0;
 	TextColor3 = Color3.fromRGB(255,255,255);
@@ -70,8 +70,8 @@ local destroyBotReaction = AddWindowElement(window, "TextLabel", {
 	Text = "zzz";
 })
 local talkButton = AddWindowElement(window, "TextButton", {
-	Size = UDim2.fromOffset(50,50);
-	Position = UDim2.fromOffset(200,250);
+	Size = UDim2.fromScale(0.2,0.2);
+	Position = UDim2.fromScale(0.8,0.8);
 	BackgroundColor3 = Color3.fromRGB(255,255,255);
 	BorderSizePixel = 0;
 	TextColor3 = Color3.fromRGB(0,0,0);
@@ -324,7 +324,7 @@ function Talk()
 	if Message == "They should add Freddy Fazbear to this game." then
 		task.wait(1)
 		FEDDY.ImageTransparency = 0
-		Speaker:Configure({Audio = 8490844479})
+		Speaker:Configure({Audio = "rbxassetid://8490844479"})
 		Speaker:Trigger()
 		for i = 1,100 do
 			FEDDY.ImageTransparency += 0.01
@@ -342,7 +342,7 @@ function SayText(Message,Expression)
 	if Message == "They should add Freddy Fazbear to this game." then
 		task.wait(1)
 		FEDDY.ImageTransparency = 0
-		Speaker:Configure({Audio = 8490844479})
+		Speaker:Configure({Audio = "rbxassetid://8490844479"})
 		Speaker:Trigger()
 		for i = 1,100 do
 			FEDDY.ImageTransparency += 0.01
