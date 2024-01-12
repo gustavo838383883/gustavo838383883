@@ -1,6 +1,6 @@
 --og bluecoin atm made by blueloops9
 --gui made by Gustavo12345687890 / Gustavo242
---reskin of the puter bluecoin miner app for gd7
+--reskin of the puter bluecoin atm for gd7
 --made in 2024
 
 local prevCursorPos
