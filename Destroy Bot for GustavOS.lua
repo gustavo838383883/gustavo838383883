@@ -324,7 +324,7 @@ function Talk()
 	if Message == "They should add Freddy Fazbear to this game." then
 		task.wait(1)
 		FEDDY.ImageTransparency = 0
-		Speaker:Configure({Audio = "rbxassetid://8490844479"})
+		Speaker:Configure({Audio = 8490844479})
 		Speaker:Trigger()
 		for i = 1,100 do
 			FEDDY.ImageTransparency += 0.01
@@ -342,7 +342,7 @@ function SayText(Message,Expression)
 	if Message == "They should add Freddy Fazbear to this game." then
 		task.wait(1)
 		FEDDY.ImageTransparency = 0
-		Speaker:Configure({Audio = "rbxassetid://8490844479"})
+		Speaker:Configure({Audio = 8490844479})
 		Speaker:Trigger()
 		for i = 1,100 do
 			FEDDY.ImageTransparency += 0.01
