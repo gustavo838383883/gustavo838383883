@@ -244,7 +244,7 @@ local speaker = nil
 local modem = nil
 local rom = nil
 local disk = nil
-local microcontroller = nil
+local microcontrollers = nil
 local regularscreen = nil
 local keyboardinput
 local playerthatinputted
@@ -273,7 +273,7 @@ local function getstuff()
 	speaker = nil
 	shutdownpoly = nil
 	modem = nil
-	microcontroller = nil
+	microcontrollers = nil
 	regularscreen = nil
 	disksport = nil
 	romport = nil
@@ -364,12 +364,12 @@ local function getstuff()
 		end
 
 		if not microcontrollers then
-			success, Error = pcall(GetPartFromPort, i, "Microcontroller")
+			success, Error = pcall(GetPartsFromPort, i, "Microcontroller")
 			if success then
-				local microtable = GetPartFromPort(i, "Microcontroller")
+				local microtable = GetPartsFromPort(i, "Microcontroller")
 				if microtable then
 					if #microtable > 0 then
-						microcontroller = microtable
+						microcontrollers = microtable
 					end
 				end
 			end
@@ -644,54 +644,43 @@ local function StringToGui(screen, text, parent)
 	end
 end
 
+local usedmicros = {}
+
 local background
 local commandlines
 
 local function loadluafile(microcontrollers, screen, code)
 	local success = false
 	local micronumber = 0
-	if microcontroller then
-		local polysilicon = GetPartFromPort(value, "Polysilicon")
-		local polyport = GetPartFromPort(polysilicon, "Port")
-		if polysilicon then
-			if polyport then
-				local text = ""
-
-				Beep(1)
-
-				polysilicon:Configure({PolysiliconMode = 1})
-				TriggerPort(polyport)
-				local id = "1"
-				--if polyport.PortID then
-				--	id = polyport.PortID
-				--end
-
-				Beep(1)
+	if typeof(microcontrollers) == "table" and #microcontrollers > 0 then
+		for index, value in pairs(microcontrollers) do
+			micronumber += 1
+			if not table.find(usedmicros, value) then
+				table.insert(usedmicros, value)
+				local polysilicon = GetPartFromPort(value, "Polysilicon")
+				local polyport = GetPartFromPort(polysilicon, "Port")
+				if polysilicon then
+					if polyport then
+						value:Configure({Code = code})
+						polysilicon:Configure({PolysiliconMode = 0})
+						TriggerPort(polyport)
+						success = true
 				
-				text = text.."GetPartFromPort("..id..", 'Disk'):Write('secmicro', function(); "..code.." end))"
-				
-				microcontroller:Configure({Code = text})
-				polysilicon:Configure({PolysiliconMode = 0})
-				TriggerPort(polyport)
-				success = true
-			else
-				commandlines.insert("No port connected to polysilicon")
+						commandlines.insert("Using microcontroller:")
+						
+						commandlines.insert(micronumber)
+						break
+					else
+						commandlines.insert("No port connected to polysilicon")
+					end
+				else
+					commandlines.insert("No polysilicon connected to microcontroller")
+				end
 			end
-		else
-			commandlines.insert("No polysilicon connected to microcontroller")
 		end
 	end
 	if not success then
-		commandlines.insert("No secondary microcontroller found or failed.")
-	else
-		if rom:Read("secmicro") then
-			local secmicro = rom:Read("secmicro")
-			commandlines.insert("Success")
-			local returnvalue = secmicro()
-			commandlines.insert(tostring(returnvalue))
-		else
-			commandlines.insert("Failed or no disk connected to secondary microcontroller.")
-		end
+		commandlines.insert("No microcontrollers left.")
 	end
 end
 
