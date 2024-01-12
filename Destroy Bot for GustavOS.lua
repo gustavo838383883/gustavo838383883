@@ -18,8 +18,8 @@ local Speaker = GetPartFromPort(1,"Speaker")
 if not Speaker then Speaker = GetPartFromPort(2,"Speaker") end
 local ChatDebounce = false
 Beep(1)
-local function CreateWindow(x, y, name)
-	local holderframe = Screen:CreateElement("TextButton", {TextTransparency = 1, Position = UDim2.new(0, 0, 0, 0), Size = UDim2.new(0, x, 0, y), Draggable = true})
+local function CreateWindow(udim2, name)
+	local holderframe = Screen:CreateElement("TextButton", {TextTransparency = 1, Position = UDim2.new(0, 0, 0, 0), Size = udim2, Draggable = true})
 	local textlabel = Screen:CreateElement("TextLabel", {TextScaled = true, TextWrapped = true, Text = name, Position = UDim2.new(0,25,0,0), Size = UDim2.new(1, 0, 0, 25)})
 	holderframe:AddChild(textlabel)
 	
@@ -53,7 +53,7 @@ local function AddElement(window, name, properties)
 	return guiobject
 end
 
-local window, closebutton = CreateWindow(Screen:GetDimensions().X*0.35, Screen:GetDimensions().Y*0.5, "DestroyBot for GustavOS")
+local window, closebutton = CreateWindow(UDim2.fromScale(0.35, 0.5), "DestroyBot for GustavOS")
 local destroyBotFace = AddWindowElement(window, "Frame", {
 	Size = UDim2.fromScale(1,0.8);
 	Position = UDim2.fromScale(0,0);
