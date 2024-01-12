@@ -59,15 +59,15 @@ if tonumber(clicksound) then clicksound = "rbxassetid://"..clicksound end
 local screen = Screen
 
 function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
-	local udim2 = udim2 + UDim2.new(0, 0, 0, defaultbuttonsize.Y + (defaultbuttonsize.Y/2))
-	local holderframe = screen:CreateElement("ImageButton", {ClipsDescendants = true, Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
-	if not holderframe then return end
-	if programholder1 then
-		programholder1:AddChild(holderframe)
-	end
-	if not gputer["Screen"] then
-		holderframe.ZIndex = 3
-	end
+    local udim2 = udim2 + UDim2.new(0, 0, 0, defaultbuttonsize.Y + (defaultbuttonsize.Y/2))
+    local holderframe = screen:CreateElement("ImageButton", {ClipsDescendants = true, Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+    if not holderframe then return end
+    if programholder1 then
+        programholder1:AddChild(holderframe)
+    end
+    if not gputer["Screen"] then
+        holderframe.ZIndex = 3
+    end
 	local textlabel
 	if typeof(title) == "string" then
 		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -(defaultbuttonsize.X*2), 0, defaultbuttonsize.Y), BackgroundTransparency = 1, Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
@@ -1091,24 +1091,47 @@ local function openAccountManagement()
 			end)
 	    end)
 	    local deleteaccountbutton = createButton("Delete Account", UDim2.new(0.25, 0, 0.25, 0), UDim2.new(0.25, 0, 0.65, 0))
+
 	    deleteaccountbutton.MouseButton1Click:Connect(function()
             speaker:PlaySound(clicksound)
             local window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Delete Account", false, false, false, "Delete Account", false)
 			window:AddChild(screen:CreateElement("TextLabel", {
-				Size = UDim2.fromScale(1, 0.75);
+				Size = UDim2.fromScale(1, 0.25);
 				Position = UDim2.fromScale(0, 0);
-				Text = "Are you sure?";
+				Text = "Enter your Access Code to confirm:";
 				TextScaled = true;
 				BackgroundTransparency = 1;
 			}))
-			local confirm = createButton("Yes", UDim2.new(0.5, 0, 0.25, 0), UDim2.new(0, 0, 0.75, 0))
+			local password, text1 = createButton("Click To Update", UDim2.new(1, 0, 0.25, 0), UDim2.new(0, 0, 0.25, 0))
+			local passwordcode
+            window:AddChild(password)
+
+            password.MouseButton1Click:Connect(function()
+                local newPass = string.sub(keyboardinput, 1, #keyboardinput - 1)
+                local passwordtext = ""
+        	    for i=0, string.len(newPass) do
+        	        if i > 0 then
+                        passwordtext = passwordtext.."*"
+        	        end
+                end
+                passwordcode = newPass
+                text1.Text = passwordtext
+            end)
+			local confirm, text2 = createButton("Delete", UDim2.new(0.5, 0, 0.25, 0), UDim2.new(0, 0, 0.75, 0))
 			window:AddChild(confirm)
 			confirm.MouseButton1Click:Connect(function()
 			    speaker:PlaySound(clicksound)
-				deleteAccount(loginData["Username"] or "", loginData["Password"] or "")
-				holderframe:Destroy()
+			    if passwordcode == loginData["Password"] then
+    				deleteAccount(loginData["Username"] or "", loginData["Password"] or "")
+    				holderframe:Destroy()
+    				openAccountManagement()
+				else
+				    text2.Text = "Invalid"
+				    task.wait(2)
+				    text2.Text = "Delete"
+				end
 			end)
-			local cancel = createButton("No", UDim2.new(0.5, 0, 0.25, 0), UDim2.new(0.5, 0, 0.75, 0))
+			local cancel = createButton("Cancel", UDim2.new(0.5, 0, 0.25, 0), UDim2.new(0.5, 0, 0.75, 0))
 			window:AddChild(cancel)
 			cancel.MouseButton1Click:Connect(function()
 				holderframe:Destroy()
