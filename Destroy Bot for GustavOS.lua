@@ -1,3 +1,14 @@
+--a
+--a
+--a
+--a
+--a
+--a
+--a
+--a
+--a
+--a
+--a
 local Screen = GetPartFromPort(1,"TouchScreen")
 if not Screen then Screen = GetPartFromPort(2,"TouchScreen") end
 if not Screen then Screen = GetPartFromPort(1, "Screen") end
