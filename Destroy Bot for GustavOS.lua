@@ -53,7 +53,7 @@ local function AddElement(window, name, properties)
 	return guiobject
 end
 
-local window, closebutton = CreateWindow(Screen:GetDimensions().X*0.35, screen:GetDimensions().Y*0.5, "DestroyBot for GustavOS")
+local window, closebutton = CreateWindow(Screen:GetDimensions().X*0.35, Screen:GetDimensions().Y*0.5, "DestroyBot for GustavOS")
 local destroyBotFace = AddWindowElement(window, "Frame", {
 	Size = UDim2.fromScale(1,0.8);
 	Position = UDim2.fromScale(0,0);
