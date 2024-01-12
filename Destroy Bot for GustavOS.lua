@@ -19,7 +19,7 @@ if not Speaker then Speaker = GetPartFromPort(2,"Speaker") end
 local ChatDebounce = false
 Beep(1)
 local function CreateWindow(x, y, name)
-	local holderframe = Screen:CreateElement("TextButton", {TextTransparency = 1, Position = UDim2.new(0, 0, 0, 0), Size = UDim2.new(0, x, 0, y+25), Draggable = true})
+	local holderframe = Screen:CreateElement("TextButton", {TextTransparency = 1, Position = UDim2.new(0, 0, 0, 0), Size = UDim2.new(0, x, 0, y), Draggable = true})
 	local textlabel = Screen:CreateElement("TextLabel", {TextScaled = true, TextWrapped = true, Text = name, Position = UDim2.new(0,25,0,0), Size = UDim2.new(1, 0, 0, 25)})
 	holderframe:AddChild(textlabel)
 	
