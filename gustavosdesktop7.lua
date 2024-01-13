@@ -294,7 +294,7 @@ local function getstuff()
 						end
 						rom = temprom
 						romport = i
-					elseif #(temprom:ReadEntireDisk()) == 1 and v:Read("GDOSLibrary") then
+					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GDOSLibrary") then
 						temprom:Write("GDOSLibrary", nil)
 						rom = temprom
 						romport = i
