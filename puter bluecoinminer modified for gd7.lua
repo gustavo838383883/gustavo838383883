@@ -1111,6 +1111,7 @@ openAccountManagement()
 
 coroutine.resume(coroutine.create(while true do
 	task.wait(0.02)
+	if not window then break end
 	if screen then
 		if holding2 then
 			local cursors = screen:GetCursors()
