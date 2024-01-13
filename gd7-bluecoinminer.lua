@@ -1093,42 +1093,42 @@ local function openAccountManagement()
     			end
     			speaker:PlaySound(clicksound)
 			end)
-	    end)
-	    local deleteaccountbutton = createButton("Delete Account", UDim2.new(0.25, 0, 0.25, 0), UDim2.new(0.25, 0, 0.65, 0))
-
-	    deleteaccountbutton.MouseButton1Click:Connect(function()
-            speaker:PlaySound(clicksound)
-            local window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Delete Account", false, false, false, "Delete Account", false)
+		end)
+		local deleteaccountbutton = createButton("Delete Account", UDim2.new(0.25, 0, 0.25, 0), UDim2.new(0.25, 0, 0.65, 0))
+		
+		deleteaccountbutton.MouseButton1Click:Connect(function()
+			speaker:PlaySound(clicksound)
+			local window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Delete Account", false, false, false, "Delete Account", false)
 			window:AddChild(screen:CreateElement("TextLabel", {
 				Size = UDim2.fromScale(1, 0.25);
 				Position = UDim2.fromScale(0, 0);
-				Text = "Enter your Access Code to confirm:";
+				Text = "Enter your Access Code below to confirm account deletion.";
 				TextScaled = true;
 				BackgroundTransparency = 1;
 			}))
 			local password, text1 = createButton("Click To Update", UDim2.new(1, 0, 0.25, 0), UDim2.new(0, 0, 0.25, 0))
 			local passwordcode
-            window:AddChild(password)
-
-            password.MouseButton1Click:Connect(function()
-                local newPass = string.sub(keyboardinput, 1, #keyboardinput - 1)
-                local passwordtext = ""
-        	    for i=0, string.len(newPass) do
-        	        if i > 0 then
-                        passwordtext = passwordtext.."*"
-        	        end
-                end
-                passwordcode = newPass
-                text1.Text = passwordtext
-            end)
+			window:AddChild(password)
+	
+			password.MouseButton1Click:Connect(function()
+				local newPass = string.sub(keyboardinput, 1, #keyboardinput - 1)
+				local passwordtext = ""
+				    for i=0, string.len(newPass) do
+					if i > 0 then
+					passwordtext = passwordtext.."*"
+					end
+				end
+				passwordcode = newPass
+				text1.Text = passwordtext
+			end)
 			local confirm, text2 = createButton("Delete", UDim2.new(0.5, 0, 0.25, 0), UDim2.new(0, 0, 0.75, 0))
 			window:AddChild(confirm)
 			confirm.MouseButton1Click:Connect(function()
 			    speaker:PlaySound(clicksound)
 			    if passwordcode == loginData["Password"] then
-    				deleteAccount(loginData["Username"] or "", loginData["Password"] or "")
-    				holderframe:Destroy()
-    				openAccountManagement()
+				deleteAccount(loginData["Username"] or "", loginData["Password"] or "")
+				holderframe:Destroy()
+				openAccountManagement()
 				else
 				    text2.Text = "Invalid"
 				    task.wait(2)
@@ -1141,7 +1141,7 @@ local function openAccountManagement()
 				holderframe:Destroy()
 				speaker:PlaySound(clicksound)
 			end)
-        end)
+		end)
 		local balance = tostring(checkBalance()) or "N/A"
 		local balanceText = screen:CreateElement("TextLabel", {
 			Text = balance;
