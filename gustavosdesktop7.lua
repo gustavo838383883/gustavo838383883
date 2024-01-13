@@ -1252,7 +1252,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 			end)
 		end)
 	elseif directory then
-		deletebutton = createnicebutton2(UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 0, 0), "Delete", window)
+		deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, 0, 0, 0), "Delete", window)
 		
 		deletebutton.MouseButton1Up:Connect(function()
 			local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
