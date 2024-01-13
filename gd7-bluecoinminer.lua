@@ -1,6 +1,6 @@
 --og bluecoin atm made by blueloops9
 --gui made by Gustavo12345687890 / Gustavo242
---reskin of the puter bluecoin atm for made by robloxboxertBLOCKED / 0mori2
+--reskin of the puter bluecoin atm made by robloxboxertBLOCKED / 0mori2
 --made in 2024
 
 local prevCursorPos
