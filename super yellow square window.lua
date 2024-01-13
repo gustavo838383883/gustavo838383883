@@ -481,7 +481,7 @@ keyboardevent = keyboard:Connect("KeyPressed", function(key, keystring, state)
 	end
 end)
 
-while task.wait(0.01) do
+coroutine.resume(coroutine.create(while task.wait(0.01) do
 	if not holderframe then break end
 	if GetCollidedGuiObjects(hitbox, lavas) then
 		plr.Position = UDim2.new(0,0,0,0)
@@ -525,4 +525,4 @@ while task.wait(0.01) do
 			hitbox.Position += UDim2.new(0, 1, 0, 0)
 		end
 	end
-end
+end))
