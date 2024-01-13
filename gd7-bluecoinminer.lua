@@ -1,6 +1,6 @@
 --og bluecoin atm made by blueloops9
 --gui made by Gustavo12345687890 / Gustavo242
---reskin of the puter bluecoin atm made by robloxboxertBLOCKED / 0mori2
+--reskin of the puter bluecoin atm for gd7
 --made in 2024
 
 local prevCursorPos
@@ -59,15 +59,15 @@ if tonumber(clicksound) then clicksound = "rbxassetid://"..clicksound end
 local screen = Screen
 
 function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
-	local udim2 = udim2 + UDim2.new(0, 0, 0, defaultbuttonsize.Y + (defaultbuttonsize.Y/2))
-	local holderframe = screen:CreateElement("ImageButton", {ClipsDescendants = true, Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
-	if not holderframe then return end
-	if programholder1 then
-	programholder1:AddChild(holderframe)
-	end
-	if not gputer["Screen"] then
-	holderframe.ZIndex = 3
-	end
+    local udim2 = udim2 + UDim2.new(0, 0, 0, defaultbuttonsize.Y + (defaultbuttonsize.Y/2))
+    local holderframe = screen:CreateElement("ImageButton", {ClipsDescendants = true, Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
+    if not holderframe then return end
+    if programholder1 then
+        programholder1:AddChild(holderframe)
+    end
+    if not gputer["Screen"] then
+        holderframe.ZIndex = 3
+    end
 	local textlabel
 	if typeof(title) == "string" then
 		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -(defaultbuttonsize.X*2), 0, defaultbuttonsize.Y), BackgroundTransparency = 1, Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
@@ -610,17 +610,22 @@ local errors = {
 		["200"] = "Account created.";
 	};
 	transaction = {
-		["404"] = "Username or pass invalid.";
-		["400"] = "Username or pass invalid.";
+		["404"] = "Username or Access Code invalid.";
+		["400"] = "Username or Access Code invalid.";
 		["407"] = "Invalid recepient.";
 		["402"] = "you cant take bluecoin dingus";
 		["401"] = "Insufficient bluecoin.";
 		["200"] = "Transaction successful.";
 	};
 	checkBalance = {
-		["E407"] = "Username or pass invalid.";
-		["E406"] = "Username or pass invalid.";
+		["E407"] = "Username or Access Code invalid.";
+		["E406"] = "Username or Access Code invalid.";
 	}
+    deleteAccount = {
+        ["100"] = "Success.";
+        ["412"] = "Incorrect Access Code.";
+        ["411"] = "Invalid user.";
+    }
 }
 local function send(content)
     local Data
@@ -684,14 +689,13 @@ end
 local function deleteAccount(username, password)
 	local Content = JSONEncode({Method="DeleteAccount",Username=username,Password=password})
 	local data, success = send(Content)
-	local accountvalid = accountExists(username)
-	if accountvalid == false then
+	if data and errors.deleteAccount[data] and errors.deleteAccount[data] == "Success." then
 		loginData = {}
 		gui["Username"].Text = "You're not logged in!"
 		print(username, password)
 	else
-		printd(data)
-		errorPopup("Not logged in.")
+		printd(errors.deleteAccount[data] or data)
+		errorPopup(errors.deleteAccount[data] or data)
 	end
 end
 local function changePassword(newPassword)
