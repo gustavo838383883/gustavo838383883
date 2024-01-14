@@ -1584,6 +1584,7 @@ local function shutdownmicros(screen, micros)
 	holderframe:AddChild(scrollingframe)
 
 	local start = 0
+	if not microcontrollers then return end
 	for index, value in pairs(microcontrollers) do
 		local button, button2 = createnicebutton(UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, start), (start/25)+1, scrollingframe)
 		scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
