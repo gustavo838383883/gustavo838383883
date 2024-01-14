@@ -1008,7 +1008,7 @@ local function runtext(text)
 			if filedata and filedata ~= "" then
 				local split = nil
 				local returntable = nil
-				if directory ~= "" then
+				if dir ~= "" then
 					split = string.split(dir, "/")
 				end
 				if not split or split[2] == "" then
