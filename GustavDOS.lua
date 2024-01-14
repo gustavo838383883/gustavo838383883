@@ -1088,10 +1088,10 @@ local function runtext(text)
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
-					print(disk:Read(output))
+					print(output)
 				else
 					commandlines.insert(tostring(output))
-					print(disk:Read(output))
+					print(output)
 				end
 			else
 				local output = getfileontable(disk, filename, dir)
@@ -1099,10 +1099,10 @@ local function runtext(text)
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
-					print(disk:Read(output))
+					print(output)
 				else
 					commandlines.insert(tostring(output))
-					print(disk:Read(output))
+					print(output)
 				end
 			end
 		else
@@ -1290,7 +1290,7 @@ local function runtext(text)
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
-					print(disk:Read(output))
+					print(output)
 				elseif string.find(filename, ".lua") then
 					commandlines.insert(tostring(output))
 					loadluafile(microcontrollers, screen, output)
@@ -1302,11 +1302,11 @@ local function runtext(text)
 						textlabel.TextTransparency = 1
 						commandlines.insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
-						print(disk:Read(output))
+						print(output)
 					else
 						commandlines.insert(tostring(output))
 						commandlines.insert(dir..":")
-						print(disk:Read(output))
+						print(output)
 					end
 				end
 			else
@@ -1326,7 +1326,7 @@ local function runtext(text)
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
-					print(disk:Read(output))
+					print(output)
 				elseif string.find(filename, ".lua") then
 					commandlines.insert(tostring(output))
 					loadluafile(microcontrollers, screen, output)
@@ -1338,11 +1338,11 @@ local function runtext(text)
 						textlabel.TextTransparency = 1
 						commandlines.insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
-						print(disk:Read(output))
+						print(output)
 					else
 						commandlines.insert(tostring(output))
 						commandlines.insert(dir..":")
-						print(disk:Read(output))
+						print(output)
 					end
 				end
 			else
