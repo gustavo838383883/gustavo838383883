@@ -3675,16 +3675,16 @@ if not success then
 	if screen then
 
 		screen:ClearElements()
-		
+
 		local backimg = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://15940016124"})
-	
-		local text = screen:CreateElement("TextLabel", {TextScaled = true, Text = ":(", Size = UDim2.new(0.25, 0, 0.25, 0)})
-	
-		local text2 = screen:CreateElement("TextLabel", {TextScaled = true, Text = "An error has occurred.", Position = UDim2.new(0.25, 0, 0, 0), Size = UDim2.new(0.75, 0, 0.25, 0)})
-	
-		local text3 = screen:CreateElement("TextLabel", {TextScaled = true, Text = tostring(Error1), Position = UDim2.new(0, 0, 0.25, 0), Size = UDim2.new(1,0,0.5,0)})
-	
-		local text4 = screen:CreateElement("TextLabel", {TextScaled = true, Text = if game and workspace then "Reason: pilot.lua emulator skill issue" else "Reason: Creator skill issue", Size = UDim2.new(1, 0, 0.25, 0), Position = UDim2.new(0, 0, 0.75, 0)})
+
+		local text = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextScaled = true, Text = ":(", Size = UDim2.new(0.25, 0, 0.25, 0), TextColor3 = Color3.new(1,1,1)})
+
+		local text2 = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextScaled = true, Text = "An error has occurred.", Position = UDim2.new(0.25, 0, 0, 0), Size = UDim2.new(0.75, 0, 0.25, 0), TextColor3 = Color3.new(1, 0, 0)})
+
+		local text3 = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextScaled = true, Text = tostring(Error1), Position = UDim2.new(0, 0, 0.25, 0), Size = UDim2.new(1,0,0.5,0)})
+
+		local text4 = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextScaled = true, Text = if game and workspace then "Reason: pilot.lua emulator skill issue" else "Reason: Creator skill issue", Size = UDim2.new(1, 0, 0.25, 0), Position = UDim2.new(0, 0, 0.75, 0)})
 		backimg:AddChild(text)
 		backimg:AddChild(text2)
 		backimg:AddChild(text3)
