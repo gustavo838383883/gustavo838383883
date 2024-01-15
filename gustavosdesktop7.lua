@@ -1338,7 +1338,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		
 		local tableval = txt
 		local start = 0
-		local holderframe, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, "Table Content", false)
+		local holderframe, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), newdirectory, false, false, false, "Table Content", false)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 		textlabel.Size -= UDim2.new(0, defaultbuttonsize.Y, 0, 0)
