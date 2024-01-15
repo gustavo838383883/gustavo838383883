@@ -3711,13 +3711,13 @@ end
 bootos()
 
 while true do
-    task.wait(2)
-    if players then
-        for i,v in pairs(players) do
-            if tick() - v[1] > 0.5 then
-                v[2]:Destroy()
+	task.wait(2)
+	if players then
+		for i,v in pairs(players) do
+			if tick() - v[1] > 0.5 then
+				v[2]:Destroy()
 				players[i] = nil
-            end
-        end
-    end
+			end
+		end
+	end
 end
