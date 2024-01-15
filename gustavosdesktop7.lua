@@ -3473,6 +3473,9 @@ function bootos()
 		local commandlines = commandline.new(false, nil, screen)
 		commandlines:insert(name.." Command line")
 		task.wait(1)
+		if game and workspace then
+			commandlines:insert("What the... pilot.lua emulator!?")
+		end
 		commandlines:insert("Welcome To "..name)
 		task.wait(2)
 		screen:ClearElements()
