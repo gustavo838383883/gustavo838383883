@@ -1339,13 +1339,14 @@ local function readfile(txt, nameondisk, boolean, directory)
 		local tableval = txt
 		local start = 0
 		local holderframe, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), newdirectory, false, false, false, "Table Content", false)
-		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.9, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
-		textlabel.Size -= UDim2.new(0, defaultbuttonsize.Y, 0, 0)
+
+		local refreshbutton = createnicebutton2(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
 		
 		if boolean == true then
 			local alldata = disk:ReadEntireDisk()
-			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
+			local deletebutton = createnicebutton2(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
 			
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
@@ -1366,7 +1367,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 			end)
 		elseif directory then
 			local alldata = disk:ReadEntireDisk()
-			local deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
+			local deletebutton = createnicebutton2(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
 			
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
@@ -1395,6 +1396,22 @@ local function readfile(txt, nameondisk, boolean, directory)
 				readfile(getfileontable(disk, index, newdirectory), index, false, newdirectory)
 			end)
 		end
+
+		refreshbutton.MouseButton1Up:Connect(function()
+			scrollingframe:Destroy()
+			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.9, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
+			holderframe:AddChild(scrollingframe)
+
+			local tableval = getfileontable(disk, directory or "/", nameondisk)
+			for index, data in pairs(if typeof(tableval) == "table" then tableval else {}) do
+				local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(index), scrollingframe)
+				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+				start += 25
+				button.MouseButton1Down:Connect(function()
+					readfile(getfileontable(disk, index, newdirectory), index, false, newdirectory)
+				end)
+			end
+		end)
 	end
 	
 	if string.find(string.lower(tostring(txt)), "<woshtml>") then
@@ -1406,9 +1423,11 @@ end
 local function loaddisk()
 	local start = 0
 	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "/", false, false, false, "Files", false)
-	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 1, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
+	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.9, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 
+	local refreshbutton = createnicebutton2(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
+	
 	for filename, data in pairs(disk:ReadEntireDisk()) do
 		if filename ~= "Color" and filename ~= "BackgroundImage" then
 			local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
@@ -1420,6 +1439,23 @@ local function loaddisk()
 			end)
 		end
 	end
+
+	refreshbutton.MouseButton1Up:Connect(function()
+		scrollingframe:Destroy()
+		scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.9, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
+		holderframe:AddChild(scrollingframe)
+		for filename, data in pairs(disk:ReadEntireDisk()) do
+			if filename ~= "Color" and filename ~= "BackgroundImage" then
+				local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
+				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+				start += 25
+				button.MouseButton1Down:Connect(function()
+					local data = disk:Read(filename)
+					readfile(data, filename, true)
+				end)
+			end
+		end
+	end)
 end
 
 local function writedisk()
