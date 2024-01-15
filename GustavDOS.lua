@@ -1223,6 +1223,7 @@ local function runtext(text)
 	elseif text:lower():sub(1, 11) == "soundpitch " then
 		if speaker and tonumber(text:sub(12, string.len(text))) then
 			speaker:Configure({Pitch = tonumber(text:sub(12, string.len(text)))})
+			speaker:Trigger()
 			print(text:sub(12, string.len(text)))
 		else
 			commandlines.insert("Invalid pitch number or no speaker was found.")
