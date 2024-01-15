@@ -481,48 +481,51 @@ keyboardevent = keyboard:Connect("KeyPressed", function(key, keystring, state)
 	end
 end)
 
-coroutine.resume(coroutine.create(while task.wait(0.01) do
-	if not holderframe then break end
-	if GetCollidedGuiObjects(hitbox, lavas) then
-		plr.Position = UDim2.new(0,0,0,0)
-		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
-		speaker:PlaySound("rbxassetid://3802269741")
-	end
-	
-	if plr.Position.Y.Offset > 150 then
-		plr.Position = UDim2.new(0,0,0,0)
-		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
-	end
-	
-	
-	hitbox.Position += UDim2.new(0, 0, 0, 1)
-	if not DetectGuiBelow(hitbox, allobjects) then
-		plr.Position += UDim2.new(0, 0, 0, 1)
-		thegame.Position -= UDim2.new(0, 0, 0, 1)
-		hitbox.Position -= UDim2.new(0, 0, 0, 1)
-	else
-		hitbox.Position -= UDim2.new(0, 0, 0, 1)
-	end
-
-	if right == true then
-		hitbox.Position += UDim2.new(0, 1, 0, 0)
-		if not GetCollidedGuiObjects(hitbox, allobjects) then
-			thegame.Position -= UDim2.new(0, 1, 0, 0)
-			plr.Position += UDim2.new(0, 1, 0, 0)
-			hitbox.Position -= UDim2.new(0, 1, 0, 0)
-		else
-			hitbox.Position -= UDim2.new(0, 1, 0, 0)
+coroutine.resume(coroutine.create(
+	function()
+		while task.wait(0.01) do
+			if not holderframe then break end
+			if GetCollidedGuiObjects(hitbox, lavas) then
+				plr.Position = UDim2.new(0,0,0,0)
+				thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
+				speaker:PlaySound("rbxassetid://3802269741")
+			end
+			
+			if plr.Position.Y.Offset > 150 then
+				plr.Position = UDim2.new(0,0,0,0)
+				thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
+			end
+			
+			
+			hitbox.Position += UDim2.new(0, 0, 0, 1)
+			if not DetectGuiBelow(hitbox, allobjects) then
+				plr.Position += UDim2.new(0, 0, 0, 1)
+				thegame.Position -= UDim2.new(0, 0, 0, 1)
+				hitbox.Position -= UDim2.new(0, 0, 0, 1)
+			else
+				hitbox.Position -= UDim2.new(0, 0, 0, 1)
+			end
+		
+			if right == true then
+				hitbox.Position += UDim2.new(0, 1, 0, 0)
+				if not GetCollidedGuiObjects(hitbox, allobjects) then
+					thegame.Position -= UDim2.new(0, 1, 0, 0)
+					plr.Position += UDim2.new(0, 1, 0, 0)
+					hitbox.Position -= UDim2.new(0, 1, 0, 0)
+				else
+					hitbox.Position -= UDim2.new(0, 1, 0, 0)
+				end
+			end
+			
+			if left == true then
+				hitbox.Position -= UDim2.new(0, 1, 0, 0)
+				if not GetCollidedGuiObjects(hitbox, allobjects) then
+					thegame.Position += UDim2.new(0, 1, 0, 0)
+					plr.Position -= UDim2.new(0, 1, 0, 0)
+					hitbox.Position += UDim2.new(0, 1, 0, 0)
+				else
+					hitbox.Position += UDim2.new(0, 1, 0, 0)
+				end
+			end
 		end
-	end
-	
-	if left == true then
-		hitbox.Position -= UDim2.new(0, 1, 0, 0)
-		if not GetCollidedGuiObjects(hitbox, allobjects) then
-			thegame.Position += UDim2.new(0, 1, 0, 0)
-			plr.Position -= UDim2.new(0, 1, 0, 0)
-			hitbox.Position += UDim2.new(0, 1, 0, 0)
-		else
-			hitbox.Position += UDim2.new(0, 1, 0, 0)
-		end
-	end
-end))
+	end))
