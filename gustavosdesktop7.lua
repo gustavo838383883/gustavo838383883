@@ -427,10 +427,11 @@ getstuff()
 
 
 local name = "GustavOSDesktop7"
+local commandline = {}
+local defaultbuttonsize = Vector2.new(0,0)
 
 local keyboardevent
 local cursorevent
-local commandline = {}
 
 local success, Error1 = pcall(function()
 	local holding = false
@@ -480,8 +481,6 @@ local success, Error1 = pcall(function()
 	local resolutionframe
 
 	local minimizedammount = 0
-
-	local defaultbuttonsize = Vector2.new(0,0)
 
 	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
@@ -3712,13 +3711,13 @@ end
 bootos()
 
 while true do
-	task.wait(2)
-	if players then
-		for i,v in pairs(players) do
-			if tick() - v[1] > 0.5 then
-				v[2]:Destroy()
+    task.wait(2)
+    if players then
+        for i,v in pairs(players) do
+            if tick() - v[1] > 0.5 then
+                v[2]:Destroy()
 				players[i] = nil
-			end
-		end
-	end
+            end
+        end
+    end
 end
