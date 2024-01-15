@@ -429,7 +429,7 @@ getstuff()
 local name = "GustavOSDesktop7"
 local commandline = {}
 local defaultbuttonsize = Vector2.new(0,0)
-
+local players = {}
 local keyboardevent
 local cursorevent
 
@@ -2209,8 +2209,6 @@ local success, Error1 = pcall(function()
 	end
 
 	local bootos
-
-	local players = {}
 
 	local function shutdownprompt()
 		local window, holderframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
