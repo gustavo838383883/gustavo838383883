@@ -1220,10 +1220,19 @@ local function runtext(text)
 		speaker.ClearSounds()
 		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 		commandlines.insert(dir..":")
+	elseif text:lower():sub(1, 11) == "soundpitch " then
+		if speaker and tonumber(text:sub(12, string.len(text))) then
+			speaker:Configure({Pitch = tonumber(text:sub(12, string.len(text)))})
+			print(text:sub(12, string.len(text)))
+		else
+			commandlines.insert("Invalid pitch number or no speaker was found.")
+		end
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 4) == "cmds" then
 		commandlines.insert("Commands:")
 		commandlines.insert("cmds")
 		commandlines.insert("stopsounds")
+		commandlines.insert("soundpitch number")
 		commandlines.insert("readsound filename")
 		commandlines.insert("read filename")
 		commandlines.insert("readimage filename")
