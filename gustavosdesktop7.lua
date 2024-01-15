@@ -1324,7 +1324,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 	end
 
-	if string.find(string.lower(tostring(nameondisk)), ".lua") then
+	if string.find(string.lower(tostring(nameondisk)), "\.lua") then
 		loadluafile(microcontrollers, screen, tostring(txt))
 	end
 	if typeof(txt) == "table" then
@@ -2938,18 +2938,18 @@ local function terminal()
 			if not split or split[2] == "" then
 				local output = disk:Read(filename)
 				if output then
-					if string.find(filename, ".aud") then
+					if string.find(filename, "\.aud") then
 						commandlines:insert(tostring(output))
 						playsound(output)
 						commandlines:insert(dir..":")
 						print(output)
-					elseif string.find(filename, ".img") then
+					elseif string.find(filename, "\.img") then
 						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 						StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 						commandlines:insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
 						print(output)
-					elseif string.find(filename, ".lua") then
+					elseif string.find(filename, "\.lua") then
 						commandlines:insert(tostring(output))
 						loadluafile(microcontrollers, screen, output)
 						commandlines:insert(dir..":")
@@ -2974,18 +2974,18 @@ local function terminal()
 			else
 				local output = getfileontable(disk, filename, dir)
 				if output then
-					if string.find(filename, ".aud") then
+					if string.find(filename, "\.aud") then
 						commandlines:insert(tostring(output))
 						playsound(output)
 						commandlines:insert(dir..":")
 						print(output)
-					elseif string.find(filename, ".img") then
+					elseif string.find(filename, "\.img") then
 						local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 						StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 						commandlines:insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
 						print(output)
-					elseif string.find(filename, ".lua") then
+					elseif string.find(filename, "\.lua") then
 						commandlines:insert(tostring(output))
 						loadluafile(microcontrollers, screen, output)
 						commandlines:insert(dir..":")
@@ -3474,7 +3474,7 @@ function bootos()
 		commandlines:insert(name.." Command line")
 		task.wait(1)
 		if game and workspace then
-			commandlines:insert("What the... pilot.lua emulator!?")
+			commandlines:insert("What the... pilot\.lua emulator!?")
 		end
 		commandlines:insert("Welcome To "..name)
 		task.wait(2)
