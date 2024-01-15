@@ -201,7 +201,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
             if not minimizepressed then
                 if not maximizepressed then
                     minimizetext.Text = "↓"
-                    window.Visible = true
+                    window.Visible = false
         	        minimizepressed = true
         	        window.Position = UDim2.new(-1, 0, -1, 0)
                 	unminimizedsize = holderframe.Size
@@ -218,7 +218,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
                 if not maximizepressed then
                     minimizetext.Text = "↑"
                     holderframe.Size = unminimizedsize
-                    window.Visible = false
+                    window.Visible = true
                     window.Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y)
         	        minimizepressed = false
                     if not boolean2 then
