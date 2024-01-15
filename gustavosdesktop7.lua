@@ -1402,9 +1402,9 @@ local function readfile(txt, nameondisk, boolean, directory)
 			scrollingframe:Destroy()
 			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.9, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
 			holderframe:AddChild(scrollingframe)
-
 			local tableval = getfileontable(disk, directory or "/", nameondisk)
-			for index, data in pairs(if typeof(tableval) == "table" then tableval else {}) do
+			tableval = if typeof(tableval) == "table" then tableval else {}
+			for index, data in pairs(tableval) do
 				local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(index), scrollingframe)
 				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 				start += 25
