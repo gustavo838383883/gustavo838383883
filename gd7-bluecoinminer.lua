@@ -1603,27 +1603,25 @@ while true do
 		end
 
 		if holding then
-			if not holderframetouse then return end
+			if not holderframetouse then holding = false; return end
 			local cursors = screen:GetCursors()
 			local cursor
-			local success = false
 			for index,cur in pairs(cursors) do
 				if startCursorPos and cur then
 					if cur.Player == startCursorPos.Player then
 						cursor = cur
-						success = true
 					end
 				end
 			end
-			if not success then holding = false end
+			if not cursor then holding = false end
 			if cursor then
-				local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +5
-				local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +5
+				local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +((defaultbuttonsize.Y/2)/2)
+				local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +((defaultbuttonsize.Y/2)/2)
 				local screenresolution = resolutionframe.AbsoluteSize
-
+	
 				if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
-					if newX < 135 then newX = 135 end
-					if newY < 100 then newY = 100 end
+					if newX < defaultbuttonsize.X*4 then newX = defaultbuttonsize.X*4 end
+					if newY < defaultbuttonsize.Y*4 then newY = defaultbuttonsize.Y*4 end
 					if newX/screenresolution.X > 1 then newX = screenresolution.X end
 					if newY/screenresolution.Y > 0.9 then newY = screenresolution.Y * 0.9 end
 					if holderframetouse then
