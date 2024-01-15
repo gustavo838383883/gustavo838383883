@@ -2471,6 +2471,14 @@ local function terminal()
 			commandlines:insert(text:sub(7, string.len(text)))
 			print(text:sub(7, string.len(text)))
 			commandlines:insert(dir..":")
+		elseif text:lower():sub(1, 11) == "soundpitch " then
+			if speaker and tonumber(text:sub(12, string.len(text))) then
+				speaker:Configure({Pitch = tonumber(text:sub(12, string.len(text)))})
+				print(text:sub(12, string.len(text)))
+			else
+				commandlines:insert("Invalid pitch number or no speaker was found.")
+			end
+			commandlines:insert(dir..":")
 		elseif text:lower():sub(1, 10) == "showmicros" then
 			if microcontrollers then
 				local start = 0
@@ -2874,6 +2882,7 @@ local function terminal()
 			commandlines:insert("Commands:")
 			commandlines:insert("cmds")
 			commandlines:insert("stopsounds")
+			commandlines:insert("soundpitch number")
 			commandlines:insert("readsound filename")
 			commandlines:insert("read filename")
 			commandlines:insert("readimage filename")
