@@ -430,6 +430,7 @@ local name = "GustavOSDesktop7"
 
 local keyboardevent
 local cursorevent
+local commandline = {}
 
 local success, Error1 = pcall(function()
 	local holding = false
@@ -699,8 +700,6 @@ local success, Error1 = pcall(function()
 		end
 		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton
 	end
-
-	local commandline = {}
 
 	function commandline.new(boolean, udim2, screen)
 		local holderframe
