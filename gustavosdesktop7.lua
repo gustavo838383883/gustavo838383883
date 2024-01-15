@@ -1342,11 +1342,11 @@ local function readfile(txt, nameondisk, boolean, directory)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.9, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 
-		local refreshbutton = createnicebutton2(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
+		local refreshbutton = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
 		
 		if boolean == true then
 			local alldata = disk:ReadEntireDisk()
-			local deletebutton = createnicebutton2(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
+			local deletebutton = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
 			
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
@@ -1367,7 +1367,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 			end)
 		elseif directory then
 			local alldata = disk:ReadEntireDisk()
-			local deletebutton = createnicebutton2(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
+			local deletebutton = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
 			
 			deletebutton.MouseButton1Up:Connect(function()
 				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
@@ -1427,7 +1427,7 @@ local function loaddisk()
 	local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.9, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
 	holderframe:AddChild(scrollingframe)
 
-	local refreshbutton = createnicebutton2(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
+	local refreshbutton = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
 	
 	for filename, data in pairs(disk:ReadEntireDisk()) do
 		if filename ~= "Color" and filename ~= "BackgroundImage" then
