@@ -620,12 +620,12 @@ local errors = {
 	checkBalance = {
 		["E407"] = "Username or Access Code invalid.";
 		["E406"] = "Username or Access Code invalid.";
+	},
+	deleteAccount = {
+	["100"] = "Success.";
+	["412"] = "Incorrect Access Code.";
+	["411"] = "Invalid user.";
 	}
-    deleteAccount = {
-        ["100"] = "Success.";
-        ["412"] = "Incorrect Access Code.";
-        ["411"] = "Invalid user.";
-    }
 }
 local function send(content)
     local Data
