@@ -1274,7 +1274,7 @@ local success, Error1 = pcall(function()
 			end)
 		end
 		
-		if string.find(string.lower(tostring(nameondisk)), ".aud") then
+		if string.find(string.lower(tostring(nameondisk)), "\.aud") then
 			local txt = string.lower(tostring(txt))
 			if string.find(tostring(txt), "pitch:") then
 				local length = nil
@@ -1321,7 +1321,7 @@ local success, Error1 = pcall(function()
 			end
 		end
 	
-		if string.find(string.lower(tostring(nameondisk)), ".img") then
+		if string.find(string.lower(tostring(nameondisk)), "\.img") then
 			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 		end
 	
