@@ -3538,7 +3538,7 @@ if not success then
 			background.CanvasSize = UDim2.new(1, 0, 0, (lines.number * 25) + 25)
 			lines.number += 1
 		end
-		return lines, background, holderframe
+		return lines, background
 	end
 end
 
