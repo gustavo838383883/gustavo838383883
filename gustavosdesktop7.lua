@@ -943,13 +943,13 @@ local success, Error1 = pcall(function()
 		end
 	end
 
-	local function woshtmlfile(txt, screen, boolean)
+	local function woshtmlfile(txt, screen, boolean, name)
 		local size = UDim2.new(0.7, 0, 0.7, 0)
 
 		if boolean then
 			size = UDim2.new(0.5, 0, 0.5, 0)
 		end
-		local filegui = CreateWindow(size, nil, false, false, false, "File", false)
+		local filegui = CreateWindow(size, nil, false, false, false, name or "File", false)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), CanvasSize = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 		filegui:AddChild(scrollingframe)
 
@@ -1126,8 +1126,8 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
-	local function audioui(screen, disk, data, speaker, pitch, length)
-		local holderframe, window, closebutton = CreateWindow(UDim2.new(0.5, 0, 0.5, 0), nil, false, false, false, "Audio", false)
+	local function audioui(screen, disk, data, speaker, pitch, length, name)
+		local holderframe, window, closebutton = CreateWindow(UDim2.new(0.5, 0, 0.5, 0), nil, false, false, false, name or "Audio", false)
 		local sound = nil
 		closebutton.MouseButton1Down:Connect(function()
 			sound:Stop()
@@ -1227,7 +1227,7 @@ local success, Error1 = pcall(function()
 	local loaddisk
 
 	local function readfile(txt, nameondisk, boolean, directory)
-		local filegui, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, "File", false)
+		local filegui, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, nameondisk or "File", false)
 		local deletebutton = nil
 
 		local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
@@ -1301,7 +1301,7 @@ local success, Error1 = pcall(function()
 					end
 				end
 
-				audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
+				audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length), nameondisk)
 
 			elseif string.find(tostring(txt), "length:") then
 
@@ -1317,15 +1317,15 @@ local success, Error1 = pcall(function()
 					length = splitted[2]
 				end
 
-				audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
+				audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length), nameondisk)
 
 			else
-				audioui(screen, disk, txt, speaker)
+				audioui(screen, disk, txt, speaker, nil, nil, nameondisk)
 			end
 		end
 
 		if string.find(string.lower(tostring(nameondisk)), "\.img") then
-			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true, nameondisk)
 		end
 
 		if string.find(string.lower(tostring(nameondisk)), "\.lua") then
@@ -1344,7 +1344,7 @@ local success, Error1 = pcall(function()
 		end
 
 		if string.find(string.lower(tostring(txt)), "<woshtml>") then
-			woshtmlfile(txt, screen)
+			woshtmlfile(txt, screen, nameondisk)
 		end
 
 	end
@@ -1548,11 +1548,6 @@ local success, Error1 = pcall(function()
 		deletebutton.MouseButton1Up:Connect(function()
 			local split = directory:split("/")
 
-			local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
-			local removedlast = removedlast1:sub(1, -(string.len(split[#split]))-2)
-			local split2 = removedlast1:split("/")	
-			data = filesystem.Read(split2[#split2], removedlast)
-			directory = removedlast1
 			local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
@@ -1562,15 +1557,29 @@ local success, Error1 = pcall(function()
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
-				disk:Write(split[#split], nil)
-				scrollingframe:Destroy()
-				start = 0
-				scrollingframe:Destroy()
-				scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
-				holderframe:AddChild(scrollingframe)
-								
-				for filename, dataz in pairs(data) do
-					loadfile(filename, dataz)
+				filesystem.Write(split[#split], nil)
+				if scrollingframe then
+				    local data
+				    if #split > 2 then
+				        local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
+				        local removedlast = removedlast1:sub(1, -(string.len(split[#split]))-2)
+				        local split2 = removedlast1:split("/")
+				        data = filesystem.Read(split2[#split2], removedlast)
+				        directory = removedlast1
+			        else
+			            data = disk:ReadEntireDisk()
+			            directory = "/"
+				    end
+				    start = 0
+    				scrollingframe:Destroy()
+    				scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+    				holderframe:AddChild(scrollingframe)
+    								
+				    if typeof(data) == "table" then
+                        for filename, dataz in pairs(data) do
+                            loadfile(filename, dataz)
+				        end
+				    end
 				end
 								
 				windowz:Destroy()
@@ -2565,7 +2574,7 @@ local success, Error1 = pcall(function()
 		local bootdos
 		local dir = "/"
 
-		local function playsound(txt)
+		local function playsound(txt, name)
 			if txt then
 				if string.find(tostring(txt), "pitch:") then
 					local length = nil
@@ -2588,7 +2597,7 @@ local success, Error1 = pcall(function()
 							length = splitted[2]
 						end
 					end
-					audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
+					audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length), name)
 				elseif string.find(tostring(txt), "length:") then
 
 					local splitted = string.split(tostring(txt), "length:")
@@ -2603,10 +2612,10 @@ local success, Error1 = pcall(function()
 						length = splitted[2]
 					end
 
-					audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
+					audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length), name)
 
 				else
-					audioui(screen, disk, txt, speaker)
+					audioui(screen, disk, txt, speaker, nil, nil, name)
 				end
 			end
 		end
@@ -3083,7 +3092,7 @@ local success, Error1 = pcall(function()
 				else
 					commandlines:insert("No filename specified")
 				end
-				playsound(txt)
+				playsound(txt, filename)
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 10) == "playsound " then
 				local txt = text:sub(11, string.len(text))
@@ -3164,7 +3173,7 @@ local success, Error1 = pcall(function()
 					if output then
 						if string.find(filename, "\.aud") then
 							commandlines:insert(tostring(output))
-							playsound(output)
+							playsound(output, filename)
 							commandlines:insert(dir..":")
 							print(output)
 						elseif string.find(filename, "\.img") then
