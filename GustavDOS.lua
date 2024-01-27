@@ -1143,13 +1143,13 @@ local function runtext(text)
 			end
 			if not split or split[2] == "" then
 				local textlabel = commandlines.insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
-				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
+				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..disk:Read(filename)})
 				textlabel:AddChild(videoframe)
 				videoframe.Playing = true
 				print(disk:Read(filename))
 			else
 				local textlabel = commandlines.insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
-				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
+				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..tostring(getfileontable(disk, filename, dir))})
 				textlabel:AddChild(videoframe)
 				videoframe.Playing = true
 				print(getfileontable(disk, filename, dir))
