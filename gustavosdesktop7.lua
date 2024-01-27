@@ -1558,9 +1558,11 @@ local success, Error1 = pcall(function()
 
 			deletebutton.MouseButton1Up:Connect(function()
 				disk:Write(split[#split], nil)
-				if holderframe then
-					holderframe:Destroy()
-				end
+				scrollingframe:Destroy()
+				start = 0
+				scrollingframe:Destroy()
+				scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+				holderframe:AddChild(scrollingframe)
 				windowz:Destroy()
 			end)
 		end)
