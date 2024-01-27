@@ -1548,6 +1548,11 @@ local success, Error1 = pcall(function()
 		deletebutton.MouseButton1Up:Connect(function()
 			local split = directory:split("/")
 
+			local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
+			local removedlast = removedlast1:sub(1, -(string.len(split[#split]))-2)
+			local split2 = removedlast1:split("/")	
+			data = filesystem.Read(split2[#split2], removedlast)
+			directory = removedlast1
 			local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
@@ -1563,6 +1568,11 @@ local success, Error1 = pcall(function()
 				scrollingframe:Destroy()
 				scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 				holderframe:AddChild(scrollingframe)
+								
+				for filename, dataz in pairs(data) do
+					loadfile(filename, dataz)
+				end
+								
 				windowz:Destroy()
 			end)
 		end)
