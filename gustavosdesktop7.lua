@@ -1599,7 +1599,8 @@ local success, Error1 = pcall(function()
 			elseif #split > 2 then
 				local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
 				local removedlast = removedlast1:sub(1, -(string.len(split[#split]))-2)
-				data = filesystem.Read(split[#split], removedlast)
+				local split2 = removedlast1:split()	
+				data = filesystem.Read(split2[#split2], removedlast)
 				directory = removedlast1
 			end
 
