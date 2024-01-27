@@ -161,7 +161,7 @@ local function createfileontable(disk, filename, filedata, directory)
 		if split[1] and split[2] then
 			local rootfile = disk:Read(split[2])
 			local tablez = {
-			[1] = rootfile,
+				[1] = rootfile,
 			}
 			if typeof(rootfile) == "table" then
 				local resulttable = rootfile
@@ -217,7 +217,7 @@ local function getfileontable(disk, filename, directory)
 		if split[1] and split[2] then
 			local rootfile = disk:Read(split[2])
 			local tablez = {
-			[1] = rootfile,
+				[1] = rootfile,
 			}
 			if typeof(rootfile) == "table" then
 				local resulttable = rootfile
@@ -258,6 +258,8 @@ local romport
 local disksport
 local romindexusing
 local sharedport
+
+local bootos
 
 local shutdownpoly = nil
 
@@ -1222,6 +1224,8 @@ local success, Error1 = pcall(function()
 		end
 	end
 
+	local loaddisk
+
 	local function readfile(txt, nameondisk, boolean, directory)
 		local filegui, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, "File", false)
 		local deletebutton = nil
@@ -1329,90 +1333,14 @@ local success, Error1 = pcall(function()
 		end
 		if typeof(txt) == "table" then
 			local newdirectory = nil
-			if directory then
+			if directory and directory ~= "/" then
 				newdirectory = directory.."/"..nameondisk
 			else
 				newdirectory = "/"..nameondisk
 			end
 			window:Destroy()
 
-			local tableval = txt
-			local start = 0
-			local holderframe, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), newdirectory, false, false, false, "Table Content", false)
-			local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
-			holderframe:AddChild(scrollingframe)
-
-			local refreshbutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
-
-			if boolean == true then
-				local alldata = disk:ReadEntireDisk()
-				local deletebutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
-
-				deletebutton.MouseButton1Up:Connect(function()
-					local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
-					local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
-					local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
-
-					cancelbutton.MouseButton1Down:Connect(function()
-						windowz:Destroy()
-					end)
-
-					deletebutton.MouseButton1Up:Connect(function()
-						disk:Write(nameondisk, nil)
-						if holderframe then
-							window:Destroy()
-						end
-						windowz:Destroy()
-					end)
-				end)
-			elseif directory then
-				local alldata = disk:ReadEntireDisk()
-				local deletebutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
-
-				deletebutton.MouseButton1Up:Connect(function()
-					local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
-					local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
-					local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
-
-					cancelbutton.MouseButton1Down:Connect(function()
-						windowz:Destroy()
-					end)
-
-					deletebutton.MouseButton1Up:Connect(function()
-						createfileontable(disk, nameondisk, nil, directory)
-						windowz:Destroy()
-						if window then
-							window:Destroy()
-						end
-					end)
-				end)
-			end
-
-			for index, data in pairs(tableval) do
-				local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(index), scrollingframe)
-				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
-				start += 25
-				button.MouseButton1Down:Connect(function()
-					readfile(getfileontable(disk, index, newdirectory), index, false, newdirectory)
-				end)
-			end
-
-			refreshbutton.MouseButton1Up:Connect(function()
-				start = 0
-				scrollingframe:Destroy()
-				scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
-				holderframe:AddChild(scrollingframe)
-				local tableval = if directory == nil or directory == "/" then disk:Read(nameondisk) else getfileontable(disk, nameondisk, directory)
-				tableval = if typeof(tableval) == "table" then tableval else {}
-				for index, data in pairs(tableval) do
-					local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(index), scrollingframe)
-					scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
-					start += 25
-					button.MouseButton1Down:Connect(function()
-						readfile(getfileontable(disk, index, newdirectory), index, false, newdirectory)
-					end)
-				end
-			end)
+			loaddisk(newdirectory, false)
 		end
 
 		if string.find(string.lower(tostring(txt)), "<woshtml>") then
@@ -1421,41 +1349,278 @@ local success, Error1 = pcall(function()
 
 	end
 
-	local function loaddisk()
+	local filesystem = {
+		Write = function(filename, filedata, directory)
+			local directory = directory or "/"
+			local dir = directory
+			local value = "No filename or filedata specified"
+			if filename and filename ~= "" then
+				local split = nil
+				local returntable = nil
+				if directory ~= "" then
+					split = string.split(dir, "/")
+				end
+				if not split or split[2] == "" then
+					disk:Write(filename, filedata)
+				else
+					returntable = createfileontable(disk, filename, filedata, dir)
+				end
+				if not split or split[2] == "" then
+					if disk:Read(filename) then
+						if disk:Read(filename) == filedata then
+							value = "Success i think"
+						else
+							value = "Failed"
+						end
+					else
+						value = "Failed"
+					end
+				else
+					if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
+						value = "Success i think"
+					else
+						value = "Failed i think"
+					end
+				end
+			else
+				value = "No filename specified"
+			end
+			return value
+		end,
+		Read = function(filename, directory)
+			local directory = directory or "/"
+			local dir = directory
+			local value = "No filename specified"
+			if filename and filename ~= "" then
+				local split = nil
+				if dir ~= "" then
+					split = string.split(dir, "/")
+				end
+				if not split or split[2] == "" then
+					local output = disk:Read(filename)
+					value = output
+					print(output)
+				else
+					local output = getfileontable(disk, filename, dir)
+					value = output
+					print(output)
+				end
+			else
+				value = "No filename specified"
+			end
+			return value
+		end,
+	}
+
+	function loaddisk(directory: string, boolean)
+		local directory = directory or "/"
 		local start = 0
-		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "/", false, false, false, "Files", false)
+		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, "Files", false)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 
 		local refreshbutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
 
-		for filename, data in pairs(disk:ReadEntireDisk()) do
+		local parentbutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0.2, 0, 0, 0), "Parent", holderframe)
+
+		local data
+		local split = directory:split("/")
+
+		if #split == 2 and split[2] == "" then
+			data = disk:ReadEntireDisk()
+		elseif #split == 2 and split[2] ~= "" then
+			data = disk:Read(split[2])
+		elseif #split > 2 then
+			local removedlast = directory:sub(1, -(string.len(split[#split]))-2)
+			data = filesystem.Read(split[#split], removedlast)
+		end
+
+		local deletebutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
+
+		local function loadfile(filename, dataz)
 			if filename ~= "Color" and filename ~= "BackgroundImage" then
-				local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
+				local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
+				textlabel.Size = UDim2.new(1, -25, 1, 0)
+				textlabel.Position = UDim2.new(0, 25, 0, 0)
+
+				local imagebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
+				button:AddChild(imagebutton)
+
+				if string.find(filename, "\.aud") then
+					imagebutton.Image = "rbxassetid://16137076689"
+				end
+
+				if string.find(filename, "\.img") then
+					imagebutton.Image = "rbxassetid://16138716524"
+				end
+
+				if string.find(filename, "\.vid") then
+					imagebutton.Image = "rbxassetid://16137079551"
+				end
+
+				if string.find(filename, "\.lua") then
+					imagebutton.Image = "rbxassetid://16137079551"
+				end
+
+				if typeof(dataz) == "table" then
+					local length = 0
+
+					for _, __ in pairs(dataz) do
+						length += 1
+					end
+
+
+					if length > 0 then
+						imagebutton.Image = "rbxassetid://16137091192"
+					else
+						imagebutton.Image = "rbxassetid://16137073439"
+					end
+				end
+
 				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 				start += 25
+				imagebutton.MouseButton1Down:Connect(function()
+					speaker:PlaySound(clicksound)
+					local boolean
+
+					if #split == 2 then
+						boolean = true
+					else
+						boolean = false
+					end
+
+					readfile(filesystem.Read(filename, directory), filename, boolean, directory)
+				end)
+
 				button.MouseButton1Down:Connect(function()
-					local data = disk:Read(filename)
-					readfile(data, filename, true)
+					local information = filesystem.Read(filename, directory)
+					local boolean
+
+					if #split == 2 then
+						boolean = true
+					else
+						boolean = false
+					end
+
+					if typeof(information) ~= "table" then
+						readfile(information, filename, boolean, directory)
+					else
+						start = 0
+						scrollingframe:Destroy()
+						scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+						holderframe:AddChild(scrollingframe)
+
+						directory = if directory ~= "/" then directory.."/"..filename else "/"..filename
+						titletext.Text = directory
+
+						if directory == "/" then
+							deletebutton.Size = UDim2.new(0,0,0,0)
+							deletebutton.Visible = false
+							parentbutton.Size = UDim2.new(0,0,0,0)
+							parentbutton.Visible = false
+						else
+							deletebutton.Size = UDim2.new(0.2, 0, 0.15, 0)
+							deletebutton.Visible = true
+							parentbutton.Size = UDim2.new(0.2, 0, 0.15, 0)
+							parentbutton.Visible = true
+						end
+
+						for index, value in pairs(information) do
+							loadfile(index, value)
+						end
+					end
+
 				end)
 			end
 		end
 
+		for filename, dataz in pairs(data) do
+			loadfile(filename, dataz)
+		end
+
+		if directory == "/" then
+			deletebutton.Size = UDim2.new(0,0,0,0)
+			deletebutton.Visible = false
+			parentbutton.Size = UDim2.new(0,0,0,0)
+			parentbutton.Visible = false
+		end
+
+		deletebutton.MouseButton1Up:Connect(function()
+			local split = directory:split("/")
+
+			local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
+			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
+
+			cancelbutton.MouseButton1Down:Connect(function()
+				windowz:Destroy()
+			end)
+
+			deletebutton.MouseButton1Up:Connect(function()
+				disk:Write(split[#split], nil)
+				if holderframe then
+					holderframe:Destroy()
+				end
+				windowz:Destroy()
+			end)
+		end)
+
 		refreshbutton.MouseButton1Up:Connect(function()
+			local data
+			split = directory:split("/")
+
+			if #split == 2 and split[2] == "" then
+				data = disk:ReadEntireDisk()
+			elseif #split == 2 and split[2] ~= "" then
+				data = disk:Read(split[2])
+			elseif #split > 2 then
+				local removedlast = directory:sub(1, -(string.len(split[#split]))-2)
+				data = filesystem.Read(split[#split], removedlast)
+			end
 			start = 0
 			scrollingframe:Destroy()
 			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 			holderframe:AddChild(scrollingframe)
-			for filename, data in pairs(disk:ReadEntireDisk()) do
-				if filename ~= "Color" and filename ~= "BackgroundImage" then
-					local button = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
-					scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
-					start += 25
-					button.MouseButton1Down:Connect(function()
-						local data = disk:Read(filename)
-						readfile(data, filename, true)
-					end)
-				end
+
+			if typeof(data) ~= "table" then data = {} end
+
+			for filename, dataz in pairs(data) do
+				loadfile(filename, dataz)
+			end
+		end)
+
+		parentbutton.MouseButton1Up:Connect(function()
+			local data
+			split = directory:split("/")
+
+			if #split == 2 and split[2] ~= "" then
+				data = disk:ReadEntireDisk()
+				directory = "/"
+			elseif #split > 2 then
+				local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
+				local removedlast = removedlast1:sub(1, -(string.len(split[#split]))-2)
+				data = filesystem.Read(split[#split], removedlast)
+				directory = removedlast1
+			end
+
+			titletext.Text = tostring(directory)
+
+			start = 0
+			scrollingframe:Destroy()
+			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+			holderframe:AddChild(scrollingframe)
+
+			if typeof(data) ~= "table" then data = {} end
+
+			if directory == "/" then
+				deletebutton.Size = UDim2.new(0,0,0,0)
+				deletebutton.Visible = false
+				parentbutton.Size = UDim2.new(0,0,0,0)
+				parentbutton.Visible = false
+			end
+
+			for filename, dataz in pairs(data) do
+				loadfile(filename, dataz)
 			end
 		end)
 	end
@@ -3261,7 +3426,7 @@ local success, Error1 = pcall(function()
 				filesopen.MouseButton1Up:Connect(function()
 					speaker:PlaySound(clicksound)
 					filesopen.Image = "rbxassetid://15625805900"
-					loaddisk()
+					loaddisk("/", true)
 					pressed = false
 					startmenu:Destroy()
 				end)
@@ -3523,8 +3688,8 @@ local function bluescreen()
 end
 
 if not success then
-    commandline = {}
-    function commandline.new(boolean, udim2, screen)
+	commandline = {}
+	function commandline.new(boolean, udim2, screen)
 		local holderframe
 		local background
 		local lines = {
@@ -3622,17 +3787,17 @@ function bootos()
 		if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsize.X, 25); end
 
 		if success then
-		    loaddesktop()
-		    SpeakerHandler.PlaySound(startsound, 1, nil, speaker)
-		    if keyboardevent then keyboardevent:Unbind() end
-    		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
-    			keyboardinput = text
-    			playerthatinputted = player
-    		end)
-	    else
-	        bluescreen()
-	        SpeakerHandler.PlaySound(669574849, 1, nil, speaker)
-        end
+			loaddesktop()
+			SpeakerHandler.PlaySound(startsound, 1, nil, speaker)
+			if keyboardevent then keyboardevent:Unbind() end
+			keyboardevent = keyboard:Connect("TextInputted", function(text, player)
+				keyboardinput = text
+				playerthatinputted = player
+			end)
+		else
+			bluescreen()
+			SpeakerHandler.PlaySound(669574849, 1, nil, speaker)
+		end
 
 	elseif not screen and regularscreen then
 		regularscreen:ClearElements()
