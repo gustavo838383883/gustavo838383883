@@ -965,11 +965,11 @@ local success, Error1 = pcall(function()
 		local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.fromScale(1, 0.85), BackgroundTransparency = 1, Video = "rbxassetid://"..id, Volume = videovolume})
 		window:AddChild(videoframe)
 		
-		local playpause = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0, 0.85), "Play/Stop", window)
+		local playpause = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0, 0.85), "Play", window)
 		local loop, text1 = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.15, 0.85), "Loop", window)
 		
 		local up = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.85, 0.85), "+", window)
-		local ammount = screen:CreateElement("TextLabel", {Text = videovolume, Size = UDim2.fromScale(0.1, 0.15), Position = UDim2.fromScale(0.45, 0.75), TextScaled = true, BackgroundTransparency = 1})
+		local ammount = screen:CreateElement("TextLabel", {Text = videovolume, Size = UDim2.fromScale(0.1, 0.15), Position = UDim2.fromScale(0.75, 0.85), TextScaled = true, BackgroundTransparency = 1})
 		window:AddChild(ammount)
 		local down = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.6, 0.85), "-", window)
 		
@@ -979,11 +979,11 @@ local success, Error1 = pcall(function()
 		
 		playpause.MouseButton1Up:Connect(function()
 			if playing == false then
-				videoframe.Playing = true
-				playing = true
+			    playing = true
+				videoframe.Playing = playing
 			else
 				playing = false
-				videoframe.Playing = false
+				videoframe.Playing = playing
 			end
 		end)
 		
@@ -1003,7 +1003,7 @@ local success, Error1 = pcall(function()
 			if videovolume < 2 then
 				videovolume += 0.1
 				videoframe.Volume = videovolume
-				ammount.Text = math.floor(videovolume)
+				ammount.Text = math.floor(videovolume*10)/10
 			end
 		end)
 		
@@ -1011,7 +1011,7 @@ local success, Error1 = pcall(function()
 			if videovolume > 0 then
 				videovolume -= 0.1
 				videoframe.Volume = videovolume
-				ammount.Text = math.floor(videovolume)
+				ammount.Text = math.floor(videovolume*10)/10
 			end
 		end)
 	end
