@@ -1439,7 +1439,7 @@ local success, Error1 = pcall(function()
 				end
 
 				if string.find(filename, "\.lua") then
-					imagebutton.Image = "rbxassetid://16137079551"
+					imagebutton.Image = "rbxassetid://16137086052"
 				end
 
 				if typeof(dataz) == "table" then
