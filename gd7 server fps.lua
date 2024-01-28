@@ -1,8 +1,3 @@
---og bluecoin atm made by blueloops9
---gui made by Gustavo12345687890 / Gustavo242
---reskin of the puter bluecoin atm made by robloxboxertBLOCKED / 0mori2
---made in 2024
-
 local prevCursorPos
 local uiStartPos
 local minimizedprograms = {}
@@ -301,6 +296,10 @@ if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsi
 
 local screen = Screen
 
+local window = CreateWindow(UDim2.new(0.6, 0, 0.6, 0)"Server FPS", false, false, false, nil, false)
+
+local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), TextScaled = true, BackgroundTransparency = 1, TextWrapped = true, Text = "UNKNOWN"})
+window:AddChild(textlabel)
 
 coroutine.resume(coroutine.create(function()
     while true do
@@ -375,3 +374,9 @@ coroutine.resume(coroutine.create(function()
 	end
   end
 end))
+
+while true do
+	local start = tick()
+	task.wait(1)
+	textlabel.Text = math.floor(tick() - start)
+end
