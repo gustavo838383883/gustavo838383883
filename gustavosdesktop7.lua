@@ -614,7 +614,7 @@ local success, Error1 = pcall(function()
 				resolutionframe:AddChild(holderframe)
 				holderframe.Visible = false
 				local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
-				local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = if typeof(text) == "string" then text else tostring(text)})
+				local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = if typeof(text) == "function" then text() else tostring(text)})
 				unminimizebutton:AddChild(unminimizetext)
 				taskbarholderscrollingframe:AddChild(unminimizebutton)
 				minimizedammount += 1
