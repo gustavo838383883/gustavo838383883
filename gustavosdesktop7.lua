@@ -965,57 +965,53 @@ local success, Error1 = pcall(function()
 		local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.fromScale(1, 0.85), BackgroundTransparency = 1, Video = "rbxassetid://"..id, Volume = videovolume})
 		window:AddChild(videoframe)
 		
-		local playpause = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0, 0.85), "Play/Pause", window)
+		local playpause = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0, 0.85), "Play/Stop", window)
 		local loop, text1 = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.15, 0.85), "Loop", window)
-		local right = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.85, 0.85), "→", window)
-		local left = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.7, 0.85), "←", window)
 		
-		local up = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.55, 0.85), "+", window)
-		local ammount = screen:CreateElement("TextLabel", {Text = videovolume, Size = UDim2.fromScale(0.1, 0.15), Position = UDim2.fromScale(0.45, 0.85), TextScaled = true, BackgroundTransparency = 1})
+		local up = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.85, 0.85), "+", window)
+		local ammount = screen:CreateElement("TextLabel", {Text = videovolume, Size = UDim2.fromScale(0.1, 0.15), Position = UDim2.fromScale(0.45, 0.75), TextScaled = true, BackgroundTransparency = 1})
 		window:AddChild(ammount)
-		local down = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.3, 0.85), "-", window)
+		local down = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.6, 0.85), "-", window)
 		
 		local prevtime = 0
+		local playing = false
+		local looped = false
 		
 		playpause.MouseButton1Up:Connect(function()
-			if videoframe.Playing == false then
+			if playing == false then
 				videoframe.Playing = true
-				videoframe.TimePosition = prevtime
+				playing = true
 			else
+				playing = false
 				videoframe.Playing = false
-				prevtime = videoframe.TimePosition
 			end
 		end)
 		
 		loop.MouseButton1Up:Connect(function()
-			if videoframe.Looped == false then
+			if looped == false then
 				videoframe.Looped = true
+				looped = true
 				text1.Text = "Unloop"
 			else
+			    looped = false
 				videoframe.Looped = false
 				text1.Text = "Loop"
 			end
 		end)
 		
-		right.MouseButton1Up:Connect(function()
-			videoframe.TimePosition += 2.5
-		end)
-		
-		left.MouseButton1Up:Connect(function()
-			videoframe.TimePosition -= 2.5
-		end)
-		
 		up.MouseButton1Up:Connect(function()
-			if videoframe.Volume < 2 then
-				videoframe.Volume += 0.1
-				ammount.Text = math.floor(videoframe.Volume)
+			if videovolume < 2 then
+				videovolume += 0.1
+				videoframe.Volume = videovolume
+				ammount.Text = math.floor(videovolume)
 			end
 		end)
 		
 		down.MouseButton1Up:Connect(function()
-			if videoframe.Volume > 0 then
-				videoframe.Volume -= 0.1
-				ammount.Text = math.floor(videoframe.Volume)
+			if videovolume > 0 then
+				videovolume -= 0.1
+				videoframe.Volume = videovolume
+				ammount.Text = math.floor(videovolume)
 			end
 		end)
 	end
