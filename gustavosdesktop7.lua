@@ -1383,7 +1383,7 @@ local success, Error1 = pcall(function()
 			end
 			window:Destroy()
 
-			loaddisk(newdirectory, false)
+			loaddisk(newdirectory)
 		end
 
 		if string.find(string.lower(tostring(txt)), "<woshtml>") then
@@ -1392,7 +1392,7 @@ local success, Error1 = pcall(function()
 
 	end
 
-	function loaddisk(directory: string, boolean)
+	function loaddisk(directory: string)
 		local directory = directory or "/"
 		local start = 0
 		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, function() return directory end, false)
@@ -1492,7 +1492,7 @@ local success, Error1 = pcall(function()
 						end
 
 						for index, value in pairs(information) do
-							loadfile(index, value, boolean)
+							loadfile(index, value)
 						end
 					end
 
