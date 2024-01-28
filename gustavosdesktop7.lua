@@ -3563,7 +3563,7 @@ local success, Error1 = pcall(function()
 
 				local restart = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0.5, 0, 0.8, 0), BackgroundTransparency = 1})
 				startmenu:AddChild(restart)
-				local restarttext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Restart"})
+				local restarttext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reboot"})
 				restart:AddChild(restarttext)
 				restart.MouseButton1Down:Connect(function()
 					restart.Image = "rbxassetid://15625805069"
