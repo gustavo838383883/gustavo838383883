@@ -806,7 +806,7 @@ local function readfile(txt, nameondisk, boolean, directory)
 		end)
 	end
 	
-	if string.find(string.lower(tostring(nameondisk)), "\.aud") then
+	if string.find(string.lower(tostring(nameondisk)), "%.aud") then
 		local txt = string.lower(tostring(txt))
 		if string.find(tostring(txt), "pitch:") then
 			local length = nil
@@ -853,11 +853,11 @@ local function readfile(txt, nameondisk, boolean, directory)
 		end
 	end
 
-	if string.find(string.lower(tostring(nameondisk)), "\.img") then
+	if string.find(string.lower(tostring(nameondisk)), "%.img") then
 		woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 	end
 
-	if string.find(string.lower(tostring(nameondisk)), "\.lua") then
+	if string.find(string.lower(tostring(nameondisk)), "%.lua") then
 		loadluafile(microcontrollers, screen, tostring(txt))
 	end
 	if typeof(txt) == "table" then
