@@ -1303,6 +1303,16 @@ local function runtext(text)
 					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
 					print(output)
+				elseif string.find(filename, "%.vid") then
+					commandlines.insert(tostring(output))
+					local id = output
+					local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
+					textlabel:AddChild(videoframe)
+					videoframe.Playing = true
+					commandlines.insert(dir..":")
+					print(output)
+					background.CanvasPosition -= Vector2.new(0, 25)
 				elseif string.find(filename, "%.lua") then
 					commandlines.insert(tostring(output))
 					loadluafile(microcontrollers, screen, output)
