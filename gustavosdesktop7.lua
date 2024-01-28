@@ -980,10 +980,10 @@ local success, Error1 = pcall(function()
 		playpause.MouseButton1Up:Connect(function()
 			if videoframe.Playing == false then
 				videoframe.Playing = true
-				videoframe.TimePosition = if prevtime ~= videoframe.TimeLength then prevtime else 0
+				videoframe.TimePosition = prevtime
 			else
 				videoframe.Playing = false
-				prevtime = if videoframe.TimePosition ~= videoframe.TimeLength then videoframe.TimePosition else 0
+				prevtime = videoframe.TimePosition
 			end
 		end)
 		
