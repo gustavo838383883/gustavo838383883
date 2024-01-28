@@ -1559,27 +1559,26 @@ local success, Error1 = pcall(function()
 			deletebutton.MouseButton1Up:Connect(function()
 				filesystem.Write(split[#split], nil)
 				if scrollingframe then
-				    local data
-				    if #split > 2 then
-				        local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
-				        local removedlast = removedlast1:sub(1, -(string.len(split[#split]))-2)
-				        local split2 = removedlast1:split("/")
-				        data = filesystem.Read(split2[#split2], removedlast)
-				        directory = removedlast1
-			        else
-			            data = disk:ReadEntireDisk()
-			            directory = "/"
-				    end
-				    start = 0
-    				scrollingframe:Destroy()
-    				scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
-    				holderframe:AddChild(scrollingframe)
-    								
-				    if typeof(data) == "table" then
-                        for filename, dataz in pairs(data) do
-                            loadfile(filename, dataz)
-				        end
-				    end
+					local data
+					if #split > 2 then
+						local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
+						local removedlast = removedlast1:sub(1, -(string.len(split[#split]))-2)
+						local split2 = removedlast1:split("/")
+						data = filesystem.Read(split2[#split2], removedlast)
+						directory = removedlast1
+					else
+						data = disk:ReadEntireDisk()
+						directory = "/"
+					end
+					start = 0
+    					scrollingframe:Destroy()
+    					scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+    					holderframe:AddChild(scrollingframe)
+					if typeof(data) == "table" then
+						for filename, dataz in pairs(data) do
+							loadfile(filename, dataz)
+				        	end
+					end
 				end
 								
 				windowz:Destroy()
