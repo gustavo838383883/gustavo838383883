@@ -958,47 +958,47 @@ local success, Error1 = pcall(function()
 		StringToGui(screen, txt, scrollingframe)
 
 	end
-	
+
 	local function videoplayer(id, name)
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), nil, false, false, false, name or "Video", false)
-		
+
 		local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.fromScale(1, 0.85), BackgroundTransparency = 1, Video = "rbxassetid://"..id, Volume = videovolume})
 		window:AddChild(videoframe)
-		
+
 		local playpause = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0, 0.85), "Play", window)
 		local loop, text1 = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.15, 0.85), "Loop", window)
-		
+
 		local up = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.85, 0.85), "+", window)
 		local ammount = screen:CreateElement("TextLabel", {Text = videovolume, Size = UDim2.fromScale(0.1, 0.15), Position = UDim2.fromScale(0.75, 0.85), TextScaled = true, BackgroundTransparency = 1})
 		window:AddChild(ammount)
 		local down = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.6, 0.85), "-", window)
-		
+
 		local prevtime = 0
 		local playing = false
 		local looped = false
-		
+
 		playpause.MouseButton1Up:Connect(function()
 			if playing == false then
-			    playing = true
+				playing = true
 				videoframe.Playing = playing
 			else
 				playing = false
 				videoframe.Playing = playing
 			end
 		end)
-		
+
 		loop.MouseButton1Up:Connect(function()
 			if looped == false then
 				videoframe.Looped = true
 				looped = true
 				text1.Text = "Unloop"
 			else
-			    looped = false
+				looped = false
 				videoframe.Looped = false
 				text1.Text = "Loop"
 			end
 		end)
-		
+
 		up.MouseButton1Up:Connect(function()
 			if videovolume < 2 then
 				videovolume += 0.1
@@ -1006,7 +1006,7 @@ local success, Error1 = pcall(function()
 				ammount.Text = math.floor(videovolume*10)/10
 			end
 		end)
-		
+
 		down.MouseButton1Up:Connect(function()
 			if videovolume > 0 then
 				videovolume -= 0.1
@@ -1429,7 +1429,7 @@ local success, Error1 = pcall(function()
 		if string.find(string.lower(tostring(nameondisk)), "%.img") then
 			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true, nameondisk)
 		end
-		
+
 		if string.find(string.lower(tostring(nameondisk)), "%.vid") then
 			videoplayer(tostring(txt), nameondisk)
 		end
@@ -1455,11 +1455,12 @@ local success, Error1 = pcall(function()
 
 	end
 
-	function loaddisk(directory: string)
+	function loaddisk(directory: string, func: any, boolean1)
+		local scrollsize = if boolean1 then UDim2.new(1, 0, 0.7, 0) else UDim2.new(1, 0, 0.85, 0)
 		local directory = directory or "/"
 		local start = 0
 		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, function() return directory end, false)
-		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 
 		local refreshbutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0, 0, 0, 0), "Refresh", holderframe)
@@ -1479,7 +1480,26 @@ local success, Error1 = pcall(function()
 		end
 
 		local deletebutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
-
+		
+		local selected
+		local selecteddir
+		local selectedname
+		
+		if boolean1 then
+			selected = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.8, 0.15), Position = UDim2.fromScale(0, 0.85), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Select a file"})
+			holderframe:AddChild(selected)
+			
+			local sendbutton = createnicebutton(UDim2.fromScale(0.2, 0.15), UDim2.fromScale(0.8, 0.85), "Send", holderframe)
+			
+			sendbutton.MouseButton1Up:Connect(function()
+				if typeof(func) == "function" then
+					func(selectedname or "", selecteddir or "/")
+				end
+				window:Destroy()
+			end)
+		end
+		
+		
 		local function loadfile(filename, dataz)
 			if filename ~= "Color" and filename ~= "BackgroundImage" then
 				local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
@@ -1508,7 +1528,7 @@ local success, Error1 = pcall(function()
 				if typeof(dataz) == "table" then
 					local length = 0
 
-					for _, __ in pairs(dataz) do
+					for i, v in pairs(dataz) do
 						length += 1
 					end
 
@@ -1532,11 +1552,22 @@ local success, Error1 = pcall(function()
 					local information = filesystem.Read(filename, directory)
 
 					if typeof(information) ~= "table" then
-						readfile(information, filename, directory)
+						if not boolean1 then
+							readfile(information, filename, directory)
+						else
+							selecteddir = directory
+							selectedname = filename
+							selected.Text = tostring(filename)
+						end
 					else
+						if boolean1 then
+							selecteddir = directory
+							selectedname = filename
+							selected.Text = tostring(filename)
+						end
 						start = 0
 						scrollingframe:Destroy()
-						scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+						scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 						holderframe:AddChild(scrollingframe)
 
 						directory = if directory ~= "/" then directory.."/"..filename else "/"..filename
@@ -1594,16 +1625,24 @@ local success, Error1 = pcall(function()
 						local removedlast = removedlast1:sub(1, -(string.len(split2[#split2]))-2)
 						filesystem.Write(split[#split], nil, removedlast1)
 						data = filesystem.Read(split2[#split2], removedlast)
+						if boolean1 then
+							selectedname = split2[#split2]
+							selected.Text = selectedname
+						end
 						directory = removedlast1
 					else
 						data = disk:ReadEntireDisk()
 						filesystem.Write(split[#split], nil)
+						if boolean1 then
+							selectedname = nil
+							selected.Text = "Root"
+						end
 						directory = "/"
 					end
 					titletext.Text = directory
 					start = 0
 					scrollingframe:Destroy()
-					scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+					scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 					holderframe:AddChild(scrollingframe)
 					if typeof(data) == "table" then
 						for filename, dataz in pairs(data) do
@@ -1630,7 +1669,7 @@ local success, Error1 = pcall(function()
 			end
 			start = 0
 			scrollingframe:Destroy()
-			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 			holderframe:AddChild(scrollingframe)
 
 			if typeof(data) ~= "table" then data = {} end
@@ -1647,11 +1686,19 @@ local success, Error1 = pcall(function()
 			if #split == 2 and split[2] ~= "" then
 				data = disk:ReadEntireDisk()
 				directory = "/"
+				if boolean1 then
+					selectedname = nil
+					selected.Text = "Root"
+				end
 			elseif #split > 2 then
 				local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
 				local split2 = removedlast1:split("/")
 				local removedlast = removedlast1:sub(1, -(string.len(split2[#split2]))-2)
 				data = filesystem.Read(split2[#split2], removedlast)
+				if boolean1 then
+					selectedname = split2[#split2]
+					selected.Text = selectedname
+				end
 				directory = removedlast1
 			end
 
@@ -1659,7 +1706,7 @@ local success, Error1 = pcall(function()
 
 			start = 0
 			scrollingframe:Destroy()
-			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 			holderframe:AddChild(scrollingframe)
 
 			if typeof(data) ~= "table" then data = {} end
@@ -1831,6 +1878,86 @@ local success, Error1 = pcall(function()
 			end
 		end)
 	end
+	
+	local function copyfile()
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Copy File", false ,false ,false, "Copy File", false)
+		
+		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
+		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select new path", window)
+		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
+		
+		local filename
+		local directory
+		local newdirectory
+		local newdirname
+		local newdir
+		
+		filebutton.MouseButton1Up:Connect(function()
+			loaddisk("/", function(name, dir)
+				directory = dir
+				filename = name
+				
+				text1.Text = filename
+			end, true)
+		end)
+		
+		folderbutton.MouseButton1Up:Connect(function()
+			loaddisk("/", function(name, dir)
+				newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
+				newdirname = name
+				newdir = dir
+				
+				text2.Text = newdirectory
+			end, true)
+		end)
+		
+		confirm.MouseButton1Up:Connect(function()
+			if newdirectory then
+				if filename and directory then
+					local data = filesystem.Read(filename, directory)
+					if newdirectory == "/" then
+						filesystem.Write(filename, data, newdirectory)
+						
+						if filesystem.Read(filename, newdirectory) then
+							text3.Text = "Success?"
+							task.wait(2)
+							text3.Text = "Confirm"
+						else
+							text3.Text = "Failed?"
+							task.wait(2)
+							text3.Text = "Confirm"
+						end
+						
+					elseif typeof(filesystem.Read(newdirname, newdir)) == "table" then
+						filesystem.Write(filename, data, newdirectory)
+						
+						if filesystem.Read(filename, newdirectory) then
+							text3.Text = "Success?"
+							task.wait(2)
+							text3.Text = "Confirm"
+						else
+							text3.Text = "Failed?"
+							task.wait(2)
+							text3.Text = "Confirm"
+						end
+						
+					else
+						text3.Text = "Selected new path is not a valid folder/table."
+						task.wait(2)
+						text3.Text = "Confirm"
+					end
+				else
+					text3.Text = "No file selected."
+					task.wait(2)
+					text3.Text = "Confirm"
+				end
+			else
+				text3.Text = "Selected new path is not a valid folder/table."
+				task.wait(2)
+				text3.Text = "Confirm"
+			end
+		end)
+	end
 
 	local function shutdownmicros(screen, micros)
 		local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), "Microcontroller Manager", false ,false, false, "Microcontroller Manager", false)
@@ -1907,7 +2034,6 @@ local success, Error1 = pcall(function()
 		local openaudio = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Open as audio", scrollingframe)
 
 		local data = nil
-		local filename = nil
 
 		local toggleopen = true
 		local Toggle1, Toggle12 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "Open from File: Yes", scrollingframe)
@@ -1930,6 +2056,18 @@ local success, Error1 = pcall(function()
 
 		local directorybutton2, directorybutton = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.4, 0), [[Directory (Click to update) example: "/sounds"]], scrollingframe)
 		local directory = ""
+		
+		local filebutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.6), "Select file instead", scrollingframe)
+		
+		filebutton.MouseButton1Up:Connect(function()
+			loaddisk("/", function(name, dir)
+				directory = dir
+				data = name
+
+				directorybutton.Text = directory
+				Filename2.Text = data
+			end, true)
+		end)
 
 		directorybutton2.MouseButton1Down:Connect(function()
 			if keyboardinput then
@@ -1988,7 +2126,7 @@ local success, Error1 = pcall(function()
 
 
 		openaudio.MouseButton1Down:Connect(function()
-			if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
+			if Filename2.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" and data then
 				local readdata = nil
 				if toggleopen then
 					local split = nil
@@ -2052,7 +2190,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		openimage.MouseButton1Down:Connect(function()
-			if Filename.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" then
+			if Filename2.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" and data then
 				local readdata = nil
 				if toggleopen then
 					local split = nil
@@ -2163,9 +2301,6 @@ local success, Error1 = pcall(function()
 		local number1 = 0
 		local type = nil
 		local number2 = 0
-
-		local data = nil
-		local filename = nil
 
 		local  button1 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.15, 0), "9", holderframe)
 		button1.MouseButton1Down:Connect(function()
@@ -3448,7 +3583,7 @@ local success, Error1 = pcall(function()
 			if not pressed then
 				startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
 				taskbarholder:AddChild(startmenu)
-				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 1.8, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
+				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 				startmenu:AddChild(scrollingframe)
 				local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 				scrollingframe:AddChild(settingsopen)
@@ -3505,7 +3640,7 @@ local success, Error1 = pcall(function()
 				luasopen.MouseButton1Up:Connect(function()
 					speaker:PlaySound(clicksound)
 					luasopen.Image = "rbxassetid://15625805900"
-					customprogramthing(screen, micros)
+					customprogramthing(screen, microcontrollers)
 					pressed = false
 					startmenu:Destroy()
 				end)
@@ -3569,8 +3704,23 @@ local success, Error1 = pcall(function()
 					startmenu:Destroy()
 					terminal()
 				end)
+				
+				local copy_file = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*8, 0), BackgroundTransparency = 1})
+				scrollingframe:AddChild(copy_file)
+				local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Copy File"})
+				copy_file:AddChild(txtlabel9)
+				copy_file.MouseButton1Down:Connect(function()
+					copy_file.Image = "rbxassetid://15625805069"
+				end)
+				copy_file.MouseButton1Up:Connect(function()
+					speaker:PlaySound(clicksound)
+					copy_file.Image = "rbxassetid://15625805900"
+					pressed = false
+					startmenu:Destroy()
+					copyfile()
+				end)
 
-				local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*8, 0), BackgroundTransparency = 1})
+				local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*9, 0), BackgroundTransparency = 1})
 				scrollingframe:AddChild(restartkeyboardinput)
 				local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reset Keyboard Event"})
 				restartkeyboardinput:AddChild(txtlabel9)
