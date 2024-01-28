@@ -1226,7 +1226,70 @@ local success, Error1 = pcall(function()
 
 	local loaddisk
 
-	local function readfile(txt, nameondisk, boolean, directory)
+	local filesystem = {
+		Write = function(filename, filedata, directory)
+			local directory = directory or "/"
+			local dir = directory
+			local value = "No filename or filedata specified"
+			if filename and filename ~= "" then
+				local split = nil
+				local returntable = nil
+				if directory ~= "" then
+					split = string.split(dir, "/")
+				end
+				if not split or split[2] == "" then
+					disk:Write(filename, filedata)
+				else
+					returntable = createfileontable(disk, filename, filedata, dir)
+				end
+				if not split or split[2] == "" then
+					if disk:Read(filename) then
+						if disk:Read(filename) == filedata then
+							value = "Success i think"
+						else
+							value = "Failed"
+						end
+					else
+						value = "Failed"
+					end
+				else
+					if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
+						value = "Success i think"
+					else
+						value = "Failed i think"
+					end
+				end
+			else
+				value = "No filename specified"
+			end
+			return value
+		end,
+		Read = function(filename, directory)
+			local directory = directory or "/"
+			local dir = directory
+			local value = "No filename specified"
+			if filename and filename ~= "" then
+				local split = nil
+				if dir ~= "" then
+					split = string.split(dir, "/")
+				end
+				if not split or split[2] == "" then
+					local output = disk:Read(filename)
+					value = output
+					print(output)
+				else
+					local output = getfileontable(disk, filename, dir)
+					value = output
+					print(output)
+				end
+			else
+				value = "No filename specified"
+			end
+			return value
+		end,
+	}
+
+	local function readfile(txt, nameondisk, directory)
 		local filegui, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, nameondisk or "File", false)
 		local deletebutton = nil
 
@@ -1235,7 +1298,7 @@ local success, Error1 = pcall(function()
 
 		print(txt)
 
-		if boolean == true then
+		if directory then
 			deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
 
 			deletebutton.MouseButton1Up:Connect(function()
@@ -1248,27 +1311,7 @@ local success, Error1 = pcall(function()
 				end)
 
 				deletebutton.MouseButton1Up:Connect(function()
-					disk:Write(nameondisk, nil)
-					windowz:Destroy()
-					if window then
-						window:Destroy()
-					end
-				end)
-			end)
-		elseif directory then
-			deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
-
-			deletebutton.MouseButton1Up:Connect(function()
-				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
-				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
-				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
-
-				cancelbutton.MouseButton1Down:Connect(function()
-					windowz:Destroy()
-				end)
-
-				deletebutton.MouseButton1Up:Connect(function()
-					createfileontable(disk, nameondisk, nil, directory)
+					filesystem.Write(nameondisk, nil, directory)
 					windowz:Destroy()
 					if window then
 						window:Destroy()
@@ -1349,69 +1392,6 @@ local success, Error1 = pcall(function()
 
 	end
 
-	local filesystem = {
-		Write = function(filename, filedata, directory)
-			local directory = directory or "/"
-			local dir = directory
-			local value = "No filename or filedata specified"
-			if filename and filename ~= "" then
-				local split = nil
-				local returntable = nil
-				if directory ~= "" then
-					split = string.split(dir, "/")
-				end
-				if not split or split[2] == "" then
-					disk:Write(filename, filedata)
-				else
-					returntable = createfileontable(disk, filename, filedata, dir)
-				end
-				if not split or split[2] == "" then
-					if disk:Read(filename) then
-						if disk:Read(filename) == filedata then
-							value = "Success i think"
-						else
-							value = "Failed"
-						end
-					else
-						value = "Failed"
-					end
-				else
-					if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
-						value = "Success i think"
-					else
-						value = "Failed i think"
-					end
-				end
-			else
-				value = "No filename specified"
-			end
-			return value
-		end,
-		Read = function(filename, directory)
-			local directory = directory or "/"
-			local dir = directory
-			local value = "No filename specified"
-			if filename and filename ~= "" then
-				local split = nil
-				if dir ~= "" then
-					split = string.split(dir, "/")
-				end
-				if not split or split[2] == "" then
-					local output = disk:Read(filename)
-					value = output
-					print(output)
-				else
-					local output = getfileontable(disk, filename, dir)
-					value = output
-					print(output)
-				end
-			else
-				value = "No filename specified"
-			end
-			return value
-		end,
-	}
-
 	function loaddisk(directory: string, boolean)
 		local directory = directory or "/"
 		local start = 0
@@ -1481,29 +1461,15 @@ local success, Error1 = pcall(function()
 				start += 25
 				imagebutton.MouseButton1Down:Connect(function()
 					speaker:PlaySound(clicksound)
-					local boolean
 
-					if #split == 2 then
-						boolean = true
-					else
-						boolean = false
-					end
-
-					readfile(filesystem.Read(filename, directory), filename, boolean, directory)
+					readfile(filesystem.Read(filename, directory), filename, directory)
 				end)
 
 				button.MouseButton1Down:Connect(function()
 					local information = filesystem.Read(filename, directory)
-					local boolean
-
-					if #split == 2 then
-						boolean = true
-					else
-						boolean = false
-					end
 
 					if typeof(information) ~= "table" then
-						readfile(information, filename, boolean, directory)
+						readfile(information, filename, directory)
 					else
 						start = 0
 						scrollingframe:Destroy()
@@ -1526,7 +1492,7 @@ local success, Error1 = pcall(function()
 						end
 
 						for index, value in pairs(information) do
-							loadfile(index, value)
+							loadfile(index, value, boolean)
 						end
 					end
 
