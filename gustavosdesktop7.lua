@@ -1320,7 +1320,7 @@ local success, Error1 = pcall(function()
 			end)
 		end
 
-		if string.find(string.lower(tostring(nameondisk)), "\.aud") then
+		if string.find(string.lower(tostring(nameondisk)), "%.aud") then
 			local txt = string.lower(tostring(txt))
 			if string.find(tostring(txt), "pitch:") then
 				local length = nil
@@ -1367,11 +1367,11 @@ local success, Error1 = pcall(function()
 			end
 		end
 
-		if string.find(string.lower(tostring(nameondisk)), "\.img") then
+		if string.find(string.lower(tostring(nameondisk)), "%.img") then
 			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true, nameondisk)
 		end
 
-		if string.find(string.lower(tostring(nameondisk)), "\.lua") then
+		if string.find(string.lower(tostring(nameondisk)), "%.lua") then
 			loadluafile(microcontrollers, screen, tostring(txt))
 		end
 		if typeof(txt) == "table" then
@@ -1426,19 +1426,19 @@ local success, Error1 = pcall(function()
 				local imagebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
 				button:AddChild(imagebutton)
 
-				if string.find(filename, "\.aud") then
+				if string.find(filename, "%.aud") then
 					imagebutton.Image = "rbxassetid://16137076689"
 				end
 
-				if string.find(filename, "\.img") then
+				if string.find(filename, "%.img") then
 					imagebutton.Image = "rbxassetid://16138716524"
 				end
 
-				if string.find(filename, "\.vid") then
+				if string.find(filename, "%.vid") then
 					imagebutton.Image = "rbxassetid://16137079551"
 				end
 
-				if string.find(filename, "\.lua") then
+				if string.find(filename, "%.lua") then
 					imagebutton.Image = "rbxassetid://16137086052"
 				end
 
@@ -3138,18 +3138,18 @@ local success, Error1 = pcall(function()
 				if not split or split[2] == "" then
 					local output = disk:Read(filename)
 					if output then
-						if string.find(filename, "\.aud") then
+						if string.find(filename, "%.aud") then
 							commandlines:insert(tostring(output))
 							playsound(output, filename)
 							commandlines:insert(dir..":")
 							print(output)
-						elseif string.find(filename, "\.img") then
+						elseif string.find(filename, "%.img") then
 							local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 							StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 							commandlines:insert(dir..":")
 							background.CanvasPosition -= Vector2.new(0, 25)
 							print(output)
-						elseif string.find(filename, "\.lua") then
+						elseif string.find(filename, "%.lua") then
 							commandlines:insert(tostring(output))
 							loadluafile(microcontrollers, screen, output)
 							commandlines:insert(dir..":")
@@ -3174,18 +3174,18 @@ local success, Error1 = pcall(function()
 				else
 					local output = getfileontable(disk, filename, dir)
 					if output then
-						if string.find(filename, "\.aud") then
+						if string.find(filename, "%.aud") then
 							commandlines:insert(tostring(output))
 							playsound(output)
 							commandlines:insert(dir..":")
 							print(output)
-						elseif string.find(filename, "\.img") then
+						elseif string.find(filename, "%.img") then
 							local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 							StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 							commandlines:insert(dir..":")
 							background.CanvasPosition -= Vector2.new(0, 25)
 							print(output)
-						elseif string.find(filename, "\.lua") then
+						elseif string.find(filename, "%.lua") then
 							commandlines:insert(tostring(output))
 							loadluafile(microcontrollers, screen, output)
 							commandlines:insert(dir..":")
