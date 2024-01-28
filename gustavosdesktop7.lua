@@ -1415,7 +1415,7 @@ local success, Error1 = pcall(function()
 	function loaddisk(directory: string, boolean)
 		local directory = directory or "/"
 		local start = 0
-		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, "Files", false)
+		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, function() return directory end, false)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 
