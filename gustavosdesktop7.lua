@@ -1571,17 +1571,18 @@ local success, Error1 = pcall(function()
 						filesystem.Write(split[#split], nil)
 						directory = "/"
 					end
+					titletext.Text = directory
 					start = 0
-    					scrollingframe:Destroy()
-    					scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
-    					holderframe:AddChild(scrollingframe)
+    				scrollingframe:Destroy()
+    				scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+    				holderframe:AddChild(scrollingframe)
 					if typeof(data) == "table" then
 						for filename, dataz in pairs(data) do
 							loadfile(filename, dataz)
-				        	end
+				        end
 					end
 				end
-								
+
 				windowz:Destroy()
 			end)
 		end)
@@ -1612,7 +1613,7 @@ local success, Error1 = pcall(function()
 
 		parentbutton.MouseButton1Up:Connect(function()
 			local data
-			split = directory:split("/")
+			local split = directory:split("/")
 
 			if #split == 2 and split[2] ~= "" then
 				data = disk:ReadEntireDisk()
