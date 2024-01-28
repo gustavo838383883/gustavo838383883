@@ -1546,7 +1546,6 @@ local success, Error1 = pcall(function()
 		end
 
 		deletebutton.MouseButton1Up:Connect(function()
-			local split = directory:split("/")
 
 			local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
@@ -1557,17 +1556,19 @@ local success, Error1 = pcall(function()
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
-				filesystem.Write(split[#split], nil)
+				local split = directory:split("/")
 				if scrollingframe then
 					local data
 					if #split > 2 then
 						local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
 						local split2 = removedlast1:split("/")
 						local removedlast = removedlast1:sub(1, -(string.len(split2[#split2]))-2)
+						filesystem.Write(split[#split], nil, removedlast1)
 						data = filesystem.Read(split2[#split2], removedlast)
 						directory = removedlast1
 					else
 						data = disk:ReadEntireDisk()
+						filesystem.Write(split[#split], nil)
 						directory = "/"
 					end
 					start = 0
