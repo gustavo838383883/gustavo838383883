@@ -298,7 +298,7 @@ local screen = Screen
 
 local window = CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
 
-local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), TextScaled = true, BackgroundTransparency = 1, TextWrapped = true, Text = "UNKNOWN"})
+local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), TextScaled = true, BackgroundTransparency = 1, TextWrapped = true, Text = "nan"})
 window:AddChild(textlabel)
 
 coroutine.resume(coroutine.create(function()
@@ -378,5 +378,5 @@ end))
 while true do
 	local start = tick()
 	task.wait(1)
-	textlabel.Text = math.floor(tick() - start)
+	textlabel.Text = math.floor(60/(tick() - start))
 end
