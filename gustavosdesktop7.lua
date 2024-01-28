@@ -434,6 +434,8 @@ local defaultbuttonsize = Vector2.new(0,0)
 local players = {}
 local keyboardevent
 local cursorevent
+local startCursorPos
+local videovolume = 0.5
 
 local success, Error1 = pcall(function()
 	local holding = false
@@ -956,6 +958,67 @@ local success, Error1 = pcall(function()
 		StringToGui(screen, txt, scrollingframe)
 
 	end
+	
+	local function videoplayer(id, name)
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), nil, false, false, false, name or "Video", false)
+		
+		local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.fromScale(1, 0.85), BackgroundTransparency = 1, Video = "rbxassetid://"..id, Volume = videovolume})
+		window:AddChild(videoframe)
+		
+		local playpause = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0, 0.85), "Play/Pause", window)
+		local loop, text1 = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.15, 0.85), "Loop", window)
+		local right = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.85, 0.85), "→", window)
+		local left = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.7, 0.85), "←", window)
+		
+		local up = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.55, 0.85), "+", window)
+		local ammount = screen:CreateElement("TextLabel", {Text = videovolume, Size = UDim2.fromScale(0.1, 0.15), Position = UDim2.fromScale(0.45, 0.85), TextScaled = true, BackgroundTransparency = 1})
+		window:AddChild(ammount)
+		local down = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.3, 0.85), "-", window)
+		
+		local prevtime = 0
+		
+		playpause.MouseButton1Up:Connect(function()
+			if videoframe.Playing == false then
+				videoframe.Playing = true
+				videoframe.TimePosition = if prevtime ~= videoframe.TimeLength then prevtime else 0
+			else
+				videoframe.Playing = false
+				prevtime = if videoframe.TimePosition ~= videoframe.TimeLength then videoframe.TimePosition else 0
+			end
+		end)
+		
+		loop.MouseButton1Up:Connect(function()
+			if videoframe.Looped == false then
+				videoframe.Looped = true
+				text1.Text = "Unloop"
+			else
+				videoframe.Looped = false
+				text1.Text = "Loop"
+			end
+		end)
+		
+		right.MouseButton1Up:Connect(function()
+			videoframe.TimePosition += 2.5
+		end)
+		
+		left.MouseButton1Up:Connect(function()
+			videoframe.TimePosition -= 2.5
+		end)
+		
+		up.MouseButton1Up:Connect(function()
+			if videoframe.Volume < 2 then
+				videoframe.Volume += 0.1
+				ammount.Text = math.floor(videoframe.Volume)
+			end
+		end)
+		
+		down.MouseButton1Up:Connect(function()
+			if videoframe.Volume > 0 then
+				videoframe.Volume -= 0.1
+				ammount.Text = math.floor(videoframe.Volume)
+			end
+		end)
+	end
 
 	local function changecolor()
 		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false, false, "Change Desktop Color", false)
@@ -973,7 +1036,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		changecolorbutton.MouseButton1Down:Connect(function()
-			if color2.Text ~= "RGB (Click to update)" then
+			if color2.Text ~= "RGB (Click to update)" and data then
 				disk:Write("Color", data)
 				local colordata = string.split(data, ",")
 				if colordata then
@@ -1031,7 +1094,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		changebackimg.MouseButton1Down:Connect(function()
-			if id2.Text ~= "Image ID (Click to update)" then
+			if id2.Text ~= "Image ID (Click to update)" and data then
 				if tonumber(data) then
 					disk:Write("BackgroundImage", data..","..tostring(tile)..","..tilenumb)
 					wallpaper.Image = "rbxthumb://type=Asset&id="..tonumber(data).."&w=420&h=420"
@@ -1370,6 +1433,10 @@ local success, Error1 = pcall(function()
 		if string.find(string.lower(tostring(nameondisk)), "%.img") then
 			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true, nameondisk)
 		end
+		
+		if string.find(string.lower(tostring(nameondisk)), "%.vid") then
+			videoplayer(tostring(txt), nameondisk)
+		end
 
 		if string.find(string.lower(tostring(nameondisk)), "%.lua") then
 			loadluafile(microcontrollers, screen, tostring(txt))
@@ -1539,13 +1606,13 @@ local success, Error1 = pcall(function()
 					end
 					titletext.Text = directory
 					start = 0
-	    				scrollingframe:Destroy()
-	    				scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
-	    				holderframe:AddChild(scrollingframe)
+					scrollingframe:Destroy()
+					scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.new(1, 0, 0.85, 0), CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+					holderframe:AddChild(scrollingframe)
 					if typeof(data) == "table" then
 						for filename, dataz in pairs(data) do
 							loadfile(filename, dataz)
-				        	end
+						end
 					end
 				end
 
@@ -2989,14 +3056,14 @@ local success, Error1 = pcall(function()
 						split = string.split(dir, "/")
 					end
 					if not split or split[2] == "" then
-			    			local id = disk:Read(filename)
+						local id = disk:Read(filename)
 						local textlabel = commandlines:insert(id, UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 						local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 						textlabel:AddChild(videoframe)
 						videoframe.Playing = true
 						print(disk:Read(filename))
 					else
-					    local id = tostring(getfileontable(disk, filename, dir))
+						local id = tostring(getfileontable(disk, filename, dir))
 						local textlabel = commandlines:insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 						local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 						textlabel:AddChild(videoframe)
@@ -3143,6 +3210,16 @@ local success, Error1 = pcall(function()
 							playsound(output, filename)
 							commandlines:insert(dir..":")
 							print(output)
+						elseif string.find(filename, "%.vid") then
+							commandlines:insert(tostring(output))
+							local id = output
+							local textlabel = commandlines:insert(tostring(id), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
+							local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
+							textlabel:AddChild(videoframe)
+							videoframe.Playing = true
+							commandlines:insert(dir..":")
+							print(output)
+							background.CanvasPosition -= Vector2.new(0, 25)
 						elseif string.find(filename, "%.img") then
 							local textlabel = commandlines:insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 							StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
