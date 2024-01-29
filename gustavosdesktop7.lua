@@ -2692,11 +2692,60 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	local loaddesktopicons
+	local rightclickmenu										
+	local function openrightclickprompt(frame, name, dir, boolean1)
+		if rightclickmenu then
+			rightclickmenu:Destroy()
+			desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0)
+		end
+		desktopscrollingframe.CanvasSize += UDim2.new(0.2, 0)
+
+		local size = UDim2.fromScale(1, 1.5)
+
+		if not boolean1 then
+			size = UDim2.fromScale(1, 2)
+		end
+		rightclickmenu = screen:CreateElement("ImageButton", {Size = size, Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1, Image = "rbxassetid://15619032563"})
+		frame:AddChild(rightclickmenu)
+		local closebutton = createnicebutton(if boolean1 then UDim2.fromScale(1, 1/3) else UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0), "Close", rightclickmenu)
+		if not boolean1 then
+			local openbutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, 1/3), "Open", rightclickmenu)
+
+			openbutton.MouseButton1Up:Connect(function()
+				readfile(filesystem.Read(filename, dir), filename, dir)
+				rightclickmenu:Destroy()		
+			end)
+
+			local deletebutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, (1/3) + (1/3)), "Delete", rightclickmenu)
+			deletebutton.MouseButton1Up:Connect(function()
+				rightclickmenu:Destroy()
+				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
+				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
+
+				cancelbutton.MouseButton1Down:Connect(function()
+					windowz:Destroy()
+				end)
+
+				deletebutton.MouseButton1Up:Connect(function()
+					filesystem.Write(name, nil, dir)
+					windowz:Destroy()
+				end)		
+			end)
+		else
+		end
+
+		closebutton.MouseButton1Up:Connect(function()
+			rightclickmenu:Destroy()
+		end)		
+	end
+
 	local desktopicons = {}
 	local selectedicon = nil
 	local selectionimage = nil
 
-	local function loaddesktopicons()
+	function loaddesktopicons()
 		if desktopscrollingframe then
 			desktopscrollingframe:Destroy()
 			desktopicons = {}
@@ -2764,7 +2813,7 @@ local success, Error1 = pcall(function()
 						selected = holderbutton
 						holderbutton:AddChild(selectionimage)
 					else
-						readfile(filesystem.Read(filename, "/Desktop"), filename, "/Desktop")
+						openrightclickprompt(holderbutton, filename, "/Desktop", false)
 						selected = nil
 						if resolutionframe then
 							resolutionframe:AddChild(selectionimage)
