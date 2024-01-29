@@ -2691,7 +2691,7 @@ local success, Error1 = pcall(function()
 	local desktopscrollingframe = nil
 	local desktopicons = {}
 	local selectedicon = nil
-	local selectionframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ImageTransparency = 0.5, Image = "rbxassetid://8677487226"})
+	local selectionimage = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ImageTransparency = 0.5, Image = "rbxassetid://8677487226"})
 
 	local function loaddesktopicons()
 		if desktopscrollingframe then
@@ -2704,7 +2704,6 @@ local success, Error1 = pcall(function()
 		wallpaper:AddChild(desktopscrollingframe)
 		
 		local desktopfiles = filesystem.Read("Desktop", "/")
-
 
 		local xScale = 0
 		local yScale = 0
@@ -2751,12 +2750,12 @@ local success, Error1 = pcall(function()
 				holderbutton.MouseButton1Up:Connect(function()
 					if selected ~= holderbutton then
 						selected = holderbutton
-						holderbutton:AddChild(selectionframe)
+						holderbutton:AddChild(selectionimage)
 					else
 						readfile(filesystem.Read(filename, "/Desktop"), filename, "/Desktop")
 						selected = nil
 						if resolutionframe then
-							resolutionframe:AddChild(selectionframe)
+							resolutionframe:AddChild(selectionimage)
 						end
 					end
 				end)
