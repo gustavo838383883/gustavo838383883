@@ -1494,6 +1494,7 @@ local success, Error1 = pcall(function()
 			sendbutton.MouseButton1Up:Connect(function()
 				window:Destroy()
 				if typeof(func) == "function" then
+					print(directory)
 					func(selectedname or "", selecteddir or directory)
 				end
 			end)
