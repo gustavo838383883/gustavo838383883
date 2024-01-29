@@ -1941,16 +1941,28 @@ local success, Error1 = pcall(function()
 				if filename and directory then
 					local data = filesystem.Read(filename, directory)
 					if newdirectory == "/" then
-						filesystem.Write(filename, data, newdirectory)
-						
-						if filesystem.Read(filename, newdirectory) then
-							text3.Text = "Success?"
-							task.wait(2)
-							text3.Text = "Confirm"
+						if directory == "/" and filename == "" then
+							filesystem.Write("Root", disk:ReadEntireDisk(), newdirectory)
+							if filesystem.Read("Root", newdirectory) then
+								text3.Text = "Success?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							else
+								text3.Text = "Failed?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							end
 						else
-							text3.Text = "Failed?"
-							task.wait(2)
-							text3.Text = "Confirm"
+							filesystem.Write(filename, data, newdirectory)
+							if filesystem.Read(filename, newdirectory) then
+								text3.Text = "Success?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							else
+								text3.Text = "Failed?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							end
 						end
 						
 					elseif typeof(filesystem.Read(newdirname, newdir)) == "table" then
