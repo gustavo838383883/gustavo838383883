@@ -2691,7 +2691,7 @@ local success, Error1 = pcall(function()
 	local desktopscrollingframe = nil
 	local desktopicons = {}
 	local selectedicon = nil
-	local selectionimage = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ImageTransparency = 0.5, Image = "rbxassetid://8677487226"})
+	local selectionimage = nil
 
 	local function loaddesktopicons()
 		if desktopscrollingframe then
@@ -2699,6 +2699,12 @@ local success, Error1 = pcall(function()
 			desktopicons = {}
 			selectedicon = nil
 		end
+
+		if selectionimage then
+			selectionimage:Destroy()
+		end
+
+		selectionimage = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ImageTransparency = 0.5, Image = "rbxassetid://8677487226"})
 
 		desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.9,0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,0.9,0), ScrollBarThickness = 5})
 		wallpaper:AddChild(desktopscrollingframe)
