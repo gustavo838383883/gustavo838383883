@@ -2691,7 +2691,7 @@ local success, Error1 = pcall(function()
 	local desktopscrollingframe = nil
 	local desktopicons = {}
 	local selectedicon = nil
-	local selectionframe = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ImageTransparency = 0.5, Image = "rbxassetid://8677487226"})
+	local selectionframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ImageTransparency = 0.5, Image = "rbxassetid://8677487226"})
 
 	local function loaddesktopicons()
 		if desktopscrollingframe then
