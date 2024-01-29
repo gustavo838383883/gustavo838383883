@@ -364,6 +364,7 @@ end
 local superyellowsquare = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
 if not puter then
 	scrollingframe:AddChild(superyellowsquare)
+else
 	window:AddChild(superyellowsquare)
 end
 
