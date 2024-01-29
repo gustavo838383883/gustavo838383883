@@ -282,29 +282,7 @@ local function getstuff()
 	sharedport = nil
 
 	for i=1, 128 do
-		if not rom then
-			success, Error = pcall(GetPartFromPort, i, "Disk")
-			if success then
-				local temprom = GetPartFromPort(i, "Disk")
-				if temprom then
-					if #(temprom:ReadEntireDisk()) == 0 then
-						rom = temprom
-						romport = i
-					elseif temprom:Read("GD7Library") then
-						if temprom:Read("GustavOSLibrary") then
-							temprom:Write("GustavOSLibrary", nil)
-						end
-						rom = temprom
-						romport = i
-					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GDOSLibrary") then
-						temprom:Write("GDOSLibrary", nil)
-						rom = temprom
-						romport = i
-					end
-				end
-			end
-		end
-		if not disks then
+		if not disks and i > 1 then
 			success, Error = pcall(GetPartsFromPort, i, "Disk")
 			if success then
 				local disktable = GetPartsFromPort(i, "Disk")
@@ -327,7 +305,7 @@ local function getstuff()
 			end
 		end
 
-		if disks and #disks > 1 and romport == disksport and not sharedport then
+		if i > 1 and disks and #disks > 1 and romport == disksport and not sharedport then
 			for index,v in ipairs(disks) do
 				if v then
 					if #(v:ReadEntireDisk()) == 0 then
@@ -356,6 +334,29 @@ local function getstuff()
 						romindexusing = index
 						sharedport = true
 						break
+					end
+				end
+			end
+		end
+
+		if not rom and i ~= disksport and i > 1 then
+			success, Error = pcall(GetPartFromPort, i, "Disk")
+			if success then
+				local temprom = GetPartFromPort(i, "Disk")
+				if temprom then
+					if #(temprom:ReadEntireDisk()) == 0 then
+						rom = temprom
+						romport = i
+					elseif temprom:Read("GD7Library") then
+						if temprom:Read("GustavOSLibrary") then
+							temprom:Write("GustavOSLibrary", nil)
+						end
+						rom = temprom
+						romport = i
+					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GDOSLibrary") then
+						temprom:Write("GDOSLibrary", nil)
+						rom = temprom
+						romport = i
 					end
 				end
 			end
@@ -438,6 +439,11 @@ local startCursorPos
 local videovolume = 0.5
 
 local success, Error1 = pcall(function()
+	local puter = GetPartFromPort(1, "Disk"):Read("PuterLibrary")
+	local mainwindow
+	if puter then
+		mainwindow = puter.CreateWindow(400, 300, "GustavOS VM")
+	end
 	local holding = false
 	local holding2 = false
 
@@ -716,6 +722,7 @@ local success, Error1 = pcall(function()
 			holderframe:AddChild(background)
 		else
 			background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0)})
+			
 		end
 
 		function lines:insert(text)
@@ -2310,6 +2317,7 @@ local success, Error1 = pcall(function()
 		end
 	end
 
+
 	local function calculator()
 		local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 10), nil, false, false, false, "Calculator", false)
 		local holderframe = window
@@ -2616,11 +2624,11 @@ local success, Error1 = pcall(function()
 				wallpaper.ImageTransparency = i
 			end
 			task.wait(1)
-			screen:ClearElements()
+			mainholder:Destroy()
 			local commandlines = commandline.new(false, nil, screen)
 			commandlines:insert("Shutting Down...")
 			task.wait(2)
-			screen:ClearElements()
+			mainholder:Destroy()
 			if shutdownpoly then
 				TriggerPort(shutdownpoly)
 			end
