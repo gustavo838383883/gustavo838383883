@@ -1492,10 +1492,10 @@ local success, Error1 = pcall(function()
 			local sendbutton = createnicebutton(UDim2.fromScale(0.2, 0.15), UDim2.fromScale(0.8, 0.85), "Send", holderframe)
 			
 			sendbutton.MouseButton1Up:Connect(function()
-				if typeof(func) == "function" then
-					func(selectedname or "", selecteddir or "/")
-				end
 				window:Destroy()
+				if typeof(func) == "function" then
+					func(selectedname or "", selecteddir or directory)
+				end
 			end)
 		end
 		
@@ -1748,7 +1748,7 @@ local success, Error1 = pcall(function()
 		local getfilebutton, getfilebutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.6, 0), [[Select directory instead]], scrollingframe)
 
 		getfilebutton.MouseButton1Up:Connect(function()
-			loaddisk("/", function(name, dir)
+			loaddisk(if directory == "" then "/" else directory, function(name, dir)
 				if not holderframe then return end
 				if dir == "/" and name == "" then
 					directory = dir
@@ -1916,7 +1916,7 @@ local success, Error1 = pcall(function()
 		local newdir
 		
 		filebutton.MouseButton1Up:Connect(function()
-			loaddisk("/", function(name, dir)
+			loaddisk(if not directory then "/" else directory, function(name, dir)
 				if not window then return end
 				directory = dir
 				filename = name
@@ -1926,7 +1926,7 @@ local success, Error1 = pcall(function()
 		end)
 		
 		folderbutton.MouseButton1Up:Connect(function()
-			loaddisk("/", function(name, dir)
+			loaddisk(if not newdir then "/" else newdir, function(name, dir)
 				if not window then return end
 				newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				newdirname = name
@@ -2095,7 +2095,7 @@ local success, Error1 = pcall(function()
 		local filebutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.6), "Select file instead", scrollingframe)
 		
 		filebutton.MouseButton1Up:Connect(function()
-			loaddisk("/", function(name, dir)
+			loaddisk(if directory == "" then "/" else directory, function(name, dir)
 				if not holderframe then return end
 				directory = dir
 				data = name
