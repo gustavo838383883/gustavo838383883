@@ -1743,9 +1743,25 @@ local success, Error1 = pcall(function()
 
 		local data = nil
 		local filename = nil
-
-
 		local directory = ""
+
+		local getfilebutton, getfilebutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.6, 0), [[Select directory instead]], scrollingframe)
+
+		getfilebutton.MouseButton1Up:Connect(function()
+			loaddisk("/", function(name, dir)
+				if dir == "/" and name == "" then
+					directory = dir
+					directorybutton2.Text = directory
+				elseif typeof(filesystem.Read(name, dir)) == "table" then
+					directory = if dir == "/" then "/"..name else dir.."/"..name
+					directorybutton2.Text = directory
+				else
+					getfilebutton2.Text = "The selected folder/table is not a valid folder/table."
+					task.wait(2)
+					getfilebutton2.Text = "Select directory instead"
+				end
+			end, true)
+		end)
 
 
 		filenamebutton.MouseButton1Down:Connect(function()
