@@ -486,7 +486,7 @@ end)
 coroutine.resume(coroutine.create(
 	function()
 		while task.wait(0.01) do
-			if not holderframe then break end
+			if not scrollingframe or not window then break end
 			if GetCollidedGuiObjects(hitbox, lavas) then
 				plr.Position = UDim2.new(0,0,0,0)
 				thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
