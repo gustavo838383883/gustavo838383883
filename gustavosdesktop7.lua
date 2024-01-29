@@ -2699,7 +2699,7 @@ local success, Error1 = pcall(function()
 			selectedicon = nil
 		end
 
-		desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.9,0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,1,0)})
+		desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.9,0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,0.9,0), ScrollBarThickness = 5})
 		wallpaper:AddChild(desktopscrollingframe)
 		
 		local desktopfiles = filesystem.Read("Desktop", "/")
