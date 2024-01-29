@@ -1926,7 +1926,7 @@ local success, Error1 = pcall(function()
 		end)
 		
 		folderbutton.MouseButton1Up:Connect(function()
-			loaddisk(if not newdir then "/" else newdir, function(name, dir)
+			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
 				if not window then return end
 				newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				newdirname = name
