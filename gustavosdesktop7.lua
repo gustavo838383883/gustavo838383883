@@ -1946,8 +1946,8 @@ local success, Error1 = pcall(function()
 							task.wait(2)
 							text3.Text = "Confirm"
 						else
-							filesystem.Write(filename, data, newdirectory)
-							if filesystem.Read(filename, newdirectory) then
+							local result = filesystem.Write(filename, data, newdirectory)
+							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
 								text3.Text = "Confirm"
@@ -1964,8 +1964,8 @@ local success, Error1 = pcall(function()
 							task.wait(2)
 							text3.Text = "Confirm"
 						else
-							filesystem.Write(filename, data, newdirectory)
-							if filesystem.Read(filename, newdirectory) then
+							local result = filesystem.Write(filename, data, newdirectory)
+							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
 								text3.Text = "Confirm"
@@ -1977,7 +1977,7 @@ local success, Error1 = pcall(function()
 						end
 						
 					else
-						text3.Text = "Selected new path is not a valid folder/table."
+						text3.Text = "The selected new path is not a valid table/folder."
 						task.wait(2)
 						text3.Text = "Confirm"
 					end
