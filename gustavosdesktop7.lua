@@ -2708,12 +2708,12 @@ local success, Error1 = pcall(function()
 		end
 		rightclickmenu = screen:CreateElement("ImageButton", {Size = size, Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1, Image = "rbxassetid://15619032563"})
 		frame:AddChild(rightclickmenu)
-		local closebutton = createnicebutton(if boolean1 then UDim2.fromScale(1, 1/3) else UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0), "Close", rightclickmenu)
+		local closebutton = createnicebutton(if not boolean1 then UDim2.fromScale(1, 1/3) else UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0), "Close", rightclickmenu)
 		if not boolean1 then
 			local openbutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, 1/3), "Open", rightclickmenu)
 
 			openbutton.MouseButton1Up:Connect(function()
-				readfile(filesystem.Read(filename, dir), filename, dir)
+				readfile(filesystem.Read(name, dir), filename, dir)
 				rightclickmenu:Destroy()		
 			end)
 
@@ -2731,6 +2731,7 @@ local success, Error1 = pcall(function()
 				deletebutton.MouseButton1Up:Connect(function()
 					filesystem.Write(name, nil, dir)
 					windowz:Destroy()
+					loaddesktopicons()
 				end)		
 			end)
 		else
