@@ -1494,7 +1494,6 @@ local success, Error1 = pcall(function()
 			sendbutton.MouseButton1Up:Connect(function()
 				window:Destroy()
 				if typeof(func) == "function" then
-					print(directory)
 					func(selectedname or "", selecteddir or directory)
 				end
 			end)
@@ -1757,7 +1756,7 @@ local success, Error1 = pcall(function()
 				elseif typeof(filesystem.Read(name, dir)) == "table" then
 					directory = if dir == "/" then "/"..name else dir.."/"..name
 					directorybutton2.Text = directory
-				else
+				elseif dir ~= directory then
 					getfilebutton2.Text = "The selected folder/table is not a valid folder/table."
 					task.wait(2)
 					getfilebutton2.Text = "Select directory instead"
