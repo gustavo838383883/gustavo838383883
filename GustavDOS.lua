@@ -903,7 +903,8 @@ local function runtext(text)
 			if #split == 2 and split[2] == "" then
 				commandlines.insert("Cannot use ./ on root.")
 			else
-				dir = dir:sub(1, -(string.len(split[#split]))-2)
+				local newdir = dir:sub(1, -(string.len(split[#split]))-2)
+				dir = if newdir == "" then "/" else newdir
 			end
 		else
 			commandlines.insert("The table/folder name was not specified.")
