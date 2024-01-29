@@ -836,7 +836,7 @@ local function runtext(text)
 				file = getfileontable(disk, filename, dir)
 			end
 
-			if filename then
+			if file then
 				copydir = dir
 				copyname = filename
 				commandlines.insert("Copied, use the paste command to paste the file.")
@@ -873,6 +873,8 @@ local function runtext(text)
 						commandlines.insert("Failed?")
 					end
 				end
+			else
+				commandlines.insert("File does not exist.")
 			end
 		else
 			commandlines.insert("No file has been copied.")
