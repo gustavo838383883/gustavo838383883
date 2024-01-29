@@ -1639,6 +1639,12 @@ local success, Error1 = pcall(function()
 						end
 						directory = "/"
 					end
+					if directory == "/" then
+						deletebutton.Size = UDim2.new(0,0,0,0)
+						deletebutton.Visible = false
+						parentbutton.Size = UDim2.new(0,0,0,0)
+						parentbutton.Visible = false
+					end
 					titletext.Text = directory
 					start = 0
 					scrollingframe:Destroy()
