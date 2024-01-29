@@ -2709,8 +2709,8 @@ local success, Error1 = pcall(function()
 		local yScale = 0
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
-				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2, 0.2), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale, yScale)})
-				desktopscrollingframe:AddChild(holderframe)
+				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2, 0.2), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale, yScale), TextTransparency = 1})
+				desktopscrollingframe:AddChild(holderbutton)
 				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 				holderbutton:AddChild(imagelabel)
 				local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(filename)})
