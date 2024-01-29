@@ -2606,8 +2606,10 @@ local success, Error1 = pcall(function()
 			minimizedprograms = {}
 			minimizedammount = 0
 			task.wait(1)
-			speaker:ClearSounds()
-			SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+			if speaker then
+				speaker:ClearSounds()
+				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+			end
 			for i=0,1,0.05 do
 				task.wait(0.05)
 				backgroundcolor.BackgroundTransparency = i
@@ -2651,8 +2653,10 @@ local success, Error1 = pcall(function()
 			minimizedprograms = {}
 			minimizedammount = 0
 			task.wait(1)
-			speaker:ClearSounds()
-			SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+			if speaker then
+				speaker:ClearSounds()
+				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+			end
 			for i=0,1,0.01 do
 				task.wait(0.01)
 				backgroundcolor.BackgroundTransparency = i
@@ -3747,7 +3751,6 @@ local success, Error1 = pcall(function()
 				local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reset Keyboard Event"})
 				restartkeyboardinput:AddChild(txtlabel9)
 				restartkeyboardinput.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
 					if keyboardevent then keyboardevent:Unbind() end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 						keyboardinput = text
@@ -3756,6 +3759,7 @@ local success, Error1 = pcall(function()
 					restartkeyboardinput.Image = "rbxassetid://15625805900"
 					pressed = false
 					startmenu:Destroy()
+					speaker:PlaySound(clicksound)
 				end)
 
 				local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
@@ -3767,11 +3771,11 @@ local success, Error1 = pcall(function()
 				end)
 
 				shutdown.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
 					shutdown.Image = "rbxassetid://15625805900"
 					pressed = false
 					startmenu:Destroy()
 					shutdownprompt()
+					speaker:PlaySound(clicksound)
 				end)
 
 				local restart = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0.5, 0, 0.8, 0), BackgroundTransparency = 1})
@@ -3783,11 +3787,11 @@ local success, Error1 = pcall(function()
 				end)
 
 				restart.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
 					restart.Image = "rbxassetid://15625805900"
 					pressed = false
 					startmenu:Destroy()
 					restartprompt()
+					speaker:PlaySound(clicksound)
 				end)
 				pressed = true
 			else
