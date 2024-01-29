@@ -1942,16 +1942,9 @@ local success, Error1 = pcall(function()
 					local data = filesystem.Read(filename, directory)
 					if newdirectory == "/" then
 						if directory == "/" and filename == "" then
-							filesystem.Write("Root", disk:ReadEntireDisk(), newdirectory)
-							if filesystem.Read("Root", newdirectory) then
-								text3.Text = "Success?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							else
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							end
+							text3.Text = "Cannot copy Root."
+							task.wait(2)
+							text3.Text = "Confirm"
 						else
 							filesystem.Write(filename, data, newdirectory)
 							if filesystem.Read(filename, newdirectory) then
@@ -1967,16 +1960,9 @@ local success, Error1 = pcall(function()
 						
 					elseif typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
-							filesystem.Write("Root", disk:ReadEntireDisk(), newdirectory)
-							if filesystem.Read("Root", newdirectory) then
-								text3.Text = "Success?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							else
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							end
+							text3.Text = "Cannot copy Root."
+							task.wait(2)
+							text3.Text = "Confirm"
 						else
 							filesystem.Write(filename, data, newdirectory)
 							if filesystem.Read(filename, newdirectory) then
