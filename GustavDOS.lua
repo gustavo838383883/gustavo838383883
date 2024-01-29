@@ -737,6 +737,9 @@ local function playsound(txt)
 	end
 end
 
+local copydir = ""
+local copyname = ""
+
 local function runtext(text)
 	if text:lower():sub(1, 4) == "dir " then
 		local txt = text:sub(5, string.len(text))
@@ -820,6 +823,82 @@ local function runtext(text)
 	elseif text:lower():sub(1, 6) == "print " then
 		commandlines.insert(text:sub(7, string.len(text)))
 		print(text:sub(7, string.len(text)))
+		commandlines.insert(dir..":")
+	elseif text:lower():sub(1, 5) == "copy " then
+		local filename = text:sub(6, string.len(text))
+		print(filename)
+		if filename and filename ~= "" then
+			local file
+			local split = dir:split("/")
+			if #split == 2 and split[2] == "" then
+				file = disk:Read(filename)
+			else
+				file = getfileontable(disk, filename, dir)
+			end
+
+			if filename then
+				copydir = dir
+				copyname = filename
+				commandlines.insert("Copied, use the paste command to paste the file.")
+			else
+				commandlines.insert("The specified file was not found on this directory.")
+			end
+		end
+		commandlines.insert(dir..":")
+	elseif text:lower():sub(1, 5) == "paste" then
+		if copydir ~= "" and copyname ~= "" then
+			local split = copydir:split("/")
+			local file
+			if #split == 2 and split[2] == "" then
+				file = disk:Read(copyname)
+			else
+				file = getfileontable(disk, copyname, copydir)
+			end
+			
+			if file then
+				local split = dir:split("/")
+				if #split == 2 and split[2] == "" then
+					disk:Write(copyname, file)
+					if disk:Read(copyname) then
+						commandlines.insert("Success?")
+					else
+						commandlines.insert("Failed?")
+					end
+				else
+					local result = createfileontable(disk, copyname, file, dir)
+
+					if disk:Read(split[2]) == result then
+						commandlines.insert("Success?")
+					else
+						commandlines.insert("Failed?")
+					end
+				end
+			end
+		else
+			commandlines.insert("No file has been copied.")
+		end
+		commandlines.insert(dir..":")
+	elseif text:lower():sub(1, 3) == "cd " then
+		local filename = text:sub(4, string.len(text))
+
+		if filename and filename ~= "" then
+			local split = dir:split("/")
+			local file
+			if #split == 2 and split[2] == "" then
+				file = disk:Read(filename)
+			else
+				file = getfileontable(disk, filename, dir)
+			end
+
+			if file then
+				dir = if dir == "/" then dir..filename else dir.."/"..filename
+				commandlines.insert("Success?")
+			else
+				commandlines.insert("The table/folder does not exist.")
+			end
+		else
+			commandlines.insert("The table/folder name was not specified.")
+		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "showmicros" then
 		if microcontrollers then
