@@ -1455,11 +1455,11 @@ local success, Error1 = pcall(function()
 
 	end
 
-	function loaddisk(directory: string, func: any, boolean1)
+	function loaddisk(directory: string, func: any, boolean1: boolean)
 		local scrollsize = if boolean1 then UDim2.new(1, 0, 0.7, 0) else UDim2.new(1, 0, 0.85, 0)
 		local directory = directory or "/"
 		local start = 0
-		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, function() return directory end, false)
+		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, if not boolean1 then function() return directory end else "Select File", false)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 
@@ -1749,6 +1749,7 @@ local success, Error1 = pcall(function()
 
 		getfilebutton.MouseButton1Up:Connect(function()
 			loaddisk("/", function(name, dir)
+				if not holderframe then return end
 				if dir == "/" and name == "" then
 					directory = dir
 					directorybutton2.Text = directory
@@ -1916,6 +1917,7 @@ local success, Error1 = pcall(function()
 		
 		filebutton.MouseButton1Up:Connect(function()
 			loaddisk("/", function(name, dir)
+				if not window then return end
 				directory = dir
 				filename = name
 				
@@ -1925,6 +1927,7 @@ local success, Error1 = pcall(function()
 		
 		folderbutton.MouseButton1Up:Connect(function()
 			loaddisk("/", function(name, dir)
+				if not window then return end
 				newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				newdirname = name
 				newdir = dir
@@ -2083,6 +2086,7 @@ local success, Error1 = pcall(function()
 		
 		filebutton.MouseButton1Up:Connect(function()
 			loaddisk("/", function(name, dir)
+				if not holderframe then return end
 				directory = dir
 				data = name
 
