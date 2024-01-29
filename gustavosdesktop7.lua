@@ -2622,11 +2622,11 @@ local success, Error1 = pcall(function()
 			minimizedprograms = {}
 			minimizedammount = 0
 			task.wait(1)
+			if desktopscrollingframe then desktopscrollingframe:Destroy() end
 			if speaker then
 				speaker:ClearSounds()
 				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 			end
-			if desktopscrollingframe then desktopscrollingframe:Destroy() end
 			for i=0,1,0.05 do
 				task.wait(0.05)
 				backgroundcolor.BackgroundTransparency = i
@@ -2669,12 +2669,12 @@ local success, Error1 = pcall(function()
 			playerthatinputted = nil
 			minimizedprograms = {}
 			minimizedammount = 0
+			if desktopscrollingframe then desktopscrollingframe:Destroy() end
 			task.wait(1)
 			if speaker then
 				speaker:ClearSounds()
 				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 			end
-			if desktopscrollingframe then desktopscrollingframe:Destroy() end
 			for i=0,1,0.01 do
 				task.wait(0.01)
 				backgroundcolor.BackgroundTransparency = i
