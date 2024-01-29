@@ -3243,7 +3243,7 @@ local success, Error1 = pcall(function()
 						commandlines:insert("The specified file was not found on this directory.")
 					end
 				end
-				commandlines.insert(dir..":")
+				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 5) == "paste" then
 				if copydir ~= "" and copyname ~= "" then
 					local split = copydir:split("/")
