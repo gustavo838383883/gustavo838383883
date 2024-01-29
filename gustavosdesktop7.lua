@@ -2688,6 +2688,88 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	local desktopscrollingframe = nil
+	local desktopicons = {}
+	local selectedicon = nil
+
+	local function loaddesktopicons()
+		if desktopscrollingframe then
+			desktopscrollingframe:Destroy()
+			desktopicons = {}
+			selectedicon = nil
+		end
+
+		desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.9,0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,1,0)})
+		wallpaper:AddChild(desktopscrollingframe)
+		
+		local desktopfiles = filesystem.Read("Desktop", "/")
+
+
+		local xScale = 0
+		local yScale = 0
+		if typeof(desktopfiles) == "table" then
+			for filename, data in pairs(desktopfiles) do
+				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2, 0.2), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale, yScale)})
+				desktopscrollingframe:AddChild(holderframe)
+				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
+				holderbutton:AddChild(imagelabel)
+				local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(filename)})
+				holderbutton:AddChild(textlabel)
+															
+				if string.find(filename, "%.aud") then
+					imagelabel.Image = "rbxassetid://16137076689"
+				end
+
+				if string.find(filename, "%.img") then
+					imagelabel.Image = "rbxassetid://16138716524"
+				end
+
+				if string.find(filename, "%.vid") then
+					imagelabel.Image = "rbxassetid://16137079551"
+				end
+
+				if string.find(filename, "%.lua") then
+					imagelabel.Image = "rbxassetid://16137086052"
+				end
+
+				if typeof(data) == "table" then
+					local length = 0
+
+					for i, v in pairs(data) do
+						length += 1
+					end
+
+
+					if length > 0 then
+						imagelabel.Image = "rbxassetid://16137091192"
+					else
+						imagelabel.Image = "rbxassetid://16137073439"
+					end
+				end
+
+				holderbutton.MouseButton1Up:Connect(function()
+					if selected ~= holderbutton then
+						selected = holderbutton
+					else
+						readfile(filesystem.Read(filename, "/Desktop"), filename, "/Desktop")
+						selected = nil
+					end
+				end)
+
+				desktopscrollingframe.CanvasSize += UDim2.fromScale(0.2, 0)
+
+				yScale += 0.2
+
+				if yScale >= 1 then
+					yScale = 0
+					xScale += 0.2
+				end
+															
+				table.insert(desktopicons, holderbutton)
+			end
+		end
+	end
+												
 	local function terminal()
 		local keyboardevent
 		local commandline = {}
@@ -3668,6 +3750,8 @@ local success, Error1 = pcall(function()
 			Taskbar = {taskbarholderscrollingframe, taskbarholder},
 			screenresolution = resolutionframe,
 		})
+
+		loaddesktopicons()
 
 		if not disk:Read("sounds") then
 			local window, holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
