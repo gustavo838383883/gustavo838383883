@@ -881,7 +881,7 @@ local function runtext(text)
 	elseif text:lower():sub(1, 3) == "cd " then
 		local filename = text:sub(4, string.len(text))
 
-		if filename and filename ~= "" then
+		if filename and filename ~= "" and filename ~= "./" then
 			local split = dir:split("/")
 			local file
 			if #split == 2 and split[2] == "" then
@@ -895,6 +895,13 @@ local function runtext(text)
 				commandlines.insert("Success?")
 			else
 				commandlines.insert("The table/folder does not exist.")
+			end
+		elseif filename == "./" then
+			local split = dir:split("/")
+			if #split == 2 and split[2] == "" then
+				commandlines.insert("Cannot use ./ on root.")
+			else
+				dir = dir:sub(1, -(string.len(split[#split])-2))
 			end
 		else
 			commandlines.insert("The table/folder name was not specified.")
@@ -1336,6 +1343,9 @@ local function runtext(text)
 		commandlines.insert("displayimage id")
 		commandlines.insert("displayvideo id")
 		commandlines.insert("readvideo id")
+		commandlines.insert("cd table/folder or ./ for parent table/folder")
+		commandlines.insert("copy filename")
+		commandlines.insert("paste")
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 4) == "help" then
 		keyboard:SimulateTextInput("cmds", "Microcontroller")
