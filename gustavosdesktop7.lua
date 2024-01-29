@@ -2596,6 +2596,8 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	local desktopscrollingframe = nil
+
 	local function shutdownprompt()
 		local window, holderframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
@@ -2624,6 +2626,7 @@ local success, Error1 = pcall(function()
 				speaker:ClearSounds()
 				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 			end
+			if desktopscrollingframe then desktopscrollingframe:Destroy() end
 			for i=0,1,0.05 do
 				task.wait(0.05)
 				backgroundcolor.BackgroundTransparency = i
@@ -2671,6 +2674,7 @@ local success, Error1 = pcall(function()
 				speaker:ClearSounds()
 				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 			end
+			if desktopscrollingframe then desktopscrollingframe:Destroy() end
 			for i=0,1,0.01 do
 				task.wait(0.01)
 				backgroundcolor.BackgroundTransparency = i
@@ -2688,7 +2692,6 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
-	local desktopscrollingframe = nil
 	local desktopicons = {}
 	local selectedicon = nil
 	local selectionimage = nil
