@@ -2705,7 +2705,10 @@ local success, Error1 = pcall(function()
 		end
 
 		selectionimage = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, ImageTransparency = 0.5, Image = "rbxassetid://8677487226"})
-
+		if resolutionframe then
+			resolutionframe:AddChild(selectionimage)
+		end
+		
 		desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.9,0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,0.9,0), ScrollBarThickness = 5})
 		wallpaper:AddChild(desktopscrollingframe)
 		
