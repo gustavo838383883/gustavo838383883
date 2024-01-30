@@ -1099,7 +1099,7 @@ local function writedisk(screen, disk)
 	end)
 
 	createtablebutton.MouseButton1Down:Connect(function()
-		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
+		if filenamebutton.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOSLibrary" then
 			local split = nil
 			local returntable = nil
 			if directory ~= "" then
