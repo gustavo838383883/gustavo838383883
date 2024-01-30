@@ -1377,8 +1377,8 @@ local success, Error1 = pcall(function()
 				nameondisk = file
 				directory = dir
 			elseif dir == "" and file == "" then
-				txt = disk:ReadEntireDisk()
-				nameondisk = "Root"
+				txt = {}
+				nameondisk = ""
 				directory = "/"
 			end
 		end
