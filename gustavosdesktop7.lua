@@ -3431,12 +3431,12 @@ local success, Error1 = pcall(function()
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 7) == "rename " then
 				local misc = text:sub(8, string.len(text))
-				local split1 = if misc then misc:split("/") else nil
+				local split1 = misc:split("/")
 				local filename = split1[1]
 				local newname = ""
 		
 				for index, value in ipairs(split1) do
-					if i >= 2 then
+					if index >= 2 then
 						newname = newname..value
 					end
 				end
@@ -3961,9 +3961,7 @@ local success, Error1 = pcall(function()
 
 		loaddesktopicons()
 
-		if not disk:Read("Desktop") then disk:Write("Desktop", {}) end
-
-		if not disk:Read("sounds") then
+		if not disk:Read("Desktop") and not disk:Read("sounds") then
 			local window, holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
 			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
 			window:AddChild(textlabel)
@@ -3997,6 +3995,9 @@ local success, Error1 = pcall(function()
 				holderframe:Destroy()
 			end)
 		end
+
+		if not disk:Read("Desktop") then disk:Write("Desktop", {}) end
+
 		local pressed = false
 		local startmenu
 		local function openstartmenu()
