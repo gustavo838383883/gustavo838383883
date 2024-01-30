@@ -1033,7 +1033,7 @@ local success, Error1 = pcall(function()
 
 		changecolorbutton.MouseButton1Down:Connect(function()
 			if color2.Text ~= "RGB (Click to update)" and data then
-				disk:Write("Color", data)
+				disk:Write("BackgroundColor", data)
 				local colordata = string.split(data, ",")
 				if colordata then
 					if tonumber(colordata[1]) and tonumber(colordata[2]) and tonumber(colordata[3]) then
@@ -1525,7 +1525,7 @@ local success, Error1 = pcall(function()
 		
 		
 		local function loadfile(filename, dataz)
-			if filename ~= "Color" and filename ~= "BackgroundImage" then
+			if filename then
 				local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
 				textlabel.Size = UDim2.new(1, -25, 1, 0)
 				textlabel.Position = UDim2.new(0, 25, 0, 0)
@@ -1859,7 +1859,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		createfilebutton.MouseButton1Down:Connect(function()
-			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" then
+			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "" then
 				if filedatabutton2.Text ~= "File Data (Click to update)" then
 					local split = nil
 					local returntable = nil
@@ -1895,7 +1895,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		createtablebutton.MouseButton1Down:Connect(function()
-			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "Color" and filename ~= "BackgroundImage" and filename ~= "GustavOS Library" then
+			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "" then
 				local split = nil
 				local returntable = nil
 				if directory ~= "" then
@@ -4684,7 +4684,8 @@ function bootos()
 			if not clicksound then clicksound = "rbxassetid://6977010128"; else clicksound = "rbxassetid://"..tostring(clicksound); end
 			if not startsound then startsound = 182007357; end
 			if not shutdownsound then shutdownsound = 7762841318; end
-			color = disk:Read("Color")
+			color = disk:Read("BackgroundColor")
+			if not color then color = disk:Read("Color") end
 			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15705296956,false") end
 			local diskbackgroundimage = disk:Read("BackgroundImage")
 			if color then
