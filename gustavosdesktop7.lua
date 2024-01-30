@@ -2056,13 +2056,14 @@ local success, Error1 = pcall(function()
 						task.wait(2)
 						text3.Text = "Confirm"
 					else
+						filesystem.Write(filename, nil, directory)
 						local result = filesystem.Write(newname, data, directory)
 						if result == "Success i think" then
-							filesystem.Write(filename, nil, directory)
 							text3.Text = "Success?"
 							task.wait(2)
 							text3.Text = "Confirm"
 						else
+							filesystem.Write(filename, data, directory)
 							text3.Text = "Failed?"
 							task.wait(2)
 							text3.Text = "Confirm"
