@@ -1351,13 +1351,36 @@ local success, Error1 = pcall(function()
 	local function readfile(txt, nameondisk, directory)
 		local filegui, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, nameondisk or "File", false)
 		local deletebutton = nil
+		local prevdir = directory
+		local prevtxt = txt
+		local prevname = nameondisk
+
+		if string.find(string.lower(tostring(nameondisk)), "%.lnk") then
+			local split = txt:split("/")
+			local file = split[#split]
+			local dir = ""
+
+			for index, value in ipairs(split) do
+				if i ~= #split then
+					dir = dir.."/"..value
+				end
+			end
+			
+			local data1 = filesystem.Read(file, dir)
+			
+			if data1 then
+				txt = data1
+				nameondisk = file
+				directory = dir
+			end
+		end
 
 		local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
 		filegui:AddChild(disktext)
 
 		print(txt)
 
-		if directory then
+		if prevdir then
 			deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
 
 			deletebutton.MouseButton1Up:Connect(function()
@@ -1370,7 +1393,7 @@ local success, Error1 = pcall(function()
 				end)
 
 				deletebutton.MouseButton1Up:Connect(function()
-					filesystem.Write(nameondisk, nil, directory)
+					filesystem.Write(prevname, nil, prevdir)
 					windowz:Destroy()
 					if window then
 						window:Destroy()
