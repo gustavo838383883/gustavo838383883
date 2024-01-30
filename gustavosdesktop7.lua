@@ -1361,7 +1361,7 @@ local success, Error1 = pcall(function()
 			local dir = ""
 
 			for index, value in ipairs(split) do
-				if i ~= #split then
+				if index ~= #split then
 					dir = dir.."/"..value
 				end
 			end
