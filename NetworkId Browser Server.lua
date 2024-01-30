@@ -32,6 +32,20 @@ modem:Connect("MessageSent", function(text1)
 				local result = {["Mode"] = "ServerSend", ["Text"] = returntext}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
+			elseif command == "dele, " then
+				local data = string.sub(text, 7, string.len(text))
+
+				local returntext = "Failed"
+
+				if text1 and text2 then
+					disk:Write(data, nil)
+				end
+
+				if disk:Read(data) == nil then returntext = "Success" end
+				
+				local result = {["Mode"] = "ServerSend", ["Text"] = returntext}
+				task.wait()
+				modem:SendMessage(JSONEncode(result), id)
 			elseif command == "read, " then
 				local data = string.sub(text, 7, string.len(text))
 
@@ -42,12 +56,25 @@ modem:Connect("MessageSent", function(text1)
 				local result = {["Mode"] = "ServerSend", ["Text"] = returntext}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
+			elseif command == "fuldir" then
+				local resulttext = ""
+
+				for i, v in ipairs(disk:ReadEntireDisk())
+					resulttext = if resulttext ~= "" then resulttext..","..i else i
+				end
+
+				local result = {["Mode"] = "ServerSend", ["Text"] = JSONEncode(returntable)}
+				task.wait()
+				modem:SendMessage(JSONEncode(result), id)
 			else
 				local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid command"}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			end
 		end
-		
+	else
+		local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid Request"}
+		task.wait()
+		modem:SendMessage(JSONEncode(result), id)
 	end
 end)
