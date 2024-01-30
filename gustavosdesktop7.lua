@@ -1322,10 +1322,10 @@ local success, Error1 = pcall(function()
 			end
 			return value
 		end,
-		Read = function(filename, directory)
+		Read = function(filename, directory, boolean1)
 			local directory = directory or "/"
 			local dir = directory
-			local value = "No filename specified"
+			local value = if boolean1 then nil else "No filename specified"
 			if filename and filename ~= "" then
 				local split = nil
 				if dir ~= "" then
@@ -1341,7 +1341,7 @@ local success, Error1 = pcall(function()
 					print(output)
 				end
 			else
-				value = "No filename specified"
+				value = if boolean1 then nil else "No filename specified"
 			end
 			return value
 		end,
@@ -1370,7 +1370,7 @@ local success, Error1 = pcall(function()
 				end
 			end
 			
-			local data1 = filesystem.Read(file, if dir == "" then "/" else dir)
+			local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
 			
 			if data1 then
 				txt = data1
