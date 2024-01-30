@@ -3048,14 +3048,9 @@ local success, Error1 = pcall(function()
 		local yScale = 0.2
 
 		local scrollX = 0
-		local scrollY = 0
-		local tablesize = 0
+		local scrollY = 0.18
 		if typeof(desktopfiles) == "table" then
 			for i, v in pairs(desktopfiles) do
-				tablesize += 1
-			end
-
-			for i = tablesize, 1, -1 do
 				scrollY += 0.18
 				if scrollY >= 0.9 then
 					scrollY = 0
