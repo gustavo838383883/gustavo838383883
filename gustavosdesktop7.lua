@@ -1467,7 +1467,9 @@ local success, Error1 = pcall(function()
 			else
 				newdirectory = "/"..nameondisk
 			end
-			window:Destroy()
+			if prevtxt == txt then
+				window:Destroy()
+			end
 
 			loaddisk(newdirectory)
 		end
