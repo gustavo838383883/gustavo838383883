@@ -63,7 +63,7 @@ modem:Connect("MessageSent", function(text1)
 					resulttext = if resulttext ~= "" then resulttext..","..i else i
 				end
 
-				local result = {["Mode"] = "ServerSend", ["Text"] = JSONEncode(returntable)}
+				local result = {["Mode"] = "ServerSend", ["Text"] = returntable}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			else
