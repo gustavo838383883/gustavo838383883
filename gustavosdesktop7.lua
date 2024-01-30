@@ -2107,9 +2107,16 @@ local success, Error1 = pcall(function()
 					local data = filesystem.Read(filename, directory)
 					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
-							text3.Text = "Cannot create a Root shortcut."
-							task.wait(2)
-							text3.Text = "Confirm"
+							local result = filesystem.Write("Root.lnk", "/", newdirectory)
+							if result == "Success i think" then
+								text3.Text = "Success?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							else
+								text3.Text = "Failed?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							end
 						else
 							local result = filesystem.Write(filename..".lnk", if directory ~= "/" then directory.."/"..filename else "/"..filename, newdirectory)
 							if result == "Success i think" then
