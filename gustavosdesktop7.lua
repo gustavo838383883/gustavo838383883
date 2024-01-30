@@ -2760,6 +2760,7 @@ local success, Error1 = pcall(function()
 	local function openrightclickprompt(frame, name, dir, boolean1)
 		if rightclickmenu then
 			rightclickmenu:Destroy()
+			rightclickmenu = nil
 			desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0)
 		else
 			previousframe = nil
@@ -2892,6 +2893,8 @@ local success, Error1 = pcall(function()
 				if speaker then speaker:PlaySound(clicksound) end
 			end
 		end)
+
+		table.insert(desktopicons, mycomputer)
 
 		local xScale = 0
 		local yScale = 0.2
