@@ -332,7 +332,7 @@ local playerthatinputted
 local keyboardinput
 local keyboardevent
 
-local function chatthing()
+local function webbrowser()
 		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Web Browser", false, false, false, "Chat", false)
 
 		local messagesent = nil
@@ -407,7 +407,7 @@ local function chatthing()
 		end
 end
 
-chatthing()
+webbrowser()
 
 keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 	keyboardinput = text
