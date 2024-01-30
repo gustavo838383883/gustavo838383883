@@ -1370,12 +1370,16 @@ local success, Error1 = pcall(function()
 				end
 			end
 			
-			local data1 = filesystem.Read(file, dir)
+			local data1 = filesystem.Read(file, if dir == "" then "/" else dir)
 			
 			if data1 then
 				txt = data1
 				nameondisk = file
 				directory = dir
+			elseif dir == "" and file == "" then
+				txt = disk:ReadEntireDisk()
+				nameondisk = "Root"
+				directory = "/"
 			end
 		end
 
