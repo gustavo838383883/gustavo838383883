@@ -2127,8 +2127,9 @@ local success, Error1 = pcall(function()
 		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Media player", false, false, false, "Media player", false)
 		local scrollingframe = holderframe
 		local Filename, Filename2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File with id(Case Sensitive) (Click to update)", scrollingframe)
-		local openimage = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Open as image", scrollingframe)
-		local openaudio = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Open as audio", scrollingframe)
+		local openimage = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Image", scrollingframe)
+		local openaudio = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new(1/3, 0, 0.8, 0), "Audio", scrollingframe)
+		local openvideo = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new((1/3)+(1/3), 0, 0.8, 0), "Video", scrollingframe)
 
 		local data = nil
 
@@ -2304,6 +2305,26 @@ local success, Error1 = pcall(function()
 					readdata = tostring(data)
 				end
 				woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+			end
+		end)
+
+		openvideo.MouseButton1Down:Connect(function()
+			if Filename2.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" and data then
+				local readdata = nil
+				if toggleopen then
+					local split = nil
+					if directory ~= "" then
+						split = string.split(directory, "/")
+					end
+					if not split or split[2] == "" then
+						readdata = disk:Read(data)
+					else
+						readdata = getfileontable(disk, data, directory)
+					end
+				else
+					readdata = tostring(data)
+				end
+				videoplayer(readdata)
 			end
 		end)
 	end
