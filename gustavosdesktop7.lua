@@ -2761,6 +2761,8 @@ local success, Error1 = pcall(function()
 		if rightclickmenu then
 			rightclickmenu:Destroy()
 			desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0)
+		else
+			previousframe = nil
 		end
 		if previousframe == frame then previousframe = nil; rightclickmenu = nil; return end
 
