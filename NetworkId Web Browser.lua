@@ -333,83 +333,82 @@ local keyboardinput
 local keyboardevent
 
 local function webbrowser()
-		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Web Browser", false, false, false, "Chat", false)
+	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Web Browser", false, false, false, "Chat", false)
 
-		local messagesent = nil
+	local messagesent = nil
 
-		if modem then
+	if modem then
 
-			local id = 0
+		local id = 0
 
-			local idui, idui2 = createnicebutton(UDim2.new(1, 0, 0.1, 0), UDim2.new(0,0,0,0), "Network id", holderframe)
+		local idui, idui2 = createnicebutton(UDim2.new(1, 0, 0.1, 0), UDim2.new(0,0,0,0), "Network id", holderframe)
 
-			idui.MouseButton1Up:Connect(function()
-				if tonumber(keyboardinput) then
-					idui2.Text = tonumber(keyboardinput)
-					id = tonumber(keyboardinput)
-					modem:Configure({NetworkID = tonumber(keyboardinput)})
-				end
+		idui.MouseButton1Up:Connect(function()
+			if tonumber(keyboardinput) then
+				idui2.Text = tonumber(keyboardinput)
+				id = tonumber(keyboardinput)
+				modem:Configure({NetworkID = tonumber(keyboardinput)})
+			end
+		end)
+
+		local text1 = screen:CreateElement("TextLabel", {TextScaled = true, Text = "", Size = UDim2.new(1, 0, 0.8, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
+		holderframe:AddChild(text1)
+
+		local sendbox, sendbox2 = createnicebutton(UDim2.new(0.6, 0, 0.1, 0), UDim2.new(0.2,0,0.9,0), "Message (Click to update)", holderframe)
+
+		local sendtext = nil
+		local player = nil
+
+		sendbox.MouseButton1Up:Connect(function()
+			if keyboardinput then
+				sendbox2.Text = keyboardinput:gsub("\n", "")
+				sendtext = keyboardinput:gsub("\n", "")
+				player = playerthatinputted
+			end
+		end)
+
+		local sendbutton, sendbutton2 = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8,0,0.9,0), "Send", holderframe)
+		local reset = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0,0,0.9,0), "Reset", holderframe)
+
+		reset.MouseButton1Up:Connect(function()
+			if keyboardevent then keyboardevent:Unbind() end
+			keyboardevent = keyboard:Connect("TextInputted", function(text, player)
+				keyboardinput = text
+				playerthatinputted = player
 			end)
+		end)
 
-			local text1 = screen:CreateElement("TextLabel", {TextScaled = true, Text = "", Size = UDim2.new(1, 0, 0.8, 0), Position = UDim2.new(0, 0, 0.1, 0), BackgroundTransparency = 1})
-			holderframe:AddChild(text1)
+		sendbutton.MouseButton1Up:Connect(function()
+			if sendtext then
+				local result = {
+					["Mode"] = "SendMessage",
+					["Text"] = sendtext,
+					["Player"] = player
+				}
+				modem:SendMessage(JSONEncode(result), id)
+				sendbutton2.Text = "Sent"
+				task.wait(2)
+				sendbutton2.Text = "Send"
+			end
+		end)
 
-			local sendbox, sendbox2 = createnicebutton(UDim2.new(0.6, 0, 0.1, 0), UDim2.new(0.2,0,0.9,0), "Message (Click to update)", holderframe)
-
-			local sendtext = nil
-			local player = nil
-
-			sendbox.MouseButton1Up:Connect(function()
-				if keyboardinput then
-					sendbox2.Text = keyboardinput:gsub("\n", "")
-					sendtext = keyboardinput:gsub("\n", "")
-					player = playerthatinputted
-				end
-			end)
-
-			local sendbutton, sendbutton2 = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0.8,0,0.9,0), "Send", holderframe)
-			local reset = createnicebutton(UDim2.new(0.2, 0, 0.1, 0), UDim2.new(0,0,0.9,0), "Reset", holderframe)
-
-			reset.MouseButton1Up:Connect(function()
-				if keyboardevent then keyboardevent:Unbind() end
-				keyboardevent = keyboard:Connect("TextInputted", function(text, player)
-					keyboardinput = text
-					playerthatinputted = player
-				end)
-			end)
-
-			sendbutton.MouseButton1Up:Connect(function()
-				if sendtext then
-					local result = {
-						["Mode"] = "SendMessage",
-						["Text"] = sendtext,
-						["Player"] = player
-					}
-					modem:SendMessage(JSONEncode(result), id)
-					sendbutton2.Text = "Sent"
-					task.wait(2)
-					sendbutton2.Text = "Send"
-				end
-			end)
-
-			messagesent = modem:Connect("MessageSent", function(text)
-				print(text)
-				local success = pcall(JSONDecode, text)
-				if not success then return end
-				local table1 = JSONDecode(text)
-				
-				if typeof(table1) == "table" then
-					if table1["Mode"] and table1["Mode"] == "ServerSend" then
-						if table1["Text"] then
-							text1.Text = tostring(table1["Text"])
-						end
-					end
-				end
-			end)
-		else
-			local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,0), Position = UDim2.new(0,0,0,0), BackgroundTransparency = 1})
-			holderframe:AddChild(textlabel)
-		end
+		messagesent = modem:Connect("MessageSent", function(text)
+			print(text)
+			local success = pcall(JSONDecode, text)
+			if not success then return end
+			local table1 = JSONDecode(text)
+			
+			local mode = table1["Mode"]
+			local texta = table1["Text"] 
+			
+			if mode == "ServerSend" then
+				text1.Text = tostring(texta)
+			end
+		end)
+	else
+		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,0), Position = UDim2.new(0,0,0,0), BackgroundTransparency = 1})
+		holderframe:AddChild(textlabel)
+	end
 end
 
 webbrowser()
