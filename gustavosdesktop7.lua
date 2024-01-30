@@ -2924,6 +2924,7 @@ local success, Error1 = pcall(function()
 			openbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
+				desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0.5)
 				readfile(filesystem.Read(name, dir), name, dir)	
 			end)
 
@@ -2931,6 +2932,7 @@ local success, Error1 = pcall(function()
 			deletebutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
+				desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0.5)
 				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
@@ -2954,24 +2956,28 @@ local success, Error1 = pcall(function()
 			filesbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
+				desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0.5)
 				loaddisk("/")
 			end)
 
 			settingsbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
+				desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0.5)
 				settings()
 			end)
 
 			reload.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
+				desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0.5)
 				loaddesktopicons()
 			end)
 
 			luas.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
+				desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0.5)
 				customprogramthing(screen, microcontrollers)
 			end)
 		end
@@ -2979,6 +2985,7 @@ local success, Error1 = pcall(function()
 		closebutton.MouseButton1Up:Connect(function()
 			rightclickmenu:Destroy()
 			rightclickmenu = nil
+			desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0.5)
 		end)		
 	end
 
