@@ -2914,10 +2914,10 @@ local success, Error1 = pcall(function()
 			size = UDim2.fromScale(frame.Size.X.Scale, frame.Size.Y.Scale*2.5)
 		end
 
-		local position = UDim2.fromScale(frame.Position.X.Scale + frame.Size.X.Scale, 0)
+		local position = UDim2.fromScale(frame.Position.X.Scale + frame.Size.X.Scale, frame.Position.Y.Scale)
 
 		if frame.Position.Y.Scale >= 0.5 then
-			position = UDim2.fromScale(position.X.Scale, frame.Position.Y.Scale - frame.Size.Y.Scale*1.5)
+			position = UDim2.fromScale(position.X.Scale, frame.Position.Y.Scale - if boolean1 then frame.Size.Y.Scale*1.5 else frame.Size.Y.Scale)
 		end
 
 		if frame.Position.X.Scale >= 0.8 then
@@ -3030,7 +3030,7 @@ local success, Error1 = pcall(function()
 		if typeof(desktopfiles) == "table" then
 			for i, v in pairs(desktopfiles) do
 				scrollY += 0.18
-				if scrollY >= 0.9 then
+				if scrollY >= 0.8 then
 					scrollY = 0
 					scrollX += 0.2
 				end
@@ -3121,7 +3121,7 @@ local success, Error1 = pcall(function()
 
 				yScale += 0.2
 
-				if yScale > 0.8 then
+				if yScale >= 0.8 then
 					yScale = 0
 					xScale += 0.2
 				end
