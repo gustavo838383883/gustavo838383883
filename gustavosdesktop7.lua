@@ -1995,7 +1995,7 @@ local success, Error1 = pcall(function()
 	end
 
 	local function renamefile()
-		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Copy File", false ,false ,false, "Rename File", false)
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Rename File", false ,false ,false, "Rename File", false)
 		
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local namebutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "New filename (Click to update)", window)
