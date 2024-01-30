@@ -2864,6 +2864,7 @@ local success, Error1 = pcall(function()
 				if resolutionframe then
 					resolutionframe:AddChild(selectionimage)
 				end
+				if speaker then speaker:PlaySound(clicksound) end
 			end
 		end)
 
@@ -2919,6 +2920,7 @@ local success, Error1 = pcall(function()
 						if resolutionframe then
 							resolutionframe:AddChild(selectionimage)
 						end
+						if speaker then speaker:PlaySound(clicksound) end
 					end
 				end)
 
