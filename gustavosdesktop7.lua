@@ -2125,7 +2125,7 @@ local success, Error1 = pcall(function()
 							task.wait(2)
 							text3.Text = "Confirm"
 						else
-							local result = filesystem.Write(filename..".lnk", directory.."/"..filename, newdirectory)
+							local result = filesystem.Write(filename..".lnk", "/"..filename, newdirectory)
 							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
