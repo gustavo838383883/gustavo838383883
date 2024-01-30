@@ -2917,7 +2917,7 @@ local success, Error1 = pcall(function()
 		local position = UDim2.fromScale(frame.Position.X.Scale + frame.Size.X.Scale, frame.Position.Y.Scale)
 
 		if frame.Position.Y.Scale >= 0.5 then
-			position = UDim2.fromScale(position.X.Scale, frame.Position.Y.Scale - if boolean1 then frame.Size.Y.Scale*1.5 else frame.Size.Y.Scale)
+			position = UDim2.fromScale(position.X.Scale, frame.Position.Y.Scale - if boolean1 then frame.Size.Y.Scale*2.5 else 0)
 		end
 
 		if frame.Position.X.Scale >= 0.8 then
@@ -3047,23 +3047,34 @@ local success, Error1 = pcall(function()
 		desktopscrollingframe:AddChild(mycomputer)
 		local imagelabel1 = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16168953881"})
 		mycomputer:AddChild(imagelabel1)
-		local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Computer", TextStrokeColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0})
+		local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Computer", TextStrokeColor3 = Color3.new(0,0,0), TextColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0})
 		mycomputer:AddChild(textlabel1)
 		mycomputer.MouseButton1Up:Connect(function()
 			if selected ~= mycomputer then
 				selected = mycomputer
 				mycomputer:AddChild(selectionimage)
+				for i, v in ipairs(desktopicons) do
+					v.TextLabel.Size = UDim2.fromScale(1, 0.5)
+					v.TextLabel.Position = UDim2.fromScale(0, 0.5)
+				end
+
+				textlabel1.Size = UDim2.fromScale(1, 1)
+				textlabel1.Position = UDim2.fromScale(0, 0)
 			else
 				openrightclickprompt(mycomputer, nil, "/Desktop", true)
 				selected = nil
 				if resolutionframe then
 					resolutionframe:AddChild(selectionimage)
 				end
+				for i, v in ipairs(desktopicons) do
+					v.TextLabel.Size = UDim2.fromScale(1, 0.5)
+					v.TextLabel.Position = UDim2.fromScale(0, 0.5)
+				end
 				if speaker then speaker:PlaySound(clicksound) end
 			end
 		end)
 
-		table.insert(desktopicons, mycomputer)
+		table.insert(desktopicons, {["Holder"] = mycomputer, ["Icon"] = imagelabel1, ["TextLabel"] = textlabel1})
 																				
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
@@ -3071,7 +3082,7 @@ local success, Error1 = pcall(function()
 				desktopscrollingframe:AddChild(holderbutton)
 				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
 				holderbutton:AddChild(imagelabel)
-				local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(filename), TextStrokeColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0})
+				local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(filename), TextStrokeColor3 = Color3.new(0,0,0), TextColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0})
 				holderbutton:AddChild(textlabel)
 															
 				if string.find(filename, "%.aud") then
@@ -3109,11 +3120,22 @@ local success, Error1 = pcall(function()
 					if selected ~= holderbutton then
 						selected = holderbutton
 						holderbutton:AddChild(selectionimage)
+						for i, v in ipairs(desktopicons) do
+							v.TextLabel.Size = UDim2.fromScale(1, 0.5)
+							v.TextLabel.Position = UDim2.fromScale(0, 0.5)
+						end
+
+						textlabel.Size = UDim2.fromScale(1, 1)
+						textlabel.Position = UDim2.fromScale(0, 0)
 					else
 						openrightclickprompt(holderbutton, filename, "/Desktop", false)
 						selected = nil
 						if resolutionframe then
 							resolutionframe:AddChild(selectionimage)
+						end
+						for i, v in ipairs(desktopicons) do
+							v.TextLabel.Size = UDim2.fromScale(1, 0.5)
+							v.TextLabel.Position = UDim2.fromScale(0, 0.5)
 						end
 						if speaker then speaker:PlaySound(clicksound) end
 					end
@@ -3126,7 +3148,7 @@ local success, Error1 = pcall(function()
 					xScale += 0.2
 				end
 															
-				table.insert(desktopicons, holderbutton)
+				table.insert(desktopicons, {["Holder"] = holderbutton, ["Icon"] = imagelabel, ["TextLabel"] = textlabel})
 			end
 		end
 	end
