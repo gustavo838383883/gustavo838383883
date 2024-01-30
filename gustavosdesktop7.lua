@@ -2683,8 +2683,8 @@ local success, Error1 = pcall(function()
 			if cursorevent then cursorevent:Unbind() end
 			minimizedprograms = {}
 			minimizedammount = 0
-			task.wait(1)
 			if desktopscrollingframe then desktopscrollingframe:Destroy() end
+			task.wait(1)
 			if speaker then
 				speaker:ClearSounds()
 				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
