@@ -2868,6 +2868,10 @@ local success, Error1 = pcall(function()
 		
 		local desktopfiles = filesystem.Read("Desktop", "/")
 
+		if not desktopfiles then
+			disk:Write("Desktop", {})
+		end
+		
 		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2, 0.2), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
 		desktopscrollingframe:AddChild(mycomputer)
 		local imagelabel1 = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16168953881"})
