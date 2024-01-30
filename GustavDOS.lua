@@ -880,8 +880,8 @@ local function runtext(text)
 			commandlines.insert("No file has been copied.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 5) == "rename " then
-		local misc = text:sub(6, string.len(text))
+	elseif text:lower():sub(1, 7) == "rename " then
+		local misc = text:sub(8, string.len(text))
 		local split1 = if misc then misc:split("/") else nil
 		local filename = split1[1]
 		local newname = ""
