@@ -2782,13 +2782,13 @@ local success, Error1 = pcall(function()
 		if rightclickmenu then
 			rightclickmenu:Destroy()
 			rightclickmenu = nil
-			desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0)
+			desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0.5)
 		else
 			previousframe = nil
 		end
 		if previousframe == frame then previousframe = nil; rightclickmenu = nil; return end
 
-		desktopscrollingframe.CanvasSize += UDim2.new(0.2, 0)
+		desktopscrollingframe.CanvasSize += UDim2.new(0.2, 0.5)
 
 		previousframe = frame
 
