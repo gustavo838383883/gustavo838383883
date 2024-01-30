@@ -3057,6 +3057,7 @@ local success, Error1 = pcall(function()
 
 		if not desktopfiles then
 			disk:Write("Desktop", {})
+			desktopfiles = {}
 		end
 
 
