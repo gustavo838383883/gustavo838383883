@@ -59,7 +59,7 @@ modem:Connect("MessageSent", function(text1)
 			elseif command == "fuldir" then
 				local resulttext = ""
 
-				for i, v in ipairs(disk:ReadEntireDisk())
+				for i, v in pairs(disk:ReadEntireDisk()) do
 					resulttext = if resulttext ~= "" then resulttext..","..i else i
 				end
 
