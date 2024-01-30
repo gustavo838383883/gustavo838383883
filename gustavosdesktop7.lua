@@ -2713,8 +2713,8 @@ local success, Error1 = pcall(function()
 			local openbutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, 1/3), "Open", rightclickmenu)
 
 			openbutton.MouseButton1Up:Connect(function()
-				readfile(filesystem.Read(name, dir), filename, dir)
-				rightclickmenu:Destroy()		
+				rightclickmenu:Destroy()
+				readfile(filesystem.Read(name, dir), name, dir)	
 			end)
 
 			local deletebutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, (1/3) + (1/3)), "Delete", rightclickmenu)
@@ -2735,6 +2735,24 @@ local success, Error1 = pcall(function()
 				end)		
 			end)
 		else
+			local filesbutton = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.25), "Files", rightclickmenu)
+			local settingsbutton = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.5), "Settings", rightclickmenu)
+			local reload = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.75), "Reload", rightclickmenu)
+
+			filesbutton.MouseButton1Up:Connect(function()
+				rightclickmenu:Destroy()
+				loaddisk("/")
+			end)
+
+			settingsbutton.MouseButton1Up:Connect(function()
+				rightclickmenu:Destroy()
+				settings()
+			end)
+
+			reload.MouseButton1Up:Connect(function()
+				rightclickmenu:Destroy()
+				loaddesktopicons()
+			end)
 		end
 
 		closebutton.MouseButton1Up:Connect(function()
@@ -2767,8 +2785,28 @@ local success, Error1 = pcall(function()
 		
 		local desktopfiles = filesystem.Read("Desktop", "/")
 
+		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2, 0.2), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
+		desktopscrollingframe:AddChild(mycomputer)
+		local imagelabel1 = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16168953881"})
+		mycomputer:AddChild(imagelabel1)
+		local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Computer"})
+		mycomputer:AddChild(textlabel1)
+
+		mycomputer.MouseButton1Up:Connect(function()
+			if selected ~= holderbutton then
+				selected = mycomputer
+				mycomputer:AddChild(selectionimage)
+			else
+				openrightclickprompt(mycomputer, nil, "/Desktop", true)
+				selected = nil
+				if resolutionframe then
+					resolutionframe:AddChild(selectionimage)
+				end
+			end
+		end)
+
 		local xScale = 0
-		local yScale = 0
+		local yScale = 0.2
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
 				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2, 0.2), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale, yScale), TextTransparency = 1})
