@@ -2819,7 +2819,7 @@ local success, Error1 = pcall(function()
 
 			luas.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
-				customprogramthing()
+				customprogramthing(screen, microcontrollers)
 			end)
 		end
 
