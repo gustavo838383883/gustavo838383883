@@ -2900,13 +2900,11 @@ local success, Error1 = pcall(function()
 		if rightclickmenu then
 			rightclickmenu:Destroy()
 			rightclickmenu = nil
-			desktopscrollingframe.CanvasSize -= UDim2.fromScale(0.2, 0.5)
 		else
 			previousframe = nil
 		end
 		if previousframe == frame then previousframe = nil; rightclickmenu = nil; return end
 
-		desktopscrollingframe.CanvasSize += UDim2.fromScale(0.2, 0.5)
 
 		previousframe = frame
 
@@ -2915,7 +2913,18 @@ local success, Error1 = pcall(function()
 		if boolean1 then
 			size = UDim2.fromScale(1, 2.5)
 		end
-		rightclickmenu = screen:CreateElement("ImageButton", {Size = size, Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1, Image = "rbxassetid://15619032563"})
+
+		local position = UDim2.fromScale(1, 0)
+
+		if frame.Position.Y.Scale >= 0.5 then
+			position = UDim2.fromScale(position.X.Scale, -1.5)
+		end
+
+		if frame.Position.X.Scale >= 0.8 then
+			position = UDim2.fromScale(-1, position.Y.Scale)
+		end
+		
+		rightclickmenu = screen:CreateElement("ImageButton", {Size = size, Position = position, BackgroundTransparency = 1, Image = "rbxassetid://15619032563"})
 		frame:AddChild(rightclickmenu)
 		local closebutton = createnicebutton(if not boolean1 then UDim2.fromScale(1, 1/3) else UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0), "Close", rightclickmenu)
 		if not boolean1 then
@@ -2924,7 +2933,6 @@ local success, Error1 = pcall(function()
 			openbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				desktopscrollingframe.CanvasSize -= UDim2.fromScale(0.2, 0.5)
 				readfile(filesystem.Read(name, dir), name, dir)	
 			end)
 
@@ -2932,7 +2940,6 @@ local success, Error1 = pcall(function()
 			deletebutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				desktopscrollingframe.CanvasSize -= UDim2.fromScale(0.2, 0.5)
 				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
@@ -2956,28 +2963,24 @@ local success, Error1 = pcall(function()
 			filesbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				desktopscrollingframe.CanvasSize -= UDim2.fromScale(0.2, 0.5)
 				loaddisk("/")
 			end)
 
 			settingsbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				desktopscrollingframe.CanvasSize -= UDim2.fromScale(0.2, 0.5)
 				settings()
 			end)
 
 			reload.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				desktopscrollingframe.CanvasSize -= UDim2.fromScale(0.2, 0.5)
 				loaddesktopicons()
 			end)
 
 			luas.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				desktopscrollingframe.CanvasSize -= UDim2.fromScale(0.2, 0.5)
 				customprogramthing(screen, microcontrollers)
 			end)
 		end
@@ -2985,7 +2988,6 @@ local success, Error1 = pcall(function()
 		closebutton.MouseButton1Up:Connect(function()
 			rightclickmenu:Destroy()
 			rightclickmenu = nil
-			desktopscrollingframe.CanvasSize -= UDim2.fromScale(0.2, 0.5)
 		end)		
 	end
 
@@ -3044,9 +3046,28 @@ local success, Error1 = pcall(function()
 
 		local xScale = 0
 		local yScale = 0.2
+
+		local scrollX = 0
+		local scrollY = 0
+		local tablesize = 0
+		if typeof(desktopfiles) == "table" then
+			for i, v in pairs(desktopfiles) do
+				tablesize += 1
+			end
+
+			for i = tablesize, 1, -1 do
+				scrollY += 0.18
+				if scrollY >= 0.9 then
+					scrollY = 0
+					scrollX += 0.2
+				end
+			end
+			
+			desktopscrollingframe.CanvasSize = UDim2.fromScale(scrollX, scrollY)
+		end
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
-				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2, 0.2), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale, yScale), TextTransparency = 1})
+				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.2/desktopscrollingframe.CanvasSize.Y.Scale), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale/desktopscrollingframe.CanvasSize.X.Scale, yScale/desktopscrollingframe.CanvasSize.Y.Scale), TextTransparency = 1})
 				desktopscrollingframe:AddChild(holderbutton)
 				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
 				holderbutton:AddChild(imagelabel)
@@ -3097,8 +3118,6 @@ local success, Error1 = pcall(function()
 						if speaker then speaker:PlaySound(clicksound) end
 					end
 				end)
-
-				desktopscrollingframe.CanvasSize += UDim2.fromScale(0.2, 0)
 
 				yScale += 0.2
 
