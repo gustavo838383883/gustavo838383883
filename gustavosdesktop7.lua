@@ -3429,6 +3429,44 @@ local success, Error1 = pcall(function()
 					commandlines:insert("No file has been copied.")
 				end
 				commandlines:insert(dir..":")
+			elseif text:lower():sub(1, 5) == "rename " then
+				local misc = text:sub(6, string.len(text))
+				local split1 = if misc then misc:split("/") else nil
+				local filename = split1[1]
+				local newname = ""
+		
+				for index, value in ipairs(split1) do
+					if i >= 2 then
+						newname = newname..value
+					end
+				end
+				
+				if filename and filename ~= "" then
+					local file
+					local split = dir:split("/")
+					if #split == 2 and split[2] == "" then
+						file = disk:Read(filename)
+					else
+						file = getfileontable(disk, filename, dir)
+					end
+					if file then
+						if newname ~= "" then
+							if #split == 2 and split[2] == "" then
+								disk:Write(newname, file)
+								disk:Write(filename, nil)
+							else
+								createfileontable(disk, newname, file, dir)
+								createfileontable(disk, filename, nil, dir)
+							end
+							commandlines:insert("Renamed.")
+						else
+							commandlines:insert("The new filename wasn't specified.")	
+						end
+					else
+						commandlines:insert("The specified file was not found on this directory.")
+					end
+				end
+				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 3) == "cd " then
 				local filename = text:sub(4, string.len(text))
 		
@@ -3667,6 +3705,10 @@ local success, Error1 = pcall(function()
 				commandlines:insert("displayimage id")
 				commandlines:insert("displayvideo id")
 				commandlines:insert("readvideo id")
+				commandlines:insert("rename filename/new filename (with the /)")
+				commandlines.insert("cd table/folder or ./ for parent table/folder")
+				commandlines.insert("copy filename")
+				commandlines.insert("paste")
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 4) == "help" then
 				commandlines:insert("Did you mean cmds")
