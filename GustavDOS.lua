@@ -739,6 +739,7 @@ end
 
 local copydir = ""
 local copyname = ""
+local copydata = ""
 
 local function runtext(text)
 	if text:lower():sub(1, 4) == "dir " then
@@ -839,6 +840,7 @@ local function runtext(text)
 			if file then
 				copydir = dir
 				copyname = filename
+				copydata = file
 				commandlines.insert("Copied, use the paste command to paste the file.")
 			else
 				commandlines.insert("The specified file was not found on this directory.")
@@ -854,7 +856,11 @@ local function runtext(text)
 			else
 				file = getfileontable(disk, copyname, copydir)
 			end
-			
+
+			if not file then
+				file = copydata
+			end
+
 			if file then
 				local split = dir:split("/")
 				if #split == 2 and split[2] == "" then
