@@ -1113,8 +1113,7 @@ local success, Error1 = pcall(function()
 
 	local function settings()
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Settings", false, false, false, "Settings", false)
-		local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, 0), CanvasSize = UDim2.new(1, 0, 0, 150), ScrollBarThickness = 5})
-		window:AddChild(scrollingframe)
+		local scrollingframe = window
 		local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
 		local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
 
@@ -1928,7 +1927,7 @@ local success, Error1 = pcall(function()
 	end
 	
 	local function copyfile()
-		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Copy File", false ,false ,false, "Copy File", false)
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Copy File", false, false ,false, "Copy File", false)
 		
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select new path", window)
@@ -1965,7 +1964,7 @@ local success, Error1 = pcall(function()
 			if newdirectory then
 				if filename and directory then
 					local data = filesystem.Read(filename, directory)
-					if newdirectory == "/" then
+					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
 							text3.Text = "Cannot copy Root."
 							task.wait(2)
@@ -1982,25 +1981,7 @@ local success, Error1 = pcall(function()
 								text3.Text = "Confirm"
 							end
 						end
-						
-					elseif typeof(filesystem.Read(newdirname, newdir)) == "table" then
-						if directory == "/" and filename == "" then
-							text3.Text = "Cannot copy Root."
-							task.wait(2)
-							text3.Text = "Confirm"
-						else
-							local result = filesystem.Write(filename, data, newdirectory)
-							if result == "Success i think" then
-								text3.Text = "Success?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							else
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							end
-						end
-						
+
 					else
 						text3.Text = "The selected new path is not a valid table/folder."
 						task.wait(2)
@@ -2020,7 +2001,7 @@ local success, Error1 = pcall(function()
 	end
 
 	local function renamefile()
-		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Rename File", false ,false ,false, "Rename File", false)
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Rename File", false, false ,false, "Rename File", false)
 		
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local namebutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "New filename (Click to update)", window)
@@ -2083,7 +2064,7 @@ local success, Error1 = pcall(function()
 	end
 
 	local function createshortcut()
-		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Create Shortcut", false ,false ,false, "Create Shortcut", false)
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Create Shortcut", false, false ,false, "Create Shortcut", false)
 		
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select shortcut path", window)
@@ -2120,7 +2101,7 @@ local success, Error1 = pcall(function()
 			if newdirectory then
 				if filename and directory then
 					local data = filesystem.Read(filename, directory)
-					if newdirectory == "/" then
+					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
 							text3.Text = "Cannot create a Root shortcut."
 							task.wait(2)
@@ -2138,24 +2119,81 @@ local success, Error1 = pcall(function()
 							end
 						end
 						
-					elseif typeof(filesystem.Read(newdirname, newdir)) == "table" then
+					else
+						text3.Text = "The selected new path is not a valid table/folder."
+						task.wait(2)
+						text3.Text = "Confirm"
+					end
+				else
+					text3.Text = "No file selected."
+					task.wait(2)
+					text3.Text = "Confirm"
+				end
+			else
+				text3.Text = "Selected new path is not a valid folder/table."
+				task.wait(2)
+				text3.Text = "Confirm"
+			end
+		end)
+	end
+
+	local function movefile()
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Move File", false, false ,false, "Move File", false)
+		
+		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
+		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select new path", window)
+		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
+		
+		local filename
+		local directory
+		local newdirectory
+		local newdirname
+		local newdir
+		
+		filebutton.MouseButton1Up:Connect(function()
+			loaddisk(if not directory then "/" else directory, function(name, dir)
+				if not window then return end
+				directory = dir
+				filename = name
+				
+				text1.Text = filename
+			end, true)
+		end)
+		
+		folderbutton.MouseButton1Up:Connect(function()
+			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
+				if not window then return end
+				newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
+				newdirname = name
+				newdir = dir
+				
+				text2.Text = newdirectory
+			end, true)
+		end)
+		
+		confirm.MouseButton1Up:Connect(function()
+			if newdirectory then
+				if filename and directory then
+					local data = filesystem.Read(filename, directory)
+					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
-							text3.Text = "Cannot create a Root shortcut."
+							text3.Text = "Cannot move Root."
 							task.wait(2)
 							text3.Text = "Confirm"
 						else
-							local result = filesystem.Write(filename..".lnk", if directory ~= "/" then directory.."/"..filename else "/"..filename, newdirectory)
+							filesystem.Write(filename, nil, directory)
+							local result = filesystem.Write(filename, data, newdirectory)
 							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
 								text3.Text = "Confirm"
 							else
+								filesystem.Write(filename, data, directory)
 								text3.Text = "Failed?"
 								task.wait(2)
 								text3.Text = "Confirm"
 							end
 						end
-						
 					else
 						text3.Text = "The selected new path is not a valid table/folder."
 						task.wait(2)
@@ -4219,7 +4257,7 @@ local success, Error1 = pcall(function()
 			if not pressed then
 				startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
 				taskbarholder:AddChild(startmenu)
-				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2.4, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
+				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2.6, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 				startmenu:AddChild(scrollingframe)
 				local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 				scrollingframe:AddChild(settingsopen)
@@ -4386,7 +4424,22 @@ local success, Error1 = pcall(function()
 					createshortcut()
 				end)
 
-				local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*11, 0), BackgroundTransparency = 1})
+				local move = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*11, 0), BackgroundTransparency = 1})
+				scrollingframe:AddChild(move)
+				local txtlabel12 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Move File"})
+				move:AddChild(txtlabel12)
+				move.MouseButton1Down:Connect(function()
+					move.Image = "rbxassetid://15625805069"
+				end)
+				move.MouseButton1Up:Connect(function()
+					speaker:PlaySound(clicksound)
+					move.Image = "rbxassetid://15625805900"
+					pressed = false
+					startmenu:Destroy()
+					movefile()
+				end)
+
+				local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*12, 0), BackgroundTransparency = 1})
 				scrollingframe:AddChild(restartkeyboardinput)
 				local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reset Keyboard Event"})
 				restartkeyboardinput:AddChild(txtlabel9)
