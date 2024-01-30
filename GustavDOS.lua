@@ -882,12 +882,12 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "rename " then
 		local misc = text:sub(8, string.len(text))
-		local split1 = if misc then misc:split("/") else nil
+		local split1 = misc:split("/")
 		local filename = split1[1]
 		local newname = ""
 
 		for index, value in ipairs(split1) do
-			if i >= 2 then
+			if index >= 2 then
 				newname = newname..value
 			end
 		end
