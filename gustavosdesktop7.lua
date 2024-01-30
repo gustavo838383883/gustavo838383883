@@ -3020,11 +3020,6 @@ local success, Error1 = pcall(function()
 		if not desktopfiles then
 			disk:Write("Desktop", {})
 		end
-		
-		local imagelabel1 = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16168953881"})
-		mycomputer:AddChild(imagelabel1)
-		local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Computer", TextStrokeColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0})
-		mycomputer:AddChild(textlabel1)
 
 
 		local xScale = 0
@@ -3047,6 +3042,10 @@ local success, Error1 = pcall(function()
 
 		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.2/desktopscrollingframe.CanvasSize.Y.Scale), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
 		desktopscrollingframe:AddChild(mycomputer)
+		local imagelabel1 = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16168953881"})
+		mycomputer:AddChild(imagelabel1)
+		local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Computer", TextStrokeColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0})
+		mycomputer:AddChild(textlabel1)
 		mycomputer.MouseButton1Up:Connect(function()
 			if selected ~= mycomputer then
 				selected = mycomputer
