@@ -294,8 +294,6 @@ defaultbuttonsize = Vector2.new(Screen:GetDimensions().X*0.14, Screen:GetDimensi
 if defaultbuttonsize.X > 35 then defaultbuttonsize = Vector2.new(35, defaultbuttonsize.Y); end
 if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsize.X, 25); end
 
-local screen = Screen
-
 local window = CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
 
 local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), TextScaled = true, BackgroundTransparency = 1, TextWrapped = true, Text = "nan"})
