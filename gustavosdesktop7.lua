@@ -2793,7 +2793,7 @@ local success, Error1 = pcall(function()
 		mycomputer:AddChild(textlabel1)
 
 		mycomputer.MouseButton1Up:Connect(function()
-			if selected ~= holderbutton then
+			if selected ~= mycomputer then
 				selected = mycomputer
 				mycomputer:AddChild(selectionimage)
 			else
