@@ -2851,7 +2851,7 @@ local success, Error1 = pcall(function()
 		desktopscrollingframe:AddChild(mycomputer)
 		local imagelabel1 = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16168953881"})
 		mycomputer:AddChild(imagelabel1)
-		local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Computer"})
+		local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Computer", TextStrokeColor3 = Color3.new(1,1,1)})
 		mycomputer:AddChild(textlabel1)
 
 		mycomputer.MouseButton1Up:Connect(function()
@@ -2875,7 +2875,7 @@ local success, Error1 = pcall(function()
 				desktopscrollingframe:AddChild(holderbutton)
 				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
 				holderbutton:AddChild(imagelabel)
-				local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(filename)})
+				local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(filename), TextStrokeColor3 = Color3.new(1,1,1)})
 				holderbutton:AddChild(textlabel)
 															
 				if string.find(filename, "%.aud") then
