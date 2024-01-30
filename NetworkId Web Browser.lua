@@ -387,6 +387,8 @@ local function webbrowser()
 				}
 				modem:SendMessage(JSONEncode(result), id)
 				sendbutton2.Text = "Sent"
+				speaker:Configure({Audio = 5077978432})
+				speaker:Trigger()
 				task.wait(2)
 				sendbutton2.Text = "Send"
 			end
@@ -394,6 +396,7 @@ local function webbrowser()
 
 		messagesent = modem:Connect("MessageSent", function(text)
 			print(text)
+			speaker:ClearSounds()
 			local success = pcall(JSONDecode, text)
 			if not success then return end
 			local table1 = JSONDecode(text)
