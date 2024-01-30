@@ -3021,28 +3021,11 @@ local success, Error1 = pcall(function()
 			disk:Write("Desktop", {})
 		end
 		
-		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2, 0.2), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
-		desktopscrollingframe:AddChild(mycomputer)
 		local imagelabel1 = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16168953881"})
 		mycomputer:AddChild(imagelabel1)
 		local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Computer", TextStrokeColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0})
 		mycomputer:AddChild(textlabel1)
 
-		mycomputer.MouseButton1Up:Connect(function()
-			if selected ~= mycomputer then
-				selected = mycomputer
-				mycomputer:AddChild(selectionimage)
-			else
-				openrightclickprompt(mycomputer, nil, "/Desktop", true)
-				selected = nil
-				if resolutionframe then
-					resolutionframe:AddChild(selectionimage)
-				end
-				if speaker then speaker:PlaySound(clicksound) end
-			end
-		end)
-
-		table.insert(desktopicons, mycomputer)
 
 		local xScale = 0
 		local yScale = 0.2
@@ -3060,6 +3043,26 @@ local success, Error1 = pcall(function()
 			
 			desktopscrollingframe.CanvasSize = UDim2.fromScale(scrollX, scrollY)
 		end
+
+
+		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.2/desktopscrollingframe.CanvasSize.Y.Scale), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
+		desktopscrollingframe:AddChild(mycomputer)
+		mycomputer.MouseButton1Up:Connect(function()
+			if selected ~= mycomputer then
+				selected = mycomputer
+				mycomputer:AddChild(selectionimage)
+			else
+				openrightclickprompt(mycomputer, nil, "/Desktop", true)
+				selected = nil
+				if resolutionframe then
+					resolutionframe:AddChild(selectionimage)
+				end
+				if speaker then speaker:PlaySound(clicksound) end
+			end
+		end)
+
+		table.insert(desktopicons, mycomputer)
+																				
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
 				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.2/desktopscrollingframe.CanvasSize.Y.Scale), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale/desktopscrollingframe.CanvasSize.X.Scale, yScale/desktopscrollingframe.CanvasSize.Y.Scale), TextTransparency = 1})
