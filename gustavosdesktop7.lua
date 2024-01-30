@@ -2766,11 +2766,11 @@ local success, Error1 = pcall(function()
 		local size = UDim2.fromScale(1, 1.5)
 
 		if boolean1 then
-			size = UDim2.fromScale(1, 2)
+			size = UDim2.fromScale(1, 2.5)
 		end
 		rightclickmenu = screen:CreateElement("ImageButton", {Size = size, Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1, Image = "rbxassetid://15619032563"})
 		frame:AddChild(rightclickmenu)
-		local closebutton = createnicebutton(if not boolean1 then UDim2.fromScale(1, 1/3) else UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0), "Close", rightclickmenu)
+		local closebutton = createnicebutton(if not boolean1 then UDim2.fromScale(1, 1/3) else UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0), "Close", rightclickmenu)
 		if not boolean1 then
 			local openbutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, 1/3), "Open", rightclickmenu)
 
@@ -2797,9 +2797,10 @@ local success, Error1 = pcall(function()
 				end)		
 			end)
 		else
-			local filesbutton = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.25), "Files", rightclickmenu)
-			local settingsbutton = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.5), "Settings", rightclickmenu)
-			local reload = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.75), "Reload", rightclickmenu)
+			local filesbutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.2), "Files", rightclickmenu)
+			local settingsbutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.4), "Settings", rightclickmenu)
+			local reload = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.6), "Reload", rightclickmenu)
+			local luas = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Cores", rightclickmenu)
 
 			filesbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
@@ -2814,6 +2815,11 @@ local success, Error1 = pcall(function()
 			reload.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				loaddesktopicons()
+			end)
+
+			luas.MouseButton1Up:Connect(function()
+				rightclickmenu:Destroy()
+				customprogramthing()
 			end)
 		end
 
