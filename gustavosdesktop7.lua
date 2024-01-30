@@ -1355,6 +1355,11 @@ local success, Error1 = pcall(function()
 		local prevtxt = txt
 		local prevname = nameondisk
 
+		local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
+		filegui:AddChild(disktext)
+
+		print(txt)
+
 		if string.find(string.lower(tostring(nameondisk)), "%.lnk") then
 			local split = txt:split("/")
 			local file = split[#split]
@@ -1374,11 +1379,6 @@ local success, Error1 = pcall(function()
 				directory = dir
 			end
 		end
-
-		local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
-		filegui:AddChild(disktext)
-
-		print(txt)
 
 		if prevdir then
 			deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
