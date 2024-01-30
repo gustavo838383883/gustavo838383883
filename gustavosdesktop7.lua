@@ -3644,6 +3644,7 @@ local success, Error1 = pcall(function()
 					if file then
 						copydir = dir
 						copyname = filename
+						copydata = file
 						commandlines:insert("Copied, use the paste command to paste the file.")
 					else
 						commandlines:insert("The specified file was not found on this directory.")
@@ -3659,7 +3660,11 @@ local success, Error1 = pcall(function()
 					else
 						file = getfileontable(disk, copyname, copydir)
 					end
-					
+		
+					if not file then
+						file = copydata
+					end
+		
 					if file then
 						local split = dir:split("/")
 						if #split == 2 and split[2] == "" then
@@ -3962,9 +3967,9 @@ local success, Error1 = pcall(function()
 				commandlines:insert("displayvideo id")
 				commandlines:insert("readvideo id")
 				commandlines:insert("rename filename/new filename (with the /)")
-				commandlines.insert("cd table/folder or ./ for parent table/folder")
-				commandlines.insert("copy filename")
-				commandlines.insert("paste")
+				commandlines:insert("cd table/folder or ./ for parent table/folder")
+				commandlines:insert("copy filename")
+				commandlines:insert("paste")
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 4) == "help" then
 				commandlines:insert("Did you mean cmds")
