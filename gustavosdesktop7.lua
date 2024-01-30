@@ -1994,6 +1994,68 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	local function renamefile()
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Copy File", false ,false ,false, "Copy File", false)
+		
+		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
+		local namebutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "New filename (Click to update)", window)
+		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
+		
+		local filename
+		local directory
+		local newname
+		
+		filebutton.MouseButton1Up:Connect(function()
+			loaddisk(if not directory then "/" else directory, function(name, dir)
+				if not window then return end
+				directory = dir
+				filename = name
+				
+				text1.Text = filename
+			end, true)
+		end)
+		
+		namebutton.MouseButton1Up:Connect(function()
+			if keyboardinput then
+				newname = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+				text2.Text = newname
+			end
+		end)
+		
+		confirm.MouseButton1Up:Connect(function()
+			if newname then
+				if filename and directory then
+					local data = filesystem.Read(filename, directory)
+					if directory == "/" and filename == "" then
+						text3.Text = "Cannot rename Root."
+						task.wait(2)
+						text3.Text = "Confirm"
+					else
+						local result = filesystem.Write(newname, data, directory)
+						if result == "Success i think" then
+							filesystem.Write(filename, nil, directory)
+							text3.Text = "Success?"
+							task.wait(2)
+							text3.Text = "Confirm"
+						else
+							text3.Text = "Failed?"
+							task.wait(2)
+							text3.Text = "Confirm"
+						end
+					end
+				else
+					text3.Text = "No file selected."
+					task.wait(2)
+					text3.Text = "Confirm"
+				end
+			else
+				text3.Text = "The new filename wasn't specified."
+				task.wait(2)
+				text3.Text = "Confirm"
+			end
+		end)
+	end
+
 	local function shutdownmicros(screen, micros)
 		local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), "Microcontroller Manager", false ,false, false, "Microcontroller Manager", false)
 
