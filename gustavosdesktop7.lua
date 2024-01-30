@@ -2506,7 +2506,7 @@ local success, Error1 = pcall(function()
 			local id = 0
 
 			local toggleanonymous = false
-			local togglea, togglea2 = createnicebutton(UDim2.new(0.4, 0, 0.1, 0), UDim2.new(0,0,0,0), "Enable anonymous mode", holderframe)
+			local togglea, togglea2 = createnicebutton(UDim2.new(0.4, 0, 0.1, 0), UDim2.new(0,0,0,0), "Enable anonymous", holderframe)
 
 			local idui, idui2 = createnicebutton(UDim2.new(0.6, 0, 0.1, 0), UDim2.new(0.4,0,0,0), "Network id", holderframe)
 
@@ -2520,11 +2520,11 @@ local success, Error1 = pcall(function()
 
 			togglea.MouseButton1Up:Connect(function()
 				if toggleanonymous then
-					togglea2.Text = "Enable anonymous mode"
+					togglea2.Text = "Enable anonymous"
 					toggleanonymous = false
 				else
 					toggleanonymous = true
-					togglea2.Text = "Disable anonymous mode"
+					togglea2.Text = "Disable anonymous"
 				end
 			end)
 
