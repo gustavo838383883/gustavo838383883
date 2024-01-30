@@ -2703,7 +2703,7 @@ local success, Error1 = pcall(function()
 
 		local size = UDim2.fromScale(1, 1.5)
 
-		if not boolean1 then
+		if boolean1 then
 			size = UDim2.fromScale(1, 2)
 		end
 		rightclickmenu = screen:CreateElement("ImageButton", {Size = size, Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1, Image = "rbxassetid://15619032563"})
