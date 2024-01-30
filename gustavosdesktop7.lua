@@ -1859,7 +1859,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		createfilebutton.MouseButton1Down:Connect(function()
-			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "" then
+			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "" and filename then
 				if filedatabutton2.Text ~= "File Data (Click to update)" then
 					local split = nil
 					local returntable = nil
@@ -1895,7 +1895,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		createtablebutton.MouseButton1Down:Connect(function()
-			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "" then
+			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "" and filename then
 				local split = nil
 				local returntable = nil
 				if directory ~= "" then
