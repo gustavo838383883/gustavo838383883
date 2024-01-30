@@ -2081,6 +2081,98 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	local function createshortcut()
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Create Shortcut", false ,false ,false, "Create Shortcut", false)
+		
+		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
+		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select shortcut path", window)
+		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
+		
+		local filename
+		local directory
+		local newdirectory
+		local newdirname
+		local newdir
+		
+		filebutton.MouseButton1Up:Connect(function()
+			loaddisk(if not directory then "/" else directory, function(name, dir)
+				if not window then return end
+				directory = dir
+				filename = name
+				
+				text1.Text = filename
+			end, true)
+		end)
+		
+		folderbutton.MouseButton1Up:Connect(function()
+			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
+				if not window then return end
+				newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
+				newdirname = name
+				newdir = dir
+				
+				text2.Text = newdirectory
+			end, true)
+		end)
+		
+		confirm.MouseButton1Up:Connect(function()
+			if newdirectory then
+				if filename and directory then
+					local data = filesystem.Read(filename, directory)
+					if newdirectory == "/" then
+						if directory == "/" and filename == "" then
+							text3.Text = "Cannot create a Root shortcut."
+							task.wait(2)
+							text3.Text = "Confirm"
+						else
+							local result = filesystem.Write(filename..".lnk", directory.."/"..filename, newdirectory)
+							if result == "Success i think" then
+								text3.Text = "Success?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							else
+								text3.Text = "Failed?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							end
+						end
+						
+					elseif typeof(filesystem.Read(newdirname, newdir)) == "table" then
+						if directory == "/" and filename == "" then
+							text3.Text = "Cannot create a Root shortcut."
+							task.wait(2)
+							text3.Text = "Confirm"
+						else
+							local result = filesystem.Write(filename..".lnk", directory.."/"..filename, newdirectory)
+							if result == "Success i think" then
+								text3.Text = "Success?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							else
+								text3.Text = "Failed?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							end
+						end
+						
+					else
+						text3.Text = "The selected new path is not a valid table/folder."
+						task.wait(2)
+						text3.Text = "Confirm"
+					end
+				else
+					text3.Text = "No file selected."
+					task.wait(2)
+					text3.Text = "Confirm"
+				end
+			else
+				text3.Text = "Selected new path is not a valid folder/table."
+				task.wait(2)
+				text3.Text = "Confirm"
+			end
+		end)
+	end
+
 	local function shutdownmicros(screen, micros)
 		local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), "Microcontroller Manager", false ,false, false, "Microcontroller Manager", false)
 
