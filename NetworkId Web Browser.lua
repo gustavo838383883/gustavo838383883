@@ -380,7 +380,12 @@ local function webbrowser()
 
 			sendbutton.MouseButton1Up:Connect(function()
 				if sendtext then
-					modem:SendMessage(JSONEncode({["Mode"] = "SendMessage", ["Text"] = sendtext, ["Player"] = player}), id)
+					local result = {
+						["Mode"] = "SendMessage",
+						["Text"] = sendtext,
+						["Player"] = player
+					}
+					modem:SendMessage(JSONEncode(result), id)
 					sendbutton2.Text = "Sent"
 					task.wait(2)
 					sendbutton2.Text = "Send"
