@@ -2783,12 +2783,14 @@ local success, Error1 = pcall(function()
 
 			openbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
+				rightclickmenu = nil
 				readfile(filesystem.Read(name, dir), name, dir)	
 			end)
 
 			local deletebutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, (1/3) + (1/3)), "Delete", rightclickmenu)
 			deletebutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
+				rightclickmenu = nil
 				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
@@ -2811,27 +2813,32 @@ local success, Error1 = pcall(function()
 
 			filesbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
+				rightclickmenu = nil
 				loaddisk("/")
 			end)
 
 			settingsbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
+				rightclickmenu = nil
 				settings()
 			end)
 
 			reload.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
+				rightclickmenu = nil
 				loaddesktopicons()
 			end)
 
 			luas.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
+				rightclickmenu = nil
 				customprogramthing(screen, microcontrollers)
 			end)
 		end
 
 		closebutton.MouseButton1Up:Connect(function()
 			rightclickmenu:Destroy()
+			rightclickmenu = nil
 		end)		
 	end
 
