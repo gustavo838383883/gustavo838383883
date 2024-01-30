@@ -4010,8 +4010,6 @@ local success, Error1 = pcall(function()
 			screenresolution = resolutionframe,
 		})
 
-		loaddesktopicons()
-
 		if not disk:Read("Desktop") and not disk:Read("sounds") then
 			local window, holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
 			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
@@ -4047,7 +4045,7 @@ local success, Error1 = pcall(function()
 			end)
 		end
 
-		if not disk:Read("Desktop") then disk:Write("Desktop", {}) end
+		loaddesktopicons()
 
 		local pressed = false
 		local startmenu
