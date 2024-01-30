@@ -30,7 +30,7 @@ modem:Connect("MessageSent", function(text1)
 				if disk:Read(text1) == text2 then returntext = "Success" end
 				
 				local result = {["Mode"] = "ServerSend", ["Text"] = returntext}
-				task.wait(1)
+				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			elseif command == "read, " then
 				local data = string.sub(text, 7, string.len(text))
@@ -40,11 +40,11 @@ modem:Connect("MessageSent", function(text1)
 				returntext = disk:Read(data) or "Failed"
 
 				local result = {["Mode"] = "ServerSend", ["Text"] = returntext}
-				task.wait(1)
+				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			else
 				local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid command"}
-				task.wait(1)
+				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			end
 		end
