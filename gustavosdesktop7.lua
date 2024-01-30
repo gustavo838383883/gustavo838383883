@@ -3961,7 +3961,7 @@ local success, Error1 = pcall(function()
 			if not pressed then
 				startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
 				taskbarholder:AddChild(startmenu)
-				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
+				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2.2, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 				startmenu:AddChild(scrollingframe)
 				local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
 				scrollingframe:AddChild(settingsopen)
@@ -4098,7 +4098,22 @@ local success, Error1 = pcall(function()
 					copyfile()
 				end)
 
-				local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*9, 0), BackgroundTransparency = 1})
+				local rename_file = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*9, 0), BackgroundTransparency = 1})
+				scrollingframe:AddChild(rename_file)
+				local txtlabel10 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Rename File"})
+				rename_file:AddChild(txtlabel10)
+				rename_file.MouseButton1Down:Connect(function()
+					rename_file.Image = "rbxassetid://15625805069"
+				end)
+				rename_file.MouseButton1Up:Connect(function()
+					speaker:PlaySound(clicksound)
+					rename_file.Image = "rbxassetid://15625805900"
+					pressed = false
+					startmenu:Destroy()
+					copyfile()
+				end)
+
+				local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*10, 0), BackgroundTransparency = 1})
 				scrollingframe:AddChild(restartkeyboardinput)
 				local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reset Keyboard Event"})
 				restartkeyboardinput:AddChild(txtlabel9)
