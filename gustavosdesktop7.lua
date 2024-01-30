@@ -2908,24 +2908,24 @@ local success, Error1 = pcall(function()
 
 		previousframe = frame
 
-		local size = UDim2.fromScale(1, 1.5)
+		local size = UDim2.fromScale(frame.Size.X.Scale, frame.Size.Y.Scale*1.5)
 
 		if boolean1 then
-			size = UDim2.fromScale(1, 2.5)
+			size = UDim2.fromScale(frame.Size.X.Scale, frame.Size.Y.Scale*2.5)
 		end
 
-		local position = UDim2.fromScale(1, 0)
+		local position = UDim2.fromScale(frame.Position.X.Scale + frame.Size.X.Scale, 0)
 
 		if frame.Position.Y.Scale >= 0.5 then
-			position = UDim2.fromScale(position.X.Scale, -1.5)
+			position = UDim2.fromScale(position.X.Scale, frame.Position.Y.Scale - frame.Size.Y.Scale*1.5)
 		end
 
 		if frame.Position.X.Scale >= 0.8 then
-			position = UDim2.fromScale(-1, position.Y.Scale)
+			position = UDim2.fromScale(frame.Position.X.Scale - frame.Size.X.Scale, position.Y.Scale)
 		end
 		
 		rightclickmenu = screen:CreateElement("ImageButton", {Size = size, Position = position, BackgroundTransparency = 1, Image = "rbxassetid://15619032563"})
-		frame:AddChild(rightclickmenu)
+		desktopscrollingframe:AddChild(rightclickmenu)
 		local closebutton = createnicebutton(if not boolean1 then UDim2.fromScale(1, 1/3) else UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0), "Close", rightclickmenu)
 		if not boolean1 then
 			local openbutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, 1/3), "Open", rightclickmenu)
@@ -3121,7 +3121,7 @@ local success, Error1 = pcall(function()
 
 				yScale += 0.2
 
-				if yScale >= 1 then
+				if yScale > 0.8 then
 					yScale = 0
 					xScale += 0.2
 				end
