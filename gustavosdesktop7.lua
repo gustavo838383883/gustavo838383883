@@ -2755,13 +2755,18 @@ local success, Error1 = pcall(function()
 	end
 
 	local loaddesktopicons
-	local rightclickmenu										
+	local rightclickmenu
+	local previousframe
 	local function openrightclickprompt(frame, name, dir, boolean1)
 		if rightclickmenu then
 			rightclickmenu:Destroy()
 			desktopscrollingframe.CanvasSize -= UDim2.new(0.2, 0)
 		end
+		if previousframe == frame then previousframe = nil; rightclickmenu = nil; return end
+
 		desktopscrollingframe.CanvasSize += UDim2.new(0.2, 0)
+
+		previousframe = frame
 
 		local size = UDim2.fromScale(1, 1.5)
 
@@ -2833,6 +2838,7 @@ local success, Error1 = pcall(function()
 	local selectionimage = nil
 
 	function loaddesktopicons()
+		previousframe = nil
 		if desktopscrollingframe then
 			desktopscrollingframe:Destroy()
 			desktopicons = {}
