@@ -1,7 +1,7 @@
 local modem = GetPartFromPort(1, "Modem")
 local disk = GetPartFromPort(2, "Disk")
 local id = 20
-modem:Configure({NetworkId = id})
+modem:Configure({NetworkID = id})
 
 modem:Connect("MessageSent", function(text1)
 	local success = pcall(JSONDecode, text1)
