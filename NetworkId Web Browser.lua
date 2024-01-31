@@ -69,15 +69,15 @@ local function jsontogui(screen, json, parent, boolean1)
     					newval = Color3.new(json["R"], json["G"], json["B"])
     				elseif json["Type"] == "Enum" then
     					local val = nil
-    					local split = if json["Enum"] then json["Enum"]:split(".") else {}
+    					if typeof(json["Enum"]) ~= "string" then return end
+    					local split = json["Enum"]:split(".")
     					for index, value in pairs(split) do
-    						if index == 1 then return end
     						if index == 2 then
     							val = Enum[value]
-    						else
+    						elseif index >= 3 then
     							val = val[value]
     						end
-    					end
+					    end
     					newval = val
     				else
     					newval = value
