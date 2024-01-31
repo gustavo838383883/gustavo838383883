@@ -3021,7 +3021,7 @@ local success, Error1 = pcall(function()
 			position = UDim2.fromScale(position.X.Scale, frame.Position.Y.Scale - if boolean1 then frame.Size.Y.Scale*2.5 else 0)
 		end
 
-		if frame.Position.X.Scale >= 0.8 then
+		if frame.Position.X.Scale >= desktopscrollingframe.CanvasSize.X.Scale - 0.2 then
 			position = UDim2.fromScale(frame.Position.X.Scale - frame.Size.X.Scale, position.Y.Scale)
 		end
 		
