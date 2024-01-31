@@ -65,17 +65,6 @@ local function enumtostring(enum)
 	return tostring(enum)
 end
 
-local table1 = {
-	["ClassName"] = "TextLabel",
-	["Properties"] = {
-		["Size"] = udim2totable(UDim2.fromScale(1, 1)),
-		["TextScaled"] = true,
-		["TextWrapped"] = true,
-		["BackgroundColor3"] = color3totable(Color3.new(1,1,1)),
-		["Text"] = "Test"
-	}
-}
-
 modem:Connect("MessageSent", function(text1)
 	local success = pcall(JSONDecode, text1)
 
@@ -86,6 +75,17 @@ modem:Connect("MessageSent", function(text1)
 		local text = message["Text"]
 
 		if mode == "SendMessage" then
+
+			local table1 = {
+				["ClassName"] = "TextLabel",
+				["Properties"] = {
+					["Size"] = udim2totable(UDim2.fromScale(1, 1)),
+					["TextScaled"] = true,
+					["TextWrapped"] = true,
+					["BackgroundColor3"] = color3totable(Color3.new(1,1,1)),
+					["Text"] = text
+				}
+			}
 			local result = {["Mode"] = "ServerSend", ["Text"] = JSONEncode(table1), ["Player"] = player}
 			print(JSONEncode(result))
 			task.wait()
