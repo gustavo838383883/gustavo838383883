@@ -2022,9 +2022,16 @@ local success, Error1 = pcall(function()
 					local data = filesystem.Read(filename, directory)
 					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
-							text3.Text = "Cannot copy Root."
-							task.wait(2)
-							text3.Text = "Confirm"
+							local result = filesystem.Write("Root", disk:ReadEntireDisk(), newdirectory)
+							if result == "Success i think" then
+								text3.Text = "Success?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							else
+								text3.Text = "Failed?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							end
 						else
 							local result = filesystem.Write(filename, data, newdirectory)
 							if result == "Success i think" then
@@ -2344,118 +2351,59 @@ local success, Error1 = pcall(function()
 
 	local function mediaplayer()
 		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Media player", false, false, false, "Media player", false)
-		local scrollingframe = holderframe
-		local Filename, Filename2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File with id(Case Sensitive) (Click to update)", scrollingframe)
-		local openimage = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Image", scrollingframe)
-		local openaudio = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new(1/3, 0, 0.8, 0), "Audio", scrollingframe)
-		local openvideo = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new((1/3)+(1/3), 0, 0.8, 0), "Video", scrollingframe)
+		local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1,1), BackgroundTransparency = 1, Image = "rbxasseitd://15940016124"})
+		holderframe:AddChild(imagelabel)
 
-		local data = nil
+		local directory = nil
+		local filename = nil
+		local id = nil
+		local toggled = 1
+																								
+		local filebutton, text1 = createnicebutton(UDim2.fromScale(0.9, 0.2), UDim2.fromScale(0.05,0.05), "Select file", holderframe)
 
-		local toggleopen = true
-		local Toggle1, Toggle12 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "Open from File: Yes", scrollingframe)
-		Toggle1.MouseButton1Up:Connect(function()
-			if toggleopen then
-				toggleopen = false
-				Toggle12.Text = "Open from File: No"
-			else
-				toggleopen = true
-				Toggle12.Text = "Open from File: Yes"
-			end
-		end)
-
-		Filename.MouseButton1Down:Connect(function()
-			if keyboardinput then
-				Filename2.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
-				data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
-			end
-		end)
-
-		local directorybutton2, directorybutton = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.4, 0), [[Directory (Click to update) example: "/sounds"]], scrollingframe)
-		local directory = ""
-		
-		local filebutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.6), "Select file instead", scrollingframe)
-		
 		filebutton.MouseButton1Up:Connect(function()
-			loaddisk(if directory == "" then "/" else directory, function(name, dir)
-				if not holderframe then return end
-				directory = dir
-				data = name
-
-				directorybutton.Text = directory
-				Filename2.Text = data
-			end, true)
+			if toggled == 1 then
+				loaddisk(if directory == "" then "/" else directory, function(name, dir)
+					if not holderframe then return end
+					if toggled ~= 1 then return end
+					directory = dir
+					filename = name
+	
+					text1.Text = filename
+				end, true)
+			elseif toggled == 2 then
+				if keyboardinput and tonumber(keyboardinput) then
+					id = keyboardinput
+					text1.Text = id
+				end
+			end                               
 		end)
 
-		directorybutton2.MouseButton1Down:Connect(function()
-			if keyboardinput then
-				local inputtedtext = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
-				local tempsplit = string.split(inputtedtext, "/")
-				if tempsplit then
-					if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
-						inputtedtext = "/"..inputtedtext
-					end
-				end
-				local tempsplit2 = string.split(inputtedtext, "/")
-				if tempsplit2 then
-					if inputtedtext:sub(-1, -1) == "/" and tempsplit2[2] ~= "" then inputtedtext = inputtedtext:sub(0, -2); end
-				end
-				if inputtedtext == " " then inputtedtext = ""; end
-				local split = string.split(inputtedtext, "/")
-				if split then
-					local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
-					if #split >= 3 then
-						if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
-							directorybutton.Text = inputtedtext
-							directory = inputtedtext
-						else
-							directorybutton.Text = "Invalid"
-							task.wait(2)
-							if directory ~= "" then
-								directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
-							else
-								directorybutton.Text = directory
-							end
-						end
-					else
-						if disk:Read(split[#split]) or split[2] == "" then
-							directorybutton.Text = inputtedtext
-							directory = inputtedtext
-						else
-							directorybutton.Text = "Invalid"
-							task.wait(2)
-							if directory == "" then
-								directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
-							else
-								directorybutton.Text = directory
-							end
-						end
-					end
-				elseif inputtedtext == "" then
-					directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
-					directory = inputtedtext
-				else
-					directorybutton.Text = "Invalid"
-					task.wait(2)
-					directorybutton.Text = [[Directory(Case Sensitive) (Click to update) example: "/sounds"]]
-				end
+																									
+		local toggle, text2 = createnicebutton(UDim2.fromScale(0.9, 0.2), UDim2.fromScale(0.05,0.3), "File mode", holderframe)
+
+		toggle.MouseButton1Up:Connect(function()
+			if toggled == 1 then
+				toggled = 2
+				text2.Text = "ID mode"
+				text1.Text = id or "ID (click to update)"
+			elseif toggled == 2 then
+				toggled = 1
+				text2.Text = "File mode"
+				text1.Text = filename or "Select file"
 			end
 		end)
 
+		local openimage = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new(0, 0, 0.75, 0), "Image", holderframe)
+		local openaudio = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new((1/3) - 0.05, 0, 0.75, 0), "Audio", holderframe)
+		local openvideo = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new(((1/3) - 0.05)*2, 0, 0.75, 0), "Video", holderframe)
 
 		openaudio.MouseButton1Down:Connect(function()
-			if Filename2.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" and data then
+			local data = tonumber(filename)
+			if data then
 				local readdata = nil
-				if toggleopen then
-					local split = nil
-					if directory ~= "" then
-						split = string.split(directory, "/")
-					end
-					if not split or split[2] == "" then
-						readdata = tostring(disk:Read(data))
-					else
-						readdata = tostring(getfileontable(disk, data, directory))
-					end
+				if toggled == 1 then
+					readdata = filesystem.Read(filename, directory)
 				else
 					readdata = string.lower(tostring(data))
 				end
@@ -2508,18 +2456,11 @@ local success, Error1 = pcall(function()
 		end)
 
 		openimage.MouseButton1Down:Connect(function()
-			if Filename2.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" and data then
+			local data = filename
+			if data then
 				local readdata = nil
-				if toggleopen then
-					local split = nil
-					if directory ~= "" then
-						split = string.split(directory, "/")
-					end
-					if not split or split[2] == "" then
-						readdata = disk:Read(data)
-					else
-						readdata = getfileontable(disk, data, directory)
-					end
+				if toggled == 1 then
+					readdata = filesystem.read(filename, directory)
 				else
 					readdata = tostring(data)
 				end
@@ -2528,18 +2469,11 @@ local success, Error1 = pcall(function()
 		end)
 
 		openvideo.MouseButton1Down:Connect(function()
-			if Filename2.Text ~= "File with id(Case Sensitive if on a table) (Click to update)" and data then
+			local data = filename
+			if data then
 				local readdata = nil
-				if toggleopen then
-					local split = nil
-					if directory ~= "" then
-						split = string.split(directory, "/")
-					end
-					if not split or split[2] == "" then
-						readdata = disk:Read(data)
-					else
-						readdata = getfileontable(disk, data, directory)
-					end
+				if toggled == 1 then
+					readdata = filesystem.read(filename, directory)
 				else
 					readdata = tostring(data)
 				end
