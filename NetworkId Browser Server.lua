@@ -8,6 +8,14 @@ modem:Connect("MessageSent", function(text1)
 
 	if success then
 		local table1 = JSONDecode(text1)
+
+		if typeof(table1) ~= "table" then
+			local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid"}
+			task.wait()
+			modem:SendMessage(JSONEncode(result), id)
+			return
+		end
+		
 		local mode = table1["Mode"]
 		local text = table1["Text"]
 
