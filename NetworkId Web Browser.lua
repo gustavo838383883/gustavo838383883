@@ -78,7 +78,7 @@ local function jsontogui(screen, json, parent, boolean1)
 				else
 					newval = value
 				end
-				pcall(function() object[index] = newval end)
+				object[index] = newval
 			end
 			returnval = object
 			if children and not boolean1 then
