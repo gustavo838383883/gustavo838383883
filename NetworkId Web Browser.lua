@@ -387,8 +387,6 @@ local function webbrowser()
 				}
 				modem:SendMessage(JSONEncode(result), id)
 				sendbutton2.Text = "Sent"
-				speaker:Configure({Audio = 5077978432})
-				speaker:Trigger()
 				task.wait(2)
 				sendbutton2.Text = "Send"
 			end
@@ -407,8 +405,6 @@ local function webbrowser()
 			local texta = table1["Text"] 
 			
 			if mode == "ServerSend" then
-				speaker:Configure({Audio = 0})
-				speaker:Trigger()
 				text1.Text = tostring(texta)
 			end
 		end)
