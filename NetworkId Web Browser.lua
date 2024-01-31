@@ -71,7 +71,7 @@ local function jsontogui(screen, json, parent, boolean1)
 						if i == 2 then
 							val = Enum[value]
 						else
-							val[value]
+							val = val[value]
 						end
 					end
 					newval = val
