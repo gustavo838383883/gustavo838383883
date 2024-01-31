@@ -32,6 +32,61 @@ local function getCursorColliding(X, Y, ui)
 	end
 end
 
+local function jsontogui(screen, json, parent, boolean1)
+	local returnval
+	local success = pcall(function() JSONDecode(json) end)
+	if not success then
+		returnval = nil
+	else
+		local table1 = JSONDecode(json)
+		local name = table1["ClassName"]
+		local properties = table1["Properties"]
+		local children = table1["Children"]
+
+        if not properties then return end
+
+    	pcall(function()
+		    local object = screen:CreateElement(name, {Size = UDim2.new(0,0,0,0)})
+			for index, value in pairs(properties) do
+			    print(index)
+			    print(value)
+				local newval = nil
+				local json = value
+			    print(json["Type"])
+				if json["Type"] == "Vector3" then
+					newval = Vector3.new(json["X"], json["Y"], json["Z"])
+				elseif json["Type"] == "Vector2" then
+					newval = Vector2.new(json["X"], json["Y"])
+				elseif json["Type"] == "UDim2" then
+					local x = json["X"]
+					local y = json["Y"]
+					newval = UDim2.new(x["Scale"], x["Offset"], y["Scale"], y["Offset"])
+				elseif json["Type"] == "UDim" then
+					newval = UDim.new(json["Scale"], json["Offset"])
+				else
+					newval = value
+				end
+				object[index] = newval
+			end
+			returnval = object
+			if children and not boolean1 then
+				local json = children
+				local length = 0
+				for i, v in pairs(json) do
+					length += 1
+				end
+
+				if length > 0 then
+					jsontogui(screen, children, object, false)
+				end
+			end
+			parent:AddChild(object)
+		end)
+	end 
+
+	return returnval
+end
+
 local gputer = GetPartFromPort(1, "Disk"):Read("GD7Library") or GetPartFromPort(1, "Disk"):Read("GDOSLibrary") or GetPartFromPort(1, "Disk"):Read("GustavOSLibrary") or {}
 local Modem = gputer.Modem or GetPartFromPort(1, "Modem") or GetPartFromPort(2, "Modem")
 local Screen = gputer.Screen or GetPartFromPort(1, "TouchScreen") or GetPartFromPort(2, "TouchScreen")
@@ -378,7 +433,10 @@ local function webbrowser()
 			end)
 		end)
 
+        local send = true
+
 		sendbutton.MouseButton1Up:Connect(function()
+		    if not send then return end
 			if sendtext then
 				local result = {
 					["Mode"] = "SendMessage",
@@ -390,11 +448,13 @@ local function webbrowser()
 				task.wait(2)
 				sendbutton2.Text = "Send"
 			end
+			send = false
 		end)
 
 		messagesent = modem:Connect("MessageSent", function(text)
-			if not holderframe then messagesent:Unbind() end
 			print(text)
+			if not holderframe then messagesent:Unbind() end
+			send = true
 			local success = pcall(JSONDecode, text)
 			if not success then return end
 				
@@ -404,9 +464,30 @@ local function webbrowser()
 			
 			local mode = table1["Mode"]
 			local texta = table1["Text"] 
+			local player1 = table1["Player"]
 			
-			if mode == "ServerSend" then
+			if mode == "ServerSend" and player1 == player then
 				text1.Text = tostring(texta)
+				
+				local success = pcall(JSONDecode, texta)
+				
+				if success then
+					local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "JSON To Gui", false, false, false, nil, false)
+					   Beep(1)
+
+					jsontogui(screen, texta, window, true)
+				end
+	    	elseif mode == "ServerSend" and not player1 then
+		        text1.Text = tostring(texta)
+				
+				local success = pcall(JSONDecode, texta)
+				
+				if success then
+					local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "JSON To Gui", false, false, false, nil, false)
+					   Beep(1)
+
+					jsontogui(screen, texta, window, true)
+				end
 			end
 		end)
 	else
