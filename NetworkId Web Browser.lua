@@ -93,11 +93,7 @@ local function jsontogui(screen, json, parent, boolean1)
 				local json = children
 				local length = 0
 				for i, v in pairs(json) do
-					length += 1
-				end
-
-				if length > 0 then
-					jsontogui(screen, JSONEncode(json), object, false)
+					jsontogui(screen, JSONEncode(v), object, false)
 				end
 			end
 		end)
