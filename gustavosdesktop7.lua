@@ -2372,7 +2372,7 @@ local success, Error1 = pcall(function()
 					text1.Text = filename
 				end, true)
 			elseif toggled == 2 then
-				if keyboardinput and tonumber(keyboardinput) then
+				if tonumber(keyboardinput) then
 					id = keyboardinput:gsub("\n", "")
 					text1.Text = id
 				end
@@ -2430,7 +2430,7 @@ local success, Error1 = pcall(function()
 						end
 					end
 
-					audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length))
+					audioui(screen, disk, spacesplitted[1], speaker, tonumber(pitch), tonumber(length), if toggled == 1 then filename else "Audio")
 
 				elseif string.find(tostring(data), "length:") then
 
@@ -2446,10 +2446,10 @@ local success, Error1 = pcall(function()
 						length = splitted[2]
 					end
 
-					audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length))
+					audioui(screen, disk, spacesplitted[1], speaker, nil, tonumber(length), if toggled == 1 then filename else "Audio")
 
 				else
-					audioui(screen, disk, data, speaker)
+					audioui(screen, disk, data, speaker, nil, nil, if toggled == 1 then filename else "Audio")
 				end
 			end
 		end)
@@ -2462,7 +2462,7 @@ local success, Error1 = pcall(function()
 				else
 					readdata = tonumber(id)
 				end
-				woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
+				woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true, if toggled == 1 then filename else "Image")
 			end
 		end)
 
@@ -2474,7 +2474,7 @@ local success, Error1 = pcall(function()
 				else
 					readdata = tonumber(id)
 				end
-				videoplayer(readdata)
+				videoplayer(readdata, if toggled == 1 then filename else "Video")
 			end
 		end)
 	end
