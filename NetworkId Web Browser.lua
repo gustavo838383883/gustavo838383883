@@ -235,8 +235,8 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 	closebutton.MouseButton1Up:Connect(function()
 		closebutton.Image = "rbxassetid://15617983488"
 		speaker:PlaySound(clicksound)
-		holderframe:Destroy()
 		window = nil
+		holderframe:Destroy()
 		holderframe = nil
 	end)
 
@@ -493,9 +493,12 @@ local function webbrowser()
 				
 				if success then
 					local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "JSON To Gui", false, false, false, nil, false)
-					   Beep(1)
 
-					jsontogui(screen, texta, window, true)
+					local table1 = JSONDecode(texta)
+                    
+                    for index, value in pairs(table1) do
+					    jsontogui(screen, JSONEncode(value), window, false)
+					end
 				end
 	    	elseif mode == "ServerSend" and not player1 then
 		        text1.Text = tostring(texta)
@@ -504,9 +507,12 @@ local function webbrowser()
 				
 				if success then
 					local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "JSON To Gui", false, false, false, nil, false)
-					   Beep(1)
 
-					jsontogui(screen, texta, window, true)
+                    local table1 = JSONDecode(texta)
+                    
+                    for index, value in pairs(table1) do
+					    jsontogui(screen, JSONEncode(value), window, false)
+					end
 				end
 			end
 		end)
