@@ -48,11 +48,9 @@ local function jsontogui(screen, json, parent, boolean1)
     	pcall(function()
 		    local object = screen:CreateElement(name, {Size = UDim2.new(0,0,0,0)})
 			for index, value in pairs(properties) do
-			    print(index)
-			    print(value)
 				local newval = nil
 				local json = value
-			    print(json["Type"])
+			   
 				if json["Type"] == "Vector3" then
 					newval = Vector3.new(json["X"], json["Y"], json["Z"])
 				elseif json["Type"] == "Vector2" then
@@ -63,10 +61,24 @@ local function jsontogui(screen, json, parent, boolean1)
 					newval = UDim2.new(x["Scale"], x["Offset"], y["Scale"], y["Offset"])
 				elseif json["Type"] == "UDim" then
 					newval = UDim.new(json["Scale"], json["Offset"])
+				elseif json["Type"] == "Color3" then
+					newval = Color3.new(json["R"], json["G"], json["B"])
+				elseif json["Type"] == "Enum" then
+					local val
+					local split = if json["Enum"] then json["Enum"]:split() else {}
+					for index, value in pairs(split) do
+						if i == 1 then return end
+						if i == 2 then
+							val = Enum[value]
+						else
+							val[value]
+						end
+					end
+					newval = val
 				else
 					newval = value
 				end
-				object[index] = newval
+				pcall(function() object[index] = newval end)
 			end
 			returnval = object
 			if children and not boolean1 then
@@ -77,7 +89,7 @@ local function jsontogui(screen, json, parent, boolean1)
 				end
 
 				if length > 0 then
-					jsontogui(screen, children, object, false)
+					jsontogui(screen, JSONEncode(json), object, false)
 				end
 			end
 			parent:AddChild(object)
@@ -486,7 +498,7 @@ local function webbrowser()
 					local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "JSON To Gui", false, false, false, nil, false)
 					   Beep(1)
 
-					jsontogui(screen, texta, window, true)
+					jsontogui(screen, texta, window, false)
 				end
 			end
 		end)
