@@ -1299,6 +1299,7 @@ local function chatthing(screen, disk, modem)
 		local start = 0
 		
 		messagesent = modem:Connect("MessageSent", function(text)
+			if not holderframe then messagesent:Unbind() end
 			print(text)
 			local textlabel = screen:CreateElement("TextLabel", {RichText = true, Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
 			scrollingframe:AddChild(textlabel)
