@@ -398,9 +398,14 @@ local function webbrowser()
 			print(text)
 			local success = pcall(JSONDecode, text)
 			if not success then return end
+				
+			local table1 = JSONDecode(text)
+
+			if typeof(table1) ~= "table" then return end
+			if #table1 == 0 then return end
+				
 			speaker:Configure({Audio = 0})
 			speaker:Trigger()
-			local table1 = JSONDecode(text)
 			
 			local mode = table1["Mode"]
 			local texta = table1["Text"] 
