@@ -1585,7 +1585,7 @@ local success, Error1 = pcall(function()
 					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
 
 					if dir == "" and file == "" then
-						data1 = {}
+						data1 = disk:ReadEntireDisk()
 					end
 												
 					if string.find(file, "%.aud") then
@@ -3235,7 +3235,7 @@ local success, Error1 = pcall(function()
 					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
 
 					if dir == "" and file == "" then
-						data1 = {}
+						data1 = disk:ReadEntireDisk()
 					end
 
 					if not data1 then return end
