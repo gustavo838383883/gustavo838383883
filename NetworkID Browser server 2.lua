@@ -89,7 +89,7 @@ modem:Connect("MessageSent", function(text1)
 				["Children"] = {
 					["ClassName"] = "TextLabel",
 					["Properties"] = {
-						["Size"] = udim2totable(UDim2.fromScale(1, 1)),
+						["Size"] = udim2totable(UDim2.fromScale(1, 0.5)),
 						["TextScaled"] = true,
 						["TextWrapped"] = true,
 						["BackgroundColor3"] = color3totable(Color3.new(1,1,1)),
