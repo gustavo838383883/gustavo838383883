@@ -402,7 +402,13 @@ local function webbrowser()
 			local table1 = JSONDecode(text)
 
 			if typeof(table1) ~= "table" then return end
-			if #table1 == 0 then return end
+			local length = 0
+
+			for i, v in ipairs(table1) do
+				length += 1
+			end
+
+			if length == 0 then return end
 				
 			speaker:Configure({Audio = 0})
 			speaker:Trigger()
