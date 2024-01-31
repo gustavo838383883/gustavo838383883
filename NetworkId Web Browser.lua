@@ -193,38 +193,38 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 			if holding or holding2 then return end
 			speaker:PlaySound(clicksound)
 			minimizebutton.Image = "rbxassetid://15617867263"
-            if not minimizepressed then
-                if not maximizepressed then
-                    minimizetext.Text = "↓"
-                    window.Visible = false
-        	        minimizepressed = true
-        	        window.Position = UDim2.new(-1, 0, -1, 0)
-                	unminimizedsize = holderframe.Size
-                	holderframe.Size = UDim2.new(holderframe.Size.X.Scale, holderframe.Size.X.Offset, 0, defaultbuttonsize.Y)
-                	if not boolean2 then
-                        resizebutton.Visible = false
-                        resizebutton.ImageTransparency = 1
-                        resizebutton.Size = UDim2.new(0,0,0,0)
-                        window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-                        window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-            	    end
-        	    end
-            else
-                if not maximizepressed then
-                    minimizetext.Text = "↑"
-                    holderframe.Size = unminimizedsize
-                    window.Visible = true
-                    window.Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y)
-        	        minimizepressed = false
-                    if not boolean2 then
-                        resizebutton.Visible = true
-                        resizebutton.ImageTransparency = 0
-                        resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
-                        window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-                        window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-                    end
-                end
-            end
+	            if not minimizepressed then
+	                if not maximizepressed then
+	                    minimizetext.Text = "↓"
+	                    window.Visible = false
+	        	        minimizepressed = true
+	        	        window.Position = UDim2.new(-1, 0, -1, 0)
+	                	unminimizedsize = holderframe.Size
+	                	holderframe.Size = UDim2.new(holderframe.Size.X.Scale, holderframe.Size.X.Offset, 0, defaultbuttonsize.Y)
+	                	if not boolean2 then
+		                        resizebutton.Visible = false
+		                        resizebutton.ImageTransparency = 1
+		                        resizebutton.Size = UDim2.new(0,0,0,0)
+		                        window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+		                        window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+	            	   	 end
+        	  	  end
+	            else
+	                if not maximizepressed then
+	                    minimizetext.Text = "↑"
+	                    holderframe.Size = unminimizedsize
+	                    window.Visible = true
+	                    window.Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y)
+	        	        minimizepressed = false
+	                    if not boolean2 then
+	                        resizebutton.Visible = true
+	                        resizebutton.ImageTransparency = 0
+	                        resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
+	                        window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+	                        window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+	                    end
+	                end
+	            end
 		end)
 	end
 
@@ -396,13 +396,11 @@ local function webbrowser()
 
 		messagesent = modem:Connect("MessageSent", function(text)
 			print(text)
-			speaker:Configure({Audio = 0})
-			speaker:Trigger()
 			local success = pcall(JSONDecode, text)
 			if not success then return end
+			speaker:Configure({Audio = 0})
+			speaker:Trigger()
 			local table1 = JSONDecode(text)
-
-			if typeof(table1) ~= "table" then return end
 			
 			local mode = table1["Mode"]
 			local texta = table1["Text"] 
