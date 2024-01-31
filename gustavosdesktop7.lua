@@ -2614,6 +2614,7 @@ local success, Error1 = pcall(function()
 			local start = 0
 
 			messagesent = modem:Connect("MessageSent", function(text)
+				if not holderframe then messagesent:Unbind() end
 				print(text)
 				local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
 				scrollingframe:AddChild(textlabel)
