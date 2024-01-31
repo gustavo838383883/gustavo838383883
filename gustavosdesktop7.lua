@@ -2351,7 +2351,7 @@ local success, Error1 = pcall(function()
 
 	local function mediaplayer()
 		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Media player", false, false, false, "Media player", false)
-		local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1,1), BackgroundTransparency = 1, Image = "rbxasseitd://15940016124"})
+		local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1,1), BackgroundTransparency = 1, Image = "rbxassetid://15940016124"})
 		holderframe:AddChild(imagelabel)
 
 		local directory = nil
@@ -2373,7 +2373,7 @@ local success, Error1 = pcall(function()
 				end, true)
 			elseif toggled == 2 then
 				if keyboardinput and tonumber(keyboardinput) then
-					id = keyboardinput
+					id = keyboardinput:gsub("\n", "")
 					text1.Text = id
 				end
 			end                               
@@ -2394,18 +2394,17 @@ local success, Error1 = pcall(function()
 			end
 		end)
 
-		local openimage = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new(0, 0, 0.75, 0), "Image", holderframe)
-		local openaudio = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new((1/3) - 0.05, 0, 0.75, 0), "Audio", holderframe)
-		local openvideo = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new(((1/3) - 0.05)*2, 0, 0.75, 0), "Video", holderframe)
+		local openimage = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new(0.05, 0, 0.75, 0), "Image", holderframe)
+		local openaudio = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new((1/3), 0, 0.75, 0), "Audio", holderframe)
+		local openvideo = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new((1/3)*2, 0, 0.75, 0), "Video", holderframe)
 
-		openaudio.MouseButton1Down:Connect(function()
-			local data = tonumber(filename)
-			if data then
+		openaudio.MouseButton1Up:Connect(function()
+			if filename then
 				local readdata = nil
 				if toggled == 1 then
 					readdata = filesystem.Read(filename, directory)
 				else
-					readdata = string.lower(tostring(data))
+					readdata = string.lower(tostring(filename))
 				end
 				local data = readdata
 
@@ -2455,27 +2454,26 @@ local success, Error1 = pcall(function()
 			end
 		end)
 
-		openimage.MouseButton1Down:Connect(function()
-			local data = filename
-			if data then
+		openimage.MouseButton1Up:Connect(function()
+			if filename then
 				local readdata = nil
 				if toggled == 1 then
 					readdata = filesystem.read(filename, directory)
 				else
-					readdata = tostring(data)
+					readdata = tonumber(filename)
 				end
 				woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 			end
 		end)
 
-		openvideo.MouseButton1Down:Connect(function()
+		openvideo.MouseButton1Up:Connect(function()
 			local data = filename
 			if data then
 				local readdata = nil
 				if toggled == 1 then
 					readdata = filesystem.read(filename, directory)
 				else
-					readdata = tostring(data)
+					readdata = tonumber(filename)
 				end
 				videoplayer(readdata)
 			end
