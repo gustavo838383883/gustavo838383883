@@ -402,21 +402,13 @@ local function webbrowser()
 			local table1 = JSONDecode(text)
 
 			if typeof(table1) ~= "table" then return end
-			local length = 0
-
-			for i, v in pairs(table1) do
-				length += 1
-			end
-
-			if length == 0 then return end
-				
-			speaker:Configure({Audio = 0})
-			speaker:Trigger()
 			
 			local mode = table1["Mode"]
 			local texta = table1["Text"] 
 			
 			if mode == "ServerSend" then
+				speaker:Configure({Audio = 0})
+				speaker:Trigger()
 				text1.Text = tostring(texta)
 			end
 		end)
