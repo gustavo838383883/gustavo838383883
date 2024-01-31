@@ -1584,7 +1584,9 @@ local success, Error1 = pcall(function()
 
 					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
 
-					if not data1 then return end
+					if dir == "" and file == "" then
+						data1 = {}
+					end
 												
 					if string.find(file, "%.aud") then
 						imagebutton.Image = "rbxassetid://16137076689"
@@ -1601,8 +1603,6 @@ local success, Error1 = pcall(function()
 					if string.find(file, "%.lua") then
 						imagebutton.Image = "rbxassetid://16137086052"
 					end
-												
-					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
 
 					if typeof(data1) == "table" then
 						local length = 0
@@ -3234,6 +3234,10 @@ local success, Error1 = pcall(function()
 
 					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
 
+					if dir == "" and file == "" then
+						data1 = {}
+					end
+
 					if not data1 then return end
 												
 					if string.find(file, "%.aud") then
@@ -3251,8 +3255,6 @@ local success, Error1 = pcall(function()
 					if string.find(file, "%.lua") then
 						imagelabel.Image = "rbxassetid://16137086052"
 					end
-												
-					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
 
 					if typeof(data1) == "table" then
 						local length = 0
