@@ -10,7 +10,7 @@ modem:Connect("MessageSent", function(text1)
 		local table1 = JSONDecode(text1)
 
 		if typeof(table1) ~= "table" then
-			local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid"}
+			local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid", ["Player"] = player}
 			task.wait()
 			modem:SendMessage(JSONEncode(result), id)
 			return
@@ -18,6 +18,7 @@ modem:Connect("MessageSent", function(text1)
 		
 		local mode = table1["Mode"]
 		local text = table1["Text"]
+		local player = table1["Player"]
 
 		if mode == "SendMessage" then
 			local command = if text then string.sub(text, 1, 6):lower() else ""
@@ -37,7 +38,7 @@ modem:Connect("MessageSent", function(text1)
 
 				if disk:Read(text1) == text2 then returntext = "Success" end
 				
-				local result = {["Mode"] = "ServerSend", ["Text"] = returntext}
+				local result = {["Mode"] = "ServerSend", ["Text"] = returntext, ["Player"] = player}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			elseif command == "dele, " then
@@ -51,7 +52,7 @@ modem:Connect("MessageSent", function(text1)
 
 				if disk:Read(data) == nil then returntext = "Success" end
 				
-				local result = {["Mode"] = "ServerSend", ["Text"] = returntext}
+				local result = {["Mode"] = "ServerSend", ["Text"] = returntext, ["Player"] = player}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			elseif command == "read, " then
@@ -61,7 +62,7 @@ modem:Connect("MessageSent", function(text1)
 
 				returntext = disk:Read(data) or "Failed"
 
-				local result = {["Mode"] = "ServerSend", ["Text"] = returntext}
+				local result = {["Mode"] = "ServerSend", ["Text"] = returntext, ["Player"] = player}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			elseif command == "fuldir" then
@@ -71,17 +72,17 @@ modem:Connect("MessageSent", function(text1)
 					resulttext = if resulttext ~= "" then resulttext..","..i else i
 				end
 
-				local result = {["Mode"] = "ServerSend", ["Text"] = resulttext}
+				local result = {["Mode"] = "ServerSend", ["Text"] = resulttext, ["Player"] = player}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			else
-				local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid command"}
+				local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid command", ["Player"] = player}
 				task.wait()
 				modem:SendMessage(JSONEncode(result), id)
 			end
 		end
 	else
-		local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid Request"}
+		local result = {["Mode"] = "ServerSend", ["Text"] = "Invalid Request", ["Player"] = player}
 		task.wait()
 		modem:SendMessage(JSONEncode(result), id)
 	end
