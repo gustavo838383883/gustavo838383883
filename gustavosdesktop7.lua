@@ -2394,17 +2394,17 @@ local success, Error1 = pcall(function()
 			end
 		end)
 
-		local openimage = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new(0.05, 0, 0.75, 0), "Image", holderframe)
-		local openaudio = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new((1/3), 0, 0.75, 0), "Audio", holderframe)
-		local openvideo = createnicebutton(UDim2.new((1/3) - 0.05,0,0.2,0), UDim2.new((1/3)*2, 0, 0.75, 0), "Video", holderframe)
+		local openimage = createnicebutton(UDim2.new((1/3) - 0.03,0,0.2,0), UDim2.new(0.05, 0, 0.75, 0), "Image", holderframe)
+		local openaudio = createnicebutton(UDim2.new((1/3) - 0.03,0,0.2,0), UDim2.new((1/3) + 0.02, 0, 0.75, 0), "Audio", holderframe)
+		local openvideo = createnicebutton(UDim2.new((1/3) - 0.03,0,0.2,0), UDim2.new(((1/3)*2)-0.02, 0, 0.75, 0), "Video", holderframe)
 
 		openaudio.MouseButton1Up:Connect(function()
-			if filename then
+			if filename or id then
 				local readdata = nil
 				if toggled == 1 then
 					readdata = filesystem.Read(filename, directory)
 				else
-					readdata = string.lower(tostring(filename))
+					readdata = string.lower(tostring(id))
 				end
 				local data = readdata
 
@@ -2455,25 +2455,24 @@ local success, Error1 = pcall(function()
 		end)
 
 		openimage.MouseButton1Up:Connect(function()
-			if filename then
+			if filename or id then
 				local readdata = nil
 				if toggled == 1 then
-					readdata = filesystem.read(filename, directory)
+					readdata = filesystem.Read(filename, directory)
 				else
-					readdata = tonumber(filename)
+					readdata = tonumber(id)
 				end
 				woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true)
 			end
 		end)
 
 		openvideo.MouseButton1Up:Connect(function()
-			local data = filename
-			if data then
+			if filename or id then
 				local readdata = nil
 				if toggled == 1 then
-					readdata = filesystem.read(filename, directory)
+					readdata = filesystem.Read(filename, directory)
 				else
-					readdata = tonumber(filename)
+					readdata = tonumber(id)
 				end
 				videoplayer(readdata)
 			end
