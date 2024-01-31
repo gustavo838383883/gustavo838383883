@@ -393,6 +393,7 @@ local function webbrowser()
 		end)
 
 		messagesent = modem:Connect("MessageSent", function(text)
+			if not holderframe then messagesent:Unbind() end
 			print(text)
 			local success = pcall(JSONDecode, text)
 			if not success then return end
