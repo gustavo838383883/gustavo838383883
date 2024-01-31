@@ -48,39 +48,47 @@ local function jsontogui(screen, json, parent, boolean1)
     	pcall(function()
 		    local object = screen:CreateElement(name, {Size = UDim2.new(0,0,0,0)})
 			for index, value in pairs(properties) do
+			    print(index)
+			    print(value)
 				local newval = nil
 				local json = value
-			   
-				if json["Type"] == "Vector3" then
-					newval = Vector3.new(json["X"], json["Y"], json["Z"])
-				elseif json["Type"] == "Vector2" then
-					newval = Vector2.new(json["X"], json["Y"])
-				elseif json["Type"] == "UDim2" then
-					local x = json["X"]
-					local y = json["Y"]
-					newval = UDim2.new(x["Scale"], x["Offset"], y["Scale"], y["Offset"])
-				elseif json["Type"] == "UDim" then
-					newval = UDim.new(json["Scale"], json["Offset"])
-				elseif json["Type"] == "Color3" then
-					newval = Color3.new(json["R"], json["G"], json["B"])
-				elseif json["Type"] == "Enum" then
-					local val
-					local split = if json["Enum"] then json["Enum"]:split() else {}
-					for index, value in pairs(split) do
-						if i == 1 then return end
-						if i == 2 then
-							val = Enum[value]
-						else
-							val = val[value]
-						end
-					end
-					newval = val
+				
+				
+			   if typeof(json) == "table" then
+    				if json["Type"] == "Vector3" then
+    					newval = Vector3.new(json["X"], json["Y"], json["Z"])
+    				elseif json["Type"] == "Vector2" then
+    					newval = Vector2.new(json["X"], json["Y"])
+    				elseif json["Type"] == "UDim2" then
+    					local x = json["X"]
+    					local y = json["Y"]
+    					newval = UDim2.new(x["Scale"], x["Offset"], y["Scale"], y["Offset"])
+    				elseif json["Type"] == "UDim" then
+    					newval = UDim.new(json["Scale"], json["Offset"])
+    				elseif json["Type"] == "Color3" then
+    					newval = Color3.new(json["R"], json["G"], json["B"])
+    				elseif json["Type"] == "Enum" then
+    					local val = nil
+    					local split = if json["Enum"] then json["Enum"]:split(".") else {}
+    					for index, value in pairs(split) do
+    						if index == 1 then return end
+    						if index == 2 then
+    							val = Enum[value]
+    						else
+    							val = val[value]
+    						end
+    					end
+    					newval = val
+    				else
+    					newval = value
+    				end
 				else
-					newval = value
+				    newval = value
 				end
 				object[index] = newval
 			end
 			returnval = object
+			parent:AddChild(object)
 			if children and not boolean1 then
 				local json = children
 				local length = 0
@@ -92,7 +100,6 @@ local function jsontogui(screen, json, parent, boolean1)
 					jsontogui(screen, JSONEncode(json), object, false)
 				end
 			end
-			parent:AddChild(object)
 		end)
 	end 
 
@@ -498,7 +505,7 @@ local function webbrowser()
 					local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "JSON To Gui", false, false, false, nil, false)
 					   Beep(1)
 
-					jsontogui(screen, texta, window, false)
+					jsontogui(screen, texta, window, true)
 				end
 			end
 		end)
