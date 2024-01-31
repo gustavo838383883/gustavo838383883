@@ -396,7 +396,8 @@ local function webbrowser()
 
 		messagesent = modem:Connect("MessageSent", function(text)
 			print(text)
-			speaker:ClearSounds()
+			speaker:Configure({Audio = 0})
+			speaker:Trigger()
 			local success = pcall(JSONDecode, text)
 			if not success then return end
 			local table1 = JSONDecode(text)
