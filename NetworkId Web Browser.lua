@@ -401,6 +401,8 @@ local function webbrowser()
 			local success = pcall(JSONDecode, text)
 			if not success then return end
 			local table1 = JSONDecode(text)
+
+			if typeof(table1) ~= "table" then return end
 			
 			local mode = table1["Mode"]
 			local texta = table1["Text"] 
