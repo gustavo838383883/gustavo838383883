@@ -62,7 +62,7 @@ end
 
 local function enumtostring(enum)
 	if typeof(enum) ~= "Enum" then return end
-	return tostring(enum)
+	return {["Type"] = "Enum", ["Enum"] = tostring(enum)}
 end
 
 modem:Connect("MessageSent", function(text1)
@@ -76,7 +76,7 @@ modem:Connect("MessageSent", function(text1)
 
 		if mode == "SendMessage" then
 
-			local table1 = {
+			local table1 = {{
 				["ClassName"] = "TextLabel",
 				["Properties"] = {
 					["Size"] = udim2totable(UDim2.fromScale(1, 1)),
@@ -85,7 +85,17 @@ modem:Connect("MessageSent", function(text1)
 					["BackgroundColor3"] = color3totable(Color3.new(1,1,1)),
 					["Text"] = text
 				}
-			}
+				["Children"] = {
+					["ClassName"] = "TextLabel",
+					["Properties"] = {
+						["Size"] = udim2totable(UDim2.fromScale(1, 1)),
+						["TextScaled"] = true,
+						["TextWrapped"] = true,
+						["BackgroundColor3"] = color3totable(Color3.new(1,1,1)),
+						["Text"] = text
+					}
+				}
+			}}
 			local result = {["Mode"] = "ServerSend", ["Text"] = JSONEncode(table1), ["Player"] = player}
 			print(JSONEncode(result))
 			task.wait()
