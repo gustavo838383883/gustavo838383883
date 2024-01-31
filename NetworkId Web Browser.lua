@@ -236,6 +236,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
 		closebutton.Image = "rbxassetid://15617983488"
 		speaker:PlaySound(clicksound)
 		holderframe:Destroy()
+		window = nil
 		holderframe = nil
 	end)
 
