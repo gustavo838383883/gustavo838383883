@@ -1568,6 +1568,58 @@ local success, Error1 = pcall(function()
 					end
 				end
 
+				if string.find(filename, "%.lnk") then
+					local image2 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.25, 0, 0.25, 0), Position = UDim2.new(0, 0, 0.75, 0), BackgroundTransparency = 1, Image = "rbxassetid://16180413404"})
+					imagebutton:AddChild(image2)
+
+					local split = dataz:split("/")
+					local file = split[#split]
+					local dir = ""
+		
+					for index, value in ipairs(split) do
+						if index < #split and index > 1 then
+							dir = dir.."/"..value
+						end
+					end
+
+					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
+
+					if not data1 then return end
+												
+					if string.find(file, "%.aud") then
+						imagebutton.Image = "rbxassetid://16137076689"
+					end
+	
+					if string.find(file, "%.img") then
+						imagebutton.Image = "rbxassetid://16138716524"
+					end
+	
+					if string.find(file, "%.vid") then
+						imagebutton.Image = "rbxassetid://16137079551"
+					end
+	
+					if string.find(file, "%.lua") then
+						imagebutton.Image = "rbxassetid://16137086052"
+					end
+												
+					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
+
+					if typeof(data1) == "table" then
+						local length = 0
+
+						for i, v in pairs(data1) do
+							length += 1
+						end
+	
+	
+						if length > 0 then
+							imagebutton.Image = "rbxassetid://16137091192"
+						else
+							imagebutton.Image = "rbxassetid://16137073439"
+						end
+					end
+				end
+
 				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 				start += 25
 				imagebutton.MouseButton1Down:Connect(function()
@@ -3163,6 +3215,58 @@ local success, Error1 = pcall(function()
 						imagelabel.Image = "rbxassetid://16137091192"
 					else
 						imagelabel.Image = "rbxassetid://16137073439"
+					end
+				end
+
+				if string.find(filename, "%.lnk") then
+					local image2 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.25, 0, 0.25, 0), Position = UDim2.new(0, 0, 0.75, 0), BackgroundTransparency = 1, Image = "rbxassetid://16180413404"})
+					imagelabel:AddChild(image2)
+
+					local split = data:split("/")
+					local file = split[#split]
+					local dir = ""
+		
+					for index, value in ipairs(split) do
+						if index < #split and index > 1 then
+							dir = dir.."/"..value
+						end
+					end
+
+					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
+
+					if not data1 then return end
+												
+					if string.find(file, "%.aud") then
+						imagelabel.Image = "rbxassetid://16137076689"
+					end
+	
+					if string.find(file, "%.img") then
+						imagelabel.Image = "rbxassetid://16138716524"
+					end
+	
+					if string.find(file, "%.vid") then
+						imagelabel.Image = "rbxassetid://16137079551"
+					end
+	
+					if string.find(file, "%.lua") then
+						imagelabel.Image = "rbxassetid://16137086052"
+					end
+												
+					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
+
+					if typeof(data1) == "table" then
+						local length = 0
+
+						for i, v in pairs(data1) do
+							length += 1
+						end
+	
+	
+						if length > 0 then
+							imagelabel.Image = "rbxassetid://16137091192"
+						else
+							imagelabel.Image = "rbxassetid://16137073439"
+						end
 					end
 				end
 
