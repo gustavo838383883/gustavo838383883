@@ -404,7 +404,7 @@ local function webbrowser()
 			if typeof(table1) ~= "table" then return end
 			local length = 0
 
-			for i, v in ipairs(table1) do
+			for i, v in pairs(table1) do
 				length += 1
 			end
 
