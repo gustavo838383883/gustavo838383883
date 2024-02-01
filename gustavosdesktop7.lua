@@ -3159,11 +3159,11 @@ local success, Error1 = pcall(function()
 		local scrollY = 0.9 * iconsize
 		if typeof(desktopfiles) == "table" then
 			for i, v in pairs(desktopfiles) do
+				scrollY += 0.9 * iconsize
 				if scrollY > 1-iconsize then
 					scrollY = 0
 					scrollX += iconsize
 				end
-				scrollY += 0.9 * iconsize
 			end
 
 			if scrollY < 0.9 then scrollY = 0.9 end
