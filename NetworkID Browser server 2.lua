@@ -77,7 +77,7 @@ modem:Connect("MessageSent", function(text1)
 		if mode == "SendMessage" then
 
 			local table1 = {
-				{
+					{
 				["ClassName"] = "TextLabel",
 				["Properties"] = {
 					["Size"] = udim2totable(UDim2.fromScale(1, 1)),
@@ -93,10 +93,9 @@ modem:Connect("MessageSent", function(text1)
 						["TextScaled"] = true,
 						["TextWrapped"] = true,
 						["BackgroundColor3"] = color3totable(Color3.new(1,1,1)),
-						["Text"] = text,
-						[]
-					}}
-				}
+						["Text"] = text
+					}
+				}}
 			}
 			}
 			local result = {["Mode"] = "ServerSend", ["Text"] = JSONEncode(table1), ["Player"] = player}
