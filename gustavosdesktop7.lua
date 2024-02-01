@@ -2089,7 +2089,7 @@ local success, Error1 = pcall(function()
 		folderbutton.MouseButton1Up:Connect(function()
 			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
 				if not window then return end
-				if name ~= "" then
+				if name ~= "" or dir == "/" then
 					newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				end
 				newdirname = name
@@ -2254,7 +2254,7 @@ local success, Error1 = pcall(function()
 		folderbutton.MouseButton1Up:Connect(function()
 			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
 				if not window then return end
-				if name ~= "" then
+				if name ~= "" or dir == "/" then
 					newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				end
 				newdirname = name
@@ -2337,7 +2337,7 @@ local success, Error1 = pcall(function()
 		folderbutton.MouseButton1Up:Connect(function()
 			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
 				if not window then return end
-				if name ~= "" then
+				if name ~= "" or dir == "/" then
 					newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				end
 				newdirname = name
