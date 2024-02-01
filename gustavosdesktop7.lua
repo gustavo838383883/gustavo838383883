@@ -1121,7 +1121,7 @@ local success, Error1 = pcall(function()
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Desktop Icons", false, false, false, "Icons", false)
 
 		local disable, text1 = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0), if iconsdisabled then "Enable icons" else "Disable icons", window)
-		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.25), Position = UDim2.fromScale(0, 0.25), Text = "Icon Size", BackgroundTransparency = 1, TextScaled = true, TextWrapped = true})
+		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.25), Position = UDim2.fromScale(0, 0.25), Text = "Icon Size:", BackgroundTransparency = 1, TextScaled = true, TextWrapped = true})
 		window:AddChild(textlabel)
 		local size, text2 = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.5), tostring(iconsize), window)
 					
@@ -1146,12 +1146,12 @@ local success, Error1 = pcall(function()
 		size.MouseButton1Up:Connect(function()
 			if tonumber(keyboardinput) then
 				local number = tonumber(keyboardinput)
-				if number <= 0.05 then
+				if number < 0.05 then
 					text2.Text = "The minimum icon size is 0.05"
 					task.wait(2)
 					text2.Text = tostring(iconsize)
-				elseif number >= 1 then
-					text2.Text = "The icon size can't be higher than 1."
+				elseif number > 0.8 then
+					text2.Text = "The icon size can't be higher than 0.8."
 					task.wait(2)
 					text2.Text = tostring(iconsize)
 				else
@@ -2998,10 +2998,10 @@ local success, Error1 = pcall(function()
 
 		previousframe = frame
 
-		local size = UDim2.fromScale(frame.Size.X.Scale, frame.Size.Y.Scale*1.5)
+		local size = UDim2.fromScale(0.2, 0.3)
 
 		if boolean1 then
-			size = UDim2.fromScale(frame.Size.X.Scale, frame.Size.Y.Scale*2.5)
+			size = UDim2.fromScale(0.2, 0.5)
 		end
 
 		local position = UDim2.fromScale(frame.Position.X.Scale + frame.Size.X.Scale, frame.Position.Y.Scale)
