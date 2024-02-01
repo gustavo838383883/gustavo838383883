@@ -249,6 +249,8 @@ local keyboardinput
 local playerthatinputted
 local backgroundimage
 local color
+local iconsdisabled
+local iconsize
 local tile = false
 local tilesize
 local clicksound
@@ -1111,17 +1113,70 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	local desktopscrollingframe = nil
+	local loaddesktopicons
+	local rightclickmenu
+
+	local function configicons()
+		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Desktop Icons", false, false, false, "Icons", false)
+
+		local disable, text1 = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0), if iconsdisabled then "Enable icons" else "Disable icons", window)
+		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.25), Position = UDim2.fromScale(0, 0.25), Text = "Icon Size", BackgroundTransparency = 1, TextScaled = true, TextWrapped = true})
+		local size, text2 = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.5), tostring(iconsize), window)
+					
+		disable.MouseButton1Up:Connect(function()
+			if iconsdisabled then
+				iconsdisabled = false
+				text1.Text = "Disable icons"
+				rom:Write("Disabled", false)
+				loaddesktopicons()
+			else
+				iconsdisabled = true
+				rom:Write("Disabled", true)
+				text1.Text = "Enable icons"
+				desktopscrollingframe:Destroy()
+				if rightclickmenu then
+					rightclickmenu:Destroy()
+					rightclickmenu = nil
+				end
+			end
+		end)
+
+		size.MouseButton1Up:Connect(function()
+			if tonumber(keyboardinput) then
+				local number = tonumber(keyboardinput)
+				if number <= 0.05 then
+					text2.Text = "The minimum icon size is 0.05"
+					task.wait(2)
+					text2.Text = tostring(iconsize)
+				elseif number >= 1 then
+					text2.Text = "The icon size can't be higher than 1."
+					task.wait(2)
+					text2.Text = tostring(iconsize)
+				else
+					iconsize = tonumber(keyboardinput)
+					rom:Write("IconSize", iconsize)
+					text2.Text = tostring(iconsize)
+					if not iconsdisabled then
+						loaddesktopicons()
+					end
+				end
+			end
+		end)
+		
+	end
+
 	local function settings()
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Settings", false, false, false, "Settings", false)
 		local scrollingframe = window
-		local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
-		local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
+		local changeclicksound, text1 = createnicebutton(UDim2.fromScale(0.6, 0.2), UDim2.new(0,0,0,0), "Click Sound ID (Click to update)", scrollingframe)
+		local saveclicksound, text2 = createnicebutton(UDim2.fromScale(0.4, 0.2), UDim2.new(0.6,0,0,0), "Save", scrollingframe)
 
-		local changeshutdownsound, text3 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0.25,0), "Shutdown Sound ID (Click to update)", scrollingframe)
-		local saveshutdownsound, text4 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0.25,0), "Save", scrollingframe)
+		local changeshutdownsound, text3 = createnicebutton(UDim2.fromScale(0.6, 0.2), UDim2.new(0,0,0.2,0), "Shutdown Sound ID (Click to update)", scrollingframe)
+		local saveshutdownsound, text4 = createnicebutton(UDim2.fromScale(0.4, 0.2), UDim2.new(0.6,0,0.2,0), "Save", scrollingframe)
 
-		local changestartsound, text5 = createnicebutton(UDim2.fromScale(0.6, 0.25), UDim2.new(0,0,0.5,0), "Startup Sound ID (Click to update)", scrollingframe)
-		local savestartsound, text6 = createnicebutton(UDim2.fromScale(0.4, 0.25), UDim2.new(0.6,0,0.5,0), "Save", scrollingframe)
+		local changestartsound, text5 = createnicebutton(UDim2.fromScale(0.6, 0.2), UDim2.new(0,0,0.4,0), "Startup Sound ID (Click to update)", scrollingframe)
+		local savestartsound, text6 = createnicebutton(UDim2.fromScale(0.4, 0.2), UDim2.new(0.6,0,0.4,0), "Save", scrollingframe)
 
 		local input1
 		local input2
@@ -1174,11 +1229,16 @@ local success, Error1 = pcall(function()
 			end
 		end)
 
-		local openchangecolor = createnicebutton(UDim2.fromScale(0.5, 0.25), UDim2.new(0,0,0.75,0), "Change Background Color", scrollingframe)
+		local configureicons = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.new(0,0,0.6,0), "Desktop Icons", scrollingframe)
+		configureicons.MouseButton1Up:Connect(function()
+			configicons()
+		end)
+
+		local openchangecolor = createnicebutton(UDim2.fromScale(0.5, 0.2), UDim2.new(0,0,0.8,0), "Change Background Color", scrollingframe)
 		openchangecolor.MouseButton1Up:Connect(function()
 			changecolor()
 		end)
-		local openchangeimage = createnicebutton(UDim2.fromScale(0.5, 0.25), UDim2.new(0.5,0,0.75,0), "Change Background Image", scrollingframe)
+		local openchangeimage = createnicebutton(UDim2.fromScale(0.5, 0.2), UDim2.new(0.5,0,0.8,0), "Change Background Image", scrollingframe)
 		openchangeimage.MouseButton1Up:Connect(function()
 			changebackgroundimage()
 		end)
@@ -2830,8 +2890,6 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
-	local desktopscrollingframe = nil
-
 	local function shutdownprompt()
 		local window, holderframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
@@ -2926,8 +2984,6 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
-	local loaddesktopicons
-	local rightclickmenu
 	local previousframe
 	local function openrightclickprompt(frame, name, dir, boolean1)
 		if rightclickmenu then
@@ -2990,8 +3046,8 @@ local success, Error1 = pcall(function()
 		else
 			local filesbutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.2), "Files", rightclickmenu)
 			local settingsbutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.4), "Settings", rightclickmenu)
-			local reload = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.6), "Reload", rightclickmenu)
-			local luas = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Cores", rightclickmenu)
+			local reload = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Reload", rightclickmenu)
+			local luas = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.6), "Cores", rightclickmenu)
 
 			filesbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
@@ -3057,27 +3113,27 @@ local success, Error1 = pcall(function()
 
 
 		local xScale = 0
-		local yScale = 0.2
+		local yScale = iconsize
 
 		local scrollX = 0
-		local scrollY = 0.18
+		local scrollY = 0.9 * iconsize
 		if typeof(desktopfiles) == "table" then
 			for i, v in pairs(desktopfiles) do
-				scrollY += 0.18
-				if scrollY >= 0.8 then
+				scrollY += 0.9 * iconsize
+				if scrollY >= 1-iconsize then
 					scrollY = 0
-					scrollX += 0.2
+					scrollX += iconsize
 				end
 			end
 
 			if scrollY < 0.9 then scrollY = 0.9 end
-			if scrollX < 1 then scrollX = 1 else scrollX += 0.2 end
+			if scrollX < 1 then scrollX = 1 else scrollX += iconsize end
 																					
 			desktopscrollingframe.CanvasSize = UDim2.fromScale(scrollX, scrollY)
 		end
 
 
-		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.2/desktopscrollingframe.CanvasSize.Y.Scale), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
+		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(iconsize/desktopscrollingframe.CanvasSize.X.Scale, iconsize), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
 		desktopscrollingframe:AddChild(mycomputer)
 		local imagelabel1 = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16168953881"})
 		mycomputer:AddChild(imagelabel1)
@@ -3112,7 +3168,7 @@ local success, Error1 = pcall(function()
 																				
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
-				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.2/desktopscrollingframe.CanvasSize.Y.Scale), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale/desktopscrollingframe.CanvasSize.X.Scale, yScale/desktopscrollingframe.CanvasSize.Y.Scale), TextTransparency = 1})
+				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(iconsize/desktopscrollingframe.CanvasSize.X.Scale, iconsize), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale/desktopscrollingframe.CanvasSize.X.Scale, yScale/desktopscrollingframe.CanvasSize.Y.Scale), TextTransparency = 1})
 				desktopscrollingframe:AddChild(holderbutton)
 				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
 				holderbutton:AddChild(imagelabel)
@@ -3229,11 +3285,11 @@ local success, Error1 = pcall(function()
 					end
 				end)
 
-				yScale += 0.2
+				yScale += iconsize
 
-				if yScale >= 0.8 then
+				if yScale >= 1-iconsize then
 					yScale = 0
-					xScale += 0.2
+					xScale += iconsize
 				end
 															
 				table.insert(desktopicons, {["Holder"] = holderbutton, ["Icon"] = imagelabel, ["TextLabel"] = textlabel})
@@ -4304,7 +4360,9 @@ local success, Error1 = pcall(function()
 			end)
 		end
 
-		loaddesktopicons()
+		if not iconsdisabled then
+			loaddesktopicons()
+		end
 
 		local pressed = false
 		local startmenu
@@ -4615,6 +4673,20 @@ function bootos()
 			if not startsound then startsound = 182007357; end
 			if not shutdownsound then shutdownsound = 7762841318; end
 			color = disk:Read("BackgroundColor")
+			iconsdisabled = rom:Read("Disabled")
+
+			if typeof(iconsdisabled) == "string" then
+				iconsdisabled = iconsdisabled:lower()
+			end
+
+			if iconsdisabled == "true" then
+				iconsdisabled = true
+			elseif iconsdisabled == "false" then
+				iconsdisabled = false
+			end
+
+			iconsize = rom:Read("IconSize")
+			iconsize = tonumber(iconsize) or 0.2
 			if not color then color = disk:Read("Color") end
 			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15705296956,false") end
 			local diskbackgroundimage = disk:Read("BackgroundImage")
