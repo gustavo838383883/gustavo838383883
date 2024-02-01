@@ -1692,13 +1692,13 @@ local success, Error1 = pcall(function()
 
 				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 				start += 25
-				imagebutton.MouseButton1Down:Connect(function()
+				imagebutton.MouseButton1Up:Connect(function()
 					speaker:PlaySound(clicksound)
 
 					readfile(filesystem.Read(filename, directory), filename, directory)
 				end)
 
-				button.MouseButton1Down:Connect(function()
+				button.MouseButton1Up:Connect(function()
 					local information = filesystem.Read(filename, directory)
 
 					if typeof(information) ~= "table" then
@@ -3140,7 +3140,7 @@ local success, Error1 = pcall(function()
 		if typeof(desktopfiles) == "table" then
 			for i, v in pairs(desktopfiles) do
 				scrollY += 0.9 * iconsize
-				if scrollY >= 1-iconsize then
+				if scrollY > 1-iconsize then
 					scrollY = 0
 					scrollX += iconsize
 				end
@@ -3190,7 +3190,7 @@ local success, Error1 = pcall(function()
 			for filename, data in pairs(desktopfiles) do
 				yScale += iconsize
 
-				if yScale >= 1-iconsize then
+				if yScale > 1-iconsize then
 					yScale = 0
 					xScale += iconsize
 				end
@@ -3286,7 +3286,7 @@ local success, Error1 = pcall(function()
 					end
 				end
 
-				holderbutton.MouseButton1Up:Connect(function()
+				holderbutton.MouseButton1Down:Connect(function()
 					if selected ~= holderbutton then
 						selected = holderbutton
 						holderbutton:AddChild(selectionimage)
