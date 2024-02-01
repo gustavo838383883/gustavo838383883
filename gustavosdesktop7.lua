@@ -1129,17 +1129,17 @@ local success, Error1 = pcall(function()
 			if iconsdisabled then
 				iconsdisabled = false
 				text1.Text = "Disable icons"
-				rom:Write("Disabled", false)
 				loaddesktopicons()
+				rom:Write("Disabled", false)
 			else
 				iconsdisabled = true
-				rom:Write("Disabled", true)
 				text1.Text = "Enable icons"
 				desktopscrollingframe:Destroy()
 				if rightclickmenu then
 					rightclickmenu:Destroy()
 					rightclickmenu = nil
 				end
+				rom:Write("Disabled", true)
 			end
 		end)
 
@@ -1156,11 +1156,11 @@ local success, Error1 = pcall(function()
 					text2.Text = tostring(iconsize)
 				else
 					iconsize = tonumber(keyboardinput)
-					rom:Write("IconSize", iconsize)
 					text2.Text = tostring(iconsize)
 					if not iconsdisabled then
 						loaddesktopicons()
 					end
+					rom:Write("IconSize", iconsize)
 				end
 			end
 		end)
