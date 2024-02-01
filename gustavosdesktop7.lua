@@ -3167,9 +3167,9 @@ local success, Error1 = pcall(function()
 			end
 
 			if scrollY < 0.9 then scrollY = 0.9 end
-			if scrollX < 1 then scrollX = 1 else scrollX += iconsize + 0.2 end
+			if scrollX < 1 then scrollX = 1 else scrollX += 0.2 end
 																					
-			desktopscrollingframe.CanvasSize = UDim2.fromScale(scrollX, scrollY)
+			desktopscrollingframe.CanvasSize = UDim2.fromScale(scrollX + iconsize, scrollY)
 		end
 
 
