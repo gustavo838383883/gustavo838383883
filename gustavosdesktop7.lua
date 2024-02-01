@@ -2998,10 +2998,10 @@ local success, Error1 = pcall(function()
 
 		previousframe = frame
 
-		local size = UDim2.fromScale(0.2, 0.3)
+		local size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X, 0.3)
 
 		if boolean1 then
-			size = UDim2.fromScale(0.2, 0.5)
+			size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X, 0.5)
 		end
 
 		local position = UDim2.fromScale(frame.Position.X.Scale + frame.Size.X.Scale, frame.Position.Y.Scale)
