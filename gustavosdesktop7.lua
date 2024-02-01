@@ -4401,9 +4401,9 @@ local success, Error1 = pcall(function()
 			local text1 = "gustavos, shutdown"
 			local text2 = "gustavos, reboot"
 
-			if text:sub(1, string.len(text1)) == text1 then
+			if text:lower():sub(1, string.len(text1)) == text1 then
 				shutdownprompt()
-			elseif text:sub(1, string.len(text2)) == text2 then
+			elseif text:lower():sub(1, string.len(text2)) == text2 then
 				restartprompt()
 			end
 		end)
