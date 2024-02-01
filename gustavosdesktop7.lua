@@ -4314,232 +4314,113 @@ local success, Error1 = pcall(function()
 				taskbarholder:AddChild(startmenu)
 				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2.6, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 				startmenu:AddChild(scrollingframe)
-				local settingsopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(settingsopen)
-				local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Settings"})
-				settingsopen:AddChild(txtlabel)
-				settingsopen.MouseButton1Down:Connect(function()
-					settingsopen.Image = "rbxassetid://15625805069"
-				end)
+				local settingsopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.fromScale(0, 0), "Settings", scrollingframe)
 				settingsopen.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					settingsopen.Image = "rbxassetid://15625805900"
 					settings()
 					pressed = false
 					startmenu:Destroy()
 				end)
 
-				local diskwriteopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.2/scrollingframe.CanvasSize.Y.Scale, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(diskwriteopen)
-				local txtlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create/Overwrite File"})
-				diskwriteopen:AddChild(txtlabel2)
-				diskwriteopen.MouseButton1Down:Connect(function()
-					diskwriteopen.Image = "rbxassetid://15625805069"
-				end)
+				local diskwriteopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, 0.2/scrollingframe.CanvasSize.Y.Scale, 0), "Create/Overwrite file", scrollingframe)
 				diskwriteopen.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					diskwriteopen.Image = "rbxassetid://15625805900"
 					writedisk()
 					pressed = false
 					startmenu:Destroy()
 				end)
 
-				local filesopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*2, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(filesopen)
-				local txtlabel3 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Files"})
-				filesopen:AddChild(txtlabel3)
-				filesopen.MouseButton1Down:Connect(function()
-					filesopen.Image = "rbxassetid://15625805069"
-				end)
+				local filesopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*2, 0), "Files", scrollingframe)
 				filesopen.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					filesopen.Image = "rbxassetid://15625805900"
 					loaddisk("/", true)
 					pressed = false
 					startmenu:Destroy()
 				end)
 
-				local luasopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*3, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(luasopen)
-				local txtlabel4 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Lua executor"})
-				luasopen:AddChild(txtlabel4)
-				luasopen.MouseButton1Down:Connect(function()
-					luasopen.Image = "rbxassetid://15625805069"
-				end)
+				local luasopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*3, 0), "Lua executor", scrollingframe)
 				luasopen.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					luasopen.Image = "rbxassetid://15625805900"
 					customprogramthing(screen, microcontrollers)
 					pressed = false
 					startmenu:Destroy()
 				end)
 
-				local mediaopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*4, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(mediaopen)
-				local txtlabel5 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Mediaplayer"})
-				mediaopen:AddChild(txtlabel5)
-				mediaopen.MouseButton1Down:Connect(function()
-					mediaopen.Image = "rbxassetid://15625805069"
-				end)
+				local mediaopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*4, 0), "Mediaplayer", scrollingframe)
 				mediaopen.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					mediaopen.Image = "rbxassetid://15625805900"
 					mediaplayer()
 					pressed = false
 					startmenu:Destroy()
 				end)
 
-				local chatopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*5, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(chatopen)
-				local txtlabel6 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Chat"})
-				chatopen:AddChild(txtlabel6)
-				chatopen.MouseButton1Down:Connect(function()
-					chatopen.Image = "rbxassetid://15625805069"
-				end)
+				local chatopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*5, 0), "Chat", scrollingframe)
 				chatopen.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					chatopen.Image = "rbxassetid://15625805900"
 					chatthing()
 					pressed = false
 					startmenu:Destroy()
 				end)
 
-				local calculatoropen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*6, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(calculatoropen)
-				local txtlabel7 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Calculator"})
-				calculatoropen:AddChild(txtlabel7)
-				calculatoropen.MouseButton1Down:Connect(function()
-					calculatoropen.Image = "rbxassetid://15625805069"
-				end)
+				local calculatoropen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*6, 0), "Calculator", scrollingframe)
 				calculatoropen.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					calculatoropen.Image = "rbxassetid://15625805900"
 					calculator()
 					pressed = false
 					startmenu:Destroy()
 				end)
 
-				local terminalopen = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*7, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(terminalopen)
-				local txtlabel8 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Terminal"})
-				terminalopen:AddChild(txtlabel8)
-				terminalopen.MouseButton1Down:Connect(function()
-					terminalopen.Image = "rbxassetid://15625805069"
-				end)
+				local terminalopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*7, 0), "Terminal", scrollingframe)
 				terminalopen.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					terminalopen.Image = "rbxassetid://15625805900"
 					pressed = false
 					startmenu:Destroy()
 					terminal()
 				end)
 				
-				local copy_file = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*8, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(copy_file)
-				local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Copy File"})
-				copy_file:AddChild(txtlabel9)
-				copy_file.MouseButton1Down:Connect(function()
-					copy_file.Image = "rbxassetid://15625805069"
-				end)
-				copy_file.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					copy_file.Image = "rbxassetid://15625805900"
+				local copy = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*8, 0), "Copy File", scrollingframe)
+				copy.MouseButton1Up:Connect(function()
 					pressed = false
 					startmenu:Destroy()
 					copyfile()
 				end)
 
-				local rename_file = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*9, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(rename_file)
-				local txtlabel10 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Rename File"})
-				rename_file:AddChild(txtlabel10)
-				rename_file.MouseButton1Down:Connect(function()
-					rename_file.Image = "rbxassetid://15625805069"
-				end)
-				rename_file.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					rename_file.Image = "rbxassetid://15625805900"
+				local rename = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*9, 0), "Rename File", scrollingframe)
+				rename.MouseButton1Up:Connect(function()
 					pressed = false
 					startmenu:Destroy()
 					renamefile()
 				end)
 
-				local shortcut = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*10, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(shortcut)
-				local txtlabel11 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Create Shortcut"})
-				shortcut:AddChild(txtlabel11)
-				shortcut.MouseButton1Down:Connect(function()
-					shortcut.Image = "rbxassetid://15625805069"
-				end)
-				shortcut.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					shortcut.Image = "rbxassetid://15625805900"
+				local short = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*10, 0), "Create Shortcut", scrollingframe)
+				short.MouseButton1Up:Connect(function()
 					pressed = false
 					startmenu:Destroy()
 					createshortcut()
 				end)
 
-				local move = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*11, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(move)
-				local txtlabel12 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Move File"})
-				move:AddChild(txtlabel12)
-				move.MouseButton1Down:Connect(function()
-					move.Image = "rbxassetid://15625805069"
-				end)
+				local move = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*11, 0), "Move File", scrollingframe)
 				move.MouseButton1Up:Connect(function()
-					speaker:PlaySound(clicksound)
-					move.Image = "rbxassetid://15625805900"
 					pressed = false
 					startmenu:Destroy()
 					movefile()
 				end)
 
-				local restartkeyboardinput = screen:CreateElement("ImageButton", {Size = UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*12, 0), BackgroundTransparency = 1})
-				scrollingframe:AddChild(restartkeyboardinput)
-				local txtlabel9 = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reset Keyboard Event"})
-				restartkeyboardinput:AddChild(txtlabel9)
-				restartkeyboardinput.MouseButton1Up:Connect(function()
+				local reset = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*12, 0), "Reset Keyboard Event", scrollingframe)
+				reset.MouseButton1Up:Connect(function()
+					pressed = false
+					startmenu:Destroy()
 					if keyboardevent then keyboardevent:Unbind() end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 						keyboardinput = text
 						playerthatinputted = player
 					end)
-					restartkeyboardinput.Image = "rbxassetid://15625805900"
-					pressed = false
-					startmenu:Destroy()
-					speaker:PlaySound(clicksound)
 				end)
 
-				local shutdown = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0, 0, 0.8, 0), BackgroundTransparency = 1})
-				startmenu:AddChild(shutdown)
-				local shutdowntext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Shutdown"})
-				shutdown:AddChild(shutdowntext)
-				shutdown.MouseButton1Down:Connect(function()
-					shutdown.Image = "rbxassetid://15625805069"
-				end)
-
+				local shutdown = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Shutdown", scrollingframe)
 				shutdown.MouseButton1Up:Connect(function()
-					shutdown.Image = "rbxassetid://15625805900"
 					pressed = false
 					startmenu:Destroy()
 					shutdownprompt()
-					speaker:PlaySound(clicksound)
 				end)
 
-				local restart = screen:CreateElement("ImageButton", {Size = UDim2.new(0.5,0,0.2,0), Image = "rbxassetid://15625805900", Position = UDim2.new(0.5, 0, 0.8, 0), BackgroundTransparency = 1})
-				startmenu:AddChild(restart)
-				local restarttext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Reboot"})
-				restart:AddChild(restarttext)
-				restart.MouseButton1Down:Connect(function()
-					restart.Image = "rbxassetid://15625805069"
-				end)
-
+				local restart = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Restart", scrollingframe)
 				restart.MouseButton1Up:Connect(function()
-					restart.Image = "rbxassetid://15625805900"
 					pressed = false
 					startmenu:Destroy()
 					restartprompt()
-					speaker:PlaySound(clicksound)
 				end)
 				pressed = true
 			else
