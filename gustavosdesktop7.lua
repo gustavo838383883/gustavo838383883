@@ -4416,7 +4416,7 @@ local success, Error1 = pcall(function()
 					shutdownprompt()
 				end)
 
-				local restart = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Restart", startmenu)
+				local restart = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Reboot", startmenu)
 				restart.MouseButton1Up:Connect(function()
 					pressed = false
 					startmenu:Destroy()
