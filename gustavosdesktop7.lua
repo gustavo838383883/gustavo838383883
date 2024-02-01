@@ -1446,17 +1446,26 @@ local success, Error1 = pcall(function()
 
 		if prevdir then
 			deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
+			local pressed = false
 
 			deletebutton.MouseButton1Up:Connect(function()
-				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				if pressed then return end
+				pressed = true
+				local holdframe, windowz, closebutton = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 
-				cancelbutton.MouseButton1Down:Connect(function()
+				cancelbutton.MouseButton1Up:Connect(function()
+					pressed = false
 					windowz:Destroy()
 				end)
 
+				closebutton.MouseButton1Up:Connect(function()
+					pressed = false
+				end)
+
 				deletebutton.MouseButton1Up:Connect(function()
+					pressed = false
 					filesystem.Write(prevname, nil, prevdir)
 					windowz:Destroy()
 					if window then
@@ -1746,17 +1755,27 @@ local success, Error1 = pcall(function()
 			parentbutton.Visible = false
 		end
 
-		deletebutton.MouseButton1Up:Connect(function()
+		local pressed = false
 
-			local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+		deletebutton.MouseButton1Up:Connect(function()
+			if pressed then return end
+			pressed = true
+
+			local holdframe, windowz, closebutton = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 
-			cancelbutton.MouseButton1Down:Connect(function()
+			closebutton.MouseButton1Up:Connect(function()
+				pressed = false
+			end)
+
+			cancelbutton.MouseButton1Up:Connect(function()
+				pressed = false
 				windowz:Destroy()
 			end)
 
 			deletebutton.MouseButton1Up:Connect(function()
+				pressed = false
 				local split = directory:split("/")
 				if scrollingframe then
 					local data
@@ -3027,18 +3046,27 @@ local success, Error1 = pcall(function()
 			end)
 
 			local deletebutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, (1/3) + (1/3)), "Delete", rightclickmenu)
+			local pressed = false
 			deletebutton.MouseButton1Up:Connect(function()
+				if pressed then return end
+				pressed = true
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				local holdframe, windowz, closebutton = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 
-				cancelbutton.MouseButton1Down:Connect(function()
+				cancelbutton.MouseButton1Up:Connect(function()
+					pressed = false
 					windowz:Destroy()
 				end)
 
+				closebutton.MouseButton1Up:Connect(function()
+					pressed = false
+				end)
+
 				deletebutton.MouseButton1Up:Connect(function()
+					pressed = false
 					filesystem.Write(name, nil, dir)
 					windowz:Destroy()
 					loaddesktopicons()
