@@ -587,6 +587,7 @@ local success, Error1 = pcall(function()
 			speaker:PlaySound(clicksound)
 			holderframe:Destroy()
 			holderframe = nil
+			window = nil
 		end)
 
 		local maximizebutton
@@ -1147,7 +1148,7 @@ local success, Error1 = pcall(function()
 			if tonumber(keyboardinput) then
 				local number = tonumber(keyboardinput)
 				if number < 0.05 then
-					text2.Text = "The minimum icon size is 0.05"
+					text2.Text = "The icon size can't be lower than 0.05"
 					task.wait(2)
 					text2.Text = tostring(iconsize)
 				elseif number > 0.8 then
@@ -1421,7 +1422,7 @@ local success, Error1 = pcall(function()
 		print(txt)
 
 		if string.find(string.lower(tostring(nameondisk)), "%.lnk") then
-			local split = txt:split("/")
+			local split = tostring(txt):split("/")
 			local file = split[#split]
 			local dir = ""
 
@@ -1642,7 +1643,7 @@ local success, Error1 = pcall(function()
 					local image2 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.4, 0, 0.4, 0), Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1, Image = "rbxassetid://16180413404", ScaleType = Enum.ScaleType.Fit})
 					imagebutton:AddChild(image2)
 
-					local split = dataz:split("/")
+					local split = tostring(dataz):split("/")
 					local file = split[#split]
 					local dir = ""
 		
@@ -2222,6 +2223,25 @@ local success, Error1 = pcall(function()
 		filebutton.MouseButton1Up:Connect(function()
 			loaddisk(if not directory then "/" else directory, function(name, dir)
 				if not window then return end
+				if string.find(name, "%.lnk") then
+					local data = tostring(filesystem.Read(name, dir)) or ""
+					local split = data:split("/")
+					local file = split[#split]
+					local dir1 = ""
+		
+					for index, value in ipairs(split) do
+						if index < #split and index > 1 then
+							dir1 = dir1.."/"..value
+						end
+					end
+
+					local data1 = filesystem.Read(file, if dir1 == "" then "/" else dir1, true)
+
+					if data1 then
+						name = file
+						dir = dir1
+					end
+				end
 				directory = dir
 				filename = name
 				
@@ -3139,11 +3159,11 @@ local success, Error1 = pcall(function()
 		local scrollY = 0.9 * iconsize
 		if typeof(desktopfiles) == "table" then
 			for i, v in pairs(desktopfiles) do
-				scrollY += 0.9 * iconsize
 				if scrollY > 1-iconsize then
 					scrollY = 0
 					scrollX += iconsize
 				end
+				scrollY += 0.9 * iconsize
 			end
 
 			if scrollY < 0.9 then scrollY = 0.9 end
@@ -3236,7 +3256,7 @@ local success, Error1 = pcall(function()
 					local image2 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.4, 0, 0.4, 0), Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1, Image = "rbxassetid://16180413404", ScaleType = Enum.ScaleType.Fit})
 					imagelabel:AddChild(image2)
 
-					local split = data:split("/")
+					local split = tostring(data):split("/")
 					local file = split[#split]
 					local dir = ""
 		
