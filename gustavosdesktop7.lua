@@ -246,6 +246,7 @@ local disk = nil
 local microcontrollers = nil
 local regularscreen = nil
 local keyboardinput
+local microphoneevent
 local playerthatinputted
 local backgroundimage
 local color
@@ -253,6 +254,7 @@ local iconsdisabled
 local iconsize
 local tile = false
 local tilesize
+local microphonefuncs = {}
 local clicksound
 local startsound
 local shutdownsound
@@ -260,6 +262,9 @@ local romport
 local disksport
 local romindexusing
 local sharedport
+local microphone = nil
+local chatinput
+local playerthatchatted
 
 local bootos
 
@@ -282,6 +287,7 @@ local function getstuff()
 	romport = nil
 	romindexusing = nil
 	sharedport = nil
+	microphone = nil
 
 	for i=1, 128 do
 		if not rom then
@@ -380,6 +386,15 @@ local function getstuff()
 			if success then
 				if GetPartFromPort(i, "Modem") then
 					modem = GetPartFromPort(i, "Modem")
+				end
+			end
+		end
+
+		if not microphone then
+			success, Error = pcall(GetPartFromPort, i, "Microphone")
+			if success then
+				if GetPartFromPort(i, "Microphone") then
+					microphone = GetPartFromPort(i, "Microphone")
 				end
 			end
 		end
@@ -766,6 +781,33 @@ local success, Error1 = pcall(function()
 			txtbutton.Image = "rbxassetid://15617867263"
 		end)
 		return txtbutton, txtlabel
+	end
+
+	local function MicrophoneChatted(func)
+		if not microphone then return end
+		local returntable = {
+			["Function"] = func
+		}
+
+		if microphoneevent then microphoneevent:Unbind() end
+
+		table.insert(microphonefuncs, func)
+
+		local index = #microphonefuncs
+
+		function returntable:Unbind()
+			microphonefuncs[index] = false
+		end
+
+		microphoneevent = microphone:Connect("Chatted", function(player, text)
+			for index, value in ipairs(microphonefuncs) do
+				if typeof(value) == "function" then
+					value(player, text)
+				end
+			end
+		end)
+
+		return returntable
 	end
 
 	local function StringToGui(screen, text, parent)
@@ -2650,6 +2692,19 @@ local success, Error1 = pcall(function()
 
 			local start = 0
 
+			MicrophoneChatted(function(player, text)
+				local subbed = text:lower():sub(1, 5)
+				local sendtext = text:sub(5, string.len(text))
+
+				if subbed == "chat " then
+					if not toggleanonymous then
+						modem:SendMessage("[ "..player.." ]: "..sendtext, id)
+					else
+						modem:SendMessage(sendtext, id)
+					end
+				end
+			end)
+
 			messagesent = modem:Connect("MessageSent", function(text)
 				if not holderframe then messagesent:Unbind() end
 				print(text)
@@ -4342,6 +4397,17 @@ local success, Error1 = pcall(function()
 			end
 		end
 
+		MicrophoneChatted(function(player, text)
+			local text1 = "gustavos, shutdown"
+			local text2 = "gustavos, reboot"
+
+			if text:sub(1, string.len(text1)) == text1 then
+				shutdownprompt()
+			elseif text:sub(1, string.len(text2)) == text2 then
+				restartprompt()
+			end
+		end)
+
 		startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
 		local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Text = "G", TextScaled = true, TextWrapped = true})
 		startbutton7:AddChild(textlabel)
@@ -4710,6 +4776,8 @@ function bootos()
 		commandlines:insert("Welcome To "..name)
 		task.wait(2)
 		screen:ClearElements()
+		microphonefuncs = {}
+		
 		if disk then
 			clicksound = rom:Read("ClickSound")
 			shutdownsound = rom:Read("ShutdownSound")
