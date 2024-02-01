@@ -1122,6 +1122,7 @@ local success, Error1 = pcall(function()
 
 		local disable, text1 = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0), if iconsdisabled then "Enable icons" else "Disable icons", window)
 		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.25), Position = UDim2.fromScale(0, 0.25), Text = "Icon Size", BackgroundTransparency = 1, TextScaled = true, TextWrapped = true})
+		window:AddChild(textlabel)
 		local size, text2 = createnicebutton(UDim2.fromScale(1, 0.25), UDim2.fromScale(0, 0.5), tostring(iconsize), window)
 					
 		disable.MouseButton1Up:Connect(function()
