@@ -4409,14 +4409,14 @@ local success, Error1 = pcall(function()
 					end)
 				end)
 
-				local shutdown = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Shutdown", scrollingframe)
+				local shutdown = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Shutdown", startmenu)
 				shutdown.MouseButton1Up:Connect(function()
 					pressed = false
 					startmenu:Destroy()
 					shutdownprompt()
 				end)
 
-				local restart = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Restart", scrollingframe)
+				local restart = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Restart", startmenu)
 				restart.MouseButton1Up:Connect(function()
 					pressed = false
 					startmenu:Destroy()
