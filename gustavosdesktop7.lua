@@ -3155,7 +3155,7 @@ local success, Error1 = pcall(function()
 		local xScale = 0
 		local yScale = 0
 
-		local scrollX = 0
+		local scrollX = iconsize
 		local scrollY = 0.9 * iconsize
 		if typeof(desktopfiles) == "table" then
 			for i, v in pairs(desktopfiles) do
@@ -3168,10 +3168,10 @@ local success, Error1 = pcall(function()
 
 			if scrollY < 0.9 then scrollY = 0.9 end
 			if scrollX < 1 then scrollX = 1 else scrollX += 0.2 end
-																					
-			desktopscrollingframe.CanvasSize = UDim2.fromScale(scrollX + iconsize, scrollY)
-		end
+			if scrollX < 1-iconsize then scrollX = 1-iconsize end
 
+			desktopscrollingframe.CanvasSize = UDim2.fromScale(scrollX, scrollY)
+		end
 
 		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(iconsize/desktopscrollingframe.CanvasSize.X.Scale, iconsize), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
 		desktopscrollingframe:AddChild(mycomputer)
