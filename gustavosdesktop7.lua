@@ -2991,6 +2991,78 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	local function restartnow()
+		if startbutton7 then
+			startbutton7:Destroy()
+		end
+		if taskbarholder then
+			taskbarholder:Destroy()
+		end
+		if programholder1 then
+			programholder1:Destroy()
+		end
+		if cursorevent then cursorevent:Unbind() end
+		keyboardinput = nil
+		playerthatinputted = nil
+		minimizedprograms = {}
+		minimizedammount = 0
+		if desktopscrollingframe then desktopscrollingframe:Destroy() end
+		task.wait(1)
+		if speaker then
+			speaker:ClearSounds()
+			SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+		end
+		for i=0,1,0.01 do
+			task.wait(0.01)
+			backgroundcolor.BackgroundTransparency = i
+			wallpaper.ImageTransparency = i
+		end
+		task.wait(1)
+		screen:ClearElements()
+		local commandlines = commandline.new(false, nil, screen)
+		commandlines:insert("Restarting...")
+		task.wait(2)
+		screen:ClearElements()
+		getstuff()
+		task.wait(1)
+		bootos()
+	end
+
+	local function shutdownnow()
+		if startbutton7 then
+			startbutton7:Destroy()
+		end
+		if taskbarholder then
+			taskbarholder:Destroy()
+		end
+		if programholder1 then
+			programholder1:Destroy()
+		end
+		if cursorevent then cursorevent:Unbind() end
+		minimizedprograms = {}
+		minimizedammount = 0
+		if desktopscrollingframe then desktopscrollingframe:Destroy() end
+		task.wait(1)
+		if speaker then
+			speaker:ClearSounds()
+			SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+		end
+		for i=0,1,0.05 do
+			task.wait(0.05)
+			backgroundcolor.BackgroundTransparency = i
+			wallpaper.ImageTransparency = i
+		end
+		task.wait(1)
+		screen:ClearElements()
+		local commandlines = commandline.new(false, nil, screen)
+		commandlines:insert("Shutting Down...")
+		task.wait(2)
+		screen:ClearElements()
+		if shutdownpoly then
+			TriggerPort(shutdownpoly)
+		end
+	end
+
 	local function shutdownprompt()
 		local window, holderframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
@@ -3002,38 +3074,7 @@ local success, Error1 = pcall(function()
 			if holderframe then
 				holderframe:Destroy()
 			end
-			if startbutton7 then
-				startbutton7:Destroy()
-			end
-			if taskbarholder then
-				taskbarholder:Destroy()
-			end
-			if programholder1 then
-				programholder1:Destroy()
-			end
-			if cursorevent then cursorevent:Unbind() end
-			minimizedprograms = {}
-			minimizedammount = 0
-			if desktopscrollingframe then desktopscrollingframe:Destroy() end
-			task.wait(1)
-			if speaker then
-				speaker:ClearSounds()
-				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
-			end
-			for i=0,1,0.05 do
-				task.wait(0.05)
-				backgroundcolor.BackgroundTransparency = i
-				wallpaper.ImageTransparency = i
-			end
-			task.wait(1)
-			screen:ClearElements()
-			local commandlines = commandline.new(false, nil, screen)
-			commandlines:insert("Shutting Down...")
-			task.wait(2)
-			screen:ClearElements()
-			if shutdownpoly then
-				TriggerPort(shutdownpoly)
-			end
+			shutdownnow()
 		end)
 	end
 
@@ -3048,40 +3089,7 @@ local success, Error1 = pcall(function()
 			if holderframe then
 				holderframe:Destroy()
 			end
-			if startbutton7 then
-				startbutton7:Destroy()
-			end
-			if taskbarholder then
-				taskbarholder:Destroy()
-			end
-			if programholder1 then
-				programholder1:Destroy()
-			end
-			if cursorevent then cursorevent:Unbind() end
-			keyboardinput = nil
-			playerthatinputted = nil
-			minimizedprograms = {}
-			minimizedammount = 0
-			if desktopscrollingframe then desktopscrollingframe:Destroy() end
-			task.wait(1)
-			if speaker then
-				speaker:ClearSounds()
-				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
-			end
-			for i=0,1,0.01 do
-				task.wait(0.01)
-				backgroundcolor.BackgroundTransparency = i
-				wallpaper.ImageTransparency = i
-			end
-			task.wait(1)
-			screen:ClearElements()
-			local commandlines = commandline.new(false, nil, screen)
-			commandlines:insert("Restarting...")
-			task.wait(2)
-			screen:ClearElements()
-			getstuff()
-			task.wait(1)
-			bootos()
+			restartnow()
 		end)
 	end
 
@@ -4402,9 +4410,9 @@ local success, Error1 = pcall(function()
 			local text2 = "gustavos, reboot"
 
 			if text:lower():sub(1, string.len(text1)) == text1 then
-				shutdownprompt()
+				shutdownnow()
 			elseif text:lower():sub(1, string.len(text2)) == text2 then
-				restartprompt()
+				restartnow()
 			end
 		end)
 
