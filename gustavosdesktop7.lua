@@ -3279,7 +3279,7 @@ local success, Error1 = pcall(function()
 			for filename, data in pairs(desktopfiles) do
 				yScale += iconsize
 
-				if yScale > 1-iconsize then
+				if yScale + iconsize > 1 - iconsize then
 					yScale = 0
 					xScale += iconsize
 				end
