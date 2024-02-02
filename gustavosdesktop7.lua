@@ -453,6 +453,7 @@ local keyboardevent
 local cursorevent
 local startCursorPos
 local videovolume = 0.5
+local loadingscreen
 
 local success, Error1 = pcall(function()
 	local holding = false
@@ -3074,7 +3075,7 @@ local success, Error1 = pcall(function()
 			if holderframe then
 				holderframe:Destroy()
 			end
-			shutdownnow()
+			loadingscreen(true, true)
 		end)
 	end
 
@@ -3089,7 +3090,7 @@ local success, Error1 = pcall(function()
 			if holderframe then
 				holderframe:Destroy()
 			end
-			restartnow()
+			loadingscreen(true, false)
 		end)
 	end
 
@@ -4429,20 +4430,6 @@ local success, Error1 = pcall(function()
 
 		taskbarholderscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(0.9, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0.9, 0, 1, 0), Position = UDim2.new(0.1, 0, 0, 0), ScrollBarThickness = 2.5})
 		taskbarholder:AddChild(taskbarholderscrollingframe)
-		rom:Write("GustavOSLibrary", nil)
-		rom:Write("GD7Library", nil)
-		rom:Write("GDOSLibrary", nil)
-		rom:Write("GD7Library", {
-			Screen = screen,
-			Keyboard = keyboard,
-			Modem = modem,
-			Speaker = speaker,
-			Disk = disk,
-			programholder1 = programholder1,
-			programholder2 = programholder2,
-			Taskbar = {taskbarholderscrollingframe, taskbarholder},
-			screenresolution = resolutionframe,
-		})
 
 		if not disk:Read("sounds") and not disk:Read("Desktop") then
 			local window, holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
@@ -4703,6 +4690,53 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	function loadingscreen(boolean1, boolean2)
+		if not boolean1 then
+			rom:Write("GustavOSLibrary", nil)
+			rom:Write("GD7Library", nil)
+			rom:Write("GDOSLibrary", nil)
+			rom:Write("GD7Library", {
+				Screen = screen,
+				Keyboard = keyboard,
+				Modem = modem,
+				Speaker = speaker,
+				Disk = disk,
+				programholder1 = programholder1,
+				programholder2 = programholder2,
+				Taskbar = {taskbarholderscrollingframe, taskbarholder},
+				screenresolution = resolutionframe,
+			})
+		end
+		local wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://"..tostring(rom:Read("LoadingImage") or 16204218577), BackgroundTransparency = 1})
+		local spinner = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0.8, 0.4), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Fit, Image = "rbxassetid://16204406408"})
+		wallpaper:AddChild(spinner)
+
+		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.6, 0.2), Position = UDim2.fromScale(0.2, 0.4), BackgroundTransparency = 1, TextScaled = true, Text = if not boolean1 then "Welcome" elseif not boolean2 then "Restarting" elseif boolean2 then "Shutting down" else "how the hell", TextWrapped = true})
+		wallpaper:AddChild(spinner)
+
+		local coroutine1 = coroutine.create(function()
+			while true do
+				task.wait(0.01)
+				spinner.Rotation += 2
+			end
+		end)
+
+		coroutine.resume(coroutine1)
+
+		task.wait(3)
+
+		coroutine.close(coroutine1)
+		if not boolean1 then
+			loaddesktop()
+		else
+			if not boolean2 then
+				shutdownnow()
+			else
+				restartnow()
+			end
+		end
+	end
+
 end)
 
 local function bluescreen()
@@ -4850,7 +4884,7 @@ function bootos()
 		if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsize.X, 25); end
 
 		if success then
-			loaddesktop()
+			loadingscreen(false)
 			SpeakerHandler.PlaySound(startsound, 1, nil, speaker)
 			if keyboardevent then keyboardevent:Unbind() end
 			keyboardevent = keyboard:Connect("TextInputted", function(text, player)
