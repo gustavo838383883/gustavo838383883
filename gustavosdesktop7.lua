@@ -4411,9 +4411,9 @@ local success, Error1 = pcall(function()
 			local text2 = "gustavos, reboot"
 
 			if text:lower():sub(1, string.len(text1)) == text1 then
-				shutdownnow()
+				loadingscreen(true, true)
 			elseif text:lower():sub(1, string.len(text2)) == text2 then
-				restartnow()
+				loadingscreen(true, false)
 			end
 		end)
 
