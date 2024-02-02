@@ -15,4 +15,6 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-Click the repository with my username and then click script.lua for GustavOS (WOS Microcontroler OS) and copy the raw link and paste in a Microcontroller, you also cant have 2 or more ports with the same id or a id higher than 128, if you want the shutdown button to actually shutdown you need a deactivate polysilicon connected to a port and the microcontroller without a ethernet cable.
+Click the repository with my username and then click script.lua for GustavOS Classic (WOS Microcontroler OS) and copy the raw link and paste in a Microcontroller, you also cant have 2 or more ports with the same id or a id higher than 128, if you want the shutdown button to actually shutdown you need a deactivate polysilicon connected to a port and the microcontroller without a ethernet cable.
+
+For GustavOSDesktop7(GustavOS 2) open the file named gustavosdesktop7.lua.
