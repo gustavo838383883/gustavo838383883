@@ -263,8 +263,6 @@ local disksport
 local romindexusing
 local sharedport
 local microphone = nil
-local chatinput
-local playerthatchatted
 
 local bootos
 
@@ -4406,17 +4404,6 @@ local success, Error1 = pcall(function()
 			end
 		end
 
-		MicrophoneChatted(function(player, text)
-			local text1 = "gustavos, shutdown"
-			local text2 = "gustavos, reboot"
-
-			if text:lower():sub(1, string.len(text1)) == text1 then
-				loadingscreen(true, true)
-			elseif text:lower():sub(1, string.len(text2)) == text2 then
-				loadingscreen(true, false)
-			end
-		end)
-
 		startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
 		local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Text = "G", TextScaled = true, TextWrapped = true})
 		startbutton7:AddChild(textlabel)
@@ -4708,7 +4695,7 @@ local success, Error1 = pcall(function()
 				screenresolution = resolutionframe,
 			})
 		end
-		local wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://"..tostring(rom:Read("LoadingImage") or 16204218577), BackgroundTransparency = 1})
+		local wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://"..tostring(disk:Read("LoadingImage") or 16204218577), BackgroundTransparency = 1})
 		local spinner = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0.7, 0.4), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Fit, Image = "rbxassetid://16204406408"})
 		wallpaper:AddChild(spinner)
 
