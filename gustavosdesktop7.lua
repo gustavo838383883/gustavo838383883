@@ -4696,10 +4696,10 @@ local success, Error1 = pcall(function()
 			})
 		end
 		local wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://"..tostring(disk:Read("LoadingImage") or 16204218577), BackgroundTransparency = 1})
-		local spinner = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0.7, 0.4), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Fit, Image = "rbxassetid://16204406408", TextStrokeColor3 = Color3.new(0,0,0), TextStrokeTransparency = 0.25})
+		local spinner = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0.7, 0.4), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Fit, Image = "rbxassetid://16204406408"})
 		wallpaper:AddChild(spinner)
 
-		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.4, 0.1), Position = UDim2.fromScale(0.3, 0.4), BackgroundTransparency = 1, TextScaled = true, TextColor3 = Color3.new(1,1,1), Text = if not boolean1 then "Welcome" elseif not boolean2 then "Restarting" elseif boolean2 then "Shutting down" else "how the hell", TextWrapped = true})
+		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.4, 0.1), Position = UDim2.fromScale(0.3, 0.4), BackgroundTransparency = 1, TextScaled = true, TextColor3 = Color3.new(1,1,1), Text = if not boolean1 then "Welcome" elseif not boolean2 then "Restarting" elseif boolean2 then "Shutting down" else "how the hell", TextWrapped = true, TextStrokeColor3 = Color3.new(0,0,0), TextStrokeTransparency = 0.25})
 		wallpaper:AddChild(textlabel)
 
 		local coroutine1 = coroutine.create(function()
