@@ -2993,31 +2993,6 @@ local success, Error1 = pcall(function()
 	end
 
 	local function restartnow()
-		if startbutton7 then
-			startbutton7:Destroy()
-		end
-		if taskbarholder then
-			taskbarholder:Destroy()
-		end
-		if programholder1 then
-			programholder1:Destroy()
-		end
-		if cursorevent then cursorevent:Unbind() end
-		keyboardinput = nil
-		playerthatinputted = nil
-		minimizedprograms = {}
-		minimizedammount = 0
-		if desktopscrollingframe then desktopscrollingframe:Destroy() end
-		task.wait(1)
-		if speaker then
-			speaker:ClearSounds()
-			SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
-		end
-		for i=0,1,0.01 do
-			task.wait(0.01)
-			backgroundcolor.BackgroundTransparency = i
-			wallpaper.ImageTransparency = i
-		end
 		task.wait(1)
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
@@ -3030,29 +3005,6 @@ local success, Error1 = pcall(function()
 	end
 
 	local function shutdownnow()
-		if startbutton7 then
-			startbutton7:Destroy()
-		end
-		if taskbarholder then
-			taskbarholder:Destroy()
-		end
-		if programholder1 then
-			programholder1:Destroy()
-		end
-		if cursorevent then cursorevent:Unbind() end
-		minimizedprograms = {}
-		minimizedammount = 0
-		if desktopscrollingframe then desktopscrollingframe:Destroy() end
-		task.wait(1)
-		if speaker then
-			speaker:ClearSounds()
-			SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
-		end
-		for i=0,1,0.05 do
-			task.wait(0.05)
-			backgroundcolor.BackgroundTransparency = i
-			wallpaper.ImageTransparency = i
-		end
 		task.wait(1)
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
@@ -3075,6 +3027,31 @@ local success, Error1 = pcall(function()
 			if holderframe then
 				holderframe:Destroy()
 			end
+			if startbutton7 then
+				startbutton7:Destroy()
+			end
+			if taskbarholder then
+				taskbarholder:Destroy()
+			end
+			if programholder1 then
+				programholder1:Destroy()
+			end
+			if cursorevent then cursorevent:Unbind() end
+			keyboardinput = nil
+			playerthatinputted = nil
+			minimizedprograms = {}
+			minimizedammount = 0
+			if desktopscrollingframe then desktopscrollingframe:Destroy() end
+			task.wait(1)
+			if speaker then
+				speaker:ClearSounds()
+				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+			end
+			for i=0,1,0.01 do
+				task.wait(0.01)
+				backgroundcolor.BackgroundTransparency = i
+				wallpaper.ImageTransparency = i
+			end
 			loadingscreen(true, true)
 		end)
 	end
@@ -3089,6 +3066,29 @@ local success, Error1 = pcall(function()
 		yes.MouseButton1Up:Connect(function()
 			if holderframe then
 				holderframe:Destroy()
+			end
+			if startbutton7 then
+				startbutton7:Destroy()
+			end
+			if taskbarholder then
+				taskbarholder:Destroy()
+			end
+			if programholder1 then
+				programholder1:Destroy()
+			end
+			if cursorevent then cursorevent:Unbind() end
+			minimizedprograms = {}
+			minimizedammount = 0
+			if desktopscrollingframe then desktopscrollingframe:Destroy() end
+			task.wait(1)
+			if speaker then
+				speaker:ClearSounds()
+				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
+			end
+			for i=0,1,0.05 do
+				task.wait(0.05)
+				backgroundcolor.BackgroundTransparency = i
+				wallpaper.ImageTransparency = i
 			end
 			loadingscreen(true, false)
 		end)
@@ -4711,7 +4711,7 @@ local success, Error1 = pcall(function()
 		local spinner = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0.8, 0.4), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Fit, Image = "rbxassetid://16204406408"})
 		wallpaper:AddChild(spinner)
 
-		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.6, 0.2), Position = UDim2.fromScale(0.2, 0.4), BackgroundTransparency = 1, TextScaled = true, Text = if not boolean1 then "Welcome" elseif not boolean2 then "Restarting" elseif boolean2 then "Shutting down" else "how the hell", TextWrapped = true})
+		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.4, 0.1), Position = UDim2.fromScale(0.4, 0.4), BackgroundTransparency = 1, TextScaled = true, TextColor3 = Color3.new(1,1,1), Text = if not boolean1 then "Welcome" elseif not boolean2 then "Restarting" elseif boolean2 then "Shutting down" else "how the hell", TextWrapped = true})
 		wallpaper:AddChild(spinner)
 
 		local coroutine1 = coroutine.create(function()
@@ -4729,7 +4729,7 @@ local success, Error1 = pcall(function()
 		if not boolean1 then
 			loaddesktop()
 		else
-			if not boolean2 then
+			if boolean2 then
 				shutdownnow()
 			else
 				restartnow()
