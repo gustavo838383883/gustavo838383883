@@ -295,25 +295,30 @@ local function getstuff()
 
 	for i=1, 128 do
 		if not rom then
-			if i == 1 and putermode then return end
-			success, Error = pcall(GetPartFromPort, i, "Disk")
-			if success then
-				local temprom = GetPartFromPort(i, "Disk")
-				if temprom then
-					if #(temprom:ReadEntireDisk()) == 0 then
-						rom = temprom
-						romport = i
-					elseif temprom:Read("GD7Library") then
-						if temprom:Read("GustavOSLibrary") then
-							temprom:Write("GustavOSLibrary", nil)
-						end
-						rom = temprom
-						romport = i
-					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GDOSLibrary") then
-						temprom:Write("GDOSLibrary", nil)
-						rom = temprom
-						romport = i
-					end
+			local cancel = false
+			if i == 1 and putermode then
+				cancel = true
+			end
+			if not cancel then
+    				success, Error = pcall(GetPartFromPort, i, "Disk")
+    				if success then
+    					local temprom = GetPartFromPort(i, "Disk")
+    					if temprom then
+	    					if #(temprom:ReadEntireDisk()) == 0 then
+	    						rom = temprom
+	    						romport = i
+	    					elseif temprom:Read("GD7Library") then
+	    						if temprom:Read("GustavOSLibrary") then
+	    							temprom:Write("GustavOSLibrary", nil)
+	    						end
+	    						rom = temprom
+	    						romport = i
+	    					elseif #(temprom:ReadEntireDisk()) == 1 and temprom:Read("GDOSLibrary") then
+	    						temprom:Write("GDOSLibrary", nil)
+	    						rom = temprom
+	    						romport = i
+    						end
+    					end
 				end
 			end
 		end
