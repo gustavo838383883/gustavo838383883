@@ -1,4 +1,4 @@
-	local prevCursorPos
+local prevCursorPos
 local uiStartPos
 local minimizedprograms = {}
 local defaultbuttonsize = Vector2.new(0,0)
@@ -296,7 +296,7 @@ if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsi
 
 local window
 
-if #gputer == 0 then
+if #gputer == 0 and gputer["CreateWindow"] then
 	window = CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
 else
 	window = gputer.CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
