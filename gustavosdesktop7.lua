@@ -4695,7 +4695,10 @@ local success, Error1 = pcall(function()
 				screenresolution = resolutionframe,
 				CreateWindow = CreateWindow,
 				createnicebutton = createnicebutton,
-				createnicebutton2 = createnicebutton2
+				createnicebutton2 = createnicebutton2,
+				FileExplorer = loaddisk,
+				filesystem = filesystem,
+				filereader = readfile
 			})
 		end
 		local wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://"..tostring(disk:Read("LoadingImage") or 16204218577), BackgroundTransparency = 1})
