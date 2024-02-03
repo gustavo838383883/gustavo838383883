@@ -723,7 +723,7 @@ local success, Error1 = pcall(function()
 				textlabel.Size += UDim2.new(0, defaultbuttonsize.X, 0, 0)
 			end
 		end
-		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton
+		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton
 	end
 
 	function commandline.new(boolean, udim2, screen)
