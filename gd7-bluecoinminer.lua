@@ -554,7 +554,7 @@ local mainFrame = gui["MainFrame"]
 
 local window
 
-if #gputer == 0 then
+if #gputer == 0 and gputer["CreateWindow"] then
 	window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Bluecoin ATM", false, false, false, "Bluecoin ATM", false)
 else
 	window = gputer.CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Bluecoin ATM", false, false, false, "Bluecoin ATM", false)
@@ -601,7 +601,7 @@ end)
 local function errorPopup(text)
     print(text)
     local window
-	if #gputer == 0 then
+	if #gputer == 0 and gputer["CreateWindow"] then
 		window = CreateWindow(UDim2.new(0.7, 0, 0.5, 0), "Error", false, false, false, "Error", false)
 	else
 		window = gputer.CreateWindow(UDim2.new(0.7, 0, 0.5, 0), "Error", false, false, false, "Error", false)
@@ -1075,7 +1075,7 @@ local function openAccountManagement()
 		    speaker:PlaySound(clicksound)
 			local window
 			local holderframe
-			if #gputer == 0 then
+			if #gputer == 0 and gputer["CreateWindow"] then
 				window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Change Access Code", false, false, false, "Change Access Code", false)
 			else
 				window, holderframe = gputer.CreateWindow(UDim2.fromScale(0.5, 0.5), "Change Access Code", false, false, false, "Change Access Code", false)
@@ -1120,7 +1120,7 @@ local function openAccountManagement()
 			speaker:PlaySound(clicksound)
 			local window
 			local holderframe
-			if #gputer == 0 then
+			if #gputer == 0 and gputer["CreateWindow"] then
 				window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Delete Account", false, false, false, "Delete Account", false)
 			else
 				window, holderframe = gputer.CreateWindow(UDim2.fromScale(0.5, 0.5), "Delete Account", false, false, false, "Delete Account", false)
