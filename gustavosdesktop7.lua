@@ -4438,7 +4438,7 @@ local success, Error1 = pcall(function()
 
 		if restartkey then restartkey:Unbind() end
 
-		restartkey = keyboard:Connect("keyPressed", function(key)
+		restartkey = keyboard:Connect("KeyPressed", function(key)
 			if key == Enum.KeyCode.LeftControl then
 				leftctrlpressed = true
 				task.wait(0.1)
