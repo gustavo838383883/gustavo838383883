@@ -404,7 +404,13 @@ local keyboardinput
 local keyboardevent
 
 local function webbrowser()
-	local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Web Browser", false, false, false, "Chat", false)
+	local holderframe
+
+	if not gputer["CreateWindow"] then
+		holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Web Browser", false, false, false, "Web Browser", false)
+	else
+		holderframe = gputer.CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Web Browser", false, false, false, "Web Browser", false)
+	end
 
 	local messagesent = nil
 
