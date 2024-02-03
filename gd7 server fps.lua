@@ -305,7 +305,7 @@ end
 if gputerlength == 0 and gputer["CreateWindow"] then
 	window = CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
 else
-	window = gputer.CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
+	window = gputer.CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, "Server FPS", false)
 end
 
 local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), TextScaled = true, BackgroundTransparency = 1, TextWrapped = true, Text = "nan"})
