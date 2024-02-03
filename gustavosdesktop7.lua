@@ -502,7 +502,7 @@ local success, Error1 = pcall(function()
 
 	local minimizedammount = 0
 
-	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4)
+	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4, boolean5)
 		local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 		if not holderframe then return end
 		programholder1:AddChild(holderframe)
@@ -618,9 +618,12 @@ local success, Error1 = pcall(function()
 					textlabel.Size -= UDim2.new(0, defaultbuttonsize.X, 0, 0)
 				end
 			end
-			minimizebutton.MouseButton1Down:Connect(function()
-				minimizebutton.Image = "rbxassetid://15617866125"
-			end)
+
+			if not boolean5 then
+				minimizebutton.MouseButton1Down:Connect(function()
+					minimizebutton.Image = "rbxassetid://15617866125"
+				end)
+			end
 
 			if boolean then
 				minimizebutton.Position -= UDim2.new(0, defaultbuttonsize.X, 0, 0)
@@ -641,9 +644,11 @@ local success, Error1 = pcall(function()
 
 				table.insert(minimizedprograms, unminimizebutton)
 
-				unminimizebutton.MouseButton1Down:Connect(function()
-					unminimizebutton.Image = "rbxassetid://15625805069"
-				end)
+				if not boolean5 then
+					unminimizebutton.MouseButton1Down:Connect(function()
+						unminimizebutton.Image = "rbxassetid://15625805069"
+					end)
+				end
 
 				unminimizebutton.MouseButton1Up:Connect(function()
 					unminimizebutton.Image = "rbxassetid://15625805900"
