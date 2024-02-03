@@ -270,10 +270,15 @@ local shutdownpoly = nil
 
 local CreateWindow
 
+local disk6 =  GetPartFromPort(6, "Disk")
 local putermode = false
 
-if GetPartFromPort(6, "Disk") and GetPartFromPort(6, "Disk"):Read("PuterLibrary") then
+if disk6 and disk6:Read("PuterLibrary") then
+	disk6:ClearDisk()
+	disk6:Write("PuterMode", true)
 	putermode = true
+elseif disk6 and disk6:Read("PuterMode") == true then
+	putermode = true 
 end
 
 local function getstuff()
