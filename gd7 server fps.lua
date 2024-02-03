@@ -296,7 +296,13 @@ if defaultbuttonsize.Y > 25 then defaultbuttonsize = Vector2.new(defaultbuttonsi
 
 local window
 
-if #gputer == 0 and gputer["CreateWindow"] then
+local gputerlength = 0
+
+for i,v in pairs(gputer) do
+	gputerlength += 1
+end
+
+if gputerlength == 0 and gputer["CreateWindow"] then
 	window = CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
 else
 	window = gputer.CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
