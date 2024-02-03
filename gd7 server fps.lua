@@ -1,4 +1,4 @@
-local prevCursorPos
+	local prevCursorPos
 local uiStartPos
 local minimizedprograms = {}
 local defaultbuttonsize = Vector2.new(0,0)
@@ -374,7 +374,6 @@ coroutine.resume(coroutine.create(function()
 end))
 
 while true do
-	local start = tick()
-	task.wait(1)
-	textlabel.Text = math.floor(60/(tick() - start))
+	local timetook = task.wait()
+	textlabel.Text = math.floor(1 / timetook)
 end
