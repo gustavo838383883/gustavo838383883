@@ -46,7 +46,7 @@ save.MouseButton1Up:Connect(function()
 		task.wait(2)
 		text2.Text = "Save"
 	else
-		text2.Text = "No directory selected"
+		text2.Text = "No directory table/folder selected."
 		task.wait(2)
 		text2.Text = "Save"
 	end
