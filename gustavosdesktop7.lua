@@ -4414,6 +4414,9 @@ local success, Error1 = pcall(function()
 		bootdos()
 	end
 
+	local restartkey
+	local leftctrlpressed = false
+
 	function loaddesktop()
 		minimizedammount = 0
 		minimizedprograms = {}
@@ -4432,6 +4435,29 @@ local success, Error1 = pcall(function()
 				wallpaper.ScaleType = Enum.ScaleType.Stretch
 			end
 		end
+
+		if restartkey then restartkey:Unbind() end
+
+		restartkey = keyboard:Connect("keyPressed", function(key)
+			if key == Enum.KeyCode.LeftControl then
+				leftctrlpressed = true
+				task.wait(0.1)
+				leftctrlpressed = false
+			elseif key == Enum.KeyCode.R then
+				if leftctrlpressed == true then
+					if startbutton7 then
+						startbutton7:Destroy()
+					end
+					if taskbarholder then
+						taskbarholder:Destroy()
+					end
+					if programholder1 then
+						programholder1:Destroy()
+					end
+					loaddesktop()
+				end
+			end
+		end)
 
 		startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
 		local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Text = "G", TextScaled = true, TextWrapped = true})
