@@ -2434,6 +2434,28 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
+	local function shutdownallmicros(micros)
+		if not micros then return end
+		for index, value in pairs(micros) do
+			local polysilicon = GetPartFromPort(value, "Polysilicon")
+			local polyport = GetPartFromPort(polysilicon, "Port")
+			if polysilicon then
+				if polyport then
+					value:Configure({Code = ""})
+					polysilicon:Configure({PolysiliconMode = 1})
+					TriggerPort(polyport)
+					if table.find(usedmicros, value) then
+						table.remove(usedmicros, table.find(usedmicros, value))
+					end
+				else
+					print("No port connected to polysilicon")
+				end
+			else
+				print("No polysilicon connected to microcontroller")
+			end
+		end
+	end
+
 	local function shutdownmicros(screen, micros)
 		local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 0), "Microcontroller Manager", false ,false, false, "Microcontroller Manager", false)
 
@@ -2441,8 +2463,8 @@ local success, Error1 = pcall(function()
 		holderframe:AddChild(scrollingframe)
 
 		local start = 0
-		if not microcontrollers then return end
-		for index, value in pairs(microcontrollers) do
+		if not micros then return end
+		for index, value in pairs(micros) do
 			local button, button2 = createnicebutton(UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, start), (start/25)+1, scrollingframe)
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 			local oldstart = start + 25
@@ -2996,6 +3018,7 @@ local success, Error1 = pcall(function()
 	end
 
 	local function restartnow()
+		shutdownallmicros(microcontrollers)
 		task.wait(1)
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
@@ -3008,6 +3031,7 @@ local success, Error1 = pcall(function()
 	end
 
 	local function shutdownnow()
+		shutdownallmicros(microcontrollers)
 		task.wait(1)
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
