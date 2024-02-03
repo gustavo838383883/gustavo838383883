@@ -272,7 +272,7 @@ local CreateWindow
 
 local putermode = false
 
-if GetPartFromPort(1, "Disk") and GetPartFromPort(1, "Disk"):Read("PuterLibrary") then
+if GetPartFromPort(6, "Disk") and GetPartFromPort(6, "Disk"):Read("PuterLibrary") then
 	putermode = true
 end
 
