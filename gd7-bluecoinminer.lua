@@ -552,7 +552,14 @@ local miningbutton = gui["miningbutton"]
 local transactionbutton = gui["transactionbutton"]
 local mainFrame = gui["MainFrame"]
 
-local window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Bluecoin ATM", false, false, false, "Bluecoin ATM", false)
+local window
+
+if #gputer == 0 then
+	window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Bluecoin ATM", false, false, false, "Bluecoin ATM", false)
+else
+	window = gputer.CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Bluecoin ATM", false, false, false, "Bluecoin ATM", false)
+end
+
 window:AddChild(gui["ImageLabel"])
 
 local mainframeelements = {}
@@ -593,7 +600,14 @@ end)
 
 local function errorPopup(text)
     print(text)
-    local window = CreateWindow(UDim2.new(0.7, 0, 0.5, 0), "Error", false, false, false, "Error", false)
+    local window
+	if #gputer == 0 then
+		window = CreateWindow(UDim2.new(0.7, 0, 0.5, 0), "Error", false, false, false, "Error", false)
+	else
+		window = gputer.CreateWindow(UDim2.new(0.7, 0, 0.5, 0), "Error", false, false, false, "Error", false)
+	end
+
+	
     window:AddChild(screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), Text = text, TextScaled = true, BackgroundTransparency = 1}))
     printd(text)
 end
@@ -1059,7 +1073,13 @@ local function openAccountManagement()
 		local changepasswordbutton = createButton("Change Access Code", UDim2.new(0.5, 0, 0.25, 0), UDim2.new(0.5, 0, 0.65, 0))
 		changepasswordbutton.MouseButton1Click:Connect(function()
 		    speaker:PlaySound(clicksound)
-			local window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Change Access Code", false, false, false, "Change Access Code", false)
+			local window
+			local holderframe
+			if #gputer == 0 then
+				window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Change Access Code", false, false, false, "Change Access Code", false)
+			else
+				window, holderframe = gputer.CreateWindow(UDim2.fromScale(0.5, 0.5), "Change Access Code", false, false, false, "Change Access Code", false)
+			end
 			window:AddChild(screen:CreateElement("TextLabel", {
 				Size = UDim2.fromScale(1, 0.25);
 				Position = UDim2.fromScale(0, 0);
@@ -1098,7 +1118,13 @@ local function openAccountManagement()
 		
 		deleteaccountbutton.MouseButton1Click:Connect(function()
 			speaker:PlaySound(clicksound)
-			local window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Delete Account", false, false, false, "Delete Account", false)
+			local window
+			local holderframe
+			if #gputer == 0 then
+				window, holderframe = CreateWindow(UDim2.fromScale(0.5, 0.5), "Delete Account", false, false, false, "Delete Account", false)
+			else
+				window, holderframe = gputer.CreateWindow(UDim2.fromScale(0.5, 0.5), "Delete Account", false, false, false, "Delete Account", false)
+			end
 			window:AddChild(screen:CreateElement("TextLabel", {
 				Size = UDim2.fromScale(1, 0.25);
 				Position = UDim2.fromScale(0, 0);
