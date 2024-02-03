@@ -270,6 +270,12 @@ local shutdownpoly = nil
 
 local CreateWindow
 
+local putermode = false
+
+if GetPartFromPort(1, "Disk") and GetPartFromPort(1, "Disk"):Read("PuterLibrary") then
+	putermode = true
+end
+
 local function getstuff()
 	disks = nil
 	rom = nil
@@ -289,6 +295,7 @@ local function getstuff()
 
 	for i=1, 128 do
 		if not rom then
+			if i == 1 and putermode then return end
 			success, Error = pcall(GetPartFromPort, i, "Disk")
 			if success then
 				local temprom = GetPartFromPort(i, "Disk")
