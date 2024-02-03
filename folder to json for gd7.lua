@@ -14,7 +14,7 @@ maximizebutton.Position = UDim2.new(1, -(maximizebutton.Size.X.Offset*2), 0, 0)
 minimizebutton.Position = UDim2.new(1, -(maximizebutton.Size.X.Offset*3), 0, 0)
 textlabel.Position = UDim2.fromScale(0, 0)
 
-local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0), "Select table/folder", window)
+local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0), "Select file", window)
 
 local directory
 local filename
@@ -46,7 +46,7 @@ save.MouseButton1Up:Connect(function()
 		task.wait(2)
 		text2.Text = "Save"
 	else
-		text2.Text = "No directory table/folder selected."
+		text2.Text = "No directory file selected."
 		task.wait(2)
 		text2.Text = "Save"
 	end
