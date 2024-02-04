@@ -257,6 +257,7 @@ function Object.new(name: string, ClassName: string, boolean: boolean)
 
 	local object = {
 		ClassName = "Object",
+		Name = name,
 		Instance = guiobject,
 		CanCollide = if boolean == false then false else true
 	}
