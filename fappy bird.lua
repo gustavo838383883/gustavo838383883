@@ -322,7 +322,7 @@ local died
 
 local jumpbutton = Object.new("JumpButton", "TextButton", false)
 local bird
-local bestscore = tonumber(disk:Read("BestScore")) or 0
+local bestscore = tonumber(disk:Read("FappyBirdBestScore")) or 0
 local scorenumber = 0
 
 jumpbutton.Instance:ChangeProperties({Transparency = 1, Size = UDim2.fromScale(1, 1)})
@@ -337,7 +337,7 @@ function died()
 	end
 	if scorenumber > bestscore then
 		bestscore = scorenumber
-		disk:Write("BestScore", bestscore)
+		disk:Write("FappyBirdBestScore", bestscore)
 	end
 	scorenumber = 0
 	speaker:Configure({Audio = 144686858})
@@ -395,6 +395,8 @@ function restartGAME()
 	local newposx = 0
 	local successpipes = {}
 	local ended = false
+	local startwindowpos = window.Position
+	local startwindowsize = window.Size
 	loop1 = loop:Connect(function(delta, time)
 		if time - prevtime < 0.02 then return end
 		if ended then disconnectloop1() return end
@@ -405,6 +407,14 @@ function restartGAME()
 		if not pipeholder then return end
 		
 		if not bird then return end
+
+		if window.Size ~= startwindowsize then
+			window.Size = startwindowsize
+		end
+
+		if window.Position ~= startwindowpos then
+			window.Position = startwindowpos
+		end
 
 		pipeholder.Instance.Position -= UDim2.fromScale(0.01, 0)
 		newposx += 0.01
@@ -498,7 +508,7 @@ local function startgame()
 	text1.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.5), TextScaled = true, Text = "Fappy Bird"})
 
 	local text2 = Object.new("StartText2", "TextLabel", false)
-	text2.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.2), Position = UDim2.fromScale(0, 0.5), TextScaled = true, Text = "Warning: Don't resize the window while playing"})
+	text2.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.2), Position = UDim2.fromScale(0, 0.5), TextScaled = true, Text = "Warning: Don't resize or move the window while playing"})
 
 	local button1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Start", GAME.Holder)
 
