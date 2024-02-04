@@ -334,6 +334,7 @@ function died()
 			value:Destroy()
 		end
 	end
+	scorenumber = 0
 	speaker:Configure({Audio = 144686858})
 	speaker:Trigger()
 	local text1 = Object.new("DiedText", "TextLabel", false)
