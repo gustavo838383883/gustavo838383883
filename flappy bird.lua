@@ -479,10 +479,14 @@ local function startgame()
 	local text1 = Object.new("StartText", "TextLabel", false)
 	text1.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.5), TextScaled = true, Text = "Flappy Bird"})
 
+	local text2 = Object.new("StartText2", "TextLabel", false)
+	text2.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.2), Position = UDim2.fromScale(0, 0.5), TextScaled = true, Text = "Warning: Don't resize the window while playing"})
+
 	local button1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Start", GAME.Holder)
 
 	button1.MouseButton1Up:Connect(function()
 		text1:Destroy()
+		text2:Destroy()
 		button1:Destroy()
 		restartGAME()
 	end)
