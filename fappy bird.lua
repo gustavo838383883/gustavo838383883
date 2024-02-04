@@ -1,6 +1,6 @@
 --[[
 
-Flappy bird test
+Fappy bird test
 
 test
 test
@@ -18,7 +18,7 @@ local CreateWindow = gputer.CreateWindow
 local createnicebutton = gputer.createnicebutton
 local speaker = gputer.Speaker
 
-local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Flappy bird", false, false, false, "Flappy bird", false, false)
+local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Fappy bird", false, false, false, "Fappy bird", false, false)
 
 
 local function GetTouchingGuiObjects(gui, folder)
@@ -321,6 +321,8 @@ local died
 
 local jumpbutton = Object.new("JumpButton", "TextButton", false)
 local bird
+local bestscore = 0
+local scorenumber = 0
 
 jumpbutton.Instance:ChangeProperties({Transparency = 1, Size = UDim2.fromScale(1, 1)})
 
@@ -337,10 +339,18 @@ function died()
 	local text1 = Object.new("DiedText", "TextLabel", false)
 	text1.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.5), TextScaled = true, Text = "You died!"})
 
+	local text2 = Object.new("BestScoreText", "TextLabel", false)
+	text2.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0, 0.5), TextScaled = true, Text = "Best score:"})
+
+	local text3 = Object.new("BestScorNumber", "TextLabel", false)
+	text3.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0.5, 0.5), TextScaled = true, Text = bestscore or 0})
+
 	local button1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Restart", GAME.Holder)
 
 	button1.MouseButton1Up:Connect(function()
 		text1:Destroy()
+		text2:Destroy()
+		text3:Destroy()
 		button1:Destroy()
 		restartGAME()
 	end)
@@ -407,7 +417,8 @@ function restartGAME()
 				if not table.find(successpipes, index) then
 					if bird.Instance.AbsolutePosition.X > value.Instance.AbsolutePosition.X then
 						table.insert(successpipes, index)
-						score.Instance.Text = tonumber(score.Instance.Text) + 1
+						scorenumber += 1
+						score.Instance.Text = scorenumber
 						speaker:Configure({Audio = 144686873})
 						speaker:Trigger()
 					end
@@ -456,6 +467,9 @@ function restartGAME()
 			score = nil
 			disconnectloop1()
 			ended = true
+			if scorenumber > bestscore then
+				bestscore = scorenumber
+			end
 			died()
 		end
 
@@ -471,6 +485,9 @@ function restartGAME()
 			score = nil
 			disconnectloop1()
 			ended = true
+			if scorenumber > bestscore then
+				bestscore = scorenumber
+			end
 			died()
 		end
 	end)
@@ -478,7 +495,7 @@ end
 
 local function startgame()
 	local text1 = Object.new("StartText", "TextLabel", false)
-	text1.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.5), TextScaled = true, Text = "Flappy Bird"})
+	text1.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.5), TextScaled = true, Text = "Fappy Bird"})
 
 	local text2 = Object.new("StartText2", "TextLabel", false)
 	text2.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.2), Position = UDim2.fromScale(0, 0.5), TextScaled = true, Text = "Warning: Don't resize the window while playing"})
