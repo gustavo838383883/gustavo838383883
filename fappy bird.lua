@@ -19,7 +19,7 @@ local createnicebutton = gputer.createnicebutton
 local speaker = gputer.Speaker
 local disk = gputer.Disk
 
-local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Fappy bird", false, false, false, "Fappy bird", false, false)
+local window, holderframe = CreateWindow(UDim2.fromScale(0.7, 0.7), "Fappy bird", false, false, false, "Fappy bird", false, false)
 
 
 local function GetTouchingGuiObjects(gui, folder)
@@ -395,8 +395,8 @@ function restartGAME()
 	local newposx = 0
 	local successpipes = {}
 	local ended = false
-	local startwindowpos = window.Position
-	local startwindowsize = window.Size
+	local startwindowpos = holderframe.Position
+	local startwindowsize = holderframe.Size
 	loop1 = loop:Connect(function(delta, time)
 		if time - prevtime < 0.02 then return end
 		if ended then disconnectloop1() return end
@@ -408,12 +408,12 @@ function restartGAME()
 		
 		if not bird then return end
 
-		if window.Size ~= startwindowsize then
-			window.Size = startwindowsize
+		if holderframe.Size ~= startwindowsize then
+			holderframe.Size = startwindowsize
 		end
 
-		if window.Position ~= startwindowpos then
-			window.Position = startwindowpos
+		if holderframe.Position ~= startwindowpos then
+			holderframe.Position = startwindowpos
 		end
 
 		pipeholder.Instance.Position -= UDim2.fromScale(0.01, 0)
