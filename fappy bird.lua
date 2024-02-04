@@ -17,6 +17,7 @@ local screen = gputer.Screen
 local CreateWindow = gputer.CreateWindow
 local createnicebutton = gputer.createnicebutton
 local speaker = gputer.Speaker
+local disk = gputer.Disk
 
 local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Fappy bird", false, false, false, "Fappy bird", false, false)
 
@@ -321,7 +322,7 @@ local died
 
 local jumpbutton = Object.new("JumpButton", "TextButton", false)
 local bird
-local bestscore = 0
+local bestscore = tonumber(disk:Read("BestScore")) or 0
 local scorenumber = 0
 
 jumpbutton.Instance:ChangeProperties({Transparency = 1, Size = UDim2.fromScale(1, 1)})
@@ -333,6 +334,10 @@ function died()
 		if string.find(tostring(index), "Pipe") then
 			value:Destroy()
 		end
+	end
+	if scorenumber > bestscore then
+		bestscore = scorenumber
+		disk:Write("BestScore", bestscore)
 	end
 	scorenumber = 0
 	speaker:Configure({Audio = 144686858})
@@ -468,9 +473,6 @@ function restartGAME()
 			score = nil
 			disconnectloop1()
 			ended = true
-			if scorenumber > bestscore then
-				bestscore = scorenumber
-			end
 			died()
 		end
 
@@ -486,9 +488,6 @@ function restartGAME()
 			score = nil
 			disconnectloop1()
 			ended = true
-			if scorenumber > bestscore then
-				bestscore = scorenumber
-			end
 			died()
 		end
 	end)
