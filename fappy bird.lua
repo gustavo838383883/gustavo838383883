@@ -22,7 +22,7 @@ local disk = gputer.Disk
 local window, holderframe = CreateWindow(UDim2.fromScale(0.7, 0.7), "Fappy bird", false, false, false, "Fappy bird", false, false)
 
 
-local function GetTouchingGuiObjects(gui, folder)
+local function GetCollidingGuiObjects(gui, folder)
 
 	if gui then
 		if not folder then print("Table was not specified.") return end
@@ -43,7 +43,7 @@ local function GetTouchingGuiObjects(gui, folder)
 						local guiposx = gui.AbsolutePosition.X + gui.AbsoluteSize.X
 						local number = ui.AbsoluteSize.X + gui.AbsoluteSize.X
 
-						if x - guiposx >= -number then
+						if x - guiposx > -number then
 							if x - guiposx <= 0 then
 								x_axis = true
 							end
@@ -52,7 +52,7 @@ local function GetTouchingGuiObjects(gui, folder)
 						local guiposy = gui.AbsolutePosition.Y + gui.AbsoluteSize.Y
 						local number2 = ui.AbsoluteSize.Y + gui.AbsoluteSize.Y
 
-						if y - guiposy >= -number2 then
+						if y - guiposy > -number2 then
 							if y - guiposy <= 0 then
 								y_axis = true
 							end
@@ -294,7 +294,7 @@ function Object.new(name: string, ClassName: string, boolean: boolean)
 		return tabletoreturn
 	end
 
-	function object:GetTouchingInstances()
+	function object:GetCollidingInstances()
 		if not object then return end
 		local tabletogive = {}
 
@@ -303,8 +303,8 @@ function Object.new(name: string, ClassName: string, boolean: boolean)
 				table.insert(tabletogive, value["Instance"])
 			end
 		end
-		local touchingtable = GetTouchingGuiObjects(guiobject, tabletogive)
-		return touchingtable
+		local Collidingtable = GetCollidingGuiObjects(guiobject, tabletogive)
+		return Collidingtable
 	end
 
 	function object:Destroy()
@@ -397,6 +397,9 @@ function restartGAME()
 	local ended = false
 	local startwindowpos = holderframe.Position
 	local startwindowsize = holderframe.Size
+	local pipeholdersize = pipeholder.Instance.AbsoluteSize
+	local windowres = window.AbsoluteSize
+	local pipeholderpos = Vector2.new(0, 0)
 	loop1 = loop:Connect(function(delta, time)
 		if time - prevtime < 0.02 then return end
 		if ended then disconnectloop1() return end
@@ -417,12 +420,13 @@ function restartGAME()
 		end
 
 		pipeholder.Instance.Position -= UDim2.fromScale(0.01, 0)
+		pipeholderpos -= Vector2.new(windowres.X * 0.01, 0)
 		newposx += 0.01
 
 		for i=1,pipenumber do
 			local pipe = GAME.Workspace["Pipe"..i]
 			if pipe then
-				if pipe.Instance.AbsolutePosition.X + pipe.Instance.AbsoluteSize.X < 0 then
+				if pipe.Instance.AbsolutePosition.X + pipe.Instance.AbsoluteSize.X < holderframe.AbsolutePosition.X then
 					pipe:Destroy()
 				end
 			end
@@ -442,7 +446,7 @@ function restartGAME()
 			end
 		end
 
-		if prevdistancex - pipeholder.Instance.AbsolutePosition.X > pipeholder.Instance.AbsoluteSize.X/2 then
+		if prevdistancex - pipeholderpos.X > pipeholdersize.X/2 then
 			pipenumber += 1
 			local pipetest = Object.new("Pipe"..pipenumber, "ImageLabel", true)
 
@@ -467,10 +471,10 @@ function restartGAME()
 
 			pipeholder.Instance:AddChild(pipetest.Instance)
 
-			prevdistancex = pipeholder.Instance.AbsolutePosition.X
+			prevdistancex = pipeholderpos
 		end
 
-		local colliding = bird:GetTouchingInstances()
+		local colliding = bird:GetCollidingInstances()
 
 		if #colliding > 0 then
 			bird:Destroy()
