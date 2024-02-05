@@ -429,13 +429,8 @@ local function spawnapple()
 
 end
 
-for x = 0, 1, 0.125 do
-	for y = 0, 1, 0.125 do
-		
-	end
-end
-
 function restartGAME()
+	paused = false
 
 	local loop = GAME.LoopService.new()
 
