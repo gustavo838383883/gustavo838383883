@@ -471,7 +471,7 @@ function restartGAME()
 
 			pipeholder.Instance:AddChild(pipetest.Instance)
 
-			prevdistancex = pipeholderpos
+			prevdistancex = pipeholderpos.X
 		end
 
 		local colliding = bird:GetCollidingInstances()
