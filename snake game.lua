@@ -469,7 +469,7 @@ function restartGAME()
 				timetowait = 0.75
 			end
 		end
-		if time - prevtime < 0.5 then return end
+		if time - prevtime < timetowait then return end
 		if paused then return end
 		if ended then disconnectloop1() return end
 		prevtime = time
