@@ -394,10 +394,11 @@ end
 local snakeparts = {}
 local snakehead = nil
 local direction = "right"
-local usedpositions = {}
 local apple = nil
 
 local function spawnapple()
+
+	local usedpositions = {}
 
 	for i, v in pairs(GAME.Workspace:GetObjects()) do
 		if string.find(i, "SnakePart") then
@@ -461,14 +462,19 @@ function restartGAME()
 	local prevtime = 0
 	local ended = false
 	loop1 = loop:Connect(function(delta, time)
+		local timetowait = 0.5
+
+		if snakehead then
+			if snakeinstance.Position.X.Scale >= 0.875 or snakeinstance.Position.Y.Scale >= 0.875 or snakeinstance.Position.X.Scale <= 0.125 or snakeinstance.Position.Y.Scale <= 0.125 then
+				timetowait = 0.75
+			end
+		end
 		if time - prevtime < 0.5 then return end
 		if paused then return end
 		if ended then disconnectloop1() return end
 		prevtime = time
 
 		if not window then disconnectloop1() end
-		
-		usedpositions = {}
 
 		local prevsnakepos = snakeinstance.Position
 
