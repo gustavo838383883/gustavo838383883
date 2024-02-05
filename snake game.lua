@@ -465,7 +465,7 @@ function restartGAME()
 		local timetowait = 0.5
 
 		if snakehead then
-			if snakeinstance.Position.X.Scale >= 0.875 or snakeinstance.Position.Y.Scale >= 0.875 or snakeinstance.Position.X.Scale <= 0.125 or snakeinstance.Position.Y.Scale <= 0.125 then
+			if snakeinstance.Position.X.Scale >= 0.875 and direction == "right" or snakeinstance.Position.Y.Scale >= 0.875 and direction == "down" or snakeinstance.Position.X.Scale <= 0.125 and direction == "left" or snakeinstance.Position.Y.Scale <= 0.125 and direction == "up" then
 				timetowait = 0.75
 			end
 		end
