@@ -408,8 +408,8 @@ local function spawnapple()
 
 	local poslist = {}
 
-	for x = 0, 0.9, 0.1 do
-		for y = 0, 0.9, 0.1 do
+	for x = 0, 0.875, 0.125 do
+		for y = 0, 0.875, 0.125 do
 			local udim2 = UDim2.fromScale(x, y)
 			if not table.find(usedpositions, udim2) then
 				table.insert(poslist, udim2)
@@ -423,15 +423,11 @@ local function spawnapple()
 
 		apple = Object.new("ApplePart", "ImageLabel", false)
 
-		apple.Instance:ChangeProperties({Size = UDim2.fromScale(0.1, 0.1), Position = poslist[random1], BackgroundTransparency = 1, Image = "rbxassetid://16098315503"})
+		apple.Instance:ChangeProperties({Size = UDim2.fromScale(0.125, 0.125), Position = poslist[random1], BackgroundTransparency = 1, Image = "rbxassetid://16098315503"})
 	else
 		youwon()
 	end
 
-end
-
-local function roundudim2(udim2)
-	return UDim2.new(math.round(udim2.X.Scale), math.round(udim2.X.Offset), math.round(udim2.Y.Scale), math.round(udim2.Y.Offset))
 end
 
 function restartGAME()
@@ -459,7 +455,7 @@ function restartGAME()
 
 	local snakeinstance = snakehead.Instance
 
-	snakeinstance:ChangeProperties({Size = UDim2.fromScale(0.1, 0.1), BackgroundColor3 = Color3.fromRGB(0, 200, 200), Position = UDim2.fromScale(0.4, 0.4)})
+	snakeinstance:ChangeProperties({Size = UDim2.fromScale(0.125, 0.125), BackgroundColor3 = Color3.fromRGB(0, 200, 200), Position = UDim2.fromScale(0.375, 0.375)})
 	
 	spawnapple()
 
@@ -469,7 +465,7 @@ function restartGAME()
 		local timetowait = 0.5
 
 		if snakehead then
-			if snakeinstance.Position.X.Scale >= 0.9 or snakeinstance.Position.Y.Scale >= 0.9 or snakeinstance.Position.X.Scale <= 0.1 or snakeinstance.Position.Y.Scale <= 0.1 then
+			if snakeinstance.Position.X.Scale >= 0.875 or snakeinstance.Position.Y.Scale >= 0.875 or snakeinstance.Position.X.Scale <= 0.125 or snakeinstance.Position.Y.Scale <= 0.125 then
 				timetowait = 0.75
 			end
 		end
@@ -483,13 +479,13 @@ function restartGAME()
 		local prevsnakepos = snakeinstance.Position
 
 		if direction == "right" then
-			snakeinstance.Position += UDim2.fromScale(0.1, 0)
+			snakeinstance.Position += UDim2.fromScale(0.125, 0)
 		elseif direction == "left" then
-			snakeinstance.Position -= UDim2.fromScale(0.1, 0)
+			snakeinstance.Position -= UDim2.fromScale(0.125, 0)
 		elseif direction == "up" then
-			snakeinstance.Position -= UDim2.fromScale(0, 0.1)
+			snakeinstance.Position -= UDim2.fromScale(0, 0.125)
 		elseif direction == "down" then
-			snakeinstance.Position += UDim2.fromScale(0, 0.1)
+			snakeinstance.Position += UDim2.fromScale(0, 0.125)
 		end
 
 		local table1 = {}
@@ -503,7 +499,7 @@ function restartGAME()
 		local colliding = false
 
 		for index, value in pairs(snakeparts) do
-			if math.round(value.Instance.AbsolutePosition.X*10)/10 >= math.round(snakeinstance.AbsolutePosition.X*10)/10 and math.round(value.Instance.AbsolutePosition.X*10)/10 <= math.round(snakeinstance.AbsolutePosition.X*10)/10 + math.round(snakeinstance.AbsoluteSize.X*10)/10 and math.round(value.Instance.AbsolutePosition.Y*10)/10 >= math.round(snakeinstance.AbsolutePosition.Y*10)/10 and math.round(value.Instance.AbsolutePosition.Y*10)/10 <= math.round(snakeinstance.AbsolutePosition.Y*10)/10 + math.round(snakeinstance.AbsoluteSize.Y*10)/10 and value.CanCollide == true then
+			if value.Instance.Position == snakeinstance.Position and value.CanCollide == true then
 				colliding = true
 				break
 			end
@@ -532,9 +528,8 @@ function restartGAME()
 
 			prevsnakepos = oldpos
 		end
-				
-		if apple and roundudim2(snakehead.Instance.Position) == roundudim2(apple.Instance.Position) then
-			Beep(1)
+
+		if apple and snakeinstance.Position == apple.Instance.Position then
 			apple:Destroy()
 			local snakepart = Object.new("SnakePart"..#snakeparts + 2, "Frame", false)
 			local snakeinstance = snakepart.Instance
@@ -551,7 +546,7 @@ function restartGAME()
 
 			GAME.Workspace.Score.Instance.Text = scorenumber
 
-			snakeinstance:ChangeProperties({Size = UDim2.fromScale(0.1, 0.1), BackgroundColor3 = Color3.fromRGB(0, 100, 200), Position = newpos})
+			snakeinstance:ChangeProperties({Size = UDim2.fromScale(0.125, 0.125), BackgroundColor3 = Color3.fromRGB(0, 100, 200), Position = newpos})
 
 			table.insert(snakeparts, snakepart)
 
