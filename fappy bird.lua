@@ -481,7 +481,7 @@ function restartGAME()
 		end
 
 		bird.Instance.Position += UDim2.fromScale(0, 0.02)
-		if bird.Instance.Position.Y.Scale > 0.9 then
+		if bird.Instance.Position.Y.Scale > 1 then
 			bird:Destroy()
 			bird = nil
 			wallpaper:Destroy()
