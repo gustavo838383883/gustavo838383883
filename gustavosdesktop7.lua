@@ -1826,7 +1826,7 @@ local success, Error1 = pcall(function()
 			pressed = true
 
 			local holdframe, windowz, closebutton = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
-			local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
+			local deletebutton1 = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 
 			closebutton.MouseButton1Up:Connect(function()
@@ -1838,7 +1838,7 @@ local success, Error1 = pcall(function()
 				windowz:Destroy()
 			end)
 
-			deletebutton.MouseButton1Up:Connect(function()
+			deletebutton1.MouseButton1Up:Connect(function()
 				pressed = false
 				local split = directory:split("/")
 				if scrollingframe then
