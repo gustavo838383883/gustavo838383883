@@ -395,8 +395,6 @@ function restartGAME()
 	local newposx = 0
 	local successpipes = {}
 	local ended = false
-	local startwindowpos = holderframe.Position
-	local startwindowsize = holderframe.Size
 	local pipeholdersize = pipeholder.Instance.AbsoluteSize
 	local windowres = window.AbsoluteSize
 	local pipeholderpos = Vector2.new(0, 0)
@@ -410,14 +408,6 @@ function restartGAME()
 		if not pipeholder then return end
 		
 		if not bird then return end
-
-		if holderframe.Size ~= startwindowsize then
-			holderframe.Size = startwindowsize
-		end
-
-		if holderframe.Position ~= startwindowpos then
-			holderframe.Position = startwindowpos
-		end
 
 		pipeholder.Instance.Position -= UDim2.fromScale(0.01, 0)
 		pipeholderpos -= Vector2.new(windowres.X * 0.01, 0)
