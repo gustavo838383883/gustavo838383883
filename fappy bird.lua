@@ -516,7 +516,7 @@ end
 
 startgame()
 
-jumpbutton.Instance.MouseButton1Up:Connect(function()
+jumpbutton.Instance.MouseButton1Click:Connect(function()
 	if bird then
 		for i=1,6 do
 			task.wait(0.01)
