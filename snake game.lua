@@ -430,6 +430,10 @@ local function spawnapple()
 
 end
 
+local function roundudim2(udim2)
+	return UDim2.new(math.round(udim2.X.Scale), math.round(udim2.X.Offset), math.round(udim2.Y.Scale), math.round(udim2.Y.Offset))
+end
+
 function restartGAME()
 	paused = false
 
@@ -499,7 +503,7 @@ function restartGAME()
 		local colliding = false
 
 		for index, value in pairs(snakeparts) do
-			if value.Instance.Position == snakeinstance.Position and value.CanCollide == true then
+			if math.round(value.Instance.AbsolutePosition.X*10)/10 >= math.round(snakeinstance.AbsolutePosition.X*10)/10 and math.round(value.Instance.AbsolutePosition.X*10)/10 <= math.round(snakeinstance.AbsolutePosition.X*10)/10 + math.round(snakeinstance.AbsoluteSize.X*10)/10 and math.round(value.Instance.AbsolutePosition.Y*10)/10 >= math.round(snakeinstance.AbsolutePosition.Y*10)/10 and math.round(value.Instance.AbsolutePosition.Y*10)/10 <= math.round(snakeinstance.AbsolutePosition.Y*10)/10 + math.round(snakeinstance.AbsoluteSize.Y*10)/10 and value.CanCollide == true then
 				colliding = true
 				break
 			end
@@ -528,8 +532,9 @@ function restartGAME()
 
 			prevsnakepos = oldpos
 		end
-
-		if apple and snakeinstance.Position == apple.Instance.Position then
+				
+		if apple and roundudim2(snakehead.Instance.Position) == roundudim2(apple.Instance.Position) then
+			Beep(1)
 			apple:Destroy()
 			local snakepart = Object.new("SnakePart"..#snakeparts + 2, "Frame", false)
 			local snakeinstance = snakepart.Instance
