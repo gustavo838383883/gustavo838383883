@@ -370,7 +370,7 @@ function restartGAME()
 
 	bird = Object.new("Bird", "ImageLabel", false)
 
-	bird.Instance:ChangeProperties({Size = UDim2.fromScale(0.2, 0.2), Position = UDim2.fromScale(0.2, 0.3), BackgroundTransparency = 1, Image = "rbxassetid://347189324"})
+	bird.Instance:ChangeProperties({Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0.2, 0.3), BackgroundTransparency = 1, Image = "rbxassetid://347189324"})
 
 	local loop = GAME.LoopService.new()
 
@@ -451,10 +451,10 @@ function restartGAME()
 
 			local pipepos = UDim2.fromScale(-pipeholder.Instance.Position.X.Scale + newposx, 0)
 
-			pipetest.Instance:ChangeProperties({Size = UDim2.fromScale(0.2, if random1 == 2 then 0.25 else 0.5), Position = if random1 ~= 3 then pipepos else pipepos + UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, Image = "rbxassetid://14410471826"})
+			pipetest.Instance:ChangeProperties({Size = UDim2.fromScale(0.2, if random1 == 2 then 0.3 else 0.6), Position = if random1 ~= 3 then pipepos else pipepos + UDim2.fromScale(0, 0.6), BackgroundTransparency = 1, Image = "rbxassetid://14410471826"})
 			
 			if random1 == 2 then
-				pipetest2.Instance:ChangeProperties({Size = UDim2.fromScale(0.2, 0.25), Position = pipepos + UDim2.fromScale(0, 0.75), BackgroundTransparency = 1, Image = "rbxassetid://14410471826"})
+				pipetest2.Instance:ChangeProperties({Size = UDim2.fromScale(0.2, 0.3), Position = pipepos + UDim2.fromScale(0, 0.7), BackgroundTransparency = 1, Image = "rbxassetid://14410471826"})
 				pipetest2["PrimaryPipe"] = false
 				pipeholder.Instance:AddChild(pipetest2.Instance)
 			end
