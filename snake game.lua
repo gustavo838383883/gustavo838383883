@@ -443,15 +443,9 @@ function restartGAME()
 
 	local loop = GAME.LoopService.new()
 
-	local pipeholder = Object.new("Pipeholder", "Frame", false)
-
 	local score = Object.new("Score", "TextLabel", false)
 
 	score.Instance:ChangeProperties({ZIndex = 2, Size = UDim2.fromScale(1, 0.2), BackgroundTransparency = 1, TextScaled = true, Text = "0", TextColor3 = Color3.new(1, 1, 1)})
-
-	local pipenumber = 0
-
-	pipeholder.Instance:ChangeProperties({Size = UDim2.fromScale(1, 1), Transparency = 1})
 
 	local loop1
 
