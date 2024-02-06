@@ -579,9 +579,11 @@ function mousecontrols()
 
 	local upbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(1/3, 0), "W", window1)
 
-	local downbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(1-(1/3), 1-(1/3)), "S", window1)
+	local downbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(1/3, 1-(1/3)), "S", window1)
 
 	local rightbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(1-(1/3), 1/3), "D", window1)
+
+	local pausebutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(1/3, 1/3), "K", window1)
 
 	upbutton.MouseButton1Click:Connect(function()
 		if direction == "down" then return end
@@ -601,6 +603,10 @@ function mousecontrols()
 	leftbutton.MouseButton1Click:Connect(function()
 		if direction == "right" then return end
 		direction = "left"
+	end)
+
+	pausebutton.MouseButton1Click:Connect(function()
+		paused = not paused
 	end)
 end
 
