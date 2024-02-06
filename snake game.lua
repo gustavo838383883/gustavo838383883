@@ -579,7 +579,7 @@ end
 
 function mousecontrols()
 	if window1 then return end
-	window1 = CreateWindow(UDim2.fromScale(0.5, 0.5), true, true, false, "Controls", false, false)
+	window1 = CreateWindow(UDim2.fromScale(0.5, 0.5), "Controls", true, true, false, nil, true, false)
 
 	local leftbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(0, 1/3), "A", window1)
 
