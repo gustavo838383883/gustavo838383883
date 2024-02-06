@@ -673,8 +673,10 @@ local success, Error1 = pcall(function()
 					unminimizebutton.Size = UDim2.new(1,0,1,0)
 					unminimizebutton:Destroy()
 					minimizedammount -= 1
-					programholder1:AddChild(holderframe)
-					holderframe.Visible = true
+					if holderframe then
+						programholder1:AddChild(holderframe)
+						holderframe.Visible = true
+					end
 					local start = 0
 					for index, value in ipairs(minimizedprograms) do
 						if value and value.Size ~= UDim2.new(1,0,1,0) then
