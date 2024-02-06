@@ -403,10 +403,15 @@ local snakeparts = {}
 local snakehead = nil
 local direction = "right"
 local apple = nil
+local window1
 
 local function spawnapple()
 
-	local usedpositions = {}
+	if not snakehead then return end
+
+	local usedpositions = {
+		[1] = snakehead.Instance.Position
+	}
 
 	for i, v in pairs(GAME.Workspace:GetObjects()) do
 		if string.find(i, "SnakePart") then
@@ -573,7 +578,8 @@ function restartGAME()
 end
 
 function mousecontrols()
-	local window1 = CreateWindow(UDim2.fromScale(0.5, 0.5), true, true, false, nil, true, false)
+	if window1 then return end
+	window1 = CreateWindow(UDim2.fromScale(0.5, 0.5), true, true, false, "Controls", false, false)
 
 	local leftbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(0, 1/3), "A", window1)
 
