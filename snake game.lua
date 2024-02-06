@@ -324,6 +324,7 @@ local died
 local bestscore = tonumber(disk:Read("SnakeBestScore")) or 0
 local scorenumber = 0
 local paused = false
+local mousecontrols
 
 local restartGAME
 
@@ -340,17 +341,24 @@ function died()
 	speaker:Configure({Audio = 144686858})
 	speaker:Trigger()
 	local text1 = Object.new("DiedText", "TextLabel", false)
-	text1.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.5), TextScaled = true, Text = "You died!"})
+	text1.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.4), TextScaled = true, Text = "You died!"})
 
 	local text2 = Object.new("BestScoreText", "TextLabel", false)
-	text2.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0, 0.5), TextScaled = true, Text = "Best score:"})
+	text2.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0, 0.4), TextScaled = true, Text = "Best score:"})
 
 	local text3 = Object.new("BestScorNumber", "TextLabel", false)
-	text3.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0.5, 0.5), TextScaled = true, Text = bestscore or 0})
+	text3.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0.5, 0.4), TextScaled = true, Text = bestscore or 0})
 
+	local controlsbutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.6), "Controls", GAME.Holder)
+
+	controlsbutton.MouseButton1Up:Connect(function()
+		mousecontrols()
+	end)
+		
 	local button1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Restart", GAME.Holder)
 
 	button1.MouseButton1Up:Connect(function()
+		controlsbutton:Destroy()
 		text1:Destroy()
 		text2:Destroy()
 		text3:Destroy()
@@ -570,6 +578,38 @@ function restartGAME()
 	end)
 end
 
+function mousecontrols()
+	local window1 = CreateWindow(UDim2.fromScale(0.5, 0.5), true, true, false, nil, true, false)
+
+	local leftbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(0, 1/3), "A", window1)
+
+	local upbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(1/3, 0), "W", window1)
+
+	local downbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(1-(1/3), 1-(1/3)), "S", window1)
+
+	local rightbutton = createnicebutton(UDim2.fromScale(1/3, 1/3), UDim2.fromScale(1-(1/3), 1/3), "D", window1)
+
+	upbutton.MouseButton1Click:Connect(function()
+		if direction == "down" then return end
+		direction = "up"
+	end)
+
+	downbutton.MouseButton1Click:Connect(function()
+		if direction == "up" then return end
+		direction = "down"
+	end)
+
+	rightbutton.MouseButton1Click:Connect(function()
+		if direction == "left" then return end
+		direction = "right"
+	end)
+
+	leftbutton.MouseButton1Click:Connect(function()
+		if direction == "right" then return end
+		direction = "left"
+	end)
+end
+
 keyboard:Connect("KeyPressed", function(key)
 
 	if key == Enum.KeyCode.W then
@@ -601,10 +641,17 @@ local function startgame()
 	local text1 = Object.new("StartText", "TextLabel", false)
 	text1.Instance:ChangeProperties({BackgroundTransparency = 1, Size = UDim2.fromScale(1, 0.5), TextScaled = true, Text = "Snake"})
 
+	local controlsbutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.5), "Controls", GAME.Holder)
+		
 	local button1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Start", GAME.Holder)
+
+	controlsbutton.MouseButton1Up:Connect(function()
+		mousecontrols()
+	end)
 
 	button1.MouseButton1Up:Connect(function()
 		text1:Destroy()
+		controlsbutton:Destroy()
 		button1:Destroy()
 		restartGAME()
 	end)
