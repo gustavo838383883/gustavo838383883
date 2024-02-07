@@ -84,19 +84,33 @@ local function findbombsnear(square)
 	for index, value in ipairs(bombpositions) do
 		if value == square.Position + UDim2.fromScale(0, squaresize) then
 			found += 1
-		elseif value == square.Position - UDim2.fromScale(0, squaresize) then
+		end
+		
+		if value == square.Position - UDim2.fromScale(0, squaresize) then
 			found += 1
-		elseif value == square.Position - UDim2.fromScale(squaresize, squaresize) then
+		end
+		
+		if value == square.Position - UDim2.fromScale(squaresize, squaresize) then
 			found += 1
-		elseif value == square.Position + UDim2.fromScale(squaresize, squaresize) then
+		end
+		
+		if value == square.Position + UDim2.fromScale(squaresize, squaresize) then
 			found += 1
-		elseif value == square.Position - UDim2.fromScale(squaresize, 0) then
+		end
+		
+		if value == square.Position - UDim2.fromScale(squaresize, 0) then
 			found += 1
-		elseif value == square.Position + UDim2.fromScale(squaresize, 0) then
+		end
+		
+		if value == square.Position + UDim2.fromScale(squaresize, 0) then
 			found += 1
-		elseif value == square.Position + UDim2.fromScale(squaresize, -squaresize) then
+		end
+		
+		if value == square.Position + UDim2.fromScale(squaresize, -squaresize) then
 			found += 1
-		elseif value == square.Position + UDim2.fromScale(-squaresize, squaresize) then
+		end
+		
+		if value == square.Position + UDim2.fromScale(-squaresize, squaresize) then
 			found += 1
 		end
 	end
@@ -115,19 +129,33 @@ local function shownear(square)
 		if value.Position ~= square.Position and value.Image ~= "rbxassetid://15625805069" then
 			if value.Position == square.Position + UDim2.fromScale(0, squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position - UDim2.fromScale(0, squaresize) then
+			end
+			
+			if value.Position == square.Position - UDim2.fromScale(0, squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position - UDim2.fromScale(squaresize, squaresize) then
+			end
+			
+			if value.Position == square.Position - UDim2.fromScale(squaresize, squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position + UDim2.fromScale(squaresize, squaresize) then
+			end
+			
+			if value.Position == square.Position + UDim2.fromScale(squaresize, squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position - UDim2.fromScale(squaresize, 0) then
+			end
+			
+			if value.Position == square.Position - UDim2.fromScale(squaresize, 0) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position + UDim2.fromScale(squaresize, 0) then
+			end
+			
+			if value.Position == square.Position + UDim2.fromScale(squaresize, 0) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position + UDim2.fromScale(squaresize, -squaresize) then
+			end
+			
+			if value.Position == square.Position + UDim2.fromScale(squaresize, -squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position + UDim2.fromScale(-squaresize, squaresize) then
+			end
+			
+			if value.Position == square.Position + UDim2.fromScale(-squaresize, squaresize) then
 				Trigger(1, value, txts[index])
 			end
 		end
@@ -326,9 +354,8 @@ function restartgame()
 
 	local sizes = {
 		[1] = 1/8,
-		[2] = 1/9,
+		[2] = 1/12,
 		[3] = 1/16,
-		[4] = 1/20
 	}
 
 	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.4), "0.2", windowa)
