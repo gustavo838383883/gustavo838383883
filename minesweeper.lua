@@ -276,15 +276,16 @@ local function restartgamenow()
 end
 
 local function createlist(frame, content, func)
-	local frame1 = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8677487226", Size = UDim2.fromScale(1, 1), Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1})
+	local frame1 = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8677487226", Size = UDim2.fromScale(1, 2), Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1})
 	frame:AddChild(frame1)
-	
-	if #content > 1 then
-		frame1.Size = UDim2.fromScale(1, #content)
-	end
 
+	local scrollframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.fromScale(1, 1), CanvasSize = UDim2.fromScale(0, 0), BackgroundTransparency = 1})
+
+	frame1:AddChild(scrollframe)
+	
 	for index, value in ipairs(content) do
-		local button1 = normalcreatenicebutton(UDim2.fromScale(1, 1/#content), UDim2.fromScale(0, (1/#content) * index), tostring(value), frame1)
+		scrollframe.CanvasSize += UDim2.fromScale(0, 1)
+		local button1 = normalcreatenicebutton(UDim2.fromScale(1, 1/#content), UDim2.fromScale(0, ((1/#content) * index) - (1/#content)), tostring(value), scrollframe)
 
 		button1.MouseButton1Up:Connect(function()
 			func(value)
