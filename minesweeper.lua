@@ -332,7 +332,7 @@ function restartgame()
 	local textlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0.25, 0.2), TextScaled = true, BackgroundTransparency = 1, Text = bombnumber})
 	windowa:AddChild(textlabel2)
 
-	local selectedsize = squaresize
+	local selectedsize = bombnumber
 
 	local subbutton = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.2), "-", windowa)
 	local addbutton = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0.75, 0.2), "+", windowa)
@@ -350,7 +350,7 @@ function restartgame()
 		textlabel2.Text = selectedsize
 	end)
 
-	local tempsize = 0.125
+	local tempsize = squaresize
 
 	local sizes = {
 		[1] = 1/8,
