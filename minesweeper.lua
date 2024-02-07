@@ -54,9 +54,10 @@ local score = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.35, 0.
 
 window:AddChild(score)
 
-local bombs = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.35, 0.2), Position = UDim2.fromScale(0.65, 0), Text = "0", BackgroundTransparency = 1, TextScaled = true})
+local curtime = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.35, 0.2), Position = UDim2.fromScale(0.65, 0), Text = "0", BackgroundTransparency = 1, TextScaled = true})
+local starttime = nil
 
-window:AddChild(bombs)
+window:AddChild(curtime)
 
 local restartgame
 local bombshower
@@ -100,6 +101,12 @@ local function findbombsnear(square)
 	end
 
 	return found
+end
+
+local function youwon()
+	local windowb = CreateWindow(UDim2.fromScale(0.5, 0.5), "You won", true, true, false, nil, true, false)
+
+	windowb:AddChild(screen:CreateElement("TextLabel", {Text = "You won!", Size = UDim2.fromScale(1, 1), TextScaled = true, BackgroundTransparency = 1}))
 end
 
 local function shownear(square)
@@ -155,13 +162,26 @@ function Trigger(mode, square, txtlabel)
 			shownear(square, txtlabel)
 		end
 	end
+	
+	local clickednumber = 0
+
+	for index, value in ipairs(gui) do
+		if value.Image == "rbxassetid://15625805069" then
+			clickednumber += 1
+		end
+	end
+
+	if clickednumber == #guis - bombnumber then
+		youwon()
+	end
 end
 
 flagbutton.MouseButton1Up:Connect(function()
-	placeflag = not placeflag
 	if placeflag then
+		placeflag = false
 		flagbutton.Image = "rbxassetid://15617866125"
 	else
+		placeflag = true
 		flagbutton.Image = "rbxassetid://15617867263"
 	end
 end)
@@ -169,6 +189,7 @@ end)
 local firstclick = true
 
 local function restartgamenow()
+	starttime = tick()
 	local startgame
 	guis = {}
 	txts = {}
@@ -285,3 +306,14 @@ function restartgame()
 		restartgamenow()
 	end)
 end
+
+local loop1 = coroutine.create(function()
+	while true do
+		task.wait()
+		if starttime then
+			curtime.Text = math.floor(tick() - starttime)
+		else
+			curtime.Text = 0
+		end
+	end
+end)
