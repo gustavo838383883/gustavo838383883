@@ -358,7 +358,7 @@ function restartgame()
 		[3] = 1/16,
 	}
 
-	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.4), "0.2", windowa)
+	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.4), tempsize, windowa)
 
 	local list = nil
 	
