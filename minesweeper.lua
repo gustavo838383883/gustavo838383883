@@ -179,10 +179,10 @@ end
 
 flagbutton.MouseButton1Up:Connect(function()
 	if not placeflag then
-		placeflag = false
+		placeflag = true
 		flagbutton.Image = "rbxassetid://15617866125"
 	else
-		placeflag = true
+		placeflag = false
 		flagbutton.Image = "rbxassetid://15617867263"
 	end
 end)
