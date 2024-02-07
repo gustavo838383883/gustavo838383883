@@ -166,14 +166,12 @@ flagbutton.MouseButton1Up:Connect(function()
 	end
 end)
 
-local flags = {}
 local firstclick = true
 
 local function restartgamenow()
 	local startgame
 	guis = {}
 	txts = {}
-	flags = {}
 	firstclick = true
 	bombshower = bombnumber
 	score.Text = bombshower
@@ -190,6 +188,7 @@ local function restartgamenow()
 
 		for y = 0, 0.875, 0.125 do
 			local square, txt = createnicebutton(UDim2.fromScale(0.125, 0.125), UDim2.fromScale(x, y), "", squareholder)
+			local flag = false
 
 			square.MouseButton1Up:Connect(function()
 				if firstclick then
@@ -198,42 +197,24 @@ local function restartgamenow()
 				end
 				if not donttrigger then
 					if not placeflag then
-						local found = nil
-
-						for index, value in ipairs(flags) do
-							if value.Position == square.Position then
-								found = value
-							end
-						end
-
-						if not found then
+						if not flag then
 							square.Image = "rbxassetid://15625805069"
 							Trigger(0, square, txt)
 						end
 					else
-						local found = nil
-						local foundindex = 0
 
-						for index, value in ipairs(flags) do
-							if value.Position == square.Position then
-								found = value
-								foundindex = index
-							end
-						end
-
-						if found then
-							found:Destroy()
-							flags[foundindex] = nil
+						if flag then
+							flag:Destroy()
+							flag = nil
 							bombshower += 1
 							score.Text = bombshower
 						elseif square.Image ~= "rbxassetid://15625805069" then
-							local flag = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.125, 0.125), Image = "rbxassetid://16268281465", Position = square.Position, BackgroundTransparency = 1})
+							flag = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.125, 0.125), Image = "rbxassetid://16268281465", Position = square.Position, BackgroundTransparency = 1})
 							squareholder:AddChild(flag)
 
 							bombshower -= 1
 							score.Text = bombshower
 
-							table.insert(flags, flag)
 						end
 					end
 				end
