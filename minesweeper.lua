@@ -34,7 +34,7 @@ local function othercreatenicebutton2(udim2, pos, text, Parent)
 	return txtbutton, txtlabel
 end
 
-local window = CreateWindow(UDim2.fromScale(0.5, 0.7), "Minesweeper test", false, false, false, "Minesweeper", false, false)
+local window = CreateWindow(UDim2.fromScale(0.5, 0.7), "Minesweeper", false, false, false, "Minesweeper", false, false)
 
 local smilebutton, t = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.5, 0), "", window)
 
@@ -134,6 +134,7 @@ local function shownear(square)
 end
 
 local function died()
+	starttime = nil
 	smileimg.Image = "rbxassetid://16268745056"
 	donttrigger = true
 	speaker:Configure({Audio = 3802269741})
@@ -177,7 +178,7 @@ function Trigger(mode, square, txtlabel)
 end
 
 flagbutton.MouseButton1Up:Connect(function()
-	if placeflag then
+	if not placeflag then
 		placeflag = false
 		flagbutton.Image = "rbxassetid://15617866125"
 	else
@@ -317,3 +318,5 @@ local loop1 = coroutine.create(function()
 		end
 	end
 end)
+
+coroutine.resume(loop1)
