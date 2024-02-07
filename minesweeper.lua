@@ -312,7 +312,7 @@ local function createlist(frame, content, func)
 	frame1:AddChild(scrollframe)
 	
 	for index, value in ipairs(content) do
-		scrollframe.CanvasSize += UDim2.fromScale(0, 0.5)
+		scrollframe.CanvasSize += UDim2.fromScale(0, 1)
 		local button1 = normalcreatenicebutton(UDim2.fromScale(1, (1/#content/2)), UDim2.fromScale(0, ((1/#content/2) * index) - (1/#content/2)), tostring(value), scrollframe)
 
 		button1.MouseButton1Up:Connect(function()
