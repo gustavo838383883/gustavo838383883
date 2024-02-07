@@ -339,9 +339,9 @@ function restartgame()
 	local tempsize = squaresize
 
 	local sizes = {
-		[1] = 1/8,
-		[2] = 1/12,
-		[3] = 1/16,
+		[1] = 1/5,
+		[2] = 1/8,
+		[3] = 1/16
 	}
 
 	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.4), tempsize, windowa)
