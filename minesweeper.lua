@@ -84,33 +84,19 @@ local function findbombsnear(square)
 	for index, value in ipairs(bombpositions) do
 		if value == square.Position + UDim2.fromScale(0, squaresize) then
 			found += 1
-		end
-		
-		if value == square.Position - UDim2.fromScale(0, squaresize) then
+		elseif value == square.Position - UDim2.fromScale(0, squaresize) then
 			found += 1
-		end
-		
-		if value == square.Position - UDim2.fromScale(squaresize, squaresize) then
+		elseif value == square.Position - UDim2.fromScale(squaresize, squaresize) then
 			found += 1
-		end
-		
-		if value == square.Position + UDim2.fromScale(squaresize, squaresize) then
+		elseif value == square.Position + UDim2.fromScale(squaresize, squaresize) then
 			found += 1
-		end
-		
-		if value == square.Position - UDim2.fromScale(squaresize, 0) then
+		elseif value == square.Position - UDim2.fromScale(squaresize, 0) then
 			found += 1
-		end
-		
-		if value == square.Position + UDim2.fromScale(squaresize, 0) then
+		elseif value == square.Position + UDim2.fromScale(squaresize, 0) then
 			found += 1
-		end
-		
-		if value == square.Position + UDim2.fromScale(squaresize, -squaresize) then
+		elseif value == square.Position + UDim2.fromScale(squaresize, -squaresize) then
 			found += 1
-		end
-		
-		if value == square.Position + UDim2.fromScale(-squaresize, squaresize) then
+		elseif value == square.Position + UDim2.fromScale(-squaresize, squaresize) then
 			found += 1
 		end
 	end
