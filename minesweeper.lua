@@ -275,6 +275,25 @@ local function restartgamenow()
 	end
 end
 
+local function createlist(frame, content, func)
+	local frame1 = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8677487226", Size = UDim2.fromScale(1, 1), Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1})
+	frame:AddChild(frame1)
+	
+	if #content > 1 then
+		frame1.Size = UDim2.fromScale(1, #content)
+	end
+
+	for index, value in ipairs(content) do
+		local button1 = normalcreatenicebutton(UDim2.fromScale(1, 1/#content), UDim2.fromScale(0, (1/#content) * index), tostring(value), frame1)
+
+		button1.MouseButton1Up:Connect(function()
+			func(value)
+		end)
+	end
+	
+	return frame1
+end
+
 function restartgame()
 	local windowa, frame1 = CreateWindow(UDim2.fromScale(0.7, 0.7), "Select Amount", false, false, false, nil, true, false)
 
@@ -302,8 +321,36 @@ function restartgame()
 		textlabel2.Text = selectedsize
 	end)
 
+	local tempsize = 0.125
+
+	local sizes = {
+		[1] = 1/8,
+		[2] = 1/9,
+		[3] = 1/16,
+		[4] = 1/20
+	}
+
+	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.4), "0.2", windowa)
+
+	local list = nil
+	
+	changesize.MouseButton1Up:Connect(function()
+		if list then
+			list:Destroy()
+			list = nil
+		else
+			list = createlist(changesize, sizes, function(numb)
+				tempsize = numb
+				changetext.Text = tempsize
+				list:Destroy()
+				list = nil
+			end)
+		end
+	end)
+
 	enterbutton.MouseButton1Up:Connect(function()
 		bombnumber = selectedsize
+		squaresize = tempsize
 		frame1:Destroy()
 		restartgamenow()
 	end)
