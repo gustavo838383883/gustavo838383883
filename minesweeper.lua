@@ -71,6 +71,7 @@ local guis = {}
 local txts = {}
 
 local bombnumber = 10
+local squaresize = 0.125
 
 local placeflag = false
 local Trigger
@@ -81,21 +82,21 @@ local function findbombsnear(square)
 	local found = 0
 
 	for index, value in ipairs(bombpositions) do
-		if value == square.Position + UDim2.fromScale(0, 0.125) then
+		if value == square.Position + UDim2.fromScale(0, squaresize) then
 			found += 1
-		elseif value == square.Position - UDim2.fromScale(0, 0.125) then
+		elseif value == square.Position - UDim2.fromScale(0, squaresize) then
 			found += 1
-		elseif value == square.Position - UDim2.fromScale(0.125, 0.125) then
+		elseif value == square.Position - UDim2.fromScale(squaresize, squaresize) then
 			found += 1
-		elseif value == square.Position + UDim2.fromScale(0.125, 0.125) then
+		elseif value == square.Position + UDim2.fromScale(squaresize, squaresize) then
 			found += 1
-		elseif value == square.Position - UDim2.fromScale(0.125, 0) then
+		elseif value == square.Position - UDim2.fromScale(squaresize, 0) then
 			found += 1
-		elseif value == square.Position + UDim2.fromScale(0.125, 0) then
+		elseif value == square.Position + UDim2.fromScale(squaresize, 0) then
 			found += 1
-		elseif value == square.Position + UDim2.fromScale(0.125, -0.125) then
+		elseif value == square.Position + UDim2.fromScale(squaresize, -squaresize) then
 			found += 1
-		elseif value == square.Position + UDim2.fromScale(-0.125, 0.125) then
+		elseif value == square.Position + UDim2.fromScale(-squaresize, squaresize) then
 			found += 1
 		end
 	end
@@ -112,21 +113,21 @@ end
 local function shownear(square)
 	for index, value in ipairs(guis) do
 		if value.Position ~= square.Position and value.Image ~= "rbxassetid://15625805069" then
-			if value.Position == square.Position + UDim2.fromScale(0, 0.125) then
+			if value.Position == square.Position + UDim2.fromScale(0, squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position - UDim2.fromScale(0, 0.125) then
+			elseif value.Position == square.Position - UDim2.fromScale(0, squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position - UDim2.fromScale(0.125, 0.125) then
+			elseif value.Position == square.Position - UDim2.fromScale(squaresize, squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position + UDim2.fromScale(0.125, 0.125) then
+			elseif value.Position == square.Position + UDim2.fromScale(squaresize, squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position - UDim2.fromScale(0.125, 0) then
+			elseif value.Position == square.Position - UDim2.fromScale(squaresize, 0) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position + UDim2.fromScale(0.125, 0) then
+			elseif value.Position == square.Position + UDim2.fromScale(squaresize, 0) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position + UDim2.fromScale(0.125, -0.125) then
+			elseif value.Position == square.Position + UDim2.fromScale(squaresize, -squaresize) then
 				Trigger(1, value, txts[index])
-			elseif value.Position == square.Position + UDim2.fromScale(-0.125, 0.125) then
+			elseif value.Position == square.Position + UDim2.fromScale(-squaresize, squaresize) then
 				Trigger(1, value, txts[index])
 			end
 		end
@@ -149,7 +150,7 @@ function Trigger(mode, square, txtlabel)
 		square.Image = "rbxassetid://15625805069"
 
 		for index, value in ipairs(bombpositions) do
-			local bomb = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.125, 0.125), Image = "rbxassetid://16268280434", Position = value, BackgroundTransparency = 1})
+			local bomb = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(squaresize, squaresize), Image = "rbxassetid://16268280434", Position = value, BackgroundTransparency = 1})
 
 			squareholder:AddChild(bomb)
 		end
@@ -206,10 +207,10 @@ local function restartgamenow()
 	squareholder = screen:CreateElement("Frame", {Size = UDim2.fromScale(1, 0.8), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0.2)})
 	window:AddChild(squareholder)
 
-	for x = 0, 0.875, 0.125 do
+	for x = 0, 1-squaresize, squaresize do
 
-		for y = 0, 0.875, 0.125 do
-			local square, txt = createnicebutton(UDim2.fromScale(0.125, 0.125), UDim2.fromScale(x, y), "", squareholder)
+		for y = 0, 1-squaresize, squaresize do
+			local square, txt = createnicebutton(UDim2.fromScale(squaresize, squaresize), UDim2.fromScale(x, y), "", squareholder)
 			local flag = false
 
 			square.MouseButton1Up:Connect(function()
@@ -231,7 +232,7 @@ local function restartgamenow()
 							bombshower += 1
 							score.Text = bombshower
 						elseif square.Image ~= "rbxassetid://15625805069" then
-							flag = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.125, 0.125), Image = "rbxassetid://16268281465", Position = square.Position, BackgroundTransparency = 1})
+							flag = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(squaresize, squaresize), Image = "rbxassetid://16268281465", Position = square.Position, BackgroundTransparency = 1})
 							squareholder:AddChild(flag)
 
 							bombshower -= 1
