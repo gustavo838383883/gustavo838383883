@@ -279,7 +279,7 @@ local function createlist(frame, content, func)
 	local frame1 = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8677487226", Size = UDim2.fromScale(1, 2), Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1})
 	frame:AddChild(frame1)
 
-	local scrollframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.fromScale(1, 1), CanvasSize = UDim2.fromScale(0, 0), BackgroundTransparency = 1})
+	local scrollframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.fromScale(1, 1), CanvasSize = UDim2.fromScale(0, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 
 	frame1:AddChild(scrollframe)
 	
@@ -304,7 +304,7 @@ function restartgame()
 	local textlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0.25, 0.2), TextScaled = true, BackgroundTransparency = 1, Text = bombnumber})
 	windowa:AddChild(textlabel2)
 
-	local selectedsize = bombnumber
+	local selectedsize = squaresize
 
 	local subbutton = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.2), "-", windowa)
 	local addbutton = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0.75, 0.2), "+", windowa)
