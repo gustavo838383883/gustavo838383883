@@ -1129,11 +1129,11 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 6) == "write " then
 		local texts = text:sub(7, string.len(text))
-		local filename = texts:split("::")[1]
-		local filedata = texts:split("::")[2]
-		for i,v in ipairs(texts:split("::")) do
+		local filename = texts:split("/")[1]
+		local filedata = texts:split("/")[2]
+		for i,v in ipairs(texts:split("/")) do
 			if i > 2 then
-				filedata = filedata.."::"..v
+				filedata = filedata.."/"..v
 			end
 		end
 		print(filename, filedata)
@@ -1374,7 +1374,7 @@ local function runtext(text)
 		commandlines.insert("readimage filename")
 		commandlines.insert("dir directory")
 		commandlines.insert("showdir")
-		commandlines.insert("write filename::filedata")
+		commandlines.insert("write filename/filedata (with the /)")
 		commandlines.insert("shutdown")
 		commandlines.insert("clear")
 		commandlines.insert("reboot")
