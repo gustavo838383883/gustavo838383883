@@ -374,7 +374,7 @@ function restartgame()
 	end)
 
 	subbutton.MouseButton1Up:Connect(function()
-		if selectedsize <= 5 then return end
+		if selectedsize <= 2 then return end
 		selectedsize -= 1
 		textlabel2.Text = selectedsize
 	end)
