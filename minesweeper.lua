@@ -216,18 +216,6 @@ function Trigger(mode, square, txtlabel)
 			shownear(square)
 		end
 	end
-	
-	local clickednumber = 0
-
-	for index, value in ipairs(gui) do
-		if value.Image == "rbxassetid://15625805069" then
-			clickednumber += 1
-		end
-	end
-
-	if clickednumber == #guis - bombnumber then
-		youwon()
-	end
 end
 
 flagbutton.MouseButton1Up:Connect(function()
@@ -415,11 +403,24 @@ end
 
 local loop1 = coroutine.create(function()
 	while true do
-		task.wait()
+		task.wait(1)
 		if starttime then
 			curtime.Text = math.floor(tick() - starttime)
 		else
 			curtime.Text = 0
+		end
+
+		
+		local clickednumber = 0
+	
+		for index, value in ipairs(gui) do
+			if value.Image == "rbxassetid://15625805069" then
+				clickednumber += 1
+			end
+		end
+	
+		if clickednumber == #guis - bombnumber then
+			youwon()
 		end
 	end
 end)
