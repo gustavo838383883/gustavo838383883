@@ -410,17 +410,20 @@ local loop1 = coroutine.create(function()
 			curtime.Text = 0
 		end
 
-		
-		local clickednumber = 0
+		if not donttrigger then
 	
-		for index, value in ipairs(guis) do
-			if value.Image == "rbxassetid://15625805069" then
-				clickednumber += 1
+			local clickednumber = 0
+				
+			for index, value in ipairs(guis) do
+				if value.Image == "rbxassetid://15625805069" then
+					clickednumber += 1
+				end
 			end
-		end
-	
-		if clickednumber == #guis - bombnumber then
-			youwon()
+		
+			if clickednumber == #guis - bombnumber then
+				donttrigger = true
+				youwon()
+			end
 		end
 	end
 end)
