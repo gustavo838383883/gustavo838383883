@@ -39,14 +39,14 @@ local function GetTouchingGuiObjects(gui, folder)
 	if gui then
 		if not folder then print("Table was not specified.") return end
 
-		if type(folder) ~= "table" then print("The specified table is not a valid table") return end
+		if typeof(folder) ~= "table" then print("The specified table is not a valid table") return end
 
 		if gui.ClassName == "Frame" or gui.ClassName == "ImageLabel" or gui.ClassName == "TextLabel" or gui.ClassName == "TextButton" or gui.ClassName == "ImageButton" then
 			local instances = {}
 
 			for i, ui in pairs(folder) do
 
-				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" or ui.ClassName == "ImageButton" and ui ~= gui then
+				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" or ui.ClassName == "ImageButton" then
 					if ui.Visible then
 						local x = ui.AbsolutePosition.X
 						local y = ui.AbsolutePosition.Y
