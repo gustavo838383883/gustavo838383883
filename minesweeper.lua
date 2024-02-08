@@ -34,6 +34,59 @@ local function othercreatenicebutton2(udim2, pos, text, Parent)
 	return txtbutton, txtlabel
 end
 
+local function GetTouchingGuiObjects(gui, folder)
+
+	if gui then
+		if not folder then print("Table was not specified.") return end
+
+		if type(folder) ~= "table" then print("The specified table is not a valid table") return end
+
+		if gui.ClassName == "Frame" or gui.ClassName == "ImageLabel" or gui.ClassName == "TextLabel" or gui.ClassName == "TextButton" or gui.ClassName == "ImageButton" then
+			local instances = {}
+
+			for i, ui in pairs(folder) do
+
+				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" or ui.ClassName == "ImageButton" and ui ~= gui then
+					if ui.Visible then
+						local x = ui.AbsolutePosition.X
+						local y = ui.AbsolutePosition.Y
+						local y_axis = false
+						local x_axis = false
+						local guiposx = gui.AbsolutePosition.X + gui.AbsoluteSize.X
+						local number = ui.AbsoluteSize.X + gui.AbsoluteSize.X
+
+						if x - guiposx >= -number then
+							if x - guiposx <= 0 then
+								x_axis = true
+							end
+						end
+
+						local guiposy = gui.AbsolutePosition.Y + gui.AbsoluteSize.Y
+						local number2 = ui.AbsoluteSize.Y + gui.AbsoluteSize.Y
+
+						if y - guiposy >= -number2 then
+							if y - guiposy <= 0 then
+								y_axis = true
+							end
+						end
+
+						if x_axis and y_axis then
+							table.insert(instances, ui)
+						end
+					end
+				end
+			end
+
+			return instances
+
+		else
+			print(`{gui} is not a valid Gui Object.`)
+		end
+	else
+		print("The specified instance is not valid.")
+	end
+end
+
 local window = CreateWindow(UDim2.fromScale(0.5, 0.7), "Minesweeper", false, false, false, "Minesweeper", false, false)
 
 local smilebutton, t = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.5, 0), "", window)
@@ -111,41 +164,26 @@ local function youwon()
 end
 
 local function shownear(square)
-	for index, value in ipairs(guis) do
-		if value.Position ~= square.Position and value.Image ~= "rbxassetid://15625805069" then
-			if value.Position == square.Position + UDim2.fromScale(0, squaresize) then
-				Trigger(1, value, txts[index])
+	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5)})
+
+	square:AddChild(bigsquare)
+	
+	local colliding = GetTouchingGuiObjects(bigsquare, guis)
+	
+	for index, value in ipairs(colliding) do
+		if value.Image ~= "rbxassetid://15625805069" then
+			local textlabl = nil
+			for ind, val in ipairs(txts) do
+				if val.AbsolutePosition == value.AbsolutePosition then
+					textlabl = val
+				end
 			end
 			
-			if value.Position == square.Position - UDim2.fromScale(0, squaresize) then
-				Trigger(1, value, txts[index])
-			end
-			
-			if value.Position == square.Position - UDim2.fromScale(squaresize, squaresize) then
-				Trigger(1, value, txts[index])
-			end
-			
-			if value.Position == square.Position + UDim2.fromScale(squaresize, squaresize) then
-				Trigger(1, value, txts[index])
-			end
-			
-			if value.Position == square.Position - UDim2.fromScale(squaresize, 0) then
-				Trigger(1, value, txts[index])
-			end
-			
-			if value.Position == square.Position + UDim2.fromScale(squaresize, 0) then
-				Trigger(1, value, txts[index])
-			end
-			
-			if value.Position == square.Position + UDim2.fromScale(squaresize, -squaresize) then
-				Trigger(1, value, txts[index])
-			end
-			
-			if value.Position == square.Position + UDim2.fromScale(-squaresize, squaresize) then
-				Trigger(1, value, txts[index])
-			end
+			Trigger(1, value, textlabl)
 		end
 	end
+
+	bigsquare:Destroy()
 end
 
 local function died()
@@ -175,7 +213,7 @@ function Trigger(mode, square, txtlabel)
 			square.Image = "rbxassetid://15625805069"
 		else
 			square.Image = "rbxassetid://15625805069"
-			shownear(square, txtlabel)
+			shownear(square)
 		end
 	end
 	
@@ -234,7 +272,7 @@ local function restartgamenow()
 				end
 				if not donttrigger then
 					if not placeflag then
-						if not flag then
+						if not flag and square.Image ~= "rbxassetid://15625805069" then
 							square.Image = "rbxassetid://15625805069"
 							Trigger(0, square, txt)
 						end
@@ -293,13 +331,18 @@ local function createlist(frame, content, func)
 	local frame1 = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8677487226", Size = UDim2.fromScale(1, 2), Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1})
 	frame:AddChild(frame1)
 
-	local scrollframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.fromScale(1, 1), CanvasSize = UDim2.fromScale(0, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
+	local scrollframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.fromScale(1, 1), CanvasSize = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, ScrollBarThickness = 5})
 
 	frame1:AddChild(scrollframe)
+
+	scrollframe.CanvasSize = UDim2.fromScale(0, #content*0.5)
+
+	if scrollframe.CanvasSize.Y.Scale == 0.5 then
+		scrollframe.CanvasSize = UDim2.fromScale(0, 1)
+	end
 	
 	for index, value in ipairs(content) do
-		scrollframe.CanvasSize += UDim2.fromScale(0, 1)
-		local button1 = normalcreatenicebutton(UDim2.fromScale(1, (1/#content/2)), UDim2.fromScale(0, ((1/#content/2) * index) - (1/#content/2)), tostring(value), scrollframe)
+		local button1 = normalcreatenicebutton(UDim2.fromScale(1, (0.5/scrollframe.CanvasSize.Y.Scale)), UDim2.fromScale(0, ((0.5/scrollframe.CanvasSize.Y.Scale) * index) - (0.5/scrollframe.CanvasSize.Y.Scale)), tostring(value), scrollframe)
 
 		button1.MouseButton1Up:Connect(function()
 			func(value)
