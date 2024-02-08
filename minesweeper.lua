@@ -413,7 +413,7 @@ local loop1 = coroutine.create(function()
 		
 		local clickednumber = 0
 	
-		for index, value in ipairs(gui) do
+		for index, value in ipairs(guis) do
 			if value.Image == "rbxassetid://15625805069" then
 				clickednumber += 1
 			end
