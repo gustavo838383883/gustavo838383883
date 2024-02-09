@@ -521,7 +521,7 @@ jumpbutton.Instance.MouseButton1Click:Connect(function()
 		for i=1,6 do
 			task.wait(0.01)
 			if not bird then break end
-			if bird.Instance.Position.Y.Scale >= -0.1 then
+			if bird.Instance.Position.Y.Scale >= 0 then
 				bird.Instance.Position -= UDim2.fromScale(0, 0.04)
 			end
 			if i <= 3 then
