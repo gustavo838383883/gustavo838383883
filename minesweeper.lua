@@ -134,26 +134,28 @@ local donttrigger = false
 local function findbombsnear(square)
 	local found = 0
 
+	local bombs = {}
+
 	for index, value in ipairs(bombpositions) do
-		if value == square.Position + UDim2.fromScale(0, squaresize) then
-			found += 1
-		elseif value == square.Position - UDim2.fromScale(0, squaresize) then
-			found += 1
-		elseif value == square.Position - UDim2.fromScale(squaresize, squaresize) then
-			found += 1
-		elseif value == square.Position + UDim2.fromScale(squaresize, squaresize) then
-			found += 1
-		elseif value == square.Position - UDim2.fromScale(squaresize, 0) then
-			found += 1
-		elseif value == square.Position + UDim2.fromScale(squaresize, 0) then
-			found += 1
-		elseif value == square.Position + UDim2.fromScale(squaresize, -squaresize) then
-			found += 1
-		elseif value == square.Position + UDim2.fromScale(-squaresize, squaresize) then
-			found += 1
-		end
+		local bomb = screen:CreateElement("Frame", {Size = UDim2.fromScale(squaresize, squaresize), Position = value})
+		
+		squareholder:AddChild(bomb)
+
+		table.insert(bombs, bomb)
 	end
 
+	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5)})
+
+	square:AddChild(bigsquare)
+
+	local colliding = GetTouchingGuiObjects(bigsquare, bombs)
+	
+	for index, value in ipairs(colliding) do
+		found += 1
+	end
+
+	bigsquare:Destroy()
+	
 	return found
 end
 
