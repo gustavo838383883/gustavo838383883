@@ -1,3 +1,9 @@
+--Resource shower thing
+--test
+--test
+--test
+--test
+--test
 local disk = GetPartFromPort(1, "Disk")
 
 local gputer = disk:Read("GD7Library")
