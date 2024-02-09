@@ -11,6 +11,7 @@ local window = createwindow(UDim2.fromScale(0.7, 0.7), "Resources", false, false
 local resetbutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0), "Refresh", window)
 
 local mainscrollframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.fromScale(1, 0.8), Position = UDim2.fromScale(0, 0.2), BackgroundTransparency = 1, CanvasSize = UDim2.fromOffset(0, 25)})
+window:AddChild(mainscrollframe)
 
 local stuff = {}
 
