@@ -380,7 +380,8 @@ function restartgame()
 	local sizes = {
 		[1] = 1/5,
 		[2] = 1/8,
-		[3] = 1/16
+		[3] = 1/11,
+		[4] = 1/16
 	}
 
 	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.4), tempsize, windowa)
