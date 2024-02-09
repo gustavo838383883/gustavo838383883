@@ -427,7 +427,7 @@ local loop1 = coroutine.create(function()
 			local clickednumber = 0
 				
 			for index, value in ipairs(guis) do
-				if value.Image == "rbxassetid://15625805069" then
+				if value.Image == "rbxassetid://15625805069" and not table.find(bombpositions, value.Position) then
 					clickednumber += 1
 				end
 			end
