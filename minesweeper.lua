@@ -137,14 +137,14 @@ local function findbombsnear(square)
 	local bombs = {}
 
 	for index, value in ipairs(bombpositions) do
-		local bomb = screen:CreateElement("Frame", {Size = UDim2.fromScale(squaresize, squaresize), Position = value})
+		local bomb = screen:CreateElement("Frame", {Size = UDim2.fromScale(squaresize, squaresize), Position = value, BackgroundTransparency = 1})
 		
 		squareholder:AddChild(bomb)
 
 		table.insert(bombs, bomb)
 	end
 
-	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5)})
+	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5), BackgroundTransparency = 1})
 
 	square:AddChild(bigsquare)
 
@@ -155,6 +155,12 @@ local function findbombsnear(square)
 	end
 
 	bigsquare:Destroy()
+
+	for i, val in ipairs(bombs) do
+		val:Destroy()
+	end
+
+	bombs = {}
 	
 	return found
 end
