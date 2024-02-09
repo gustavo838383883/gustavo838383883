@@ -404,10 +404,12 @@ end
 local loop1 = coroutine.create(function()
 	while true do
 		task.wait(1)
-		if starttime then
-			curtime.Text = math.floor(tick() - starttime)
-		else
-			curtime.Text = 0
+		if not donttrigger then
+			if starttime then
+				curtime.Text = math.floor(tick() - starttime)
+			else
+				curtime.Text = 0
+			end
 		end
 
 		if not donttrigger then
