@@ -370,7 +370,7 @@ function restartGAME()
 
 	bird = Object.new("Bird", "ImageLabel", false)
 
-	bird.Instance:ChangeProperties({Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0.2, 0.3), BackgroundTransparency = 1, Image = "rbxassetid://347189324"})
+	bird.Instance:ChangeProperties({Size = UDim2.fromScale(0.15, 0.15), Position = UDim2.fromScale(0.2, 0.3), BackgroundTransparency = 1, Image = "rbxassetid://347189324"})
 
 	local loop = GAME.LoopService.new()
 
