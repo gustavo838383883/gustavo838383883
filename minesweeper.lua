@@ -179,6 +179,7 @@ local function shownear(square)
 	local colliding = GetTouchingGuiObjects(bigsquare, guis)
 	
 	for index, value in ipairs(colliding) do
+		task.wait()
 		if value.Image ~= "rbxassetid://15625805069" then
 			local textlabl = nil
 			for ind, val in ipairs(txts) do
