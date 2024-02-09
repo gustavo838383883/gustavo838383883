@@ -380,7 +380,7 @@ function restartgame()
 	local sizes = {
 		[1] = 1/5,
 		[2] = 1/8,
-		[3] = 1/11,
+		[3] = 1/10,
 		[4] = 1/16
 	}
 
