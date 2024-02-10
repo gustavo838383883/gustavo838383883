@@ -443,10 +443,10 @@ local function spawnapple()
 
 end
 
+local loop = GAME.LoopService.new()	
+
 function restartGAME()
 	paused = false
-
-	local loop = GAME.LoopService.new()
 
 	local score = Object.new("Score", "TextLabel", false)
 
