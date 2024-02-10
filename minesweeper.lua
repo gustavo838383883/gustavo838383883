@@ -314,6 +314,8 @@ local function restartgamenow()
 				end
 			end
 
+			if #tabletoloop <= 0 then return end
+
 			local random1 = math.random(1, #tabletoloop)
 
 			local pos = tabletoloop[random1].Position
