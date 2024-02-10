@@ -35,7 +35,7 @@ local function GetCollidingGuiObjects(gui, folder)
 
 			for i, ui in pairs(folder) do
 
-				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" and ui ~= gui then
+				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" then
 					if ui.Visible then
 						local x = ui.AbsolutePosition.X
 						local y = ui.AbsolutePosition.Y
