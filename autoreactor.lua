@@ -1,0 +1,33 @@
+local reactor = GetPartFromPort(1, "Reactor")
+local dispenser = GetPartFromPort(4, "Dispenser")
+local dispensing = false
+
+while true do
+	task.wait(1)
+	local temp = reactor:GetTemp()
+	if temp < 900 then
+		TriggerPort(2)
+	elseif temp > 1000 then
+		TriggerPort(3)
+	end
+	local fuel = reactor:GetFuel()
+
+	for i,v in pairs(fuel) do
+		print(i)
+		print(v)
+	end
+
+	for index, value in ipairs(fuel) do
+		if value <= 0 then
+			if not dispensing then
+				dispensing = true
+				dispenser:Dispense()
+			end
+		end
+	end
+	if dispensing then
+		task.wait(0.1)
+		dispensing = false
+		dispenser:Dispense()
+	end
+end
