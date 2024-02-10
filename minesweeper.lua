@@ -352,7 +352,7 @@ local function createlist(frame, content, func)
 end
 
 function restartgame()
-	local windowa, frame1 = CreateWindow(UDim2.fromScale(0.7, 0.7), "Select Amount", false, false, false, nil, true, false)
+	local windowa, frame1 = CreateWindow(UDim2.fromScale(0.7, 0.7), "Select", false, false, false, nil, true, false)
 
 	local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.2), TextScaled = true, BackgroundTransparency = 1, Text = "Select Amount of mines"})
 	windowa:AddChild(textlabel1)
@@ -387,7 +387,10 @@ function restartgame()
 		[4] = 1/16
 	}
 
-	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.4), tempsize, windowa)
+	local textlabel3 = screen:CreateElement("TextLabel", {Position = UDim2.fromScale(0, 0.4), Size = UDim2.fromScale(1, 0.2), TextScaled = true, BackgroundTransparency = 1, Text = "Select the size of the squares"})
+	windowa:AddChild(textlabel3)
+
+	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.6), tempsize, windowa)
 
 	local list = nil
 	
