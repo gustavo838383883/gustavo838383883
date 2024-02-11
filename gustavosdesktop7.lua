@@ -2739,7 +2739,7 @@ local success, Error1 = pcall(function()
 
 			MicrophoneChatted(function(player, text)
 				local subbed = text:lower():sub(1, 5)
-				local sendtext = text:sub(5, string.len(text))
+				local sendtext = text:sub(6, string.len(text))
 
 				if subbed == "chat " then
 					if not toggleanonymous then
