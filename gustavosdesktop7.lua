@@ -2055,8 +2055,8 @@ local success, Error1 = pcall(function()
 
 		filedatabutton.MouseButton1Down:Connect(function()
 			if keyboardinput then
-				filedatabutton2.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
-				data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+				filedatabutton2.Text = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
+				data = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
 			end
 		end)
 
@@ -2714,8 +2714,8 @@ local success, Error1 = pcall(function()
 
 			sendbox.MouseButton1Up:Connect(function()
 				if keyboardinput then
-					sendbox2.Text = keyboardinput:gsub("\n", "")
-					sendtext = keyboardinput:gsub("\n", "")
+					sendbox2.Text = keyboardinput:gsub("\n", " ")
+					sendtext = keyboardinput:gsub("\n", " ")
 					player = playerthatinputted
 				end
 			end)
@@ -3496,7 +3496,7 @@ local success, Error1 = pcall(function()
 		textbox.MouseButton1Up:Connect(function()
 			if keyboardinput then
 				textinput = tostring(keyboardinput)
-				textboxtext.Text = tostring(keyboardinput):gsub("\n", "")
+				textboxtext.Text = tostring(keyboardinput):gsub("\n", " ")
 			end
 		end)
 
@@ -4387,8 +4387,8 @@ local success, Error1 = pcall(function()
 				commandlines:insert("/:")
 				if keyboardevent then keyboardevent:Unbind() end
 				keyboardevent = button.MouseButton1Up:Connect(function()
-					commandlines:insert(tostring(textinput):gsub("\n", ""))
-					runtext(tostring(textinput):gsub("\n", ""))
+					commandlines:insert(tostring(textinput):gsub("\n", " "))
+					runtext(tostring(textinput):gsub("\n", " "))
 				end)
 			elseif screen then
 				screen:ClearElements()
