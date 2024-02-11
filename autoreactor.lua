@@ -19,10 +19,7 @@ while true do
 
 	for index, value in ipairs(fuel) do
 		if value <= 0 then
-			if not dispensing then
-				dispensing = true
-				dispenser:Dispense()
-			end
+			dispensing = true
 		end
 	end
 	if dispensing then
