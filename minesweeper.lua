@@ -416,6 +416,8 @@ function restartgame()
 	end)
 end
 
+restartgame()
+
 local loop1 = coroutine.create(function()
 	while true do
 		task.wait(1)
