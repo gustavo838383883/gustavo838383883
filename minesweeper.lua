@@ -412,6 +412,7 @@ function restartgame()
 		bombnumber = selectedsize
 		squaresize = tempsize
 		frame1:Destroy()
+		if not window then return end
 		restartgamenow()
 	end)
 end
