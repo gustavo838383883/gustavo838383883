@@ -3037,7 +3037,6 @@ local success, Error1 = pcall(function()
 	end
 
 	local function restartnow()
-		shutdownallmicros(microcontrollers)
 		task.wait(1)
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
@@ -3050,7 +3049,6 @@ local success, Error1 = pcall(function()
 	end
 
 	local function shutdownnow()
-		shutdownallmicros(microcontrollers)
 		task.wait(1)
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
@@ -4813,6 +4811,14 @@ local success, Error1 = pcall(function()
 		end)
 
 		coroutine.resume(coroutine1)
+
+		if boolean1 then
+			if boolean2 then
+				shutdownallmicros(microcontrollers)
+			else
+				shutdownallmicros(microcontrollers)
+			end
+		end
 
 		task.wait(3)
 
