@@ -1561,8 +1561,8 @@ function bootos()
 		commandlines.insert("/:")
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
-			commandlines.insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
-			runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
+			commandlines.insert(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
+			runtext(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
 		end)
 	elseif screen then
 		screen:ClearElements()
