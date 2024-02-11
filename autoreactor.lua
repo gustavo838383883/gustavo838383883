@@ -11,11 +11,6 @@ while true do
 	end
 	local fuel = reactor:GetFuel()
 
-	for i,v in pairs(fuel) do
-		print(i)
-		print(v)
-	end
-
 	for index, value in ipairs(fuel) do
 		if value <= 0 then
 			dispenser:Dispense()
