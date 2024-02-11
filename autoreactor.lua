@@ -1,6 +1,5 @@
 local reactor = GetPartFromPort(1, "Reactor")
 local dispenser = GetPartFromPort(4, "Dispenser")
-local dispensing = false
 
 while true do
 	task.wait(1)
@@ -19,12 +18,7 @@ while true do
 
 	for index, value in ipairs(fuel) do
 		if value <= 0 then
-			dispensing = true
+			dispenser:Dispense()
 		end
-	end
-	if dispensing then
-		task.wait(0.1)
-		dispensing = false
-		dispenser:Dispense()
 	end
 end
