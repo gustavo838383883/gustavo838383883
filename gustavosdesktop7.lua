@@ -4519,7 +4519,7 @@ local success, Error1 = pcall(function()
 		end
 
 		if not iconsdisabled then
-			loaddesktopicons()
+			pcall(loaddesktopicons)
 		end
 
 		local pressed = false
