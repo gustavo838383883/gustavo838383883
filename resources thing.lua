@@ -58,7 +58,7 @@ local function startnow()
 		start += 1
 
 		local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.fromOffset(0, 25*start), BackgroundTransparency = 1, TextScaled = true, Text = tostring(value:GetResource())})
-		local textlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.fromOffset(0.5, 0, 0, 25*start), BackgroundTransparency = 1, TextScaled = true, Text = tostring(value:GetAmount())})
+		local textlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.5, 0, 0, 25*start), BackgroundTransparency = 1, TextScaled = true, Text = tostring(value:GetAmount())})
 		mainscrollframe:AddChild(textlabel)
 		mainscrollframe:AddChild(textlabel2)
 		table.insert(stuff, textlabel)
