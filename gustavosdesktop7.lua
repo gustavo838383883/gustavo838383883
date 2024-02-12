@@ -2170,22 +2170,9 @@ local success, Error1 = pcall(function()
 					local data = filesystem.Read(filename, directory)
 					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
-							local alldata = disk:ReadEntireDisk()
-							local data1 = {}
-
-							for index, value in pairs(alldata) do
-								data1[index] = value
-							end
-							local result = filesystem.Write("Root", data1, newdirectory)
-							if result == "Success i think" then
-								text3.Text = "Success?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							else
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							end
+							text3.Text = "Can't copy root."
+							task.wait(2)
+							text3.Text = "Confirm"
 						else
 							local result = filesystem.Write(filename, data, newdirectory)
 							if result == "Success i think" then
