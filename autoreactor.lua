@@ -15,7 +15,9 @@ while true do
 
 	for index, value in ipairs(fuel) do
 		if value < 0.025 then
-			TriggerPort(5)
+			if value <= 0 then
+				TriggerPort(5)
+			end
 			dispenser:Dispense()
 		end
 	end
