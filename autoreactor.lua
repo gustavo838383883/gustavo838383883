@@ -14,7 +14,8 @@ while true do
 	local fuel = reactor:GetFuel()
 
 	for index, value in ipairs(fuel) do
-		if value <= 0 then
+		if value <= 0.2 then
+			TriggerPort(5)
 			dispenser:Dispense()
 		end
 	end
