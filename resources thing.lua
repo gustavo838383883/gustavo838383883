@@ -32,7 +32,7 @@ local function startnow()
 
 	mainscrollframe.CanvasSize = UDim2.fromOffset(0, 25)
 
-	local start = 0
+	local start = -1
 
 	local bins = GetPartsFromPort(1, "Bin")
 	local containers = GetPartsFromPort(1, "Container")
