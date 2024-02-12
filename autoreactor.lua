@@ -8,6 +8,8 @@ while true do
 		TriggerPort(2)
 	elseif temp > 1000 then
 		TriggerPort(3)
+		task.wait(0.1)
+		TriggerPort(3)
 	end
 	local fuel = reactor:GetFuel()
 
