@@ -2583,9 +2583,9 @@ local success, Error1 = pcall(function()
 			end
 		end)
 
-		local openimage = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new(0, 0, 0.75, 0), "Image", holderframe)
-		local openaudio = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new(1/3, 0, 0.75, 0), "Audio", holderframe)
-		local openvideo = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new((1/3)*2, 0, 0.75, 0), "Video", holderframe)
+		local openimage = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new(0, 0, 0.75, 0), "Image", mainframe)
+		local openaudio = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new(1/3, 0, 0.75, 0), "Audio", mainframe)
+		local openvideo = createnicebutton(UDim2.new(1/3,0,0.2,0), UDim2.new((1/3)*2, 0, 0.75, 0), "Video", mainframe)
 
 		openaudio.MouseButton1Up:Connect(function()
 			if filename or id then
