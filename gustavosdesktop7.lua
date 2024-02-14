@@ -593,6 +593,34 @@ local success, Error1 = pcall(function()
 			boolean4 = not boolean4
 		end
 
+		function functions:UseAsResizeButton(button)
+			button.MouseButton1Down:Connect(function()
+				if holding2 then return end
+				if not maximizepressed then
+					local cursors = screen:GetCursors()
+					local cursor
+					local x_axis
+					local y_axis
+
+					for index,cur in pairs(cursors) do
+						local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, holderframe)
+						if boolean then
+							cursor = cur
+							x_axis = x_Axis
+							y_axis = y_Axis
+							break
+						end
+					end
+					startCursorPos = cursor
+					holderframetouse = holderframe
+					holding = true
+				end
+			end)
+			button.MouseButton1Up:Connect(function()
+				holding = false
+			end)
+		end
+
 		function functions:Close()
 			if not holderframe then return end
 			if not window then return end
