@@ -426,7 +426,7 @@ restartgame()
 local loop1 = coroutine.create(function()
 	while true do
 		task.wait(1)
-		if not donttrigger then
+		if not donttrigger and not firstclick then
 			if starttime then
 				curtime.Text = math.floor(tick() - starttime)
 			else
