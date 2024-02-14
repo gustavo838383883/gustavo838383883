@@ -1918,6 +1918,7 @@ local success, Error1 = pcall(function()
 
 						for index, value in pairs(information) do
 							loadfile(index, value)
+							task.wait()
 						end
 					end
 
@@ -1927,6 +1928,7 @@ local success, Error1 = pcall(function()
 
 		for filename, dataz in pairs(data) do
 			loadfile(filename, dataz)
+			task.wait()
 		end
 
 		if directory == "/" then
@@ -1994,6 +1996,7 @@ local success, Error1 = pcall(function()
 					if typeof(data) == "table" then
 						for filename, dataz in pairs(data) do
 							loadfile(filename, dataz)
+							task.wait()
 						end
 					end
 				end
@@ -2289,7 +2292,11 @@ local success, Error1 = pcall(function()
 							task.wait(2)
 							text3.Text = "Confirm"
 						else
-							local result = filesystem.Write(filename, data, newdirectory)
+							local newdata = data
+							if typeof(data) == "table" then
+								newdata = JSONDecode(JSONEncode(data))
+							end
+							local result = filesystem.Write(filename, newdata, newdirectory)
 							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
@@ -3557,6 +3564,7 @@ local success, Error1 = pcall(function()
 				end)
 															
 				table.insert(desktopicons, {["Holder"] = holderbutton, ["Icon"] = imagelabel, ["TextLabel"] = textlabel})
+				task.wait()
 			end
 		end
 	end
