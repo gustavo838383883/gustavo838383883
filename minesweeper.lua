@@ -169,6 +169,9 @@ local function youwon()
 	local windowb = CreateWindow(UDim2.fromScale(0.5, 0.5), "You won", true, true, false, nil, true, false)
 
 	windowb:AddChild(screen:CreateElement("TextLabel", {Text = "You won!", Size = UDim2.fromScale(1, 1), TextScaled = true, BackgroundTransparency = 1}))
+
+	speaker:Configure({Audio = 12222253})
+	speaker:Trigger()
 end
 
 local function shownear(square)
@@ -179,7 +182,6 @@ local function shownear(square)
 	local colliding = GetTouchingGuiObjects(bigsquare, guis)
 	
 	for index, value in ipairs(colliding) do
-		task.wait()
 		if value.Image ~= "rbxassetid://15625805069" then
 			local textlabl = nil
 			for ind, val in ipairs(txts) do
@@ -190,6 +192,7 @@ local function shownear(square)
 			
 			Trigger(1, value, textlabl)
 		end
+		task.wait()
 	end
 
 	bigsquare:Destroy()
@@ -266,6 +269,7 @@ local function restartgamenow()
 				if firstclick then
 					startgame(square)
 					firstclick = false
+					shownear(square)
 				end
 				if not donttrigger then
 					if not placeflag then
