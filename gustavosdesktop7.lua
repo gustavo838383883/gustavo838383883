@@ -507,6 +507,7 @@ local success, Error1 = pcall(function()
 		end
 	end
 	local holderframetouse
+	local resizebuttontouse
 
 	local programholder1
 	local programholder2
@@ -565,6 +566,7 @@ local success, Error1 = pcall(function()
 					end
 					startCursorPos = cursor
 					holderframetouse = holderframe
+					resizebuttontouse = resizebutton
 					holding = true
 				end
 			end)
@@ -613,6 +615,7 @@ local success, Error1 = pcall(function()
 					end
 					startCursorPos = cursor
 					holderframetouse = holderframe
+					resizebuttontouse = button
 					holding = true
 				end
 			end)
@@ -4843,6 +4846,7 @@ local success, Error1 = pcall(function()
 
 				if holding then
 					if not holderframetouse then holding = false; return end
+					if not resizebuttontouse then holding = false; return end
 					local cursors = screen:GetCursors()
 					local cursor
 					for index,cur in pairs(cursors) do
@@ -4854,8 +4858,8 @@ local success, Error1 = pcall(function()
 					end
 					if not cursor then holding = false end
 					if cursor then
-						local newX = (cursor.X - holderframetouse.AbsolutePosition.X) +((defaultbuttonsize.Y/2)/2)
-						local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) +((defaultbuttonsize.Y/2)/2)
+						local newX = (cursor.X - holderframetouse.AbsolutePosition.X) + (resizebuttontouse.AbsoluteSize.X/2) + ((holderframetouse.AbsolutePosition.X + holderframetouse.AbsoluteSize.X) - (resizebuttontouse.AbsolutePosition.X + resizebuttontouse.AbsoluteSize.X))
+						local newY = (cursor.Y - holderframetouse.AbsolutePosition.Y) + (resizebuttontouse.AbsoluteSize.Y/2) + ((holderframetouse.AbsolutePosition.Y + holderframetouse.AbsoluteSize.Y) - (resizebuttontouse.AbsolutePosition.Y + resizebuttontouse.AbsoluteSize.Y))
 						local screenresolution = resolutionframe.AbsoluteSize
 
 						if typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(screenresolution["X"]) == "number" and typeof(screenresolution["Y"]) == "number" and typeof(startCursorPos["X"]) == "number" and typeof(startCursorPos["Y"]) == "number" then
