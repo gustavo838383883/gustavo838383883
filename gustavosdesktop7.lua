@@ -532,7 +532,11 @@ local success, Error1 = pcall(function()
 		holderframe:AddChild(window)
 		local resizebutton
 		local maximizepressed = false
-		if not boolean2 then
+		local minimizepressed = false
+
+		local functions = {}
+
+		local function createresizebutton()
 			resizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,defaultbuttonsize.Y/2,0,defaultbuttonsize.Y/2), Image = "rbxassetid://15617867263", Position = UDim2.new(1, -defaultbuttonsize.Y/2, 1, -defaultbuttonsize.Y/2), BackgroundTransparency = 1})
 			holderframe:AddChild(resizebutton)
 
@@ -564,47 +568,181 @@ local success, Error1 = pcall(function()
 				resizebutton.Image = "rbxassetid://15617867263"
 				holding = false
 			end)
+		end
+		
+		function functions:IsMaximized()
+			return maximizepressed
+		end
+		
+		function functions:ToggleMaximizing()
+			boolean = not boolean
+		end
+
+		function functions:IsMinimized()
+			return minimizepressed
+		end
+
+		function functions:ToggleMinimizing()
+			boolean4 = not boolean4
+		end
+
+		function functions:Close()
+			if not holderframe then return end
+			if not window then return end
+			window:Destroy()
+			window = nil
+			holderframe:Destroy()
+			holderframe = nil
+		end
+
+		local unmaximizedsize = holderframe.Size
+		local unmaximizedpos = holderframe.Position
+
+		function functions:Minimize()
+			if holding or holding2 then return end
+			if minimizepressed then return end
+			if boolean4 then return end
+			resolutionframe:AddChild(holderframe)
+			holderframe.Visible = false
+			minimizepressed = true
+			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
+			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = if typeof(text) == "function" then tostring(text()) else tostring(text)})
+			unminimizebutton:AddChild(unminimizetext)
+			taskbarholderscrollingframe:AddChild(unminimizebutton)
+			minimizedammount += 1
+			taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * (defaultbuttonsize.X*2)) + (defaultbuttonsize.X*2), 1, 0)
+
+			table.insert(minimizedprograms, unminimizebutton)
+
+			if not boolean5 then
+				unminimizebutton.MouseButton1Down:Connect(function()
+					unminimizebutton.Image = "rbxassetid://15625805069"
+				end)
+			end
+
+			unminimizebutton.MouseButton1Up:Connect(function()
+				unminimizebutton.Image = "rbxassetid://15625805900"
+				speaker:PlaySound(clicksound)
+				unminimizebutton.Size = UDim2.new(1,0,1,0)
+				unminimizebutton:Destroy()
+				minimizepressed = false
+				minimizedammount -= 1
+				if holderframe then
+					programholder1:AddChild(holderframe)
+					holderframe.Visible = true
+				end
+				local start = 0
+				for index, value in ipairs(minimizedprograms) do
+					if value and value.Size ~= UDim2.new(1,0,1,0) then
+						value.Position = UDim2.new(0, start * (defaultbuttonsize.X*2), 0, 0)
+						taskbarholderscrollingframe.CanvasSize = UDim2.new(0, ((defaultbuttonsize.X*2) * start) + defaultbuttonsize.X, 1, 0)
+						start += 1
+					end
+				end
+			end)
+		end
+			
+		function functions:ToggleMaximized()
+			local holderframe = holderframe
+			if holding or holding2 then return end
+			if boolean then return end
+			if not resizebutton then
+				createresizebutton()
+			end
+			if not maximizepressed then
+				if not boolean2 then
+					resizebutton.Visible = false
+					resizebutton.ImageTransparency = 1
+					resizebutton.Size = UDim2.new(0,0,0,0)
+					window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+					window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+				end
+				unmaximizedsize = holderframe.Size
+				unmaximizedpos = holderframe.Position
+				holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+				holderframe.Position = UDim2.new(0, 0, 1, 0)
+				holderframe.Position = UDim2.new(0, 0, 0, 0)
+				maximizetext.Text = "-"
+				maximizepressed = true
+			else
+				if not boolean2 then
+					resizebutton.Visible = true
+					resizebutton.ImageTransparency = 0
+					resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
+					window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+					window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+				end
+				holderframe.Size = unmaximizedsize
+				holderframe.Position = unmaximizedpos
+				maximizetext.Text = "+"
+				maximizepressed = false
+			end
+		end
+
+		function functions:ToggleResizing()
+			boolean2 = not boolean2
+			if not resizebutton then
+				window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+				window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+				createresizebutton()
+			end
+			if not boolean2 then
+				if resizebutton.ImageTransparency ~= 1 then else return end
+				resizebutton.Visible = false
+				resizebutton.ImageTransparency = 1
+				resizebutton.Size = UDim2.new(0,0,0,0)
+				window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+				window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+			else
+				if resizebutton.ImageTransparency ~= 0 then else return end
+				resizebutton.Visible = true
+				resizebutton.ImageTransparency = 0
+				resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
+				window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+				window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
+			end
+		end
+
+		function functions:ToggleMoving()
+			boolean2 = not boolean3
+		end
+			
+		if not boolean2 then
+			createresizebutton()
 		else
 			window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 			window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 		end
+		
+		holderframe.MouseButton1Down:Connect(function()
+			if holding then return end
+			programholder2:AddChild(holderframe)
+			programholder1:AddChild(holderframe)
+			if boolean2 then return end
+			if maximizepressed then return end
+			local cursors = screen:GetCursors()
+			local cursor
+			local x_axis
+			local y_axis
 
-		if not boolean3 then
-
-			holderframe.MouseButton1Down:Connect(function()
-				if holding then return end
-				programholder2:AddChild(holderframe)
-				programholder1:AddChild(holderframe)
-				if maximizepressed then return end
-				local cursors = screen:GetCursors()
-				local cursor
-				local x_axis
-				local y_axis
-
-				for index,cur in pairs(cursors) do
-					local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, holderframe)
-					if boolean then
-						cursor = cur
-						x_axis = x_Axis
-						y_axis = y_Axis
-						break
-					end
+			for index,cur in pairs(cursors) do
+				local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, holderframe)
+				if boolean then
+					cursor = cur
+					x_axis = x_Axis
+					y_axis = y_Axis
+					break
 				end
-				startCursorPos = cursor
-				uiStartPos = holderframe.Position
-				holderframetouse = holderframe
-				holding2 = true
-			end)
+			end
+			startCursorPos = cursor
+			uiStartPos = holderframe.Position
+			holderframetouse = holderframe
+			holding2 = true
+		end)
 
-			holderframe.MouseButton1Up:Connect(function()
-				holding2 = false
-			end)
-		else
-			holderframe.MouseButton1Down:Connect(function()
-				programholder2:AddChild(holderframe)
-				programholder1:AddChild(holderframe)
-			end)
-		end
+		holderframe.MouseButton1Up:Connect(function()
+			holding2 = false
+		end)
 
 		local closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X, 0, defaultbuttonsize.Y), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
 		holderframe:AddChild(closebutton)
@@ -650,42 +788,7 @@ local success, Error1 = pcall(function()
 				if holding or holding2 then return end
 				speaker:PlaySound(clicksound)
 				minimizebutton.Image = "rbxassetid://15617867263"
-				resolutionframe:AddChild(holderframe)
-				holderframe.Visible = false
-				local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
-				local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = if typeof(text) == "function" then tostring(text()) else tostring(text)})
-				unminimizebutton:AddChild(unminimizetext)
-				taskbarholderscrollingframe:AddChild(unminimizebutton)
-				minimizedammount += 1
-				taskbarholderscrollingframe.CanvasSize = UDim2.new(0, (minimizedammount * (defaultbuttonsize.X*2)) + (defaultbuttonsize.X*2), 1, 0)
-
-				table.insert(minimizedprograms, unminimizebutton)
-
-				if not boolean5 then
-					unminimizebutton.MouseButton1Down:Connect(function()
-						unminimizebutton.Image = "rbxassetid://15625805069"
-					end)
-				end
-
-				unminimizebutton.MouseButton1Up:Connect(function()
-					unminimizebutton.Image = "rbxassetid://15625805900"
-					speaker:PlaySound(clicksound)
-					unminimizebutton.Size = UDim2.new(1,0,1,0)
-					unminimizebutton:Destroy()
-					minimizedammount -= 1
-					if holderframe then
-						programholder1:AddChild(holderframe)
-						holderframe.Visible = true
-					end
-					local start = 0
-					for index, value in ipairs(minimizedprograms) do
-						if value and value.Size ~= UDim2.new(1,0,1,0) then
-							value.Position = UDim2.new(0, start * (defaultbuttonsize.X*2), 0, 0)
-							taskbarholderscrollingframe.CanvasSize = UDim2.new(0, ((defaultbuttonsize.X*2) * start) + defaultbuttonsize.X, 1, 0)
-							start += 1
-						end
-					end
-				end)
+				functions:Minimize()
 			end)
 		end
 
@@ -695,8 +798,6 @@ local success, Error1 = pcall(function()
 			maximizebutton:AddChild(maximizetext)
 
 			holderframe:AddChild(maximizebutton)
-			local unmaximizedsize = holderframe.Size
-			local unmaximizedpos = holderframe.Position
 
 			maximizebutton.MouseButton1Down:Connect(function()
 				maximizebutton.Image = "rbxassetid://15617866125"
@@ -706,35 +807,7 @@ local success, Error1 = pcall(function()
 				if holding or holding2 then return end
 				speaker:PlaySound(clicksound)
 				maximizebutton.Image = "rbxassetid://15617867263"
-				local holderframe = holderframe
-				if not maximizepressed then
-					if not boolean2 then
-						resizebutton.Visible = false
-						resizebutton.ImageTransparency = 1
-						resizebutton.Size = UDim2.new(0,0,0,0)
-						window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-						window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-					end
-					unmaximizedsize = holderframe.Size
-					unmaximizedpos = holderframe.Position
-					holderframe.Size = UDim2.new(1, 0, 0.9, 0)
-					holderframe.Position = UDim2.new(0, 0, 1, 0)
-					holderframe.Position = UDim2.new(0, 0, 0, 0)
-					maximizetext.Text = "-"
-					maximizepressed = true
-				else
-					if not boolean2 then
-						resizebutton.Visible = true
-						resizebutton.ImageTransparency = 0
-						resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
-						window.Size -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-						window.CanvasSize -= UDim2.fromOffset(0, defaultbuttonsize.Y/2)
-					end
-					holderframe.Size = unmaximizedsize
-					holderframe.Position = unmaximizedpos
-					maximizetext.Text = "+"
-					maximizepressed = false
-				end
+				functions:ToggleMaximized()
 			end)
 		else
 			if textlabel then
@@ -742,7 +815,7 @@ local success, Error1 = pcall(function()
 				textlabel.Size += UDim2.new(0, defaultbuttonsize.X, 0, 0)
 			end
 		end
-		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton
+		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions
 	end
 
 	function commandline.new(boolean, udim2, screen)
@@ -948,6 +1021,13 @@ local success, Error1 = pcall(function()
 						text = string.sub(text, 1, string.find(text, '"') - 1)
 						local udim2 = string.split(text, ",")
 						url.Size = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+					end
+					if (string.find(value, [[fit="]])) then
+						local text = string.sub(value, string.find(value, [[fit="]]) + string.len([[fit="]]), string.len(value))
+						text = string.sub(text, 1, string.find(text, '"') - 1)
+						if text == "true" then
+							url.ScaleType = Enum.ScaleType.Fit
+						end
 					end
 					url.Position = start
 					if (string.find(value, [[position="]])) then
@@ -1589,7 +1669,7 @@ local success, Error1 = pcall(function()
 		end
 
 		if string.find(string.lower(tostring(nameondisk)), "%.img") then
-			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true, nameondisk)
+			woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0" fit="true">]], screen, true, nameondisk)
 		end
 
 		if string.find(string.lower(tostring(nameondisk)), "%.vid") then
@@ -2651,7 +2731,7 @@ local success, Error1 = pcall(function()
 				else
 					readdata = tonumber(id)
 				end
-				woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0">]], screen, true, if toggled == 1 then filename else "Image")
+				woshtmlfile([[<img src="]]..readdata..[[" size="1,0,1,0" position="0,0,0,0" fit="true">]], screen, true, if toggled == 1 then filename else "Image")
 			end
 		end)
 
