@@ -533,6 +533,9 @@ local success, Error1 = pcall(function()
 		local resizebutton
 		local maximizepressed = false
 		local minimizepressed = false
+		local maximizebutton
+		local maximizetext
+		local minimizebutton
 
 		local functions = {}
 
@@ -759,9 +762,6 @@ local success, Error1 = pcall(function()
 			window = nil
 		end)
 
-		local maximizebutton
-		local minimizebutton
-
 		if not boolean4 then
 			minimizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,defaultbuttonsize.X,0,defaultbuttonsize.Y), Image = "rbxassetid://15617867263", Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), BackgroundTransparency = 1})
 			holderframe:AddChild(minimizebutton)
@@ -794,7 +794,7 @@ local success, Error1 = pcall(function()
 
 		if not boolean then
 			maximizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,defaultbuttonsize.X,0,defaultbuttonsize.Y), Image = "rbxassetid://15617867263", Position = UDim2.new(0, defaultbuttonsize.X, 0, 0), BackgroundTransparency = 1})
-			local maximizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "+"})
+			maximizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "+"})
 			maximizebutton:AddChild(maximizetext)
 
 			holderframe:AddChild(maximizebutton)
