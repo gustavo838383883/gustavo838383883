@@ -519,7 +519,7 @@ local success, Error1 = pcall(function()
 
 	local minimizedammount = 0
 
-	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4, boolean5)
+	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4, boolean5, boolean6)
 		local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 		if not holderframe then return end
 		programholder1:AddChild(holderframe)
@@ -544,7 +544,9 @@ local success, Error1 = pcall(function()
 			holderframe:AddChild(resizebutton)
 
 			resizebutton.MouseButton1Down:Connect(function()
-				resizebutton.Image = "rbxassetid://15617866125"
+				if not boolean6 then
+					resizebutton.Image = "rbxassetid://15617866125"
+				end
 				if holding2 then return end
 				if not maximizepressed then
 					local cursors = screen:GetCursors()
@@ -568,7 +570,9 @@ local success, Error1 = pcall(function()
 			end)
 
 			resizebutton.MouseButton1Up:Connect(function()
-				resizebutton.Image = "rbxassetid://15617867263"
+				if not boolean6 then
+					resizebutton.Image = "rbxassetid://15617867263"
+				end
 				holding = false
 			end)
 		end
