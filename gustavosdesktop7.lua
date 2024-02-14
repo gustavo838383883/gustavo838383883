@@ -2288,9 +2288,17 @@ local success, Error1 = pcall(function()
 					local data = filesystem.Read(filename, directory)
 					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
-							text3.Text = "Can't copy root."
-							task.wait(2)
-							text3.Text = "Confirm"
+							local newdata = JSONDecode(JSONEncode(disk:ReadEntireDisk()))
+							local result = filesystem.Write("Root", newdata, newdirectory)
+							if result == "Success i think" then
+								text3.Text = "Success?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							else
+								text3.Text = "Failed?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							end
 						else
 							local newdata = data
 							if typeof(data) == "table" then
