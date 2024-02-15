@@ -2609,7 +2609,7 @@ local success, Error1 = pcall(function()
 							else
 								newpath = directory.."/"..filename
 							end
-							if typeof(data) ~= "table" or string.gsub(newdirectory, 1, string.len(newpath)) ~= newpath then
+							if typeof(data) ~= "table" or string.sub(newdirectory, 1, string.len(newpath)) ~= newpath then
 								if directory == "/" and filename == "" then
 									text3.Text = "Cannot move Root."
 									task.wait(2)
