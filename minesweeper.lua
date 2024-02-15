@@ -371,7 +371,7 @@ function restartgame()
 	local enterbutton = normalcreatenicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.8), "Start", windowa)
 
 	addbutton.MouseButton1Up:Connect(function()
-		if selectedsize >= 32 then return end
+		if selectedsize >= 40 then return end
 		selectedsize += 1
 		textlabel2.Text = selectedsize
 	end)
