@@ -2051,6 +2051,9 @@ local success, Error1 = pcall(function()
 				data = disk:ReadEntireDisk()
 				directory = "/"
 				if boolean1 then
+					selecteddir = "/"
+				end
+				if boolean1 then
 					selectedname = nil
 					selected.Text = "Root"
 				end
@@ -2064,6 +2067,9 @@ local success, Error1 = pcall(function()
 					selected.Text = selectedname
 				end
 				directory = removedlast1
+				if boolean1 then
+					selecteddir = removedlast
+				end
 			end
 
 			titletext.Text = tostring(directory)
