@@ -434,7 +434,7 @@ local loop1 = coroutine.create(function()
 			end
 		end
 
-		if not donttrigger then
+		if not donttrigger and not firstclick then
 	
 			local clickednumber = 0
 				
