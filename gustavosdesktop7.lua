@@ -2312,38 +2312,44 @@ local success, Error1 = pcall(function()
 			if newdirectory then
 				if filename and directory then
 					local data = filesystem.Read(filename, directory)
-					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
-						if directory == "/" and filename == "" then
-							local newdata = JSONDecode(JSONEncode(disk:ReadEntireDisk()))
-							local result = filesystem.Write(newname or "Root", newdata, newdirectory)
-							if result == "Success i think" then
-								text3.Text = "Success?"
-								task.wait(2)
-								text3.Text = "Confirm"
+					if data then
+						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
+							if directory == "/" and filename == "" then
+								local newdata = JSONDecode(JSONEncode(disk:ReadEntireDisk()))
+								local result = filesystem.Write(newname or "Root", newdata, newdirectory)
+								if result == "Success i think" then
+									text3.Text = "Success?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								else
+									text3.Text = "Failed?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								end
 							else
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
+								local newdata = data
+								if typeof(data) == "table" then
+									newdata = JSONDecode(JSONEncode(data))
+								end
+								local result = filesystem.Write(newname or filename, newdata, newdirectory)
+								if result == "Success i think" then
+									text3.Text = "Success?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								else
+									text3.Text = "Failed?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								end
 							end
+	
 						else
-							local newdata = data
-							if typeof(data) == "table" then
-								newdata = JSONDecode(JSONEncode(data))
-							end
-							local result = filesystem.Write(newname or filename, newdata, newdirectory)
-							if result == "Success i think" then
-								text3.Text = "Success?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							else
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							end
+							text3.Text = "The selected new path is not a valid table/folder."
+							task.wait(2)
+							text3.Text = "Confirm"
 						end
-
 					else
-						text3.Text = "The selected new path is not a valid table/folder."
+						text3.Text = "File does not exist."
 						task.wait(2)
 						text3.Text = "Confirm"
 					end
@@ -2392,23 +2398,29 @@ local success, Error1 = pcall(function()
 			if newname then
 				if filename and directory then
 					local data = filesystem.Read(filename, directory)
-					if directory == "/" and filename == "" then
-						text3.Text = "Cannot rename Root."
-						task.wait(2)
-						text3.Text = "Confirm"
-					else
-						filesystem.Write(filename, nil, directory)
-						local result = filesystem.Write(newname, data, directory)
-						if result == "Success i think" then
-							text3.Text = "Success?"
+					if data then
+						if directory == "/" and filename == "" then
+							text3.Text = "Cannot rename Root."
 							task.wait(2)
 							text3.Text = "Confirm"
 						else
-							filesystem.Write(filename, data, directory)
-							text3.Text = "Failed?"
-							task.wait(2)
-							text3.Text = "Confirm"
+							filesystem.Write(filename, nil, directory)
+							local result = filesystem.Write(newname, data, directory)
+							if result == "Success i think" then
+								text3.Text = "Success?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							else
+								filesystem.Write(filename, data, directory)
+								text3.Text = "Failed?"
+								task.wait(2)
+								text3.Text = "Confirm"
+							end
 						end
+					else
+						text3.Text = "File does not exist."
+						task.wait(2)
+						text3.Text = "Confirm"
 					end
 				else
 					text3.Text = "No file selected."
@@ -2494,36 +2506,42 @@ local success, Error1 = pcall(function()
 			if newdirectory then
 				if filename and directory then
 					local data = filesystem.Read(filename, directory)
-					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
-						if directory == "/" and filename == "" then
-							local result = filesystem.Write((newname or "Root")..".lnk", "/", newdirectory)
-							if result == "Success i think" then
-								text3.Text = "Success?"
-								task.wait(2)
-								text3.Text = "Confirm"
+					if data then
+						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
+							if directory == "/" and filename == "" then
+								local result = filesystem.Write((newname or "Root")..".lnk", "/", newdirectory)
+								if result == "Success i think" then
+									text3.Text = "Success?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								else
+									text3.Text = "Failed?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								end
 							else
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
+								local result = filesystem.Write((newname or filename)..".lnk", if directory ~= "/" then directory.."/"..filename else "/"..filename, newdirectory)
+								if result == "Success i think" then
+									text3.Text = "Success?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								else
+									text3.Text = "Failed?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								end
 							end
+							
 						else
-							local result = filesystem.Write((newname or filename)..".lnk", if directory ~= "/" then directory.."/"..filename else "/"..filename, newdirectory)
-							if result == "Success i think" then
-								text3.Text = "Success?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							else
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
-							end
+							text3.Text = "The selected new path is not a valid table/folder."
+							task.wait(2)
+							text3.Text = "Confirm"
 						end
-						
 					else
-						text3.Text = "The selected new path is not a valid table/folder."
+						text3.Text = "File does not exist."
 						task.wait(2)
 						text3.Text = "Confirm"
-					end
+					end																						
 				else
 					text3.Text = "No file selected."
 					task.wait(2)
@@ -2577,39 +2595,45 @@ local success, Error1 = pcall(function()
 			if newdirectory then
 				if filename and directory then
 					local data = filesystem.Read(filename, directory)
-					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
-						local newpath = ""
-						if directory == "/" then
-							newpath = directory..filename
-						else
-							newpath = directory.."/"..filename
-						end
-						if typeof(data) ~= "table" or string.gsub(newdirectory, 1, string.len(newpath)) ~= newpath then
-							if directory == "/" and filename == "" then
-								text3.Text = "Cannot move Root."
-								task.wait(2)
-								text3.Text = "Confirm"
+					if data then
+						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
+							local newpath = ""
+							if directory == "/" then
+								newpath = directory..filename
 							else
-								filesystem.Write(filename, nil, directory)
-								local result = filesystem.Write(filename, data, newdirectory)
-								if result == "Success i think" then
-									text3.Text = "Success?"
+								newpath = directory.."/"..filename
+							end
+							if typeof(data) ~= "table" or string.gsub(newdirectory, 1, string.len(newpath)) ~= newpath then
+								if directory == "/" and filename == "" then
+									text3.Text = "Cannot move Root."
 									task.wait(2)
 									text3.Text = "Confirm"
 								else
-									filesystem.Write(filename, data, directory)
-									text3.Text = "Failed?"
-									task.wait(2)
-									text3.Text = "Confirm"
+									filesystem.Write(filename, nil, directory)
+									local result = filesystem.Write(filename, data, newdirectory)
+									if result == "Success i think" then
+										text3.Text = "Success?"
+										task.wait(2)
+										text3.Text = "Confirm"
+									else
+										filesystem.Write(filename, data, directory)
+										text3.Text = "Failed?"
+										task.wait(2)
+										text3.Text = "Confirm"
+									end
 								end
+							else
+								text3.Text = "Can't move a table/folder to itself."
+								task.wait(2)
+								text3.Text = "Confirm"
 							end
 						else
-							text3.Text = "Can't move a table/folder to itself."
+							text3.Text = "The selected new path is not a valid table/folder."
 							task.wait(2)
 							text3.Text = "Confirm"
 						end
 					else
-						text3.Text = "The selected new path is not a valid table/folder."
+						text3.Text = "File does not exist."
 						task.wait(2)
 						text3.Text = "Confirm"
 					end
