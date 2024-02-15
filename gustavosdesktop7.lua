@@ -549,6 +549,7 @@ local success, Error1 = pcall(function()
 					resizebutton.Image = "rbxassetid://15617866125"
 				end
 				if holding2 then return end
+				if boolean2 then return end
 				if not maximizepressed then
 					local cursors = screen:GetCursors()
 					local cursor
@@ -582,6 +583,18 @@ local success, Error1 = pcall(function()
 		function functions:IsMaximized()
 			return maximizepressed
 		end
+
+		function functions:IsMaximizedDisabled()
+			return boolean
+		end
+
+		function functions:IsMovingDisabled()
+			return boolean3
+		end
+
+		function functions:IsResizingDisabled()
+			return boolean2
+		end
 		
 		function functions:ToggleMaximizing()
 			boolean = not boolean
@@ -598,6 +611,7 @@ local success, Error1 = pcall(function()
 		function functions:UseAsResizeButton(button)
 			button.MouseButton1Down:Connect(function()
 				if holding2 then return end
+				if boolean2 then return end
 				if not maximizepressed then
 					local cursors = screen:GetCursors()
 					local cursor
@@ -725,14 +739,14 @@ local success, Error1 = pcall(function()
 				createresizebutton()
 			end
 			if not boolean2 then
-				if resizebutton.ImageTransparency ~= 1 then else return end
+				if resizebutton.ImageTransparency == 1 then return end
 				resizebutton.Visible = false
 				resizebutton.ImageTransparency = 1
 				resizebutton.Size = UDim2.new(0,0,0,0)
 				window.Size += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 				window.CanvasSize += UDim2.fromOffset(0, defaultbuttonsize.Y/2)
 			else
-				if resizebutton.ImageTransparency ~= 0 then else return end
+				if resizebutton.ImageTransparency == 0 then return end
 				resizebutton.Visible = true
 				resizebutton.ImageTransparency = 0
 				resizebutton.Size = UDim2.fromOffset(defaultbuttonsize.Y/2, defaultbuttonsize.Y/2)
@@ -742,7 +756,7 @@ local success, Error1 = pcall(function()
 		end
 
 		function functions:ToggleMoving()
-			boolean2 = not boolean3
+			boolean3 = not boolean3
 		end
 			
 		if not boolean2 then
@@ -2251,9 +2265,11 @@ local success, Error1 = pcall(function()
 		
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select new path", window)
+		local renamebutton, text4 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.4), "Enter new filename (Click to update)", window)
 		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
 		
 		local filename
+		local newname
 		local directory
 		local newdirectory
 		local newdirname
@@ -2267,6 +2283,16 @@ local success, Error1 = pcall(function()
 				
 				text1.Text = filename
 			end, true)
+		end)
+
+		renamebutton.MouseButton1Up:Connect(function()
+			if keyboardinput then
+				newname = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+				if newname == "" then
+					newname = nil
+				end
+				text4.Text = newname or "Enter new filename (Click to update)"							
+			end
 		end)
 		
 		folderbutton.MouseButton1Up:Connect(function()
@@ -2289,7 +2315,7 @@ local success, Error1 = pcall(function()
 					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
 							local newdata = JSONDecode(JSONEncode(disk:ReadEntireDisk()))
-							local result = filesystem.Write("Root", newdata, newdirectory)
+							local result = filesystem.Write(newname or "Root", newdata, newdirectory)
 							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
@@ -2304,7 +2330,7 @@ local success, Error1 = pcall(function()
 							if typeof(data) == "table" then
 								newdata = JSONDecode(JSONEncode(data))
 							end
-							local result = filesystem.Write(filename, newdata, newdirectory)
+							local result = filesystem.Write(newname or filename, newdata, newdirectory)
 							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
@@ -2402,6 +2428,7 @@ local success, Error1 = pcall(function()
 		
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select shortcut path", window)
+		local renamebutton, text4 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.4), "Enter shortcut name (Click to update)", window)
 		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
 		
 		local filename
@@ -2409,6 +2436,17 @@ local success, Error1 = pcall(function()
 		local newdirectory
 		local newdirname
 		local newdir
+		local newname
+
+		renamebutton.MouseButton1Up:Connect(function()
+			if keyboardinput then
+				newname = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+				if newname == "" then
+					newname = nil
+				end
+				text4.Text = newname or "Enter shortcut name (Click to update)"
+			end
+		end)
 		
 		filebutton.MouseButton1Up:Connect(function()
 			loaddisk(if not directory then "/" else directory, function(name, dir)
@@ -2458,7 +2496,7 @@ local success, Error1 = pcall(function()
 					local data = filesystem.Read(filename, directory)
 					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
 						if directory == "/" and filename == "" then
-							local result = filesystem.Write("Root.lnk", "/", newdirectory)
+							local result = filesystem.Write((newname or "Root")..".lnk", "/", newdirectory)
 							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
@@ -2469,7 +2507,7 @@ local success, Error1 = pcall(function()
 								text3.Text = "Confirm"
 							end
 						else
-							local result = filesystem.Write(filename..".lnk", if directory ~= "/" then directory.."/"..filename else "/"..filename, newdirectory)
+							local result = filesystem.Write((newname or filename)..".lnk", if directory ~= "/" then directory.."/"..filename else "/"..filename, newdirectory)
 							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
@@ -2540,23 +2578,35 @@ local success, Error1 = pcall(function()
 				if filename and directory then
 					local data = filesystem.Read(filename, directory)
 					if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
-						if directory == "/" and filename == "" then
-							text3.Text = "Cannot move Root."
-							task.wait(2)
-							text3.Text = "Confirm"
+						local newpath = ""
+						if directory == "/" then
+							newpath = directory..filename
 						else
-							filesystem.Write(filename, nil, directory)
-							local result = filesystem.Write(filename, data, newdirectory)
-							if result == "Success i think" then
-								text3.Text = "Success?"
+							newpath = directory.."/"..filename
+						end
+						if typeof(data) ~= "table" or string.gsub(newdirectory, 1, string.len(newpath)) ~= newpath then
+							if directory == "/" and filename == "" then
+								text3.Text = "Cannot move Root."
 								task.wait(2)
 								text3.Text = "Confirm"
 							else
-								filesystem.Write(filename, data, directory)
-								text3.Text = "Failed?"
-								task.wait(2)
-								text3.Text = "Confirm"
+								filesystem.Write(filename, nil, directory)
+								local result = filesystem.Write(filename, data, newdirectory)
+								if result == "Success i think" then
+									text3.Text = "Success?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								else
+									filesystem.Write(filename, data, directory)
+									text3.Text = "Failed?"
+									task.wait(2)
+									text3.Text = "Confirm"
+								end
 							end
+						else
+							text3.Text = "Can't move a table/folder to itself."
+							task.wait(2)
+							text3.Text = "Confirm"
 						end
 					else
 						text3.Text = "The selected new path is not a valid table/folder."
@@ -4816,6 +4866,7 @@ local success, Error1 = pcall(function()
 					local success = false
 					if not buttondown then
 						for index,cur in pairs(cursors) do
+							if typeof(cur) ~= "table" then return end
 							local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, startbutton7)
 							if boolean then
 								startbutton7.Image = "rbxassetid://15617866125"
@@ -4835,10 +4886,12 @@ local success, Error1 = pcall(function()
 					local y_axis
 					if not startCursorPos["Player"] then return end
 					for index,cur in pairs(cursors) do
-						if not cur["Player"] then return end
-						if cur.Player == startCursorPos.Player then
-							cursor = cur
-							break
+						if startCursorPos and cur then
+							if not cur["Player"] then return end
+							if cur.Player == startCursorPos.Player then
+								cursor = cur
+								break
+							end
 						end
 					end
 					if not cursor then holding2 = false end
@@ -4867,6 +4920,7 @@ local success, Error1 = pcall(function()
 					local cursor
 					for index,cur in pairs(cursors) do
 						if startCursorPos and cur then
+							if not cur["Player"] then return end
 							if cur.Player == startCursorPos.Player then
 								cursor = cur
 							end
