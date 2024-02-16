@@ -520,10 +520,21 @@ local success, Error1 = pcall(function()
 
 	local minimizedammount = 0
 
+	local isfocused = {}
+
 	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4, boolean5, boolean6)
 		local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 		if not holderframe then return end
 		programholder1:AddChild(holderframe)
+		
+		for i, v in ipairs(isfocused) do
+			isfocused[i] = false
+		end
+		
+		table.insert(isfocused, true)
+
+		local frameindex = #isfocused
+
 		local textlabel
 		if typeof(title) == "string" then
 			textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -(defaultbuttonsize.X*2), 0, defaultbuttonsize.Y), BackgroundTransparency = 1, Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
@@ -650,15 +661,29 @@ local success, Error1 = pcall(function()
 		local unmaximizedsize = holderframe.Size
 		local unmaximizedpos = holderframe.Position
 
-		function functions:Minimize()
+		local unminimize
+			
+		function functions:Unminimize()
+			if minimizepressed and unminimize then
+				unminimize()
+			end
+		end
+
+		function functions:IsFocused()
+			return isfocused[frameindex]
+		end
+
+		function functions:Minimize(mintext)
+			if not mintext then mintext = text end
 			if holding or holding2 then return end
 			if minimizepressed then return end
 			if boolean4 then return end
 			resolutionframe:AddChild(holderframe)
 			holderframe.Visible = false
 			minimizepressed = true
+			isfocused[frameindex] = false
 			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
-			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = if typeof(text) == "function" then tostring(text()) else tostring(text)})
+			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = if typeof(mintext) == "function" then tostring(mintext()) else tostring(mintext)})
 			unminimizebutton:AddChild(unminimizetext)
 			taskbarholderscrollingframe:AddChild(unminimizebutton)
 			minimizedammount += 1
@@ -672,9 +697,7 @@ local success, Error1 = pcall(function()
 				end)
 			end
 
-			unminimizebutton.MouseButton1Up:Connect(function()
-				unminimizebutton.Image = "rbxassetid://15625805900"
-				speaker:PlaySound(clicksound)
+			function unminimize()
 				unminimizebutton.Size = UDim2.new(1,0,1,0)
 				unminimizebutton:Destroy()
 				minimizepressed = false
@@ -691,6 +714,12 @@ local success, Error1 = pcall(function()
 						start += 1
 					end
 				end
+			end
+
+			unminimizebutton.MouseButton1Up:Connect(function()
+				unminimizebutton.Image = "rbxassetid://15625805900"
+				speaker:PlaySound(clicksound)
+				functions:Unminimize()
 			end)
 		end
 			
@@ -770,6 +799,11 @@ local success, Error1 = pcall(function()
 			if holding then return end
 			programholder2:AddChild(holderframe)
 			programholder1:AddChild(holderframe)
+			for i, v in ipairs(isfocused) do
+				isfocused[i] = false
+			end
+
+			isfocused[frameindex] = true
 			if boolean2 then return end
 			if maximizepressed then return end
 			local cursors = screen:GetCursors()
@@ -1986,6 +2020,9 @@ local success, Error1 = pcall(function()
 							selectedname = split2[#split2]
 							selected.Text = selectedname
 						end
+						if boolean1 then
+							selecteddir = removedlast
+						end
 						directory = removedlast1
 					else
 						data = disk:ReadEntireDisk()
@@ -1993,6 +2030,9 @@ local success, Error1 = pcall(function()
 						if boolean1 then
 							selectedname = nil
 							selected.Text = "Root"
+						end
+						if boolean1 then
+							selecteddir = "/"
 						end
 						directory = "/"
 					end
@@ -2051,11 +2091,11 @@ local success, Error1 = pcall(function()
 				data = disk:ReadEntireDisk()
 				directory = "/"
 				if boolean1 then
-					selecteddir = "/"
-				end
-				if boolean1 then
 					selectedname = nil
 					selected.Text = "Root"
+				end
+				if boolean1 then
+					selecteddir = "/"
 				end
 			elseif #split > 2 then
 				local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
