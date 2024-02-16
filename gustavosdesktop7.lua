@@ -3517,7 +3517,7 @@ local success, Error1 = pcall(function()
 
 
 		local xScale = 0
-		local yScale = iconsize
+		local yScale = 0
 
 		local scrollX = iconsize
 		local scrollY = 0.9 * iconsize
