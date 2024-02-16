@@ -3689,11 +3689,11 @@ local success, Error1 = pcall(function()
 					end
 				end)
 
-				yScale += iconsize
-
 				if yScale + iconsize > 1 - iconsize then
 					yScale = 0
 					xScale += iconsize
+				else
+					yScale += iconsize
 				end
 															
 				table.insert(desktopicons, {["Holder"] = holderbutton, ["Icon"] = imagelabel, ["TextLabel"] = textlabel})
