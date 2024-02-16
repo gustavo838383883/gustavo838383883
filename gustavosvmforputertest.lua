@@ -2230,7 +2230,7 @@ function startload()
 							end
 						end
 					end)
-					if disk:Read("BackgroundImage") or disk:Read("BackgroundColor") or disk:Read("sounds") then
+					if disk:Read("BackgroundImage") or disk:Read("Color") or disk:Read("sounds") then
 						loadmenu()
 						Beep(0.25)
 						task.wait(0.1)
