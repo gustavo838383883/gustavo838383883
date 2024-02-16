@@ -530,8 +530,8 @@ local success, Error1 = pcall(function()
 		for i, v in ipairs(isfocused) do
 			isfocused[i] = false
 		end
-		
-		table.insert(isfocused, true)
+
+		isfocused[#isfocused + 1] = true
 
 		local frameindex = #isfocused
 
