@@ -703,6 +703,11 @@ local success, Error1 = pcall(function()
 				unminimizebutton:Destroy()
 				minimizepressed = false
 				minimizedammount -= 1
+				for i, v in ipairs(isfocused) do
+					isfocused[i] = false
+				end
+
+				isfocused[frameindex] = true
 				if holderframe then
 					programholder1:AddChild(holderframe)
 					holderframe.Visible = true
