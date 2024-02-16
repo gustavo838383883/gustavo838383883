@@ -652,6 +652,7 @@ local success, Error1 = pcall(function()
 		function functions:Close()
 			if not holderframe then return end
 			if not window then return end
+			isfocused[frameindex] = false
 			window:Destroy()
 			window = nil
 			holderframe:Destroy()
@@ -840,9 +841,7 @@ local success, Error1 = pcall(function()
 		closebutton.MouseButton1Up:Connect(function()
 			closebutton.Image = "rbxassetid://15617983488"
 			speaker:PlaySound(clicksound)
-			holderframe:Destroy()
-			holderframe = nil
-			window = nil
+			functions:Close()
 		end)
 
 		if not boolean4 then
