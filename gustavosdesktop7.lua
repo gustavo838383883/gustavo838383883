@@ -3517,7 +3517,7 @@ local success, Error1 = pcall(function()
 
 
 		local xScale = 0
-		local yScale = 0
+		local yScale = iconsize
 
 		local scrollX = iconsize
 		local scrollY = 0.9 * iconsize
@@ -3572,12 +3572,6 @@ local success, Error1 = pcall(function()
 																				
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
-				yScale += iconsize
-
-				if yScale + iconsize > 1 - iconsize then
-					yScale = 0
-					xScale += iconsize
-				end
 				local holderbutton = screen:CreateElement("TextButton", {Size = UDim2.fromScale(iconsize/desktopscrollingframe.CanvasSize.X.Scale, iconsize), BackgroundTransparency = 1, Position = UDim2.fromScale(xScale/desktopscrollingframe.CanvasSize.X.Scale, yScale/desktopscrollingframe.CanvasSize.Y.Scale), TextTransparency = 1})
 				desktopscrollingframe:AddChild(holderbutton)
 				local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
@@ -3694,6 +3688,13 @@ local success, Error1 = pcall(function()
 						if speaker then speaker:PlaySound(clicksound) end
 					end
 				end)
+
+				yScale += iconsize
+
+				if yScale + iconsize > 1 - iconsize then
+					yScale = 0
+					xScale += iconsize
+				end
 															
 				table.insert(desktopicons, {["Holder"] = holderbutton, ["Icon"] = imagelabel, ["TextLabel"] = textlabel})
 				task.wait()
