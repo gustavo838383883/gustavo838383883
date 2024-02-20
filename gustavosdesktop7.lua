@@ -3168,12 +3168,12 @@ local success, Error1 = pcall(function()
 		local  button20 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.50, 0, 0.75, 0), "(-)", holderframe)
 		button20.MouseButton1Down:Connect(function()
 			if not type then
-				number1 = string.gsub(tostring(number1), "-", "")
-				number1 = "-"..tostring(number1)
+				if not tonumber(number1) then return end
+				number1 = number1 * -1
 				part1.Text = number1
 			else
-				number2 = string.gsub(tostring(number2), "-", "")
-				number2 = "-"..tostring(number2)
+				if not tonumber(number2) then return end
+				number2 = number2 * -1
 				part2.Text = number2
 			end
 		end)
