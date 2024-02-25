@@ -3169,11 +3169,11 @@ local success, Error1 = pcall(function()
 		button20.MouseButton1Down:Connect(function()
 			if not type then
 				if not tonumber(number1) then return end
-				number1 = number1 * -1
+				number1 = tonumber(number1) * -1
 				part1.Text = number1
 			else
 				if not tonumber(number2) then return end
-				number2 = number2 * -1
+				number2 = tonumber(number2) * -1
 				part2.Text = number2
 			end
 		end)
