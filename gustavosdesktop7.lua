@@ -793,7 +793,23 @@ local success, Error1 = pcall(function()
 		function functions:ToggleMoving()
 			boolean3 = not boolean3
 		end
-			
+
+		function functions:AddChild(child)
+			if child then
+				window:AddChild(child)
+			end
+		end
+
+		function functions:CreateElement(name: string, properties: {any})			
+			local object = screen:CreateElement(name, properties)
+
+			if object then
+				window:AddChild(object)
+			end
+
+			return object
+		end
+		
 		if not boolean2 then
 			createresizebutton()
 		else
