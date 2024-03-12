@@ -2126,6 +2126,7 @@ local function loadmenu()
 												if value then
 													value.Position = UDim2.new(1,0,0,0)
 													value.Position = UDim2.new(0,0,0,0)
+													task.wait()
 												end
 											end
 										end
