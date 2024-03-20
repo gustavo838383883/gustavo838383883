@@ -531,6 +531,8 @@ local success, Error1 = pcall(function()
 			isfocused[i] = false
 		end
 
+		local closed = false
+
 		isfocused[#isfocused + 1] = true
 
 		local frameindex = #isfocused
@@ -657,6 +659,7 @@ local success, Error1 = pcall(function()
 			window = nil
 			holderframe:Destroy()
 			holderframe = nil
+			closed = true
 		end
 
 		local unmaximizedsize = holderframe.Size
@@ -667,6 +670,14 @@ local success, Error1 = pcall(function()
 		function functions:Unminimize()
 			if minimizepressed and unminimize then
 				unminimize()
+			end
+		end
+
+		function functions:IsClosed()
+			if closed or not holderframe then
+				return true
+			else
+				return false
 			end
 		end
 
