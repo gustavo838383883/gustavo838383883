@@ -244,80 +244,17 @@ local function DetectGuiBelow2(gui, folder)
 	end
 end
 
+local disk = GetPartFromPort(1, "Disk")
+local gputer = disk:Read("GD7Library")
+local screen = gputer.Screen
+local keyboard = gputer.Keyboard
+local speaker = gputer.Speaker
 
-local disk = nil
-local screen = nil
-local keyboard = nil
-local speaker = nil
-
-local shutdownpoly = nil
-
-local function getstuff()
-	disk = nil
-	screen = nil
-	keyboard = nil
-	speaker = nil
-	shutdownpoly = nil
-
-	for i=1, 128 do
-		if not disk then
-			local success, Error = pcall(GetPartFromPort, i, "Disk")
-			if success then
-				if GetPartFromPort(i, "Disk") then
-					disk = GetPartFromPort(i, "Disk")
-				end
-			end
-		end
-
-		if not shutdownpoly then
-			local success, Error = pcall(GetPartFromPort, i, "Polysilicon")
-			if success then
-				if GetPartFromPort(i, "Polysilicon") then
-					shutdownpoly = i
-				end
-			end
-		end
-
-		if not speaker then
-			local success, Error = pcall(GetPartFromPort, i, "Speaker")
-			if success then
-				if GetPartFromPort(i, "Speaker") then
-					speaker = GetPartFromPort(i, "Speaker")
-				end
-			end
-		end
-		if not screen then
-			local success, Error = pcall(GetPartFromPort, i, "Screen")
-			if success then
-				if GetPartFromPort(i, "Screen") then
-					screen = GetPartFromPort(i, "Screen")
-				end
-			end
-		end
-		if not screen then
-			local success, Error = pcall(GetPartFromPort, i, "TouchScreen")
-			if success then
-				if GetPartFromPort(i, "TouchScreen") then
-					screen = GetPartFromPort(i, "TouchScreen")
-				end
-			end
-		end
-		if not keyboard then
-			local success, Error = pcall(GetPartFromPort, i, "Keyboard")
-			if success then
-				if GetPartFromPort(i, "Keyboard") then
-					keyboard = GetPartFromPort(i, "Keyboard")
-				end
-			end
-		end
-	end
-end
-
-getstuff()
-
-screen:ClearElements()
+local window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions = gputer.CreateWindow(UDim2.fromScale(0.7, 0.7), "Super Yellow Square Terrain Generator", false, false, false, "SYSTG", false)
 
 local superyellowsquare = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Image = "http://www.roblox.com/asset/?id=11693968379"})
+
+window:AddChild(superyellowsquare )
 
 local thegame = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Position = UDim2.new(0.5, -12, 0.5, -12)})
 superyellowsquare:AddChild(thegame)
@@ -338,6 +275,7 @@ plr:AddChild(hitbox)
 local allobjects = {}
 
 local loadingframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0), Image = "rbxassetid://15440219329", ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0.2, 0, 0.2, 0)})
+window:AddChild(loadingframe)
 
 local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0)})
 loadingframe:AddChild(loadingbar)
@@ -348,12 +286,14 @@ loadingframe:AddChild(loadingcircle)
 
 local start = 0
 local y = 25
+
+local lavas = {}
+
 for i=1, 256 do
 	task.wait()
 	local grass = screen:CreateElement("ImageLabel", {Image = "rbxassetid://11693507606", Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, start, 0, y), BackgroundTransparency = 1})
-	local randomnumber = math.random(1, 9)
 
-	table.insert(allobjects, grass)
+	local randomnumber = math.random(1, 9)
 	ground:AddChild(grass)
 	
 	loadingbar.Size = UDim2.new(i/256, 0, 0.2, 0)
@@ -367,16 +307,24 @@ for i=1, 256 do
 			y += 25
 		end
 	end
+
+	table.insert(allobjects, grass)
+
+	if math.random(1, 20) == 20 and (randomnumber ~= 4 and randomnumber ~= 9) then
+		local lava = screen:CreateElement("ImageLabel", {Image = "rbxassetid://13289036106", Size = UDim2.new(0, 25, 0, 10), Position = UDim2.new(0, start, 0, y - 10), BackgroundTransparency = 1})
+
+		lava.Size = UDim2.fromOffset(25, 15)
+
+		lava.Position += UDim2.fromOffset(0, 10)
+
+		table.insert(lavas, lava)
+	end
+
 	start += 25
 	print(i)
 end
 
 loadingframe:Destroy()
-
-print("next")
-
-local lavas = {}
-
 
 local rightnum = 0
 local leftnum = 0
@@ -415,23 +363,23 @@ keyboard:Connect("KeyPressed", function(key, keystring, state)
 	end
 	if string.lower(keystring) == "w" then
 		if DetectGuiBelow2(hitbox, allobjects) then
-			hitbox.Position -= UDim2.new(0, 0, 0, 5)
+			hitbox.Position -= UDim2.new(0, 0, 0, 6)
 			if not GetCollidedGuiObjects(hitbox, allobjects) then
-				hitbox.Position += UDim2.new(0, 0, 0, 5)
+				hitbox.Position += UDim2.new(0, 0, 0, 6)
 				for i=1,13,1 do
 					task.wait()
-					hitbox.Position -= UDim2.new(0, 0, 0, 5)	
+					hitbox.Position -= UDim2.new(0, 0, 0, 6)	
 					if not GetCollidedGuiObjects(hitbox, allobjects) then
-						hitbox.Position += UDim2.new(0, 0, 0, 5)	
-						thegame.Position += UDim2.new(0, 0, 0, 5)
-						plr.Position -= UDim2.new(0, 0, 0, 5)
+						hitbox.Position += UDim2.new(0, 0, 0, 6)	
+						thegame.Position += UDim2.new(0, 0, 0, 6)
+						plr.Position -= UDim2.new(0, 0, 0, 6)
 					else
-						hitbox.Position += UDim2.new(0, 0, 0, 5)	
+						hitbox.Position += UDim2.new(0, 0, 0, 6)	
 						break
 					end
 				end
 			else
-				hitbox.Position += UDim2.new(0, 0, 0, 5)
+				hitbox.Position += UDim2.new(0, 0, 0, 6)
 			end
 		end
 	end
@@ -440,7 +388,14 @@ end)
 local positionxcounter = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(0.2, 0, 0.2, 0)})
 local positionycounter = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(0.2, 0, 0.2, 0), Position = UDim2.new(0.2, 0, 0, 0)})
 
+window:AddChild(positionxcounter)
+
+window:AddChild(positionycounter)
+
+coroutine.resume(coroutine.create(function()
 while task.wait(0.01) do
+	if functions:IsClosed() then break end
+
 	positionxcounter.Text = plr.Position.X.Offset
 	positionycounter.Text = plr.Position.Y.Offset
 	
@@ -454,16 +409,6 @@ while task.wait(0.01) do
 		plr.Position = UDim2.new(0,0,0,0)
 		thegame.Position = UDim2.new(0.5, -25, 0.5, -25)
 		speaker:PlaySound("rbxassetid://3802269741")
-	end
-	
-	
-	hitbox.Position += UDim2.new(0, 0, 0, 1)
-	if not DetectGuiBelow(hitbox, allobjects) then
-		plr.Position += UDim2.new(0, 0, 0, 1)
-		thegame.Position -= UDim2.new(0, 0, 0, 1)
-		hitbox.Position -= UDim2.new(0, 0, 0, 1)
-	else
-		hitbox.Position -= UDim2.new(0, 0, 0, 1)
 	end
 
 	if right == true then
@@ -487,4 +432,16 @@ while task.wait(0.01) do
 			hitbox.Position += UDim2.new(0, 1, 0, 0)
 		end
 	end
+
+	if functions:IsClosed() then break end
+
+	hitbox.Position += UDim2.new(0, 0, 0, 2)
+	if not DetectGuiBelow(hitbox, allobjects) then
+		plr.Position += UDim2.new(0, 0, 0, 2)
+		thegame.Position -= UDim2.new(0, 0, 0, 2)
+		hitbox.Position -= UDim2.new(0, 0, 0, 2)
+	else
+		hitbox.Position -= UDim2.new(0, 0, 0, 2)
+	end
 end
+end))
