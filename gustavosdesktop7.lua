@@ -5200,6 +5200,9 @@ function bootos()
 			if not startsound then startsound = 182007357; end
 			if not shutdownsound then shutdownsound = 7762841318; end
 			color = disk:Read("BackgroundColor")
+			if not rom:Read("Disabled") then
+				rom:Write("Disabled", false)
+			end
 			iconsdisabled = rom:Read("Disabled")
 
 			if typeof(iconsdisabled) == "string" then
