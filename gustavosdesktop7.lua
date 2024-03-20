@@ -3020,9 +3020,15 @@ local success, Error1 = pcall(function()
 				if not holderframe then messagesent:Unbind() end
 				print(text)
 				local textlabel = screen:CreateElement("TextLabel", {Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
+
+				if string.find(text, "b/") then
+					textlabel.TextColor3 = Color3.fromRGB(85, 85, 255)
+				end
+																																			
 				scrollingframe:AddChild(textlabel)
-				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 				start += 25
+				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
+				scrollingframe.CanvasPosition = Vector3.new(0, start)
 			end)
 		else
 			local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,0), Position = UDim2.new(0,0,0,0), BackgroundTransparency = 1})
