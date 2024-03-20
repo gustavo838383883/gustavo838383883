@@ -5228,7 +5228,7 @@ function bootos()
 
 			if iconsdisabled == "true" then
 				iconsdisabled = true
-			else
+			elseif typeof(iconsdisabled) == "boolean" then
 				iconsdisabled = false
 			end
 
