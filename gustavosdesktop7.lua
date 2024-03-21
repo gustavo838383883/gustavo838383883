@@ -837,7 +837,7 @@ local success, Error1 = pcall(function()
 			end
 
 			isfocused[frameindex] = true
-			if boolean2 then return end
+			if boolean3 then return end
 			if maximizepressed then return end
 			local cursors = screen:GetCursors()
 			local cursor
