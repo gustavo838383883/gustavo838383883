@@ -533,9 +533,9 @@ local success, Error1 = pcall(function()
 
 		local closed = false
 
-		isfocused[#isfocused + 1] = true
-
-		local frameindex = #isfocused
+		local frameindex = #isfocused + 1
+			
+		isfocused[frameindex] = true
 
 		local textlabel
 		if typeof(title) == "string" then
