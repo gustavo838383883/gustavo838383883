@@ -751,6 +751,8 @@ local success, Error1 = pcall(function()
 				speaker:PlaySound(clicksound)
 				functions:Unminimize()
 			end)
+
+			return unminimizebutton
 		end
 			
 		function functions:ToggleMaximized()
