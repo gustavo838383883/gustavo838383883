@@ -2291,11 +2291,11 @@ local success, Error1 = pcall(function()
 
 		filedatabutton.MouseButton1Down:Connect(function()
 			if keyboardinput then
-				if keyboardinput:sub(1, 2) ~= "!s" then
+				if keyboardinput:sub(1, 3) ~= "!ns" then
 					filedatabutton2.Text = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
 					data = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
 				else
-					local keyboardinput = keyboardinput:sub(3, string.len(keyboardinput))
+					local keyboardinput = keyboardinput:sub(4, string.len(keyboardinput))
 					filedatabutton2.Text = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
 					data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 				end
@@ -4704,11 +4704,11 @@ local success, Error1 = pcall(function()
 				commandlines:insert("/:")
 				if keyboardevent then keyboardevent:Unbind() end
 				keyboardevent = button.MouseButton1Up:Connect(function()
-					if text:sub(1, 3) ~= "!is" then
+					if text:sub(1, 2) ~= "!s" then
 						commandlines:insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 						runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 					else
-						text = text:sub(4, string.len(text))
+						text = text:sub(3, string.len(text))
 						commandlines:insert(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
 						runtext(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
 					end	
