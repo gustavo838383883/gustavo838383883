@@ -520,22 +520,24 @@ local success, Error1 = pcall(function()
 
 	local minimizedammount = 0
 
-	local isfocused = {}
+	local windows = {}
 
 	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4, boolean5, boolean6)
 		local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 		if not holderframe then return end
 		programholder1:AddChild(holderframe)
 		
-		for i, v in ipairs(isfocused) do
-			isfocused[i] = false
+		for i, v in ipairs(windows) do
+			v.Focused = false
+
+			if v.CloseButton then
+				v.CloseButton.Image = "rbxassetid://16821401308"
+			end
 		end
 
 		local closed = false
 
-		local frameindex = #isfocused + 1
-			
-		isfocused[frameindex] = true
+		local frameindex = 0
 
 		local textlabel
 		if typeof(title) == "string" then
@@ -552,6 +554,8 @@ local success, Error1 = pcall(function()
 		local minimizebutton
 
 		local functions = {}
+
+		local closebutton
 
 		local function createresizebutton()
 			resizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,defaultbuttonsize.Y/2,0,defaultbuttonsize.Y/2), Image = "rbxassetid://15617867263", Position = UDim2.new(1, -defaultbuttonsize.Y/2, 1, -defaultbuttonsize.Y/2), BackgroundTransparency = 1})
@@ -654,7 +658,7 @@ local success, Error1 = pcall(function()
 		function functions:Close()
 			if not holderframe then return end
 			if not window then return end
-			isfocused[frameindex] = false
+			windows[frameindex].Focused = true
 			window:Destroy()
 			window = nil
 			holderframe:Destroy()
@@ -682,7 +686,7 @@ local success, Error1 = pcall(function()
 		end
 
 		function functions:IsFocused()
-			return isfocused[frameindex]
+			return windows[frameindex].Focused
 		end
 
 		function functions:Minimize(mintext)
@@ -693,7 +697,7 @@ local success, Error1 = pcall(function()
 			resolutionframe:AddChild(holderframe)
 			holderframe.Visible = false
 			minimizepressed = true
-			isfocused[frameindex] = false
+			windows[frameindex].Focused = false
 			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
 			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = if typeof(mintext) == "function" then tostring(mintext()) else tostring(mintext)})
 			unminimizebutton:AddChild(unminimizetext)
@@ -714,11 +718,20 @@ local success, Error1 = pcall(function()
 				unminimizebutton:Destroy()
 				minimizepressed = false
 				minimizedammount -= 1
-				for i, v in ipairs(isfocused) do
-					isfocused[i] = false
-				end
+				for i, v in ipairs(windows) do
+					v.Focused = false
 
-				isfocused[frameindex] = true
+					if v.CloseButton then
+						v.CloseButton.Image = "rbxassetid://16821401308"
+					end
+				end
+	
+				windows[frameindex].Focused = true
+
+				if closebutton then
+					closebutton.Image = "rbxassetid://15617983488"
+				end
+				
 				if holderframe then
 					programholder1:AddChild(holderframe)
 					holderframe.Visible = true
@@ -832,11 +845,20 @@ local success, Error1 = pcall(function()
 			if holding then return end
 			programholder2:AddChild(holderframe)
 			programholder1:AddChild(holderframe)
-			for i, v in ipairs(isfocused) do
-				isfocused[i] = false
+			for i, v in ipairs(windows) do
+				v.Focused = false
+
+				if v.CloseButton then
+					v.CloseButton.Image = "rbxassetid://16821401308"
+				end
 			end
 
-			isfocused[frameindex] = true
+			windows[frameindex].Focused = true
+
+			if closebutton then
+				closebutton.Image = "rbxassetid://15617983488"
+			end
+						
 			if boolean3 then return end
 			if maximizepressed then return end
 			local cursors = screen:GetCursors()
@@ -863,7 +885,7 @@ local success, Error1 = pcall(function()
 			holding2 = false
 		end)
 
-		local closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X, 0, defaultbuttonsize.Y), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
+		closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X, 0, defaultbuttonsize.Y), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
 		holderframe:AddChild(closebutton)
 
 		closebutton.MouseButton1Down:Connect(function()
@@ -929,6 +951,11 @@ local success, Error1 = pcall(function()
 				textlabel.Size += UDim2.new(0, defaultbuttonsize.X, 0, 0)
 			end
 		end
+
+		frameindex = #windows + 1
+				
+		windows[frameindex] = {Holderframe = window, Window = holderframe, CloseButton = closebutton, MaximizeButton = maximizebutton, TextLabel = textlabel, ResizeButton = resizebutton, MinimizeButton = minimizebutton, FunctionsTable = functions, Focused = true})
+				
 		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions
 	end
 
@@ -5237,6 +5264,8 @@ function bootos()
 			elseif typeof(iconsdisabled) == "boolean" then
 				iconsdisabled = false
 			end
+
+			windows = {}
 
 			iconsize = rom:Read("IconSize")
 			iconsize = tonumber(iconsize) or 0.2
