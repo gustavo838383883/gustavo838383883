@@ -5105,6 +5105,9 @@ local success, Error1 = pcall(function()
 			end
 			if not players[cursor.Player] then
 				local a = screen:CreateElement("ImageLabel", {AnchorPoint = Vector2.new(0.5, 0.5), Image = "rbxassetid://8679825641", BackgroundTransparency = 1, Size = UDim2.fromScale(0.2, 0.2), Position = UDim2.fromScale(0.5, 0.5), ZIndex = (2^31)-1})
+				local b = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1.5, 0.5), Position = UDim2.fromScale(-0.25, 0.5), BackgroundTransparency = 1, TextScaled = true, Text = tostring(cursor.Player), TextStrokeTransparency = 0, TextStrokeColor3 = Color3.new(1, 1, 1)})
+				a:AddChild(b)
+				
 				players[cursor.Player] = {tick(), a}
 			end
 			players[cursor.Player][2].Position = UDim2.fromOffset(cursor.X, cursor.Y)
