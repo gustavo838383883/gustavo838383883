@@ -5114,6 +5114,9 @@ local success, Error1 = pcall(function()
 
 	function loadingscreen(boolean1, boolean2)
 		screen:ClearElements()
+
+		if restartkey then restartkey:Unbind() end
+				
 		if not boolean1 then
 			rom:Write("GustavOSLibrary", nil)
 			rom:Write("GD7Library", nil)
