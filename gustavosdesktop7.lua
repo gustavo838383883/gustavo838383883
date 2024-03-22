@@ -4785,6 +4785,13 @@ local success, Error1 = pcall(function()
 					if taskbarholder then
 						taskbarholder:Destroy()
 					end
+
+					for i, window in ipairs(windows) do
+						window.FunctionsTable:Close()
+					end
+
+					windows = {}
+																																									
 					if programholder1 then
 						programholder1:Destroy()
 					end
