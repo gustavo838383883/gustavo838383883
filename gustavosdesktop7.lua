@@ -1729,6 +1729,10 @@ local success, Error1 = pcall(function()
 				nameondisk = ""
 				directory = "/"
 			end
+
+			if not string.find(nameondisk, ".lnk") and not string.find(nameondisk, ".lua") and not string.find(nameondisk, ".img") and not string.find(nameondisk, ".aud") and not string.find(nameondisk, ".vid") and typeof(txt) ~= "table" then
+				readfile(txt, nameondisk, directory)
+			end
 		end
 
 		if prevdir then
