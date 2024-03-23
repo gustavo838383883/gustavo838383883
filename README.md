@@ -42,5 +42,5 @@ GD7Library: function(): {
 	filesystem: {Read: function(filename: string,  directory: string, canReturnNil: boolean): any, Write: function(filename: string, data: any, directory: string): successString},
 	filereader: function(txt: any, nameondisk: string, directory: string): never,
 	Chatted: function(func: function): {Unbind: Method, Function: function(text: string, player: Player)},
- 	openstartmenu: function(parent: ScreenObject): ImageButton,
+ 	openstartmenu: function(parent: ScreenObject, func: function(buttonclicked: string)): ImageButton,
 }
