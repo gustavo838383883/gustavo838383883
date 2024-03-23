@@ -4871,10 +4871,14 @@ local success, Error1 = pcall(function()
 
 		local pressed = false
 		local startmenu
-		local function openstartmenu()
+		local function openstartmenu(object)
 			if not pressed then
 				startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
-				taskbarholder:AddChild(startmenu)
+				if not object then
+					taskbarholder:AddChild(startmenu)
+				else
+					object:AddChild(startmenu)
+				end
 				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2.6, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 				startmenu:AddChild(scrollingframe)
 				local settingsopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.fromScale(0, 0), "Settings", scrollingframe)
