@@ -478,7 +478,7 @@ local CoroutineLoop = coroutine.create(function()
 							selectedcolor = ui.BackgroundColor3
 							text1.Text = tostring(brickcolornames[table.find(brickcolorpallete, ui.BackgroundColor3)])
 						end
-					ebd
+					end
 				end
 			end
 		end
