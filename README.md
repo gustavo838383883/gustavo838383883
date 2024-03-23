@@ -44,5 +44,5 @@ GD7Library: function(): {
 	Chatted: function(func: function): {Unbind: Method, Function: function(text: string, player: Player)},
  	openstartmenu: function(parent: ScreenObject, func: function(buttonclicked: string)): ImageButton,
   	wallpaper: ImageLabel,
-   	BackgroundColor: Frame,
+   	backgroundcolor: Frame,
 }
