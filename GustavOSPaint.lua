@@ -391,6 +391,8 @@ local descreasebutton = gputer.createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2
 
 local number = 1
 
+pencilerasersize = number*(((blocksizexy.X*blocksizexy.Y)^0.5)/2)
+
 increasebutton.MouseButton1Up:Connect(function()
 	if number < 10 then
 		number += 1
