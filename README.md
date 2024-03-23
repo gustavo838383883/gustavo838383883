@@ -30,8 +30,8 @@ GD7Library: function(): {
 	Microphone: Microphone,
 	Speaker: Speaker,
 	Disk: Disk,
-	programholder1: ScreenObject,
-	programholder2: ScreenObject,
+	programholder1: Frame,
+	programholder2: Frame,
 	Taskbar: {ScrollingFrame, Frame},
 	screenresolution: Frame,
  	mainframe : Frame,
@@ -42,5 +42,5 @@ GD7Library: function(): {
 	filesystem: {Read: function(filename: string,  directory: string, canReturnNil: boolean): any, Write: function(filename: string, data: any, directory: string): successString},
 	filereader: function(txt: any, nameondisk: string, directory: string): never,
 	Chatted: function(func: function): {Unbind: Method, Function: function(text: string, player: Player)},
- 	openstartmenu: function(parent: ScreenObject): never,
+ 	openstartmenu: function(parent: ScreenObject): ImageButton,
 }
