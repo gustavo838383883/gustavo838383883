@@ -4817,10 +4817,12 @@ local success, Error1 = pcall(function()
 		startbutton7:AddChild(textlabel)
 
 		programholder1 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
+		resolutionframe:AddChild(programholder1)
 		programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 		programholder1:AddChild(programholder2)
 
 		taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0.1, 0), BackgroundTransparency = 1, ImageTransparency = 0.25})
+		resolutionframe:AddChild(taskbarholder)
 		taskbarholder:AddChild(startbutton7)
 
 		taskbarholderscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(0.9, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0.9, 0, 1, 0), Position = UDim2.new(0.1, 0, 0, 0), ScrollBarThickness = 2.5})
