@@ -476,7 +476,7 @@ local CoroutineLoop = coroutine.create(function()
 					else
 						if getCursorCollidingCopy(cursor.X, cursor.Y, ui) then
 							selectedcolor = ui.BackgroundColor3
-							text1.Text = tostring(brickcolornames[table.find(brickcolorpallete, ui.BackgroundColor3)])
+							text1.Text = BrickColor.new(ui.BackgroundColor3).Name
 						end
 					end
 				end
