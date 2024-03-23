@@ -245,7 +245,7 @@ local function DetectGuiBelow2(gui, folder)
 end
 
 local disk = GetPartFromPort(1, "Disk")
-local gputer = disk:Read("GD7Library")
+local gputer = disk:Read("GD7Library")()
 local screen = gputer.Screen
 local keyboard = gputer.Keyboard
 local speaker = gputer.Speaker
