@@ -32,7 +32,7 @@ GD7Library: function(): {
 	Disk: Disk,
 	programholder1: Frame,
 	programholder2: Frame,
-	Taskbar: {ScrollingFrame, Frame},
+	Taskbar: {ScrollingFrame, Frame, ImageButton},
 	screenresolution: Frame,
  	mainframe : Frame,
 	CreateWindow: function,
