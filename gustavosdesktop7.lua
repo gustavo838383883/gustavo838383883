@@ -5261,8 +5261,10 @@ local success, Error1 = pcall(function()
 			loaddesktop()
 		else
 			if boolean2 then
+				speaker:ClearSounds()
 				shutdownnow()
 			else
+				speaker:ClearSounds()
 				restartnow()
 			end
 		end
