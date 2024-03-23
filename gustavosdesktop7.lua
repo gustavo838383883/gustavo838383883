@@ -5014,12 +5014,29 @@ local success, Error1 = pcall(function()
 			end
 		end
 
-		pcall(createfileontable, rom, "openstartmenu", openstartmenu, "/GD7Library")
-		pcall(createfileontable, rom, "programholder1", programholder1, "/GD7Library")
-		pcall(createfileontable, rom, "programholder2", programholder2, "/GD7Library")
-		pcall(createfileontable, rom, "screenresolution", resolutionframe, "/GD7Library")
-		pcall(createfileontable, rom, "mainframe", mainframe, "/GD7Library")
-		pcall(createfileontable, rom, "Taskbar", {taskbarholderscrollingframe, taskbarholder}, "/GD7Library")
+		rom:Write("GustavOSLibrary", nil)
+		rom:Write("GD7Library", nil)
+		rom:Write("GDOSLibrary", nil)
+		rom:Write("GD7Library", {
+			Screen = screen,
+			Keyboard = keyboard,
+			Modem = modem,
+			Speaker = speaker,
+			Disk = disk,
+			CreateWindow = CreateWindow,
+			createnicebutton = createnicebutton,
+			createnicebutton2 = createnicebutton2,
+			openstartmenu = openstartmenu,
+			programholder1 = programholder1,
+			programholder2 = programholder2,
+			screenresolution = resolutionframe,
+			mainframe = mainframe,
+			Taskbar = {taskbarholderscrollingframe, taskbarholder},
+			FileExplorer = loaddisk,
+			filesystem = filesystem,
+			filereader = readfile,
+			Chatted = MicrophoneChatted
+		})
 
 		startbutton7.MouseButton1Down:Connect(function()
 			startbutton7.Image = "rbxassetid://15617867263"
@@ -5131,26 +5148,7 @@ local success, Error1 = pcall(function()
 		screen:ClearElements()
 
 		if restartkey then restartkey:Unbind() end
-				
-		if not boolean1 then
-			rom:Write("GustavOSLibrary", nil)
-			rom:Write("GD7Library", nil)
-			rom:Write("GDOSLibrary", nil)
-			rom:Write("GD7Library", {
-				Screen = screen,
-				Keyboard = keyboard,
-				Modem = modem,
-				Speaker = speaker,
-				Disk = disk,
-				CreateWindow = CreateWindow,
-				createnicebutton = createnicebutton,
-				createnicebutton2 = createnicebutton2,
-				FileExplorer = loaddisk,
-				filesystem = filesystem,
-				filereader = readfile,
-				Chatted = MicrophoneChatted
-			})
-		end
+		
 		local wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), Image = "rbxassetid://"..tostring(disk:Read("LoadingImage") or 16204218577), BackgroundTransparency = 1})
 		local spinner = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0.7, 0.4), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Fit, Image = "rbxassetid://16204406408"})
 		wallpaper:AddChild(spinner)
