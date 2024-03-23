@@ -43,4 +43,6 @@ GD7Library: function(): {
 	filereader: function(txt: any, nameondisk: string, directory: string): never,
 	Chatted: function(func: function): {Unbind: Method, Function: function(text: string, player: Player)},
  	openstartmenu: function(parent: ScreenObject, func: function(buttonclicked: string)): ImageButton,
+  	wallpaper: ImageLabel,
+   	BackgroundColor: Frame,
 }
