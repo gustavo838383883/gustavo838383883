@@ -5011,6 +5011,10 @@ local success, Error1 = pcall(function()
 		end
 
 		pcall(createfileontable, rom, "openstartmenu", openstartmenu, "/GD7Library")
+		pcall(createfileontable, rom, "programholder1", programholder1, "/GD7Library")
+		pcall(createfileontable, rom, "programholder2", programholder2, "/GD7Library")
+		pcall(createfileontable, rom, "screenresolution", resolutionframe, "/GD7Library")
+		pcall(createfileontable, rom, "Taskbar", {taskbarholderscrollingframe, taskbarholder}, "/GD7Library")
 
 		startbutton7.MouseButton1Down:Connect(function()
 			startbutton7.Image = "rbxassetid://15617867263"
@@ -5133,10 +5137,6 @@ local success, Error1 = pcall(function()
 				Modem = modem,
 				Speaker = speaker,
 				Disk = disk,
-				programholder1 = programholder1,
-				programholder2 = programholder2,
-				Taskbar = {taskbarholderscrollingframe, taskbarholder},
-				screenresolution = resolutionframe,
 				CreateWindow = CreateWindow,
 				createnicebutton = createnicebutton,
 				createnicebutton2 = createnicebutton2,
