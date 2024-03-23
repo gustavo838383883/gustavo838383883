@@ -1,6 +1,6 @@
 local disk = GetPartFromPort(1, "Disk")
 
-local gputer = disk:Read("GD7Library")
+local gputer = disk:Read("GD7Library")()
 
 local filesystem = gputer.filesystem
 local createnicebutton = gputer.createnicebutton
