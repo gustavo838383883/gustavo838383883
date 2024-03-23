@@ -1,5 +1,5 @@
 local disk = GetPartFromPort(1, "Disk")
-local gputer = disk:Read("GD7Library")
+local gputer = disk:Read("GD7Library")()
 
 local CreateWindow = gputer.CreateWindow
 local speaker = gputer.Speaker
