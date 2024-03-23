@@ -5017,7 +5017,7 @@ local success, Error1 = pcall(function()
 		rom:Write("GustavOSLibrary", nil)
 		rom:Write("GD7Library", nil)
 		rom:Write("GDOSLibrary", nil)
-		rom:Write("GD7Library", {
+		rom:Write("GD7Library", function() return {
 			Screen = screen,
 			Keyboard = keyboard,
 			Modem = modem,
@@ -5030,12 +5030,13 @@ local success, Error1 = pcall(function()
 			programholder1 = programholder1,
 			programholder2 = programholder2,
 			screenresolution = resolutionframe,
-			Taskbar = taskbarholder,
+			mainframe = mainframe,
+			Taskbar = {taskbarholderscrollingframe, taskbarholder},
 			FileExplorer = loaddisk,
 			filesystem = filesystem,
 			filereader = readfile,
 			Chatted = MicrophoneChatted
-		})
+		} end)
 
 		startbutton7.MouseButton1Down:Connect(function()
 			startbutton7.Image = "rbxassetid://15617867263"
