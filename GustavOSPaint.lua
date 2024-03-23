@@ -9,7 +9,7 @@
 --made by Gustavo12345687890
 
 local disk = GetPartFromPort(1, "Disk")
-local gputer = disk:Read("GD7Library")
+local gputer = disk:Read("GD7Library")()
 local filesystem = gputer.filesystem
 local speaker = gputer.Speaker
 local keyboard = gputer.Keyboard
