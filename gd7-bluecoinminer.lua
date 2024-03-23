@@ -38,6 +38,9 @@ local function getCursorColliding(X, Y, ui)
 end
 
 local gputer = GetPartFromPort(1, "Disk"):Read("GD7Library") or GetPartFromPort(1, "Disk"):Read("GDOSLibrary") or GetPartFromPort(1, "Disk"):Read("GustavOSLibrary") or {}
+
+if typeof(gputer) == "function" then gputer = gputer() end
+
 local Modem = gputer.Modem or GetPartFromPort(1, "Modem") or GetPartFromPort(2, "Modem")
 local Screen = gputer.Screen or GetPartFromPort(1, "TouchScreen") or GetPartFromPort(2, "TouchScreen")
 local programholder1 = gputer.programholder1
