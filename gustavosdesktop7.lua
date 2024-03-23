@@ -469,6 +469,7 @@ local cursorevent
 local startCursorPos
 local videovolume = 0.5
 local loadingscreen
+local mainframe
 
 local success, Error1 = pcall(function()
 	local holding = false
@@ -3402,6 +3403,10 @@ local success, Error1 = pcall(function()
 			if programholder1 then
 				programholder1:Destroy()
 			end
+			if mainframe then
+			    mainframe:Destroy()
+    			end
+
 			if cursorevent then cursorevent:Unbind() end
 			keyboardinput = nil
 			playerthatinputted = nil
@@ -3442,6 +3447,10 @@ local success, Error1 = pcall(function()
 			if programholder1 then
 				programholder1:Destroy()
 			end
+			if mainframe then
+			    mainframe:Destroy()
+    			end
+
 			if cursorevent then cursorevent:Unbind() end
 			minimizedprograms = {}
 			minimizedammount = 0
@@ -4767,7 +4776,7 @@ local success, Error1 = pcall(function()
 		minimizedammount = 0
 		minimizedprograms = {}
 		resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Position = UDim2.new(2,0,0,0)})
-		local mainframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
+		mainframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
 		backgroundcolor = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = color})
 		wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
 		mainframe:AddChild(backgroundcolor)
