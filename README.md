@@ -34,6 +34,7 @@ GD7Library: function(): {
 	programholder2: ScreenObject,
 	Taskbar: {ScrollingFrame, Frame},
 	screenresolution: Frame,
+ 	mainframe : Frame,
 	CreateWindow: function,
 	FileExplorer: function(directory: string, functionForSelectingFile: function(name: string, dir: string), selectFile: boolean),
 	createnicebutton: function(size: UDim2, position: UDim2, text: string, parent: ScreenObject): ImageButton, TextLabel,
@@ -41,5 +42,5 @@ GD7Library: function(): {
 	filesystem: {Read: function(filename: string,  directory: string, canReturnNil: boolean): any, Write: function(filename: string, data: any, directory: string): successString},
 	filereader: function(txt: any, nameondisk: string, directory: string): never,
 	Chatted: function(func: function): {Unbind: Method, Function: function(text: string, player: Player)},
- 	openstartmenu: function(): never,
+ 	openstartmenu: function(parent: ScreenObject): never,
 }
