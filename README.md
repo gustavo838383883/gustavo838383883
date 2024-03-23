@@ -24,7 +24,7 @@ GD7Library Documentation:
 
 window, holderFrame, closeButton, maximizeButton, textLabel (the title TextLabel), resizeButton, minimizeButton, functionsTable CreateWindow(udim2: UDim2, title: string?, maximizeDisabled: boolean, resizingDisabled: boolean, movingDisabled: boolean, minimizedtext: string? or function?, minimizingDisabled: boolean, unminimizeButtonImageChangesOnMouseButton1Down: boolean, resizeButtonImageChangesOnClick: boolean)
 
-GD7Library: {
+GD7Library: function(): {
 	Screen: TouchScreen,
 	Keyboard: Keyboard,
 	Microphone: Microphone,
