@@ -5111,7 +5111,9 @@ local success, Error1 = pcall(function()
 			FileExplorer = loaddisk,
 			filesystem = filesystem,
 			filereader = readfile,
-			Chatted = MicrophoneChatted
+			Chatted = MicrophoneChatted,
+			wallpaper = wallpaper,
+			backgroundcolor = backgroundcolor,
 		} end)
 
 		startbutton7.MouseButton1Down:Connect(function()
