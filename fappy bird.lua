@@ -11,7 +11,7 @@ test
 
 
 
-local gputer = GetPartFromPort(1, "Disk"):Read("GD7Library")
+local gputer = GetPartFromPort(1, "Disk"):Read("GD7Library")()
 
 local screen = gputer.Screen
 local CreateWindow = gputer.CreateWindow
