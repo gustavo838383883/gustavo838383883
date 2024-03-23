@@ -5009,6 +5009,9 @@ local success, Error1 = pcall(function()
 				pressed = false
 			end
 		end
+
+		pcall(createfileontable, rom, "openstartmenu", openstartmenu, "/GD7Library")
+
 		startbutton7.MouseButton1Down:Connect(function()
 			startbutton7.Image = "rbxassetid://15617867263"
 			buttondown = true
