@@ -75,6 +75,35 @@ local function getCursorColliding(X, Y, ui)
 	end
 end
 
+local function getCursorCollidingCopy(X, Y, ui)
+	if X and Y and ui then else return end
+	local x = ui.AbsolutePosition.X
+	local y = ui.AbsolutePosition.Y
+	local y_axis = nil
+	local x_axis = nil
+	local guiposx = X
+	local number = ui.AbsoluteSize.X
+
+	if x - guiposx > -number then
+		if x - guiposx < 0 then
+			x_axis = X - guiposx
+		end
+	end
+
+	local guiposy = Y
+	local number2 = ui.AbsoluteSize.Y
+
+	if y - guiposy > -number2 then
+		if y - guiposy < 0 then
+			y_axis = y - guiposy
+		end
+	end
+
+	if x_axis and y_axis then
+		return true, x_axis, y_axis
+	end
+end
+
 local selectedcolor = BrickColor.new("Really black").Color
 local selectedcolor2 = BrickColor.new("Institutional white").Color
 
@@ -344,12 +373,14 @@ end
 
 local mode = 0
 
-local eraserbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.4), "", window)
+local eraserbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.3), "", window)
 local pencilbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.2), "", window)
+local copybutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.4), "", window)
 --local savebutton = gputer.createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 
 local eraserimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16821121269", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 local pencilimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16821120420", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
+local copyimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16833148719", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 --local saveimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16827485976", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 
 local sizetext = functions:CreateElement("TextLabel", {Size = UDim2.fromScale(0.1, 0.1), Position = UDim2.fromScale(0, 0.7), BackgroundTransparency = 1, Text = 1, TextScaled = true, TextStrokeTransparency = 0, TextStrokeColor3 = Color3.new(1, 1, 1)})
@@ -380,12 +411,14 @@ end)
 
 eraserbutton:AddChild(eraserimage)
 pencilbutton:AddChild(pencilimage)
+copybutton:AddChild(copyimage)
 --savebutton:AddChild(saveimage)
 
 eraserbutton.MouseButton1Up:Connect(function()
 	speaker:PlaySound(clicksound)
 	if mode ~= 2 then
 		eraserbutton.Image = "rbxassetid://15625805069"
+		copybutton.Image = "rbxassetid://15625805900"
 		pencilbutton.Image = "rbxassetid://15625805900"
 		mode = 2
 	else
@@ -394,10 +427,24 @@ eraserbutton.MouseButton1Up:Connect(function()
 	end
 end)
 
+copybutton.MouseButton1Up:Connect(function()
+	speaker:PlaySound(clicksound)
+	if mode ~= 3 then
+		copybutton.Image = "rbxassetid://15625805069"
+		pencilbutton.Image = "rbxassetid://15625805900"
+		eraserbutton.Image = "rbxassetid://15625805900"
+		mode = 3
+	else
+		copybutton.Image = "rbxassetid://15625805900"
+		mode = 0
+	end
+end)
+
 pencilbutton.MouseButton1Up:Connect(function()
 	speaker:PlaySound(clicksound)
 	if mode ~= 1 then
 		pencilbutton.Image = "rbxassetid://15625805069"
+		copybutton.Image = "rbxassetid://15625805900"
 		eraserbutton.Image = "rbxassetid://15625805900"
 		mode = 1
 	else
@@ -418,13 +465,20 @@ local CoroutineLoop = coroutine.create(function()
 
 			for i, cursor in pairs(cursors) do	
 				for i, ui in ipairs(colorblocks) do
-					if getCursorColliding(cursor.X, cursor.Y, ui) then
-						if mode == 1 then
-							ui.BackgroundColor3 = selectedcolor
-						elseif mode == 2 then
-							ui.BackgroundColor3 = selectedcolor2
+					if mode ~= 3 then
+						if getCursorColliding(cursor.X, cursor.Y, ui) then
+							if mode == 1 then
+								ui.BackgroundColor3 = selectedcolor
+							elseif mode == 2 then
+								ui.BackgroundColor3 = selectedcolor2
+							end
 						end
-					end
+					else
+						if getCursorCollidingCopy(cursor.X, cursor.Y, ui) then
+							selectedcolor = ui.BackgroundColor3
+							text1.Text = tostring(brickcolornames[table.find(brickcolorpallete, ui.BackgroundColor3)])
+						end
+					ebd
 				end
 			end
 		end
