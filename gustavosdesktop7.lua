@@ -4871,14 +4871,14 @@ local success, Error1 = pcall(function()
 
 		local pressed = false
 		local startmenu
-		local function openstartmenu(object)
+		local function openstartmenu(object, func)
 			if not pressed then
 				startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
 				if not object then
-					taskbarholder:AddChild(startmenu)
-				else
-					object:AddChild(startmenu)
-				end
+				    taskbarholder:AddChild(startmenu)
+			    else
+			        object:AddChild(startmenu)
+			    end
 				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2.6, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
 				startmenu:AddChild(scrollingframe)
 				local settingsopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.fromScale(0, 0), "Settings", scrollingframe)
@@ -4886,6 +4886,10 @@ local success, Error1 = pcall(function()
 					settings()
 					pressed = false
 					startmenu:Destroy()
+
+					if func then
+					   func("settings")
+					end
 				end)
 
 				local diskwriteopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, 0.2/scrollingframe.CanvasSize.Y.Scale, 0), "Create/Overwrite file", scrollingframe)
@@ -4893,6 +4897,10 @@ local success, Error1 = pcall(function()
 					writedisk()
 					pressed = false
 					startmenu:Destroy()
+
+					if func then
+					   func("diskwrite")
+					end
 				end)
 
 				local filesopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*2, 0), "Files", scrollingframe)
@@ -4900,6 +4908,10 @@ local success, Error1 = pcall(function()
 					loaddisk("/", true)
 					pressed = false
 					startmenu:Destroy()
+
+					if func then
+					   func("loaddisk")
+					end
 				end)
 
 				local luasopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*3, 0), "Lua executor", scrollingframe)
@@ -4907,6 +4919,10 @@ local success, Error1 = pcall(function()
 					customprogramthing(screen, microcontrollers)
 					pressed = false
 					startmenu:Destroy()
+
+					if func then
+					   func("luaopen")
+					end
 				end)
 
 				local mediaopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*4, 0), "Mediaplayer", scrollingframe)
@@ -4914,6 +4930,10 @@ local success, Error1 = pcall(function()
 					mediaplayer()
 					pressed = false
 					startmenu:Destroy()
+
+					if func then
+					   func("mediaplayer")
+					end
 				end)
 
 				local chatopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*5, 0), "Chat", scrollingframe)
@@ -4921,6 +4941,10 @@ local success, Error1 = pcall(function()
 					chatthing()
 					pressed = false
 					startmenu:Destroy()
+
+					if func then
+					   func("chat")
+					end
 				end)
 
 				local calculatoropen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*6, 0), "Calculator", scrollingframe)
@@ -4928,6 +4952,10 @@ local success, Error1 = pcall(function()
 					calculator()
 					pressed = false
 					startmenu:Destroy()
+
+					if func then
+					   func("calculator")
+					end
 				end)
 
 				local terminalopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*7, 0), "Terminal", scrollingframe)
@@ -4935,13 +4963,21 @@ local success, Error1 = pcall(function()
 					pressed = false
 					startmenu:Destroy()
 					terminal()
+
+					if func then
+					   func("terminal")
+					end
 				end)
-				
+
 				local copy = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*8, 0), "Copy File", scrollingframe)
 				copy.MouseButton1Up:Connect(function()
 					pressed = false
 					startmenu:Destroy()
 					copyfile()
+
+					if func then
+					   func("copy")
+					end
 				end)
 
 				local rename = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*9, 0), "Rename File", scrollingframe)
@@ -4949,6 +4985,10 @@ local success, Error1 = pcall(function()
 					pressed = false
 					startmenu:Destroy()
 					renamefile()
+
+					if func then
+					   func("rename")
+					end
 				end)
 
 				local short = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*10, 0), "Create Shortcut", scrollingframe)
@@ -4956,6 +4996,10 @@ local success, Error1 = pcall(function()
 					pressed = false
 					startmenu:Destroy()
 					createshortcut()
+
+					if func then
+					   func("shortcut")
+					end
 				end)
 
 				local move = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*11, 0), "Move File", scrollingframe)
@@ -4963,12 +5007,21 @@ local success, Error1 = pcall(function()
 					pressed = false
 					startmenu:Destroy()
 					movefile()
+
+					if func then
+					   func("move")
+					end
 				end)
 
 				local reset = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.new(0, 0, (0.2/scrollingframe.CanvasSize.Y.Scale)*12, 0), "Reset Keyboard Event", scrollingframe)
 				reset.MouseButton1Up:Connect(function()
 					pressed = false
 					startmenu:Destroy()
+
+					if func then
+					   func("resetkeyboardevent")
+					end
+
 					if keyboardevent then keyboardevent:Unbind() end
 					keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 						keyboardinput = text
@@ -4976,26 +5029,26 @@ local success, Error1 = pcall(function()
 					end)
 					if restartkey then restartkey:Unbind() end
 
-					restartkey = keyboard:Connect("KeyPressed", function(key)
-						if key == Enum.KeyCode.LeftControl then
-							leftctrlpressed = true
-							task.wait(0.1)
-							leftctrlpressed = false
-						elseif key == Enum.KeyCode.R then
-							if leftctrlpressed == true then
-								if startbutton7 then
-									startbutton7:Destroy()
-								end
-								if taskbarholder then
-									taskbarholder:Destroy()
-								end
-								if programholder1 then
-									programholder1:Destroy()
-								end
-								loaddesktop()
-							end
-						end
-					end)
+            		restartkey = keyboard:Connect("KeyPressed", function(key)
+            			if key == Enum.KeyCode.LeftControl then
+            				leftctrlpressed = true
+            				task.wait(0.1)
+            				leftctrlpressed = false
+            			elseif key == Enum.KeyCode.R then
+            				if leftctrlpressed == true then
+            					if startbutton7 then
+            						startbutton7:Destroy()
+            					end
+            					if taskbarholder then
+            						taskbarholder:Destroy()
+            					end
+            					if programholder1 then
+            						programholder1:Destroy()
+            					end
+            					loaddesktop()
+            				end
+            			end
+            		end)
 				end)
 
 				local shutdown = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Shutdown", startmenu)
@@ -5003,6 +5056,10 @@ local success, Error1 = pcall(function()
 					pressed = false
 					startmenu:Destroy()
 					shutdownprompt()
+
+					if func then
+					   func("shutdown")
+					end
 				end)
 
 				local restart = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Reboot", startmenu)
@@ -5010,6 +5067,10 @@ local success, Error1 = pcall(function()
 					pressed = false
 					startmenu:Destroy()
 					restartprompt()
+
+					if func then
+					   func("reboot")
+					end
 				end)
 				pressed = true
 			else
@@ -5018,7 +5079,7 @@ local success, Error1 = pcall(function()
 			end
 
 			return startmenu
-		end
+	   	end
 
 		rom:Write("GustavOSLibrary", nil)
 		rom:Write("GD7Library", nil)
