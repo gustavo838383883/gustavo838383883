@@ -161,19 +161,16 @@ local function open(mode)
 
 		if color == selectedcolor and mode == 1 then
 			button.BorderColor3 = Color3.new(0, 1, 0)
+			button.ZIndex = 2
 		end
 
 		if color == selectedcolor2 and mode == 2 then
 			button.BorderColor3 = Color3.new(0, 1, 0)
+			button.ZIndex = 2
 		end
 
 		if (mode == 1 and color ~= selectedcolor) or (mode == 2 and color ~= selectedcolor2) then
 			button.BorderSizePixel = 0
-			if mode == 1 and color == selectedcolor2 then
-				button.BorderColor3 = Color3.new(1, 0, 0)
-			elseif mode == 2 and color == selectedcolor then
-				button.BorderColor3 = Color3.new(1, 0, 0)
-			end
 		end
 
 		x += 0.1
