@@ -5018,6 +5018,7 @@ local success, Error1 = pcall(function()
 		pcall(createfileontable, rom, "programholder1", programholder1, "/GD7Library")
 		pcall(createfileontable, rom, "programholder2", programholder2, "/GD7Library")
 		pcall(createfileontable, rom, "screenresolution", resolutionframe, "/GD7Library")
+		pcall(createfileontable, rom, "mainframe", mainframe, "/GD7Library")
 		pcall(createfileontable, rom, "Taskbar", {taskbarholderscrollingframe, taskbarholder}, "/GD7Library")
 
 		startbutton7.MouseButton1Down:Connect(function()
