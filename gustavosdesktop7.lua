@@ -5016,6 +5016,8 @@ local success, Error1 = pcall(function()
 				startmenu:Destroy()
 				pressed = false
 			end
+
+			return startmenu
 		end
 
 		rom:Write("GustavOSLibrary", nil)
