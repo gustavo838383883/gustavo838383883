@@ -4766,8 +4766,8 @@ local success, Error1 = pcall(function()
 	function loaddesktop()
 		minimizedammount = 0
 		minimizedprograms = {}
-		local mainframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
 		resolutionframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Position = UDim2.new(2,0,0,0)})
+		local mainframe = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0)})
 		backgroundcolor = screen:CreateElement("Frame", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = color})
 		wallpaper = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
 		mainframe:AddChild(backgroundcolor)
