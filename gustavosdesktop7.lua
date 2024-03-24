@@ -957,7 +957,7 @@ local success, Error1 = pcall(function()
 
 		frameindex = #windows + 1
 				
-		windows[frameindex] = {Name = title, Holderframe = window, Window = holderframe, CloseButton = closebutton, MaximizeButton = maximizebutton, TextLabel = textlabel, ResizeButton = resizebutton, MinimizeButton = minimizebutton, FunctionsTable = functions, Focused = true}
+		windows[frameindex] = {Name = text or title, Holderframe = window, Window = holderframe, CloseButton = closebutton, MaximizeButton = maximizebutton, TextLabel = textlabel, ResizeButton = resizebutton, MinimizeButton = minimizebutton, FunctionsTable = functions, Focused = true}
 				
 		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions, frameindex
 	end
