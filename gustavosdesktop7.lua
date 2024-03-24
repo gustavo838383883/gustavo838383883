@@ -4816,7 +4816,9 @@ local success, Error1 = pcall(function()
 					end					
 
 					for i, window in ipairs(windows) do
-						window.FunctionsTable:Close()
+						if window.FunctionsTable then
+							window.FunctionsTable:Close()
+						end
 					end
 
 					windows = {}
@@ -5067,7 +5069,9 @@ local success, Error1 = pcall(function()
 								end					
 			
 								for i, window in ipairs(windows) do
-									window.FunctionsTable:Close()
+									if window.FunctionsTable then
+										window.FunctionsTable:Close()
+									end
 								end
 			
 								windows = {}
