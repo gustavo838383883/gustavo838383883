@@ -2848,7 +2848,7 @@ local success, Error1 = pcall(function()
 		
 			scroll = funcs:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.fromScale(1, 0.6), CanvasSize = UDim2.fromScale(0, 0), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0.2)})
 		
-			scroll.CanvasSize += UDim2.fromOffset(0, 50)
+			scroll.CanvasSize += UDim2.fromOffset(0, 25)
 		
 			local selectionui = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 1), Image = "rbxassetid://8677487226", ImageTransparency = 1, BackgroundTransparency = 1})
 		
@@ -2865,7 +2865,7 @@ local success, Error1 = pcall(function()
 						text = "Untitled program"
 					end
 		
-					local button = createnicebutton(UDim2.new(1, 0, 0, 50), UDim2.fromOffset(0, 50*start), text, scroll)
+					local button = createnicebutton(UDim2.new(1, 0, 0, 25), UDim2.fromOffset(0, 25*start), text, scroll)
 		
 					button.MouseButton1Up:Connect(function()
 						selectionui.ImageTransparency = 0.2
@@ -2873,7 +2873,7 @@ local success, Error1 = pcall(function()
 						selectedwindow = window
 					end)
 		
-					scroll.CanvasSize += UDim2.fromOffset(0, 50)
+					scroll.CanvasSize += UDim2.fromOffset(0, 25)
 		
 					start += 1
 				end
