@@ -656,20 +656,6 @@ local success, Error1 = pcall(function()
 			end)
 		end
 
-		function functions:Close()
-			if not holderframe then return end
-			if not window then return end
-			windows[frameindex].Focused = true
-			window:Destroy()
-			window = nil
-			holderframe:Destroy()
-			holderframe = nil
-			closed = true
-		end
-
-		local unmaximizedsize = holderframe.Size
-		local unmaximizedpos = holderframe.Position
-
 		local unminimize
 			
 		function functions:Unminimize()
@@ -677,6 +663,27 @@ local success, Error1 = pcall(function()
 				unminimize()
 			end
 		end
+
+		function functions:Close()
+			if not holderframe then return end
+			if not window then return end
+			windows[frameindex].Focused = false
+			if minimizepressed then
+				functions:Unminimize()
+			end
+			window:Destroy()
+			window = nil
+			holderframe:Destroy()
+			holderframe = nil
+			closed = true
+		end
+
+		function functions:Destroy()
+			functions:Close()
+		end
+
+		local unmaximizedsize = holderframe.Size
+		local unmaximizedpos = holderframe.Position
 
 		function functions:IsClosed()
 			if closed or not holderframe then
