@@ -959,7 +959,7 @@ local success, Error1 = pcall(function()
 				
 		windows[frameindex] = {Holderframe = window, Window = holderframe, CloseButton = closebutton, MaximizeButton = maximizebutton, TextLabel = textlabel, ResizeButton = resizebutton, MinimizeButton = minimizebutton, FunctionsTable = functions, Focused = true}
 				
-		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions
+		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions, frameindex
 	end
 
 	function commandline.new(boolean, udim2, screen)
@@ -3384,7 +3384,10 @@ local success, Error1 = pcall(function()
 	end
 
 	local function shutdownprompt()
-		local window, holderframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
+		local window, holderframe, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs, index = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
+
+		windows[index] = {Focused = windows[index].Focused, CloseButton = closebutton}
+																																
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
 		local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 		no.MouseButton1Up:Connect(function()
@@ -3428,7 +3431,10 @@ local success, Error1 = pcall(function()
 	end
 
 	local function restartprompt()
-		local window, holderframe = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
+		local window, holderframe, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs, index = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
+
+		windows[index] = {Focused = windows[index].Focused, CloseButton = closebutton}
+																																
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
 		local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 		no.MouseButton1Up:Connect(function()
