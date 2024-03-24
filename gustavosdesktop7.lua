@@ -281,6 +281,10 @@ elseif disk6 and disk6:Read("PuterMode") == true then
 	putermode = true 
 end
 
+if putermode then
+   pcall(TriggerPort, 4)
+end
+
 local function getstuff()
 	disks = nil
 	rom = nil
