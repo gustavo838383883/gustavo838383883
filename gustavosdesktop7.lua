@@ -2833,6 +2833,87 @@ local success, Error1 = pcall(function()
 		end
 	end
 
+	local function windowsmanager()
+		local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs = CreateWindow(UDim2.fromScale(0.7, 0.7), "Windows Manager", false, false, false, "WM", false)
+		
+		local scroll
+		
+		local selectedwindow = nil
+		
+		local function reload()
+		
+			if scroll then scroll:Destroy() end
+		
+			selectedwindow = nil
+		
+			scroll = funcs:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.fromScale(1, 0.6), CanvasSize = UDim2.fromScale(0, 0), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0.2)})
+		
+			scroll.CanvasSize += UDim2.fromOffset(0, 50)
+		
+			local selectionui = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 1), Image = "rbxassetid://8677487226", ImageTransparency = 1, BackgroundTransparency = 1})
+		
+			scroll:AddChild(selectionui)
+		
+			local start = 0
+		
+			for i, window in ipairs(windows) do
+		
+				if window.FunctionsTable and not window.FunctionsTable:IsClosed() then
+					local text = if typeof(window.Name) == "function" then tostring(window.Name()) else tostring(window.Name)
+		
+					if text == "nil" then
+						text = "Untitled program"
+					end
+		
+					local button = createnicebutton(UDim2.new(1, 0, 0, 50), UDim2.fromOffset(0, 50*start), text, scroll)
+		
+					button.MouseButton1Up:Connect(function()
+						selectionui.ImageTransparency = 0.2
+						button:AddChild(selectionui)
+						selectedwindow = window
+					end)
+		
+					scroll.CanvasSize += UDim2.fromOffset(0, 50)
+		
+					start += 1
+				end
+			end
+		end
+		
+		reload()
+		
+		local refresh = createnicebutton(UDim2.fromScale(1, 0.15), UDim2.fromScale(0, 0), "Refresh", window)
+		local endbutton = createnicebutton(UDim2.fromScale(1/3, 0.15), UDim2.fromScale(0, 0.85), "Close", window)
+		local resetposbutton = createnicebutton(UDim2.fromScale(1/3, 0.15), UDim2.fromScale(1/3, 0.85), "Reset Pos.", window)
+		local toggleminbutton = createnicebutton(UDim2.fromScale(1/3, 0.15), UDim2.fromScale((1/3)*2, 0.85), "Toggle minimized", window)
+		
+		resetposbutton.MouseButton1Up:Connect(function()
+			if selectedwindow then
+				selectedwindow.Window.Position = UDim2.fromScale(0, 0)
+			end
+		end)
+		
+		endbutton.MouseButton1Up:Connect(function()
+			if selectedwindow then
+				selectedwindow.FunctionsTable:Close()
+				reload()
+			end
+		end)
+		
+		toggleminbutton.MouseButton1Up:Connect(function()
+			if selectedwindow then
+				if selectedwindow.FunctionsTable:IsMinimized() then
+					selectedwindow.FunctionsTable:Unminimize()
+				else
+					selectedwindow.FunctionsTable:Minimize()
+				end
+			end
+		end)
+		
+		refresh.MouseButton1Up:Connect(function()
+			reload()
+		end)
+	end
 
 	local function customprogramthing(screen, micros)
 		local holderframe = CreateWindow(UDim2.new(0.75, 0, 0.75, 10), nil, false, false, false, "Lua executor", false)
@@ -2852,6 +2933,12 @@ local success, Error1 = pcall(function()
 
 		stopcodesbutton.MouseButton1Up:Connect(function()
 			shutdownmicros(screen, microcontrollers)
+		end)
+
+		local windowsbutton = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.4, 0), "Windows Manager", holderframe)
+
+		windowsbutton.MouseButton1Up:Connect(function()
+			windowsmanager()
 		end)
 
 		local runcodebutton, runcodebutton2 = createnicebutton(UDim2.new(1, 0, 0.2, 0), UDim2.new(0, 0, 0.8, 0), "Run lua", holderframe)
