@@ -114,7 +114,7 @@ local brickcolornames = {}
 for i=1, 1032 do
 	local brickcolor = BrickColor.new(i)
 
-	if brickcolor.Name ~= "Medium stone grey" then
+	if brickcolor.Name ~= "Medium stone grey" or i == 194 then
 		table.insert(brickcolorpallete, brickcolor.Color)
 		table.insert(brickcolornames, brickcolor.Name)
 	end
