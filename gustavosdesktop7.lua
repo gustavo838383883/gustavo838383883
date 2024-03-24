@@ -5038,26 +5038,33 @@ local success, Error1 = pcall(function()
 					end)
 					if restartkey then restartkey:Unbind() end
 
-            		restartkey = keyboard:Connect("KeyPressed", function(key)
-            			if key == Enum.KeyCode.LeftControl then
-            				leftctrlpressed = true
-            				task.wait(0.1)
-            				leftctrlpressed = false
-            			elseif key == Enum.KeyCode.R then
-            				if leftctrlpressed == true then
-            					if startbutton7 then
-            						startbutton7:Destroy()
-            					end
-            					if taskbarholder then
-            						taskbarholder:Destroy()
-            					end
-            					if programholder1 then
-            						programholder1:Destroy()
-            					end
-            					loaddesktop()
-            				end
-            			end
-            		end)
+		            		restartkey = keyboard:Connect("KeyPressed", function(key)
+						if key == Enum.KeyCode.LeftControl then
+							leftctrlpressed = true
+							task.wait(0.1)
+							leftctrlpressed = false
+						elseif key == Enum.KeyCode.R then
+							if leftctrlpressed == true then
+								if startbutton7 then
+									startbutton7:Destroy()
+								end
+								if taskbarholder then
+									taskbarholder:Destroy()
+								end
+			
+								for i, window in ipairs(windows) do
+									window.FunctionsTable:Close()
+								end
+			
+								windows = {}
+																																												
+								if programholder1 then
+									programholder1:Destroy()
+								end
+								loaddesktop()
+							end
+						end
+					end)
 				end)
 
 				local shutdown = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Shutdown", startmenu)
