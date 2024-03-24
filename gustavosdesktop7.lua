@@ -5114,6 +5114,9 @@ local success, Error1 = pcall(function()
 			Chatted = MicrophoneChatted,
 			wallpaper = wallpaper,
 			backgroundcolor = backgroundcolor,
+			getWindows = function()
+			    return windows
+			end,
 		} end)
 
 		startbutton7.MouseButton1Down:Connect(function()
