@@ -1699,7 +1699,7 @@ local success, Error1 = pcall(function()
 	}
 
 	local function readfile(txt, nameondisk, directory)
-		local filegui, window, closebutton, maximizebutton, textlabel = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, nameondisk or "File", false)
+		local filegui, window, closebutton, maximizebutton, textlabel, resize, min, funcs = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, nameondisk or "File", false)
 		local deletebutton = nil
 		local prevdir = directory
 		local prevtxt = txt
@@ -1745,13 +1745,13 @@ local success, Error1 = pcall(function()
 			deletebutton.MouseButton1Up:Connect(function()
 				if pressed then return end
 				pressed = true
-				local holdframe, windowz, closebutton = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				local holdframe, windowz, closebutton, maximize, textlabel, resize, minimize, funcs = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 
 				cancelbutton.MouseButton1Up:Connect(function()
 					pressed = false
-					windowz:Destroy()
+					funcs:Close()
 				end)
 
 				closebutton.MouseButton1Up:Connect(function()
@@ -1761,9 +1761,9 @@ local success, Error1 = pcall(function()
 				deletebutton.MouseButton1Up:Connect(function()
 					pressed = false
 					filesystem.Write(prevname, nil, prevdir)
-					windowz:Destroy()
+					funcs:Close()
 					if window then
-						window:Destroy()
+						funcs:Close()
 					end
 				end)
 			end)
@@ -1835,7 +1835,7 @@ local success, Error1 = pcall(function()
 				newdirectory = "/"..nameondisk
 			end
 			if prevtxt == txt then
-				window:Destroy()
+				funcs:Close()
 			end
 
 			loaddisk(newdirectory)
@@ -1851,7 +1851,7 @@ local success, Error1 = pcall(function()
 		local scrollsize = if boolean1 then UDim2.new(1, 0, 0.7, 0) else UDim2.new(1, 0, 0.85, 0)
 		local directory = directory or "/"
 		local start = 0
-		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, if not boolean1 then function() return directory end else "Select File", false)
+		local holderframe, window, closebutton, maximizebutton, titletext, resizebutton, minimize, funcs = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), directory, false, false, false, if not boolean1 then function() return directory end else "Select File", false)
 		local scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 		holderframe:AddChild(scrollingframe)
 
@@ -1884,7 +1884,7 @@ local success, Error1 = pcall(function()
 			local sendbutton = createnicebutton(UDim2.fromScale(0.2, 0.15), UDim2.fromScale(0.8, 0.85), "Send", holderframe)
 			
 			sendbutton.MouseButton1Up:Connect(function()
-				window:Destroy()
+				funcs:Close()
 				if typeof(func) == "function" then
 					func(selectedname or "", selecteddir or directory)
 				end
@@ -2057,7 +2057,7 @@ local success, Error1 = pcall(function()
 			if pressed then return end
 			pressed = true
 
-			local holdframe, windowz, closebutton = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+			local holdframe, windowz, closebutton, maximize, textlabel, resize, minimize, funcs = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 			local deletebutton1 = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 			local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 
@@ -2067,7 +2067,7 @@ local success, Error1 = pcall(function()
 
 			cancelbutton.MouseButton1Up:Connect(function()
 				pressed = false
-				windowz:Destroy()
+				funcs:Close()
 			end)
 
 			deletebutton1.MouseButton1Up:Connect(function()
@@ -2120,7 +2120,7 @@ local success, Error1 = pcall(function()
 					end
 				end
 
-				windowz:Destroy()
+				funcs:Close()
 			end)
 		end)
 
@@ -3391,11 +3391,11 @@ local success, Error1 = pcall(function()
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
 		local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 		no.MouseButton1Up:Connect(function()
-			holderframe:Destroy()
+			funcs:Close()
 		end)
 		yes.MouseButton1Up:Connect(function()
 			if holderframe then
-				holderframe:Destroy()
+				funcs:Close()
 			end
 			if startbutton7 then
 				startbutton7:Destroy()
@@ -3438,11 +3438,11 @@ local success, Error1 = pcall(function()
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
 		local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 		no.MouseButton1Up:Connect(function()
-			holderframe:Destroy()
+			funcs:Close()
 		end)
 		yes.MouseButton1Up:Connect(function()
 			if holderframe then
-				holderframe:Destroy()
+				funcs:Close()
 			end
 			if startbutton7 then
 				startbutton7:Destroy()
@@ -3520,17 +3520,17 @@ local success, Error1 = pcall(function()
 			deletebutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				local holdframe, windowz = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
+				local holdframe, windowz, closebutton, maximize, textlabel, resize, minimize, funcs = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
 				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
 				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
 
 				cancelbutton.MouseButton1Up:Connect(function()
-					windowz:Destroy()
+					funcs:Close()
 				end)
 
 				deletebutton.MouseButton1Up:Connect(function()
 					filesystem.Write(name, nil, dir)
-					windowz:Destroy()
+					funcs:Close()
 					loaddesktopicons()
 				end)		
 			end)
@@ -4846,14 +4846,14 @@ local success, Error1 = pcall(function()
 		taskbarholder:AddChild(taskbarholderscrollingframe)
 
 		if not disk:Read("sounds") and not disk:Read("Desktop") then
-			local window, holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
+			local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Welcome to GustavOS", false, false, false, "Welcome", false)
 			local textlabel = screen:CreateElement("TextLabel", {TextScaled = true, Size = UDim2.new(1,0,0.8,0), Position = UDim2.new(0, 0, 0, 0), TextXAlignment = Enum.TextXAlignment.Left, Text = "Would you like to add some sounds to the hard drive?", BackgroundTransparency = 1})
 			window:AddChild(textlabel)
 			local yes = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Yes", window)
 			local no = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "No", window)
 
 			no.MouseButton1Up:Connect(function()
-				holderframe:Destroy()
+				funcs:Close()
 			end)
 
 			yes.MouseButton1Up:Connect(function()
@@ -4876,7 +4876,7 @@ local success, Error1 = pcall(function()
 					["Solar-wind.aud"] = "8887201925",
 					["4th-axis.aud"] = "8909965418",
 				})
-				holderframe:Destroy()
+				funcs:Close()
 			end)
 		end
 
