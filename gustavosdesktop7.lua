@@ -4813,16 +4813,24 @@ local success, Error1 = pcall(function()
 					end
 					if taskbarholder then
 						taskbarholder:Destroy()
-					end
+					end					
 
 					for i, window in ipairs(windows) do
 						window.FunctionsTable:Close()
 					end
 
 					windows = {}
-																																									
+
 					if programholder1 then
 						programholder1:Destroy()
+					end
+
+					if mainframe then
+						mainframe:Destroy()
+					end
+
+					if resolutionframe then
+						resolutionframe:Destroy()
 					end
 					loaddesktop()
 				end
@@ -5056,16 +5064,24 @@ local success, Error1 = pcall(function()
 								end
 								if taskbarholder then
 									taskbarholder:Destroy()
-								end
+								end					
 			
 								for i, window in ipairs(windows) do
 									window.FunctionsTable:Close()
 								end
 			
 								windows = {}
-																																												
+			
 								if programholder1 then
 									programholder1:Destroy()
+								end
+			
+								if mainframe then
+									mainframe:Destroy()
+								end
+			
+								if resolutionframe then
+									resolutionframe:Destroy()
 								end
 								loaddesktop()
 							end
