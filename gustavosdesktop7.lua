@@ -3406,9 +3406,6 @@ local success, Error1 = pcall(function()
 			if programholder1 then
 				programholder1:Destroy()
 			end
-			if mainframe then
-			    mainframe:Destroy()
-    			end
 
 			if cursorevent then cursorevent:Unbind() end
 			keyboardinput = nil
@@ -3426,6 +3423,11 @@ local success, Error1 = pcall(function()
 				backgroundcolor.BackgroundTransparency = i
 				wallpaper.ImageTransparency = i
 			end
+
+			if mainframe then
+			    mainframe:Destroy()
+			end
+
 			loadingscreen(true, true)
 		end)
 	end
@@ -3453,9 +3455,6 @@ local success, Error1 = pcall(function()
 			if programholder1 then
 				programholder1:Destroy()
 			end
-			if mainframe then
-			    mainframe:Destroy()
-    			end
 
 			if cursorevent then cursorevent:Unbind() end
 			minimizedprograms = {}
@@ -3471,6 +3470,10 @@ local success, Error1 = pcall(function()
 				backgroundcolor.BackgroundTransparency = i
 				wallpaper.ImageTransparency = i
 			end
+			if mainframe then
+			    mainframe:Destroy()
+			end
+
 			loadingscreen(true, false)
 		end)
 	end
