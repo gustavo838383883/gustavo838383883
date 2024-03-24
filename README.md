@@ -45,4 +45,5 @@ GD7Library: function(): {
  	openstartmenu: function(parent: ScreenObject, func: function(buttonclicked: string)): ImageButton,
   	wallpaper: ImageLabel,
    	backgroundcolor: Frame,
+    	getWindows: function(): {{Holderframe, Window, CloseButton, MaximizeButton, TextLabel, MinimizeButton, FunctionsTable, Focused}}
 }
