@@ -374,11 +374,15 @@ local eraserbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale
 local pencilbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.3), "", window)
 local copybutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.1), "", window)
 local copybutton2 = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.1), "", window)
+local paintbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.2), "", window)
+local paintbutton2 = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 --local savebutton = gputer.createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 
 local eraserimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16821121269", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 local pencilimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16821120420", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 local copyimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16833148719", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
+local paintimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16869921844", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
+local paintimage2 = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16869921844", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 local copyimage2 = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16833148719", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 --local saveimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16827485976", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
 
@@ -414,6 +418,8 @@ eraserbutton:AddChild(eraserimage)
 pencilbutton:AddChild(pencilimage)
 copybutton:AddChild(copyimage)
 copybutton2:AddChild(copyimage2)
+paintbutton:AddChild(paintimage)
+paintbutton2:AddChild(paintimage2)
 --savebutton:AddChild(saveimage)
 
 eraserbutton.MouseButton1Up:Connect(function()
@@ -421,9 +427,43 @@ eraserbutton.MouseButton1Up:Connect(function()
 	if mode ~= 2 then
 		eraserbutton.Image = "rbxassetid://15625805069"
 		copybutton2.Image = "rbxassetid://15625805900"
+		paintbutton2.Image = "rbxassetid://15625805069"
+		paintbutton.Image = "rbxassetid://15625805069"
 		copybutton.Image = "rbxassetid://15625805900"
 		pencilbutton.Image = "rbxassetid://15625805900"
 		mode = 2
+	else
+		eraserbutton.Image = "rbxassetid://15625805900"
+		mode = 0
+	end
+end)
+
+paintbutton.MouseButton1Up:Connect(function()
+	speaker:PlaySound(clicksound)
+	if mode ~= 5 then
+		paintbutton.Image = "rbxassetid://15625805069"
+		eraserbutton.Image = "rbxassetid://15625805900"
+		paintbutton2.Image = "rbxassetid://15625805900"
+		copybutton2.Image = "rbxassetid://15625805900"
+		copybutton.Image = "rbxassetid://15625805900"
+		pencilbutton.Image = "rbxassetid://15625805900"
+		mode = 5
+	else
+		eraserbutton.Image = "rbxassetid://15625805900"
+		mode = 0
+	end
+end)
+
+paintbutton2.MouseButton1Up:Connect(function()
+	speaker:PlaySound(clicksound)
+	if mode ~= 6 then
+		paintbutton2.Image = "rbxassetid://15625805069"
+		eraserbutton.Image = "rbxassetid://15625805900"
+		paintbutton.Image = "rbxassetid://15625805900"
+		copybutton2.Image = "rbxassetid://15625805900"
+		copybutton.Image = "rbxassetid://15625805900"
+		pencilbutton.Image = "rbxassetid://15625805900"
+		mode = 6
 	else
 		eraserbutton.Image = "rbxassetid://15625805900"
 		mode = 0
@@ -435,6 +475,8 @@ copybutton.MouseButton1Up:Connect(function()
 	if mode ~= 3 then
 		copybutton.Image = "rbxassetid://15625805069"
 		pencilbutton.Image = "rbxassetid://15625805900"
+		paintbutton2.Image = "rbxassetid://15625805069"
+		paintbutton.Image = "rbxassetid://15625805069"
 		copybutton2.Image = "rbxassetid://15625805900"
 		eraserbutton.Image = "rbxassetid://15625805900"
 		mode = 3
@@ -450,6 +492,8 @@ copybutton2.MouseButton1Up:Connect(function()
 		copybutton2.Image = "rbxassetid://15625805069"
 		copybutton.Image = "rbxassetid://15625805900"
 		pencilbutton.Image = "rbxassetid://15625805900"
+		paintbutton2.Image = "rbxassetid://15625805069"
+		paintbutton.Image = "rbxassetid://15625805069"
 		eraserbutton.Image = "rbxassetid://15625805900"
 		mode = 4
 	else
@@ -465,12 +509,129 @@ pencilbutton.MouseButton1Up:Connect(function()
 		copybutton.Image = "rbxassetid://15625805900"
 		copybutton2.Image = "rbxassetid://15625805900"
 		eraserbutton.Image = "rbxassetid://15625805900"
+		paintbutton2.Image = "rbxassetid://15625805069"
+		paintbutton.Image = "rbxassetid://15625805069"
 		mode = 1
 	else
 		pencilbutton.Image = "rbxassetid://15625805900"
 		mode = 0
 	end
 end)
+
+local function GetCollidingGuiObjects(gui, folder)
+
+	if gui then
+		if not folder then print("Table was not specified.") return end
+
+		if typeof(folder) ~= "table" then print("The specified table is not a valid table") return end
+
+		if gui.ClassName == "Frame" or gui.ClassName == "ImageLabel" or gui.ClassName == "TextLabel" or gui.ClassName == "TextButton" or gui.ClassName == "ImageButton" then
+			local instances = {}
+
+			for i, ui in pairs(folder) do
+
+				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" or ui.ClassName == "ImageButton" then
+					if ui.Visible then
+						local x = ui.AbsolutePosition.X
+						local y = ui.AbsolutePosition.Y
+						local y_axis = false
+						local x_axis = false
+						local guiposx = gui.AbsolutePosition.X + gui.AbsoluteSize.X
+						local number = ui.AbsoluteSize.X + gui.AbsoluteSize.X
+
+						if x - guiposx > -number then
+							if x - guiposx < 0 then
+								x_axis = true
+							end
+						end
+
+						local guiposy = gui.AbsolutePosition.Y + gui.AbsoluteSize.Y
+						local number2 = ui.AbsoluteSize.Y + gui.AbsoluteSize.Y
+
+						if y - guiposy > -number2 then
+							if y - guiposy < 0 then
+								y_axis = true
+							end
+						end
+
+						if x_axis and y_axis then
+							table.insert(instances, ui)
+						end
+					end
+				end
+			end
+
+			return instances
+
+		else
+			print(`{gui} is not a valid Gui Object.`)
+		end
+	else
+		print("The specified instance is not valid.")
+	end
+end
+
+local filling = false
+	
+function fill(block, newcolor)
+	if block.BackgroundColor3 == newcolor then return end
+	task.wait()
+		
+	local similar = {}
+
+	for index, blockv in ipairs(colorblocks) do
+		if blockv.BackgroundColor3 == block.BackgroundColor3 and blockv.Position ~= block.Position then
+			table.insert(similar, blockv)
+		enD
+	end
+
+	local bigsquare1 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0, 0.9), BackgroundTransparency = 1})
+	local bigsquare2 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0, -0.9), BackgroundTransparency = 1})
+	local bigsquare3 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0.9, 0), BackgroundTransparency = 1})
+	local bigsquare4 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(-0.9, 0), BackgroundTransparency = 1})
+
+	block:AddChild(bigsquare1)
+	block:AddChild(bigsquare2)
+	block:AddChild(bigsquare3)
+	block:AddChild(bigsquare4)
+
+	block.BackgroundColor3 = newcolor
+
+	local colliding = GetCollidingGuiObjects(bigsquare1, similar)
+	local colliding2 = GetCollidingGuiObjects(bigsquare2, similar)
+	local colliding3 = GetCollidingGuiObjects(bigsquare3, similar)
+	local colliding4 = GetCollidingGuiObjects(bigsquare4, similar)
+
+	bigsquare1:Destroy()
+	bigsquare2:Destroy()
+	bigsquare3:Destroy()
+	bigsquare4:Destroy()
+
+	for i, val in ipairs(colliding) do
+		fill(val, newcolor)
+	end
+
+	for i, val in ipairs(colliding2) do
+		fill(val, newcolor)
+	end
+
+	for i, val in ipairs(colliding3) do
+		fill(val, newcolor)
+	end
+
+	for i, val in ipairs(colliding4) do
+		fill(val, newcolor)
+	end
+end
+
+local function fillcolor(block, newcolor)
+	filling = true
+	if filling then return end
+
+	fill(block, newcolor)
+
+	filling = false
+end
 
 --savebutton.MouseButton1Up:Connect(function()
 --	savegui()
@@ -484,7 +645,7 @@ local CoroutineLoop = coroutine.create(function()
 
 			for i, cursor in pairs(cursors) do	
 				for i, ui in ipairs(colorblocks) do
-					if mode ~= 3 and mode ~= 4 then
+					if mode < 3 then
 						if getCursorColliding(cursor.X, cursor.Y, ui) then
 							if mode == 1 then
 								ui.BackgroundColor3 = selectedcolor
@@ -501,6 +662,14 @@ local CoroutineLoop = coroutine.create(function()
 						if getCursorCollidingCopy(cursor.X, cursor.Y, ui) then
 							selectedcolor2 = ui.BackgroundColor3
 							text2.Text = BrickColor.new(ui.BackgroundColor3).Name
+						end
+					elseif mode == 5 then
+						if getCursorCollidingCopy(cursor.X, cursor.Y, ui) then
+							fillcolor(ui, selectedcolor)
+						end
+					elseif mode == 6 then
+						if getCursorCollidingCopy(cursor.X, cursor.Y, ui) then
+							fillcolor(ui, selectedcolor2)
 						end
 					end
 				end
