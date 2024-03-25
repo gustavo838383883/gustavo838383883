@@ -582,7 +582,7 @@ function fill(block, newcolor)
 	for index, blockv in ipairs(colorblocks) do
 		if blockv.BackgroundColor3 == block.BackgroundColor3 and blockv.Position ~= block.Position then
 			table.insert(similar, blockv)
-		enD
+		end
 	end
 
 	local bigsquare1 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0, 0.9), BackgroundTransparency = 1})
