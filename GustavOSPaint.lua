@@ -585,10 +585,10 @@ function fill(block, newcolor)
 		end
 	end
 
-	local bigsquare1 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0, 0.9), BackgroundTransparency = 1})
-	local bigsquare2 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0, -0.9), BackgroundTransparency = 1})
-	local bigsquare3 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0.9, 0), BackgroundTransparency = 1})
-	local bigsquare4 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(-0.9, 0), BackgroundTransparency = 1})
+	local bigsquare1 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0.05, 0.9), BackgroundTransparency = 1})
+	local bigsquare2 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0.05, -0.9), BackgroundTransparency = 1})
+	local bigsquare3 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(0.9, 0.05), BackgroundTransparency = 1})
+	local bigsquare4 = gputer.Screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(0.9, 0.9), Position = UDim2.fromScale(-0.9, 0.05), BackgroundTransparency = 1})
 
 	block:AddChild(bigsquare1)
 	block:AddChild(bigsquare2)
