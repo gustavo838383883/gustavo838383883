@@ -233,6 +233,132 @@ end)
 
 local painting = functions:CreateElement("TextButton", {TextTransparency = 1, BorderSizePixel = 0, Size = UDim2.fromScale(0.8, 0.8), Position = UDim2.fromScale(0.1, 0.1), BackgroundColor3 = Color3.fromRGB(200, 200, 200)})
 
+local colorblocks = {}
+local filling = false
+
+local prevstuff = {}
+local revertprevstuff = {}
+
+local function areTablesEqual(a, b)
+	if not a or not b then return false end
+	
+	local notequal = false
+	
+	for i, val in pairs(a) do
+		if b[i] ~= a[i] then notequal = true; return end
+	end
+
+	for i, val in pairs(b) do
+		if b[i] ~= a[i] then notequal = true; return end
+	end
+
+	return not notequal
+end
+
+function addrevert()
+	if reverting or unreverting or filling then return end
+	local color3s = {}
+
+	for i, blockv in ipairs(colorblocks) do
+		task.wait()
+		color3s[#color3s + 1] = blockv.BackgroundColor3
+	end
+
+	if areTablesEqual(color3s, prevstuff[1]) then return end
+
+	local num = 1
+
+	if not prevstuff[1] then
+		prevstuff[1] = {}
+	end
+	
+	for i, value in ipairs(prevstuff) do
+		if i + 1 <= 10 then
+			num += 1
+			prevstuff[num] = value
+		end
+	end
+
+	prevstuff[1] = color3s
+end
+
+local unreverting = false
+local reverting = false
+
+function revert()
+	if not prevstuff[1] then return end
+	if unreverting or reverting then return end
+
+	reverting = true
+
+	for i, val in pairs(prevstuff[1]) do
+		task.wait()
+		colorblocks[i].BackgroundColor3 = val
+	end
+
+	for i, value in ipairs(revertprevstuff) do
+		task.wait()
+		revertprevstuff[i + 1] = value
+	end
+	
+	revertprevstuff[1] = prevstuff[1]
+
+	local newprevstuff = {}
+
+	local num = 0
+	
+	for i, val in ipairs(prevstuff) do
+		if i > 1 and val ~= prevstuff[1] then
+			task.wait()
+			num += 1
+			newprevstuff[num] = val
+		end
+	end
+
+	prevstuff = newprevstuff
+	
+	reverting = false
+end
+
+function unrevert()
+	if not revertprevstuff[1] then return end
+	if unreverting or reverting then return end
+
+	unreverting = true
+
+	local color3s = revertprevstuff[1]
+
+	for i, color in pairs(revertprevstuff[1]) do
+		task.wait()
+		colorblocks[i].BackgroundColor3 = color
+	end
+
+	local newtable = {}
+
+	local num = 0
+	
+	for i, val in ipairs(revertprevstuff) do
+		if i > 1 then
+			task.wait()
+			num += 1
+			newtable[num] = val
+		end
+	end
+
+	revertprevstuff = newtable
+
+	for i, value in ipairs(prevstuff) do
+		if i + 1 <= 10 then
+			task.wait()
+			prevstuff[i + 1] = value
+		end
+	end
+
+	prevstuff[1] = color3s
+
+	unreverting = false
+end
+
 local pressed = false
 
 painting.MouseButton1Down:Connect(function()
@@ -243,93 +369,6 @@ painting.MouseButton1Up:Connect(function()
 	pressed = false
 	addrevert()
 end)
-
-local colorblocks = {}
-
-local prevstuff = {}
-local revertprevstuff = {}
-
-local function areTablesEqual(a, b)
-	for i, val in pairs(a) do
-		if b[i] ~= a[i] then return end
-	end
-
-	for i, val in pairs(b) do
-		if b[i] ~= a[i] then return end
-	end
-
-	return true
-end
-
-function addrevert()
-	local color3s = {}
-
-	for i, blockv in ipairs(colorblocks) do
-		color3s[#color3s + 1] = blockv.BackgroundColor3
-	end
-
-	if areTablesEqual(color3s, prevstuff[1]) then return end
-
-	for i, value in ipairs(prevstuff) do
-		if i + 1 <= 10 then
-			prevstuff[i + 1] = value
-		end
-	end
-
-	prevstuff[1] = color3s
-end
-
-function revert()
-	if not prevstuff[1] then return end
-
-	for i, val in ipairs(prevstuff[1]) do
-		colorblocks[i].BackgroundColor3 = val
-	end
-
-	for i, value in ipairs(revertprevstuff) do
-		revertprevstuff[i + 1] = value
-	end
-	
-	revertprevstuff[1] = prevstuff[1]
-
-	for i, val in ipairs(prevstuff) do
-		if i > 1 then
-			prevstuff[i - 1] = val
-			prevstuff[i] = nil
-		elseif #prevstuff == 1 then
-			prevstuff[1] = nil
-		end
-	end
-end
-
-function unrevert()
-	if not revertprevstuff[1] then  return end
-
-	local color3s = revertprevstuff[1]
-
-	for i, color in ipairs(revertprevstuff[1]) do
-		colorblocks[i].BackgroundColor3 = color
-	end
-
-	for i, val in ipairs(revertprevstuff) do
-		if i > 1 then
-			revertprevstuff[i - 1] = val
-			revertprevstuff[i] = nil
-		elseif #prevstuff == 1 then
-			revertprevstuff[1] = nil
-		end
-	end
-
-	if areTablesEqual(color3s, prevstuff[1]) then return end
-
-	for i, value in ipairs(prevstuff) do
-		if i + 1 <= 10 then
-			prevstuff[i + 1] = value
-		end
-	end
-
-	prevstuff[1] = color3s
-end
 
 local x = 0
 local y = 0
@@ -468,8 +507,10 @@ local paintbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(
 t:Destroy()
 local paintbutton2 = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 t:Destroy()
-local revertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.4, 0.9), "<-", window)
-local unrevertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.5, 0.9), "->", window)
+--[[
+local revertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.4, 0.9), "←", window)
+local unrevertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.5, 0.9), "→", window)
+]]
 --local savebutton = gputer.createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 
 local eraserimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16821121269", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
@@ -498,6 +539,8 @@ increasebutton.MouseButton1Up:Connect(function()
 	end
 end)
 
+--[[
+	
 revertbutton.MouseButton1Down:Connect(function()
 	revertbutton.Image = "rbxassetid://15625805069"
 end)
@@ -514,11 +557,13 @@ unrevertbutton.MouseButton1Down:Connect(function()
 end)
 
 unrevertbutton.MouseButton1Up:Connect(function()
-	if unrevertprevstuff[1] then
+	if revertprevstuff[1] then
 		unrevertbutton.Image = "rbxassetid://15625805900"
 		unrevert()
 	end
 end)
+
+]]
 
 descreasebutton.MouseButton1Up:Connect(function()
 	if number > 1 then
@@ -686,8 +731,6 @@ local function GetCollidingGuiObjects(gui, folder)
 		print("The specified instance is not valid.")
 	end
 end
-
-local filling = false
 	
 function fill(block, newcolor)
 	if block.BackgroundColor3 == newcolor then return end
