@@ -625,8 +625,8 @@ function fill(block, newcolor)
 end
 
 local function fillcolor(block, newcolor)
-	filling = true
 	if filling then return end
+	filling = true
 
 	fill(block, newcolor)
 
