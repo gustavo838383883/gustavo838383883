@@ -5513,13 +5513,13 @@ function bootos()
 				iconsdisabled = false
 			end
 
-			windows = {}
-
 			for i, val in ipairs(windows) do
 				if val.FunctionsTable then
 					val.FunctionsTable:Close()
 				end
 			end
+	
+			windows = {}
 
 			iconsize = rom:Read("IconSize")
 			iconsize = tonumber(iconsize) or 0.2
