@@ -474,6 +474,7 @@ local startCursorPos
 local videovolume = 0.5
 local loadingscreen
 local mainframe
+local windows = {}
 
 local success, Error1 = pcall(function()
 	local holding = false
@@ -524,8 +525,6 @@ local success, Error1 = pcall(function()
 	local resolutionframe
 
 	local minimizedammount = 0
-
-	local windows = {}
 
 	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4, boolean5, boolean6)
 		local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
@@ -5513,12 +5512,6 @@ function bootos()
 				iconsdisabled = false
 			end
 
-			for i, val in ipairs(windows) do
-				if val.FunctionsTable then
-					val.FunctionsTable:Close()
-				end
-			end
-	
 			windows = {}
 
 			iconsize = rom:Read("IconSize")
