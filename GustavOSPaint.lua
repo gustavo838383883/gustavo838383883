@@ -427,8 +427,8 @@ eraserbutton.MouseButton1Up:Connect(function()
 	if mode ~= 2 then
 		eraserbutton.Image = "rbxassetid://15625805069"
 		copybutton2.Image = "rbxassetid://15625805900"
-		paintbutton2.Image = "rbxassetid://15625805069"
-		paintbutton.Image = "rbxassetid://15625805069"
+		paintbutton2.Image = "rbxassetid://15625805900"
+		paintbutton.Image = "rbxassetid://15625805900"
 		copybutton.Image = "rbxassetid://15625805900"
 		pencilbutton.Image = "rbxassetid://15625805900"
 		mode = 2
@@ -449,7 +449,7 @@ paintbutton.MouseButton1Up:Connect(function()
 		pencilbutton.Image = "rbxassetid://15625805900"
 		mode = 5
 	else
-		eraserbutton.Image = "rbxassetid://15625805900"
+		paintbutton.Image = "rbxassetid://15625805900"
 		mode = 0
 	end
 end)
@@ -465,7 +465,7 @@ paintbutton2.MouseButton1Up:Connect(function()
 		pencilbutton.Image = "rbxassetid://15625805900"
 		mode = 6
 	else
-		eraserbutton.Image = "rbxassetid://15625805900"
+		paintbutton.Image = "rbxassetid://15625805900"
 		mode = 0
 	end
 end)
@@ -475,8 +475,8 @@ copybutton.MouseButton1Up:Connect(function()
 	if mode ~= 3 then
 		copybutton.Image = "rbxassetid://15625805069"
 		pencilbutton.Image = "rbxassetid://15625805900"
-		paintbutton2.Image = "rbxassetid://15625805069"
-		paintbutton.Image = "rbxassetid://15625805069"
+		paintbutton2.Image = "rbxassetid://15625805900"
+		paintbutton.Image = "rbxassetid://15625805900"
 		copybutton2.Image = "rbxassetid://15625805900"
 		eraserbutton.Image = "rbxassetid://15625805900"
 		mode = 3
@@ -492,8 +492,8 @@ copybutton2.MouseButton1Up:Connect(function()
 		copybutton2.Image = "rbxassetid://15625805069"
 		copybutton.Image = "rbxassetid://15625805900"
 		pencilbutton.Image = "rbxassetid://15625805900"
-		paintbutton2.Image = "rbxassetid://15625805069"
-		paintbutton.Image = "rbxassetid://15625805069"
+		paintbutton2.Image = "rbxassetid://15625805900"
+		paintbutton.Image = "rbxassetid://15625805900"
 		eraserbutton.Image = "rbxassetid://15625805900"
 		mode = 4
 	else
@@ -509,8 +509,8 @@ pencilbutton.MouseButton1Up:Connect(function()
 		copybutton.Image = "rbxassetid://15625805900"
 		copybutton2.Image = "rbxassetid://15625805900"
 		eraserbutton.Image = "rbxassetid://15625805900"
-		paintbutton2.Image = "rbxassetid://15625805069"
-		paintbutton.Image = "rbxassetid://15625805069"
+		paintbutton2.Image = "rbxassetid://15625805900"
+		paintbutton.Image = "rbxassetid://15625805900"
 		mode = 1
 	else
 		pencilbutton.Image = "rbxassetid://15625805900"
