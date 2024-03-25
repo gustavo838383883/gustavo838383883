@@ -5515,6 +5515,12 @@ function bootos()
 
 			windows = {}
 
+			for i, val in ipairs(windows) do
+				if val.FunctionsTable then
+					val.FunctionsTable:Close()
+				end
+			end
+
 			iconsize = rom:Read("IconSize")
 			iconsize = tonumber(iconsize) or 0.2
 			if not color then color = disk:Read("Color") end
