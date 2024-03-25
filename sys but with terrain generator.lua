@@ -274,13 +274,13 @@ plr:AddChild(hitbox)
 
 local allobjects = {}
 
-local loadingframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0), Image = "rbxassetid://15440219329", ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0.2, 0, 0.2, 0), ScaleType = Enum.ScaleType.Fit})
+local loadingframe = screen:CreateElement("ImageLabel", {Size = UDim2.new(1,0,1,0), BackgroundColor3 = Color3.new(0,0,0), Image = "rbxassetid://15440219329", ScaleType = Enum.ScaleType.Tile, TileSize = UDim2.new(0.2, 0, 0.2, 0)})
 window:AddChild(loadingframe)
 
 local loadingbar = screen:CreateElement("Frame", {Position = UDim2.new(0, 0, 0.4, 0), Size = UDim2.new(0, 0, 0.2, 0)})
 loadingframe:AddChild(loadingbar)
 
-local loadingcircle = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8932511161", Size = UDim2.new(0.15, 0, 0.15, 0), Position = UDim2.new(0.85, 0, 0.85, 0), BackgroundTransparency = 1})
+local loadingcircle = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8932511161", Size = UDim2.new(0.15, 0, 0.15, 0), Position = UDim2.new(0.85, 0, 0.85, 0), BackgroundTransparency = 1, ScaleType = Enum.ScaleType.Fit})
 
 loadingframe:AddChild(loadingcircle)
 
@@ -314,6 +314,8 @@ for i=1, 256 do
 		local lava = screen:CreateElement("ImageLabel", {Image = "rbxassetid://13289036106", Size = UDim2.new(0, 25, 0, 10), Position = UDim2.new(0, start, 0, y - 10), BackgroundTransparency = 1})
 
 		lava.Size = UDim2.fromOffset(25, 15)
+
+		ground:AddChild(lava)
 
 		lava.Position += UDim2.fromOffset(0, 10)
 
