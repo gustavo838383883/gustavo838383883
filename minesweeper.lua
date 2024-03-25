@@ -356,7 +356,7 @@ local function createlist(frame, content, func)
 end
 
 function restartgame()
-	local windowa, frame1 = CreateWindow(UDim2.fromScale(0.7, 0.7), "Select", false, false, false, nil, true, false)
+	local windowa, frame1, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions, frameindex = CreateWindow(UDim2.fromScale(0.7, 0.7), "Select", false, false, false, nil, true, false)
 
 	local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.2), TextScaled = true, BackgroundTransparency = 1, Text = "Select Amount of mines"})
 	windowa:AddChild(textlabel1)
@@ -415,7 +415,7 @@ function restartgame()
 	enterbutton.MouseButton1Up:Connect(function()
 		bombnumber = selectedsize
 		squaresize = tempsize
-		frame1:Destroy()
+		functions:Close()
 		if not window then return end
 		restartgamenow()
 	end)
