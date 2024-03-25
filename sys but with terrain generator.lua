@@ -311,7 +311,7 @@ for i=1, 256 do
 	table.insert(allobjects, grass)
 
 	if math.random(1, 20) == 20 and (randomnumber ~= 4 and randomnumber ~= 9) then
-		local lava = screen:CreateElement("ImageLabel", {Image = "rbxassetid://13289036106", Size = UDim2.new(0, 25, 0, 10), Position = UDim2.new(0, start, 0, y - 10), BackgroundTransparency = 1})
+		local lava = screen:CreateElement("ImageLabel", {Image = "rbxassetid://13289036106", Size = UDim2.new(0, 25, 0, 10), Position = UDim2.new(0, start, 0, y + 10), BackgroundTransparency = 1})
 
 		lava.Size = UDim2.fromOffset(25, 15)
 
