@@ -465,7 +465,7 @@ paintbutton2.MouseButton1Up:Connect(function()
 		pencilbutton.Image = "rbxassetid://15625805900"
 		mode = 6
 	else
-		paintbutton.Image = "rbxassetid://15625805900"
+		paintbutton2.Image = "rbxassetid://15625805900"
 		mode = 0
 	end
 end)
