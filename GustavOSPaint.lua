@@ -241,7 +241,7 @@ end)
 
 painting.MouseButton1Up:Connect(function()
 	pressed = false
-	saverevert()
+	addrevert()
 end)
 
 local colorblocks = {}
@@ -468,8 +468,8 @@ local paintbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(
 t:Destroy()
 local paintbutton2 = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 t:Destroy()
-local revertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.4, 0.9), "<", window)
-local unrevertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.5, 0.9), ">", window)
+local revertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.4, 0.9), "<-", window)
+local unrevertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.5, 0.9), "->", window)
 --local savebutton = gputer.createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 
 local eraserimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16821121269", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
