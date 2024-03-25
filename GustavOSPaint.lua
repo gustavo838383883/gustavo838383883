@@ -370,12 +370,18 @@ end
 
 local mode = 0
 
-local eraserbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.4), "", window)
-local pencilbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.3), "", window)
-local copybutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.1), "", window)
-local copybutton2 = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.1), "", window)
-local paintbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.2), "", window)
-local paintbutton2 = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
+local eraserbutton, t = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.3), "", window)
+t:Destroy()
+local pencilbutton, t = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.3), "", window)
+t:Destroy()
+local copybutton, t = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.1), "", window)
+t:Destroy()
+local copybutton2, t = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.1), "", window)
+t:Destroy()
+local paintbutton, t = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0, 0.2), "", window)
+t:Destroy()
+local paintbutton2, t = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
+t:Destroy()
 --local savebutton = gputer.createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 
 local eraserimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16821121269", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
