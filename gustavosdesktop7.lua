@@ -4825,6 +4825,7 @@ local success, Error1 = pcall(function()
 				commandlines:insert("/:")
 				if keyboardevent then keyboardevent:Unbind() end
 				keyboardevent = button.MouseButton1Up:Connect(function()
+					local text = keyboardinput
 					if text:sub(1, 2) ~= "!s" then
 						commandlines:insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 						runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
