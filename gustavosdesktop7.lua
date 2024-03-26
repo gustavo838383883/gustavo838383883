@@ -3475,8 +3475,10 @@ local success, Error1 = pcall(function()
 		commandlines:insert("Shutting Down...")
 		task.wait(2)
 		screen:ClearElements()
-		if shutdownpoly then
+		if shutdownpoly and not putermode then
 			TriggerPort(shutdownpoly)
+		elseif putermode then
+		    pcall(TriggerPort, 2)
 		end
 	end
 
