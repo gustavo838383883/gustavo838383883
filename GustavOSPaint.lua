@@ -236,8 +236,21 @@ local painting = functions:CreateElement("TextButton", {TextTransparency = 1, Bo
 local colorblocks = {}
 local filling = false
 
-local prevstuff = {}
-local revertprevstuff = {}
+local old1
+local old2
+local old3
+local old4
+local old5
+
+local rold1
+local rold2
+local rold3
+local rold4
+local rold5
+
+local function color3toindex(color)
+	return table.find(brickcolornames, BrickColor.new(color).Name)
+end
 
 local function areTablesEqual(a, b)
 	if not a or not b then return false end
@@ -261,100 +274,79 @@ function addrevert()
 
 	for i, blockv in ipairs(colorblocks) do
 		task.wait()
-		color3s[#color3s + 1] = blockv.BackgroundColor3
+		color3s[#color3s + 1] = color3toindex(blockv.BackgroundColor3)
 	end
 
-	if areTablesEqual(color3s, prevstuff[1]) then return end
+	if areTablesEqual(color3s, old1) then return end
 
-	local num = 1
+	rold1 = nil
+	rold2 = nil
+	rold3 = nil
+	rold4 = nil
+	rold5 = nil
 
-	if not prevstuff[1] then
-		prevstuff[1] = {}
-	end
-	
-	for i, value in ipairs(prevstuff) do
-		if i + 1 <= 10 then
-			num += 1
-			prevstuff[num] = value
-		end
-	end
-
-	prevstuff[1] = color3s
+	old5 = old4
+	old4 = old3
+	old3 = old2
+	old2 = old1
+	old1 = color3s
 end
 
 local unreverting = false
 local reverting = false
 
 function revert()
-	if not prevstuff[1] then return end
+	if not old1 then return end
 	if unreverting or reverting then return end
 
 	reverting = true
 
-	for i, val in pairs(prevstuff[1]) do
-		task.wait()
-		colorblocks[i].BackgroundColor3 = val
-	end
-
-	for i, value in ipairs(revertprevstuff) do
-		task.wait()
-		revertprevstuff[i + 1] = value
-	end
-	
-	revertprevstuff[1] = prevstuff[1]
-
-	local newprevstuff = {}
-
-	local num = 0
-	
-	for i, val in ipairs(prevstuff) do
-		if i > 1 and val ~= prevstuff[1] then
+	for i, val in ipairs(old1) do
+		if colorblocks[i].BackgroundColor3 ~= brickcolorpallete[val] then
 			task.wait()
-			num += 1
-			newprevstuff[num] = val
+			colorblocks[i].BackgroundColor3 = brickcolorpallete[val]
 		end
 	end
 
-	prevstuff = newprevstuff
+	rold5 = rold4
+	rold4 = rold3
+	rold3 = rold2
+	rold2 = rold1
+	rold1 = old1
+	
+	old1 = old2
+	old2 = old3
+	old3 = old4
+	old4 = old5
+	old5 = nil
 	
 	reverting = false
 end
 
 function unrevert()
-	if not revertprevstuff[1] then return end
+	if not rold1 then return end
 	if unreverting or reverting then return end
 
 	unreverting = true
 
-	local color3s = revertprevstuff[1]
-
-	for i, color in pairs(revertprevstuff[1]) do
-		task.wait()
-		colorblocks[i].BackgroundColor3 = color
+	for i, color in ipairs(rold1) do
+		if colorblocks[i].BackgroundColor3 ~= brickcolorpallete[color] then
+			task.wait()
+			colorblocks[i].BackgroundColor3 = brickcolorpallete[color]
+		end
 	end
 
-	local newtable = {}
-
-	local num = 0
+	old5 = old4
+	old4 = old3
+	old3 = old2
+	old2 = old1
+	old1 = rold1
 	
-	for i, val in ipairs(revertprevstuff) do
-		if i > 1 then
-			task.wait()
-			num += 1
-			newtable[num] = val
-		end
-	end
-
-	revertprevstuff = newtable
-
-	for i, value in ipairs(prevstuff) do
-		if i + 1 <= 10 then
-			task.wait()
-			prevstuff[i + 1] = value
-		end
-	end
-
-	prevstuff[1] = color3s
+	rold1 = rold2
+	rold2 = rold3
+	rold3 = rold4
+	rold4 = rold5
+	rold5 = nil
 
 	unreverting = false
 end
@@ -507,10 +499,8 @@ local paintbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(
 t:Destroy()
 local paintbutton2 = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 t:Destroy()
---[[
 local revertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.4, 0.9), "←", window)
 local unrevertbutton = createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.5, 0.9), "→", window)
-]]
 --local savebutton = gputer.createnicebutton(UDim2.fromScale(0.1, 0.1), UDim2.fromScale(0.9, 0.2), "", window)
 
 local eraserimage = gputer.Screen:CreateElement("ImageLabel", {Image = "rbxassetid://16821121269", Size = UDim2.fromScale(1, 1), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1})
@@ -539,14 +529,12 @@ increasebutton.MouseButton1Up:Connect(function()
 	end
 end)
 
---[[
-	
 revertbutton.MouseButton1Down:Connect(function()
 	revertbutton.Image = "rbxassetid://15625805069"
 end)
 
 revertbutton.MouseButton1Up:Connect(function()
-	if prevstuff[1] then
+	if old1 then
 		revertbutton.Image = "rbxassetid://15625805900"
 		revert()
 	end
@@ -557,13 +545,11 @@ unrevertbutton.MouseButton1Down:Connect(function()
 end)
 
 unrevertbutton.MouseButton1Up:Connect(function()
-	if revertprevstuff[1] then
+	if rold1 then
 		unrevertbutton.Image = "rbxassetid://15625805900"
 		unrevert()
 	end
 end)
-
-]]
 
 descreasebutton.MouseButton1Up:Connect(function()
 	if number > 1 then
