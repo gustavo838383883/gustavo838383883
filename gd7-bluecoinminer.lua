@@ -563,7 +563,7 @@ for i,v in pairs(gputer) do
 	gputerlength += 1
 end
 
-if gputerlength == 0 and gputer["CreateWindow"] then
+if not gputer["CreateWindow"] then
 	window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Bluecoin ATM", false, false, false, "Bluecoin ATM", false)
 else
 	window = gputer.CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Bluecoin ATM", false, false, false, "Bluecoin ATM", false)
