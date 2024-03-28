@@ -305,7 +305,7 @@ for i,v in pairs(gputer) do
 	gputerlength += 1
 end
 
-if gputerlength == 0 and not gputer["CreateWindow"] then
+if not gputer["CreateWindow"] then
 	window = CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, nil, false)
 else
 	window = gputer.CreateWindow(UDim2.new(0.6, 0, 0.6, 0), "Server FPS", false, false, false, "Server FPS", false)
