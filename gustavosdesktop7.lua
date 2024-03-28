@@ -1264,7 +1264,7 @@ local success, Error1 = pcall(function()
 	local function videoplayer(id, name)
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), nil, false, false, false, name or "Video", false)
 
-		local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.fromScale(1, 0.85), BackgroundTransparency = 1, Video = "rbxassetid://"..id, Volume = videovolume})
+		local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.fromScale(1, 0.85), BackgroundTransparency = 1, Video = "rbxassetid://"..id, Volume = math.floor(videovolume*10)/10})
 		window:AddChild(videoframe)
 
 		local playpause = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0, 0.85), "Play", window)
@@ -1302,17 +1302,17 @@ local success, Error1 = pcall(function()
 		end)
 
 		up.MouseButton1Up:Connect(function()
-			if videovolume < 2 then
+			if math.floor(videovolume*10)/10 < 2 then
 				videovolume += 0.1
-				videoframe.Volume = videovolume
+				videoframe.Volume = math.floor(videovolume*10)/10
 				ammount.Text = math.floor(videovolume*10)/10
 			end
 		end)
 
 		down.MouseButton1Up:Connect(function()
-			if videovolume > 0 then
+			if math.floor(videovolume*10)/10 > 0 then
 				videovolume -= 0.1
-				videoframe.Volume = videovolume
+				videoframe.Volume = math.floor(videovolume*10)/10
 				ammount.Text = math.floor(videovolume*10)/10
 			end
 		end)
