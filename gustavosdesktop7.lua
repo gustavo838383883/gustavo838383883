@@ -2308,13 +2308,13 @@ local success, Error1 = pcall(function()
 
 		filedatabutton.MouseButton1Down:Connect(function()
 			if keyboardinput then
-				if keyboardinput:sub(1, 2) == "!s" then
-					filedatabutton2.Text = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
-					data = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
+				if keyboardinput:sub(1, 2) ~= "!s" then
+					filedatabutton2.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+					data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 				else
 					local keyboardinput = keyboardinput:sub(3, string.len(keyboardinput))
 					filedatabutton2.Text = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
-					data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+					data = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
 				end
 			end
 		end)
