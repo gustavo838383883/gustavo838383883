@@ -1730,9 +1730,9 @@ local success, Error1 = pcall(function()
 					dir = dir.."/"..value
 				end
 			end
-			
+
 			local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
-			
+
 			if data1 then
 				txt = data1
 				nameondisk = file
@@ -1746,37 +1746,6 @@ local success, Error1 = pcall(function()
 			if not string.find(nameondisk, "%.lnk") and not string.find(nameondisk, "%.lua") and not string.find(nameondisk, "%.img") and not string.find(nameondisk, "%.aud") and not string.find(nameondisk, "%.vid") and typeof(txt) ~= "table" then
 				readfile(txt, nameondisk, directory)
 			end
-		end
-
-		if prevdir then
-			deletebutton = createnicebutton2(UDim2.new(0, defaultbuttonsize.Y, 0, defaultbuttonsize.Y), UDim2.new(1, -defaultbuttonsize.Y, 0, 0), "Delete", window)
-			local pressed = false
-
-			deletebutton.MouseButton1Up:Connect(function()
-				if pressed then return end
-				pressed = true
-				local holdframe, windowz, closebutton, maximize, textlabel, resize, minimize, funcs = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?", true, true, false, nil, true)
-				local deletebutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", holdframe)
-				local cancelbutton = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", holdframe)
-
-				cancelbutton.MouseButton1Up:Connect(function()
-					pressed = false
-					funcs:Close()
-				end)
-
-				closebutton.MouseButton1Up:Connect(function()
-					pressed = false
-				end)
-
-				deletebutton.MouseButton1Up:Connect(function()
-					pressed = false
-					filesystem.Write(prevname, nil, prevdir)
-					funcs:Close()
-					if window then
-						funcs:Close()
-					end
-				end)
-			end)
 		end
 
 		if string.find(string.lower(tostring(nameondisk)), "%.aud") then
@@ -1882,17 +1851,17 @@ local success, Error1 = pcall(function()
 		end
 
 		local deletebutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
-		
+
 		local selected
 		local selecteddir
 		local selectedname
-		
+
 		if boolean1 then
 			selected = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.8, 0.15), Position = UDim2.fromScale(0, 0.85), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Select a file"})
 			holderframe:AddChild(selected)
-			
+
 			local sendbutton = createnicebutton(UDim2.fromScale(0.2, 0.15), UDim2.fromScale(0.8, 0.85), "Send", holderframe)
-			
+
 			sendbutton.MouseButton1Up:Connect(function()
 				funcs:Close()
 				if typeof(func) == "function" then
@@ -1900,8 +1869,8 @@ local success, Error1 = pcall(function()
 				end
 			end)
 		end
-		
-		
+
+
 		local function loadfile(filename, dataz)
 			if filename then
 				local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
@@ -1949,7 +1918,7 @@ local success, Error1 = pcall(function()
 					local split = tostring(dataz):split("/")
 					local file = split[#split]
 					local dir = ""
-		
+
 					for index, value in ipairs(split) do
 						if index < #split and index > 1 then
 							dir = dir.."/"..value
@@ -1961,19 +1930,19 @@ local success, Error1 = pcall(function()
 					if dir == "" and file == "" then
 						data1 = disk:ReadEntireDisk()
 					end
-												
+
 					if string.find(file, "%.aud") then
 						imagebutton.Image = "rbxassetid://16137076689"
 					end
-	
+
 					if string.find(file, "%.img") then
 						imagebutton.Image = "rbxassetid://16138716524"
 					end
-	
+
 					if string.find(file, "%.vid") then
 						imagebutton.Image = "rbxassetid://16137079551"
 					end
-	
+
 					if string.find(file, "%.lua") then
 						imagebutton.Image = "rbxassetid://16137086052"
 					end
@@ -1984,8 +1953,8 @@ local success, Error1 = pcall(function()
 						for i, v in pairs(data1) do
 							length += 1
 						end
-	
-	
+
+
 						if length > 0 then
 							imagebutton.Image = "rbxassetid://16137091192"
 						else
@@ -2002,12 +1971,12 @@ local success, Error1 = pcall(function()
 					readfile(filesystem.Read(filename, directory), filename, directory)
 				end)
 
-				button.MouseButton1Up:Connect(function()
+				button.MouseButton1Up:Connect(function(x, y)
 					local information = filesystem.Read(filename, directory)
 
 					if typeof(information) ~= "table" then
 						if not boolean1 then
-							readfile(information, filename, directory)
+							openrightclickprompt(button, filename, directory, false, true, x, y)
 						else
 							selecteddir = directory
 							selectedname = filename
@@ -2208,6 +2177,7 @@ local success, Error1 = pcall(function()
 			end
 		end)
 	end
+
 
 	local function writedisk()
 		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Create File", false, false, false, "File Creator", false)
@@ -3578,7 +3548,7 @@ local success, Error1 = pcall(function()
 	end
 
 	local previousframe
-	local function openrightclickprompt(frame, name, dir, boolean1)
+	function openrightclickprompt(frame, name, dir, boolean1, boolean2, x, y)
 		if rightclickmenu then
 			rightclickmenu:Destroy()
 			rightclickmenu = nil
@@ -3590,24 +3560,38 @@ local success, Error1 = pcall(function()
 
 		previousframe = frame
 
-		local size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.3)
+		local size = UDim2.new(0.2, 0, 0.4, 0)
 
-		if boolean1 then
-			size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.5)
+		if not boolean2 then
+
+    		size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.3)
+
+    		if boolean1 then
+    			size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.5)
+    		end
+
 		end
 
-		local position = UDim2.fromScale(frame.Position.X.Scale + frame.Size.X.Scale, frame.Position.Y.Scale)
+        local position = UDim2.new(0, x or frame.AbsolutePosition.X, 0, y or frame.AbsolutePosition.Y)
 
-		if frame.Position.Y.Scale >= 0.5 then
-			position = UDim2.fromScale(position.X.Scale, frame.Position.Y.Scale - if boolean1 then frame.Size.Y.Scale*2.5 else 0)
+        if not boolean2 then
+
+		    position = UDim2.fromScale(frame.Position.X.Scale + frame.Size.X.Scale, frame.Position.Y.Scale)
+
+    		if frame.Position.Y.Scale >= 0.5 then
+    			position = UDim2.fromScale(position.X.Scale, frame.Position.Y.Scale - if boolean1 then frame.Size.Y.Scale*2.5 else 0)
+    		end
+
+    		if frame.Position.X.Scale >= desktopscrollingframe.CanvasSize.X.Scale - 0.2 then
+    			position = UDim2.fromScale(frame.Position.X.Scale - frame.Size.X.Scale, position.Y.Scale)
+    		end
+
 		end
 
-		if frame.Position.X.Scale >= desktopscrollingframe.CanvasSize.X.Scale - 0.2 then
-			position = UDim2.fromScale(frame.Position.X.Scale - frame.Size.X.Scale, position.Y.Scale)
-		end
-		
 		rightclickmenu = screen:CreateElement("ImageButton", {Size = size, Position = position, BackgroundTransparency = 1, Image = "rbxassetid://15619032563"})
-		desktopscrollingframe:AddChild(rightclickmenu)
+		if not boolean2 then
+		    desktopscrollingframe:AddChild(rightclickmenu)
+        end
 		local closebutton = createnicebutton(if not boolean1 then UDim2.fromScale(1, 1/3) else UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0), "Close", rightclickmenu)
 		if not boolean1 then
 			local openbutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, 1/3), "Open", rightclickmenu)
@@ -3615,7 +3599,7 @@ local success, Error1 = pcall(function()
 			openbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				readfile(filesystem.Read(name, dir), name, dir)	
+				readfile(filesystem.Read(name, dir), name, dir)
 			end)
 
 			local deletebutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, (1/3) + (1/3)), "Delete", rightclickmenu)
@@ -3634,7 +3618,7 @@ local success, Error1 = pcall(function()
 					filesystem.Write(name, nil, dir)
 					funcs:Close()
 					loaddesktopicons()
-				end)		
+				end)
 			end)
 		else
 			local filesbutton = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.2), "Files", rightclickmenu)
@@ -3670,7 +3654,7 @@ local success, Error1 = pcall(function()
 		closebutton.MouseButton1Up:Connect(function()
 			rightclickmenu:Destroy()
 			rightclickmenu = nil
-		end)		
+		end)
 	end
 
 	local desktopicons = {}
