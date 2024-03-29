@@ -3455,6 +3455,8 @@ local success, Error1 = pcall(function()
 	local function shutdownprompt()
 		local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs, index = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 
+		holderframe.ZIndex = (2^31)-2
+
 		windows[index] = {Focused = windows[index].Focused, CloseButton = closebutton}
 																																
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
@@ -3503,6 +3505,8 @@ local success, Error1 = pcall(function()
 
 	local function restartprompt()
 		local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs, index = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
+
+		holderframe.ZIndex = (2^31)-2
 
 		windows[index] = {Focused = windows[index].Focused, CloseButton = closebutton}
 																																
