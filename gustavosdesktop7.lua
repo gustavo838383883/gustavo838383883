@@ -3810,51 +3810,54 @@ local success, Error1 = pcall(function()
 					imagelabel:AddChild(image2)
 
 					local split = tostring(data):split("/")
-					local file = split[#split]
-					local dir = ""
-		
-					for index, value in ipairs(split) do
-						if index < #split and index > 1 then
-							dir = dir.."/"..value
+					if split then
+						local file = split[#split]
+						local dir = ""
+			
+						for index, value in ipairs(split) do
+							if index < #split and index > 1 then
+								dir = dir.."/"..value
+							end
 						end
-					end
 
-					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
-
-					if dir == "" and file == "" then
-						data1 = disk:ReadEntireDisk()
-					end
-
-					if not data1 then return end
-												
-					if string.find(file, "%.aud") then
-						imagelabel.Image = "rbxassetid://16137076689"
-					end
-	
-					if string.find(file, "%.img") then
-						imagelabel.Image = "rbxassetid://16138716524"
-					end
-	
-					if string.find(file, "%.vid") then
-						imagelabel.Image = "rbxassetid://16137079551"
-					end
-	
-					if string.find(file, "%.lua") then
-						imagelabel.Image = "rbxassetid://16137086052"
-					end
-
-					if typeof(data1) == "table" then
-						local length = 0
-
-						for i, v in pairs(data1) do
-							length += 1
+						local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
+			
+						if dir == "" and file == "" then
+							data1 = disk:ReadEntireDisk()
 						end
-	
-	
-						if length > 0 then
-							imagelabel.Image = "rbxassetid://16137091192"
-						else
-							imagelabel.Image = "rbxassetid://16137073439"
+			
+			                        if data1 then
+    
+							if string.find(file, "%.aud") then
+								imagelabel.Image = "rbxassetid://16137076689"
+							end
+							
+							if string.find(file, "%.img") then
+								imagelabel.Image = "rbxassetid://16138716524"
+							end
+							
+							if string.find(file, "%.vid") then
+								imagelabel.Image = "rbxassetid://16137079551"
+							end
+							
+							if string.find(file, "%.lua") then
+								imagelabel.Image = "rbxassetid://16137086052"
+							end
+								
+							if typeof(data1) == "table" then
+								local length = 0
+								
+								for i, v in pairs(data1) do
+									length += 1
+								end
+			    
+			    
+								if length > 0 then
+									imagelabel.Image = "rbxassetid://16137091192"
+								else
+									imagelabel.Image = "rbxassetid://16137073439"
+								end
+							end
 						end
 					end
 				end
