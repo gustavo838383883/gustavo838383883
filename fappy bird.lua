@@ -480,7 +480,7 @@ function restartGAME()
 			died()
 		end
 
-		bird.Instance.Position += UDim2.fromScale(0, 0.01)
+		bird.Instance.Position += UDim2.fromScale(0, 0.015)
 		if bird.Instance.Position.Y.Scale > 1 then
 			bird:Destroy()
 			bird = nil
