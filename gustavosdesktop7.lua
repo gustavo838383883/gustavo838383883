@@ -3761,7 +3761,7 @@ local success, Error1 = pcall(function()
 																				
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
-				if yScale + iconsize > 1 - iconsize then
+				if yScale + iconsize >= 1 - iconsize then
 					yScale = 0
 					xScale += iconsize
 				else
