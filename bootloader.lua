@@ -187,6 +187,27 @@ local name = "Bootloader"
 
 if not screen then screen = regularscreen end
 
+if microcontroller then
+	local polyports = GetPartsFromPort(microcontroller, "Port")
+	local polyport
+
+	for i, val in ipairs(polyports) do
+		if GetPartFromPort(val, "Polysilicon") then
+			polyport = val
+		end
+	end
+
+	if polyport then
+		local poly = GetPartFromPort(polyport, "Polysilicon")
+
+		if poly then
+			poly:Configure({PolysiliconMode = 1})
+
+			TriggerPort(polyport)
+		end
+	end
+end
+
 local function loadmicro(micro, text, lines)
 	if micro then
 		micro:Configure({Code = tostring(text)})
