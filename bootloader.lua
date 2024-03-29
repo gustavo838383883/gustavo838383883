@@ -207,6 +207,8 @@ local function loadmicro(micro, text, lines)
 
 				poly:Configure({PolysiliconMode = 1})
 
+				screen:ClearElements()
+
 				if polysiliconport then
 
 					TriggerPort(polysiliconport)
