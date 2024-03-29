@@ -191,7 +191,14 @@ local function loadmicro(micro, text, lines)
 	if micro then
 		micro:Configure({Code = tostring(text)})
 
-		local polyport = GetPartFromPort(micro, "Port")
+		local polyports = GetPartsFromPort(micro, "Port")
+		local polyport
+
+		for i, val in ipairs(polyports) do
+			if GetPartFromPort(val, "Polysilicon") then
+				polyport = val
+			end
+		end
 
 		if polyport then
 			local poly = GetPartFromPort(polyport, "Polysilicon")
@@ -219,7 +226,7 @@ local function loadmicro(micro, text, lines)
 				lines.insert("No polysilicon attached to the port of the found microcontroller.")
 			end
 		else
-			lines.insert("No port attached to the found microcontroller.")
+			lines.insert("No port attached to the found microcontroller or no polysilicon attached to that found port.")
 		end
 	else
 		lines.insert("No microcontroller was found.")
