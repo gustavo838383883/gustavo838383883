@@ -3708,6 +3708,8 @@ local success, Error1 = pcall(function()
 			if scrollX < 1-iconsize then scrollX = 1-iconsize end
 
 			desktopscrollingframe.CanvasSize = UDim2.fromScale(scrollX, scrollY)
+		else
+			desktopscrollingframe.CanvasSize = UDim2.fromScale(1, 0.9)
 		end
 
 		local mycomputer = screen:CreateElement("TextButton", {Size = UDim2.fromScale(iconsize/desktopscrollingframe.CanvasSize.X.Scale, iconsize), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0), TextTransparency = 1})
