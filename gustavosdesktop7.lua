@@ -5510,6 +5510,12 @@ function bootos()
 
 			windows = {}
 
+			if microcontrollers then
+
+				shutdownallmicros(microcontrollers)
+		
+			end
+
 			iconsize = rom:Read("IconSize")
 			iconsize = tonumber(iconsize) or 0.2
 			if not color then color = disk:Read("Color") end
