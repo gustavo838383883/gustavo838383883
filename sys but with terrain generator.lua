@@ -449,6 +449,15 @@ while task.wait(0.01) do
 		hitbox.Position -= UDim2.new(0, 0, 0, 2)
 	else
 		hitbox.Position -= UDim2.new(0, 0, 0, 2)
+
+		hitbox.Position += UDim2.new(0, 0, 0, 1)
+		if not DetectGuiBelow(hitbox, allobjects) then
+			plr.Position += UDim2.new(0, 0, 0, 1)
+			thegame.Position -= UDim2.new(0, 0, 0, 1)
+			hitbox.Position -= UDim2.new(0, 0, 0, 1)
+		else
+			hitbox.Position -= UDim2.new(0, 0, 0, 1)
+		end
 	end
 end
 end))
