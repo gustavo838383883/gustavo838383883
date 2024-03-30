@@ -1650,7 +1650,7 @@ local success, Error1 = pcall(function()
 			local directory = directory or "/"
 			local dir = directory
 			local value = "No filename or filedata specified"
-			if filename and filename ~= "" then
+			if filename then
 				local split = nil
 				local returntable = nil
 				if directory ~= "" then
