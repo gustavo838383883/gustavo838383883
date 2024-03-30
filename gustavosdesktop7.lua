@@ -2747,7 +2747,7 @@ local success, Error1 = pcall(function()
 		end)
 	end
 
-	local function shutdownallmicros(micros)
+	function shutdownallmicros(micros)
 		if not micros then return end
 		for index, value in pairs(micros) do
 			local polysilicon = GetPartFromPort(value, "Polysilicon")
