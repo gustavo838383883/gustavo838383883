@@ -225,6 +225,8 @@ local function loadmicro(micro, text, lines)
 			local poly = GetPartFromPort(polyport, "Polysilicon")
 
 			if poly then
+				screen:ClearElements()
+				
 				poly:Configure({PolysiliconMode = 1})
 
 				TriggerPort(polyport)
@@ -234,8 +236,6 @@ local function loadmicro(micro, text, lines)
 				TriggerPort(polyport)
 
 				poly:Configure({PolysiliconMode = 1})
-
-				screen:ClearElements()
 
 				if polysiliconport then
 
