@@ -5652,19 +5652,63 @@ function bootos()
 	if disks and #disks > 0 then
 		print(tostring(romport).."\\"..tostring(disksport))
 		if romport ~= disksport then
+		    local indexusing1
+
 			for i,v in ipairs(disks) do
 				if rom ~= v then
 					disk = v
-					break
+					indexusing1 = i
+
+					if v:Read("BackgroundImage") then
+				        break
+				    end
 				end
-			end
-		else
-			for i,v in ipairs(disks) do
+		    end
+
+		    local diskstable2 = {
+	            [1] = disk
+            }
+
+            for i, v in ipairs(disks) do
+                if i ~= indexusing1 then
+                    table.insert(diskstable2, v)
+                end
+            end
+
+	        disks = diskstable2
+	    else
+	        local diskstable = {}
+
+	        for i, v in ipairs(disks) do
 				if rom ~= v and i ~= romindexusing then
-					disk = v
-					break
+					table.insert(diskstable, v)
 				end
-			end
+		    end
+
+		    disks = diskstable
+
+	        local indexusing1
+
+			for i, v in ipairs(disks) do
+				disk = v
+				indexusing1 = i
+
+				if v:Read("BackgroundImage") then
+				    break
+				end
+		    end
+
+		    local diskstable2 = {
+	            [1] = disk
+	        }
+
+		    for i, v in ipairs(disks) do
+				if i ~= indexusing1 then
+				   table.insert(diskstable2, v)
+			    end
+	        end
+
+	        disks = diskstable2
 		end
 	end
 	if screen and keyboard and speaker and disk and rom then
