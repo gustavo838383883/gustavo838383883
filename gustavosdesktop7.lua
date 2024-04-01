@@ -1870,7 +1870,7 @@ local success, Error1 = pcall(function()
 		local selecteddir
 		local selectedname
 		local selecteddisk
-		local diskin = table.find(disks, currentdisk)
+		local diskin = table.find(disks, currentdisk) or 0
 
 		if boolean1 then
 			selected = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.8, 0.15), Position = UDim2.fromScale(0, 0.85), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Select a file"})
