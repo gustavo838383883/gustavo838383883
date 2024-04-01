@@ -3122,6 +3122,7 @@ local success, Error1 = pcall(function()
 
 		local directory = nil
 		local filename = nil
+		local sdisk = nil
 		local id = nil
 		local toggled = 1
 
@@ -3129,11 +3130,12 @@ local success, Error1 = pcall(function()
 
 		filebutton.MouseButton1Up:Connect(function()
 			if toggled == 1 then
-				loaddisk(if directory == "" then "/" else directory, function(name, dir)
+				loaddisk(if directory == "" then "/" else directory, function(name, dir, cd)
 					if not holderframe then return end
 					if toggled ~= 1 then return end
 					directory = dir
 					filename = name
+					sdisk = cd
 
 					text1.Text = filename
 				end, true)
@@ -3168,7 +3170,7 @@ local success, Error1 = pcall(function()
 			if filename or id then
 				local readdata = nil
 				if toggled == 1 then
-					readdata = filesystem.Read(filename, directory)
+					readdata = filesystem.Read(filename, directory, nil, sdisk)
 				else
 					readdata = string.lower(tostring(id))
 				end
@@ -3224,7 +3226,7 @@ local success, Error1 = pcall(function()
 			if filename or id then
 				local readdata = nil
 				if toggled == 1 then
-					readdata = filesystem.Read(filename, directory)
+					readdata = filesystem.Read(filename, directory, nil, sdisk)
 				else
 					readdata = tonumber(id)
 				end
@@ -3236,7 +3238,7 @@ local success, Error1 = pcall(function()
 			if filename or id then
 				local readdata = nil
 				if toggled == 1 then
-					readdata = filesystem.Read(filename, directory)
+					readdata = filesystem.Read(filename, directory, nil, sdisk)
 				else
 					readdata = tonumber(id)
 				end
