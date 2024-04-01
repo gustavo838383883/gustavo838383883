@@ -4289,6 +4289,7 @@ local success, Error1 = pcall(function()
 
 				if disks[text] then
 				    disk = disks[text]
+					directory = ""
 				    commandlines:insert("Success")
 			    else
 			       commandlines:insert("Invalid storage media number.")
