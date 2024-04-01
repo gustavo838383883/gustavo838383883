@@ -3770,7 +3770,7 @@ local success, Error1 = pcall(function()
 
 		end
 
-        local position = UDim2.new(0, x or frame.AbsolutePosition.X, 0, y or frame.AbsolutePosition.Y)
+        local position = UDim2.new(0, x or frame.AbsolutePosition.X, 0, math.min(y or frame.AbsolutePosition.Y, 0.6))
 
         if not boolean2 then
 
