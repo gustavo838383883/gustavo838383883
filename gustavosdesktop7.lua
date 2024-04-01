@@ -1646,7 +1646,8 @@ local success, Error1 = pcall(function()
 	local loaddisk
 
 	local filesystem = {
-		Write = function(filename, filedata, directory)
+		Write = function(filename, filedata, directory, cd)
+		    local disk = cd or disk
 			local directory = directory or "/"
 			local dir = directory
 			local value = "No filename or filedata specified"
@@ -1683,7 +1684,8 @@ local success, Error1 = pcall(function()
 			end
 			return value
 		end,
-		Read = function(filename, directory, boolean1)
+		Read = function(filename, directory, boolean1, cd)
+		    local disk = cd or disk
 			local directory = directory or "/"
 			local dir = directory
 			local value = if boolean1 then nil else "No filename specified"
@@ -1708,7 +1710,8 @@ local success, Error1 = pcall(function()
 		end,
 	}
 
-	local function readfile(txt, nameondisk, directory)
+	local function readfile(txt, nameondisk, directory, cd)
+	    local disk = cd or disk
 		local filegui, window, closebutton, maximizebutton, textlabel, resize, min, funcs = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, nameondisk or "File", false)
 		local deletebutton = nil
 		local prevdir = directory
@@ -1725,13 +1728,19 @@ local success, Error1 = pcall(function()
 			local file = split[#split]
 			local dir = ""
 
+            disk = disks[1]
+
+            if tonumber(split[1]) then
+                disk = disks[tonumber(split[1])]
+            end
+
 			for index, value in ipairs(split) do
 				if index < #split and index > 1 then
 					dir = dir.."/"..value
 				end
 			end
 
-			local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
+			local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, disk)
 
 			if data1 then
 				txt = data1
@@ -1744,7 +1753,7 @@ local success, Error1 = pcall(function()
 			end
 
 			if not string.find(nameondisk, "%.lnk") and not string.find(nameondisk, "%.lua") and not string.find(nameondisk, "%.img") and not string.find(nameondisk, "%.aud") and not string.find(nameondisk, "%.vid") and typeof(txt) ~= "table" then
-				readfile(txt, nameondisk, directory)
+				readfile(txt, nameondisk, directory, disk)
 			end
 		end
 
@@ -1817,7 +1826,7 @@ local success, Error1 = pcall(function()
 				funcs:Close()
 			end
 
-			loaddisk(newdirectory)
+			loaddisk(newdirectory, nil, nil, disk)
 		end
 
 		if string.find(string.lower(tostring(txt)), "<woshtml>") then
@@ -1826,7 +1835,8 @@ local success, Error1 = pcall(function()
 
 	end
 
-	function loaddisk(directory: string, func: any, boolean1: boolean)
+	function loaddisk(directory: string, func: any, boolean1: boolean, cd)
+	    local currentdisk = cd
 		local scrollsize = if boolean1 then UDim2.new(1, 0, 0.7, 0) else UDim2.new(1, 0, 0.85, 0)
 		local directory = directory or "/"
 		local start = 0
@@ -1842,19 +1852,25 @@ local success, Error1 = pcall(function()
 		local split = directory:split("/")
 
 		if #split == 2 and split[2] == "" then
-			data = disk:ReadEntireDisk()
+			data = (currentdisk or disk):ReadEntireDisk()
 		elseif #split == 2 and split[2] ~= "" then
-			data = disk:Read(split[2])
+			data = (currentdisk or disk):Read(split[2])
 		elseif #split > 2 then
 			local removedlast = directory:sub(1, -(string.len(split[#split]))-2)
-			data = filesystem.Read(split[#split], removedlast)
+			data = filesystem.Read(split[#split], removedlast, nil, currentdisk)
 		end
+
+		if #disks == 1 and not currentdisk then
+		    currentdisk = disk
+	    end
 
 		local deletebutton = createnicebutton(UDim2.new(0.2, 0, 0.15, 0), UDim2.new(0.8, 0, 0, 0), "Delete", holderframe)
 
 		local selected
 		local selecteddir
 		local selectedname
+		local selecteddisk
+		local diskin
 
 		if boolean1 then
 			selected = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.8, 0.15), Position = UDim2.fromScale(0, 0.85), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Select a file"})
@@ -1865,13 +1881,77 @@ local success, Error1 = pcall(function()
 			sendbutton.MouseButton1Up:Connect(function()
 				funcs:Close()
 				if typeof(func) == "function" then
-					func(selectedname or "", selecteddir or directory)
+					func(selectedname or "", selecteddir or directory, selecteddisk, diskin)
 				end
 			end)
+	    end
+
+	    local loadfile
+
+        local function loaddiskicon(disk, index)
+			if disk then
+				local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(index), scrollingframe)
+				textlabel.Size = UDim2.new(1, -25, 1, 0)
+				textlabel.Position = UDim2.new(0, 25, 0, 0)
+
+				local imagebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1, Image = "rbxassetid://16971885886"})
+				button:AddChild(imagebutton)
+
+				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
+				start += 25
+				imagebutton.MouseButton1Up:Connect(function()
+					speaker:PlaySound(clicksound)
+
+					loaddisk("/", nil, nil, disk)
+				end)
+
+				button.MouseButton1Up:Connect(function(x, y)
+				    diskin = index
+				    currentdisk = disk
+
+				    local information = disk:ReadEntireDisk()
+
+					start = 0
+					scrollingframe:Destroy()
+					scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+					holderframe:AddChild(scrollingframe)
+
+					directory = "/"
+					titletext.Text = directory
+
+					if boolean1 then
+					    selecteddisk = disk
+				    end
+
+					if directory == "/" then
+						deletebutton.Size = UDim2.new(0,0,0,0)
+						deletebutton.Visible = false
+						if not currentdisk then
+						    parentbutton.Size = UDim2.new(0,0,0,0)
+						    parentbutton.Visible = false
+					    else
+					        parentbutton.Size = UDim2.new(0.2, 0, 0.15, 0)
+						    parentbutton.Visible = true
+						    refreshbutton.Size = UDim2.new(0.2, 0, 0.15, 0)
+		                    refreshbutton.Visible = true
+						end
+					else
+						deletebutton.Size = UDim2.new(0.2, 0, 0.15, 0)
+						deletebutton.Visible = true
+						parentbutton.Size = UDim2.new(0.2, 0, 0.15, 0)
+						parentbutton.Visible = true
+					end
+
+					for index, value in pairs(information) do
+						loadfile(index, value, currentdisk)
+						task.wait()
+					end
+
+				end)
+			end
 		end
 
-
-		local function loadfile(filename, dataz)
+		function loadfile(filename, dataz, disk)
 			if filename then
 				local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
 				textlabel.Size = UDim2.new(1, -25, 1, 0)
@@ -1919,13 +1999,19 @@ local success, Error1 = pcall(function()
 					local file = split[#split]
 					local dir = ""
 
+					local disk = disks[1]
+
+                    if tonumber(split[1]) then
+                        disk = disks[tonumber(split[1])]
+                    end
+
 					for index, value in ipairs(split) do
 						if index < #split and index > 1 then
 							dir = dir.."/"..value
 						end
 					end
 
-					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
+					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, disk)
 
 					if dir == "" and file == "" then
 						data1 = disk:ReadEntireDisk()
@@ -1968,24 +2054,26 @@ local success, Error1 = pcall(function()
 				imagebutton.MouseButton1Up:Connect(function()
 					speaker:PlaySound(clicksound)
 
-					readfile(filesystem.Read(filename, directory), filename, directory)
+					readfile(filesystem.Read(filename, directory, nil, disk), filename, directory)
 				end)
 
 				button.MouseButton1Up:Connect(function(x, y)
-					local information = filesystem.Read(filename, directory)
+					local information = filesystem.Read(filename, directory, nil, disk)
 
 					if typeof(information) ~= "table" then
 						if not boolean1 then
-							openrightclickprompt(button, filename, directory, false, true, x, y)
+							openrightclickprompt(button, filename, directory, false, true, x, y, disk)
 						else
 							selecteddir = directory
 							selectedname = filename
+							selecteddisk = disk
 							selected.Text = tostring(filename)
 						end
 					else
 						if boolean1 then
 							selecteddir = directory
 							selectedname = filename
+							selecteddisk = disk
 							selected.Text = tostring(filename)
 						end
 						start = 0
@@ -2009,7 +2097,7 @@ local success, Error1 = pcall(function()
 						end
 
 						for index, value in pairs(information) do
-							loadfile(index, value)
+							loadfile(index, value, currentdisk)
 							task.wait()
 						end
 					end
@@ -2018,16 +2106,32 @@ local success, Error1 = pcall(function()
 			end
 		end
 
-		for filename, dataz in pairs(data) do
-			loadfile(filename, dataz)
-			task.wait()
+        if currentdisk then
+
+		    for filename, dataz in pairs(data) do
+		    	loadfile(filename, dataz, currentdisk)
+			    task.wait()
+		    end
+
+	    else
+
+	        for i, disc in ipairs(disks) do
+		    	loaddiskicon(disc, i)
+			    task.wait()
+		    end
+
 		end
 
 		if directory == "/" then
 			deletebutton.Size = UDim2.new(0,0,0,0)
 			deletebutton.Visible = false
-			parentbutton.Size = UDim2.new(0,0,0,0)
-			parentbutton.Visible = false
+			if not currentdisk then
+			    titletext.Text = "Select storage media"
+		    	parentbutton.Size = UDim2.new(0,0,0,0)
+		        parentbutton.Visible = false
+		        refreshbutton.Size = UDim2.new(0,0,0,0)
+		        refreshbutton.Visible = false
+			end
 		end
 
 		local pressed = false
@@ -2058,8 +2162,8 @@ local success, Error1 = pcall(function()
 						local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
 						local split2 = removedlast1:split("/")
 						local removedlast = removedlast1:sub(1, -(string.len(split2[#split2]))-2)
-						filesystem.Write(split[#split], nil, removedlast1)
-						data = filesystem.Read(split2[#split2], removedlast)
+						filesystem.Write(split[#split], nil, removedlast1, currentdisk)
+						data = filesystem.Read(split2[#split2], removedlast, nil, currentdisk)
 						if boolean1 then
 							selectedname = split2[#split2]
 							selected.Text = selectedname
@@ -2069,8 +2173,8 @@ local success, Error1 = pcall(function()
 						end
 						directory = removedlast1
 					else
-						data = disk:ReadEntireDisk()
-						filesystem.Write(split[#split], nil)
+						data = currentdisk:ReadEntireDisk()
+						filesystem.Write(split[#split], nil, "/", currentdisk)
 						if boolean1 then
 							selectedname = nil
 							selected.Text = "Root"
@@ -2093,7 +2197,7 @@ local success, Error1 = pcall(function()
 					holderframe:AddChild(scrollingframe)
 					if typeof(data) == "table" then
 						for filename, dataz in pairs(data) do
-							loadfile(filename, dataz)
+							loadfile(filename, dataz, currentdisk)
 							task.wait()
 						end
 					end
@@ -2108,12 +2212,12 @@ local success, Error1 = pcall(function()
 			local split = directory:split("/")
 
 			if #split == 2 and split[2] == "" then
-				data = disk:ReadEntireDisk()
+				data = (currentdisk or disk):ReadEntireDisk()
 			elseif #split == 2 and split[2] ~= "" then
-				data = disk:Read(split[2])
+				data = (currentdisk or disk):Read(split[2])
 			elseif #split > 2 then
 				local removedlast = directory:sub(1, -(string.len(split[#split]))-2)
-				data = filesystem.Read(split[#split], removedlast)
+				data = filesystem.Read(split[#split], removedlast, nil, currentdisk)
 			end
 			start = 0
 			scrollingframe:Destroy()
@@ -2123,96 +2227,152 @@ local success, Error1 = pcall(function()
 			if typeof(data) ~= "table" then data = {} end
 
 			for filename, dataz in pairs(data) do
-				loadfile(filename, dataz)
+				loadfile(filename, dataz, currentdisk)
 			end
 		end)
 
 		parentbutton.MouseButton1Up:Connect(function()
-			local data
-			local split = directory:split("/")
+		    if currentdisk then
 
-			if #split == 2 and split[2] ~= "" then
-				data = disk:ReadEntireDisk()
-				directory = "/"
-				if boolean1 then
-					selectedname = nil
-					selected.Text = "Root"
-				end
-				if boolean1 then
-					selecteddir = "/"
-				end
-			elseif #split > 2 then
-				local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
-				local split2 = removedlast1:split("/")
-				local removedlast = removedlast1:sub(1, -(string.len(split2[#split2]))-2)
-				data = filesystem.Read(split2[#split2], removedlast)
-				if boolean1 then
-					selectedname = split2[#split2]
-					selected.Text = selectedname
-				end
-				directory = removedlast1
-				if boolean1 then
-					selecteddir = removedlast
-				end
-			end
+		        if directory ~= "/" then
+            		local data
+            		local split = directory:split("/")
 
-			titletext.Text = tostring(directory)
+            		if #split == 2 and split[2] ~= "" then
+            			data = currentdisk:ReadEntireDisk()
+            			directory = "/"
+            			if boolean1 then
+            				selectedname = nil
+            				selected.Text = "Root"
+            			end
+            			if boolean1 then
+            				selecteddir = "/"
+            			end
+            		elseif #split > 2 then
+            			local removedlast1 = directory:sub(1, -(string.len(split[#split]))-2)
+            			local split2 = removedlast1:split("/")
+            			local removedlast = removedlast1:sub(1, -(string.len(split2[#split2]))-2)
+            			data = filesystem.Read(split2[#split2], removedlast, nil, currentdisk)
+            			if boolean1 then
+            				selectedname = split2[#split2]
+            				selected.Text = selectedname
+            			end
+            			directory = removedlast1
+            			if boolean1 then
+            				selecteddir = removedlast
+            			end
+            		end
 
-			start = 0
-			scrollingframe:Destroy()
-			scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
-			holderframe:AddChild(scrollingframe)
+            		titletext.Text = tostring(directory)
 
-			if typeof(data) ~= "table" then data = {} end
+            		start = 0
+            		scrollingframe:Destroy()
+            		scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+            		holderframe:AddChild(scrollingframe)
 
-			if directory == "/" then
-				deletebutton.Size = UDim2.new(0,0,0,0)
-				deletebutton.Visible = false
-				parentbutton.Size = UDim2.new(0,0,0,0)
-				parentbutton.Visible = false
-			end
+            		if typeof(data) ~= "table" then data = {} end
 
-			for filename, dataz in pairs(data) do
-				loadfile(filename, dataz)
-			end
+            		if directory == "/" then
+            			deletebutton.Size = UDim2.new(0,0,0,0)
+            			deletebutton.Visible = false
+            			if not currentdisk then
+            			    parentbutton.Size = UDim2.new(0,0,0,0)
+            			    parentbutton.Visible = false
+            			end
+            		end
+
+            		for filename, dataz in pairs(data) do
+            			loadfile(filename, dataz, currentdisk)
+            		end
+
+                else
+
+                    if boolean1 then
+                        selecteddisk = nil
+                    end
+
+                    refreshbutton.Size = UDim2.new(0,0,0,0)
+		            refreshbutton.Visible = false
+		            parentbutton.Size = UDim2.new(0,0,0,0)
+		            parentbutton.Visible = false
+
+		            titletext.Text = "Select storage media"
+
+		            currentdisk = nil
+		            diskin = nil
+
+		            start = 0
+    		        scrollingframe:Destroy()
+            		scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
+                    holderframe:AddChild(scrollingframe)
+
+    		        for i, disc in ipairs(disks) do
+        		    	loaddiskicon(disc, i)
+        			    task.wait()
+        		    end
+
+    		    end
+
+    		end
 		end)
 	end
-
 
 	local function writedisk()
 		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Create File", false, false, false, "File Creator", false)
 		local scrollingframe = holderframe
-		local filenamebutton, filenamebutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "File Name(Case Sensitive) (Click to update)", scrollingframe)
-		local filedatabutton, filedatabutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.2, 0), "File Data (Click to update)", scrollingframe)
-		local createfilebutton, createfilebutton2 = createnicebutton(UDim2.new(0.5,0,0.2, 0), UDim2.new(0, 0, 0.8, 0), "Save", scrollingframe)
+		local filenamebutton, filenamebutton2 = createnicebutton(UDim2.new(1,0,1/6,0), UDim2.new(0, 0, 0, 0), "File Name(Case Sensitive) (Click to update)", scrollingframe)
+		local filedatabutton, filedatabutton2 = createnicebutton(UDim2.new(1,0,1/6,0), UDim2.new(0, 0, 1/6, 0), "File Data (Click to update)", scrollingframe)
+		local createfilebutton, createfilebutton2 = createnicebutton(UDim2.new(0.5,0,1/6, 0), UDim2.new(0, 0, 1-(1/6), 0), "Save", scrollingframe)
 
-		local createtablebutton, createtablebutton2 = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Create Table", scrollingframe)
+		local createtablebutton, createtablebutton2 = createnicebutton(UDim2.new(0.5,0,1/6,0), UDim2.new(0.5, 0, 1-(1/6), 0), "Create Table", scrollingframe)
 
-		local directorybutton, directorybutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.4, 0), [[Directory(Case Sensitive) (Click to update) example: "/sounds"]], scrollingframe)
+		local directorybutton, directorybutton2 = createnicebutton(UDim2.new(1,0,1/6,0), UDim2.new(0, 0, (1/6)*2, 0), [[Directory(Case Sensitive) (Click to update) example: "/sounds"]], scrollingframe)
+		local disknum, disktext = createnicebutton(UDim2.new(1,0,1/6,0), UDim2.new(0, 0, (1/6)*4, 0), "Storage media number", scrollingframe)
 
 		local data = nil
 		local filename = nil
 		local directory = ""
+		local disk = nil
 
-		local getfilebutton, getfilebutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.6, 0), [[Select directory instead]], scrollingframe)
+		local getfilebutton, getfilebutton2 = createnicebutton(UDim2.new(1,0,1/6,0), UDim2.new(0, 0, (1/6)*3, 0), [[Select directory instead]], scrollingframe)
 
 		getfilebutton.MouseButton1Up:Connect(function()
-			loaddisk(if directory == "" then "/" else directory, function(name, dir)
+			loaddisk(if directory == "" then "/" else directory, function(name, dir, cd, cdi)
 				if not holderframe then return end
 				if dir == "/" and name == "" then
 					directory = dir
+					disk = cd
+					disktext.Text = cdi
+
 					directorybutton2.Text = directory
-				elseif typeof(filesystem.Read(name, dir)) == "table" then
+				elseif typeof(filesystem.Read(name, dir, nil, cd)) == "table" then
 					directory = if dir == "/" then "/"..name else dir.."/"..name
+					disk = cd
+					disktext.Text = cdi
 					directorybutton2.Text = directory
 				elseif dir ~= directory then
 					getfilebutton2.Text = "The selected folder/table is not a valid folder/table."
 					task.wait(2)
 					getfilebutton2.Text = "Select directory instead"
 				end
-			end, true)
+			end, true, disk)
 		end)
 
+        disknum.MouseButton1Up:Connect(function()
+            local disknumber = tonumber(keyboardinput)
+
+            if disknumber then
+                if disks[disknumber] then
+                   disktext.Text = disknumber
+
+                   disk = disks[disknumber]
+                else
+                   disktext.Text = "Invalid"
+                   task.wait(2)
+                   disktext.Text = "Storage media number"
+                end
+            end
+        end)
 
 		filenamebutton.MouseButton1Down:Connect(function()
 			if keyboardinput then
@@ -2290,8 +2450,9 @@ local success, Error1 = pcall(function()
 		end)
 
 		createfilebutton.MouseButton1Down:Connect(function()
-			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "" and filename then
-				if filedatabutton2.Text ~= "File Data (Click to update)" then
+		    local disk = disk or disks[1]
+			if filename and filename ~= "" then
+				if data then
 					local split = nil
 					local returntable = nil
 					if directory ~= "" then
@@ -2326,7 +2487,8 @@ local success, Error1 = pcall(function()
 		end)
 
 		createtablebutton.MouseButton1Down:Connect(function()
-			if filenamebutton2.Text ~= "File Name(Case Sensitive if on a table) (Click to update)" and filename ~= "" and filename then
+		    local disk = disk or disks[1]
+			if filename ~= "" and filename then
 				local split = nil
 				local returntable = nil
 				if directory ~= "" then
@@ -2356,28 +2518,31 @@ local success, Error1 = pcall(function()
 			end
 		end)
 	end
-	
+
 	local function copyfile()
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Copy File", false, false ,false, "Copy File", false)
-		
+
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select new path", window)
 		local renamebutton, text4 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.4), "Enter new filename (Click to update)", window)
 		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
-		
+
 		local filename
 		local newname
 		local directory
+		local sdisk
+		local ndisk
 		local newdirectory
 		local newdirname
 		local newdir
-		
+
 		filebutton.MouseButton1Up:Connect(function()
-			loaddisk(if not directory then "/" else directory, function(name, dir)
+			loaddisk(if not directory then "/" else directory, function(name, dir, cd)
 				if not window then return end
 				directory = dir
 				filename = name
-				
+				sdisk = cd
+
 				text1.Text = filename
 			end, true)
 		end)
@@ -2388,32 +2553,33 @@ local success, Error1 = pcall(function()
 				if newname == "" then
 					newname = nil
 				end
-				text4.Text = newname or "Enter new filename (Click to update)"							
+				text4.Text = newname or "Enter new filename (Click to update)"
 			end
 		end)
-		
+
 		folderbutton.MouseButton1Up:Connect(function()
-			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
+			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir, cd)
 				if not window then return end
 				if name ~= "" or dir == "/" then
 					newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				end
 				newdirname = name
 				newdir = dir
-				
+				ndisk = cd
+
 				text2.Text = newdirectory
 			end, true)
 		end)
-		
+
 		confirm.MouseButton1Up:Connect(function()
 			if newdirectory then
 				if filename and directory then
-					local data = filesystem.Read(filename, directory)
+					local data = filesystem.Read(filename, directory, nil, sdisk)
 					if data then
-						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
+						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir, nil, ndisk)) == "table" then
 							if directory == "/" and filename == "" then
-								local newdata = JSONDecode(JSONEncode(disk:ReadEntireDisk()))
-								local result = filesystem.Write(newname or "Root", newdata, newdirectory)
+								local newdata = JSONDecode(JSONEncode(sdisk:ReadEntireDisk()))
+								local result = filesystem.Write(newname or "Root", newdata, newdirectory, ndisk)
 								if result == "Success i think" then
 									text3.Text = "Success?"
 									task.wait(2)
@@ -2428,7 +2594,7 @@ local success, Error1 = pcall(function()
 								if typeof(data) == "table" then
 									newdata = JSONDecode(JSONEncode(data))
 								end
-								local result = filesystem.Write(newname or filename, newdata, newdirectory)
+								local result = filesystem.Write(newname or filename, newdata, newdirectory, ndisk)
 								if result == "Success i think" then
 									text3.Text = "Success?"
 									task.wait(2)
@@ -2439,7 +2605,7 @@ local success, Error1 = pcall(function()
 									text3.Text = "Confirm"
 								end
 							end
-	
+
 						else
 							text3.Text = "The selected new path is not a valid table/folder."
 							task.wait(2)
@@ -2465,36 +2631,38 @@ local success, Error1 = pcall(function()
 
 	local function renamefile()
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Rename File", false, false ,false, "Rename File", false)
-		
+
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local namebutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "New filename (Click to update)", window)
 		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
-		
+
 		local filename
 		local directory
+		local sdisk
 		local newname
-		
+
 		filebutton.MouseButton1Up:Connect(function()
-			loaddisk(if not directory then "/" else directory, function(name, dir)
+			loaddisk(if not directory then "/" else directory, function(name, dir, cd)
 				if not window then return end
 				directory = dir
+				sdisk = cd
 				filename = name
-				
+
 				text1.Text = filename
 			end, true)
 		end)
-		
+
 		namebutton.MouseButton1Up:Connect(function()
 			if keyboardinput then
 				newname = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
 				text2.Text = newname
 			end
 		end)
-		
+
 		confirm.MouseButton1Up:Connect(function()
 			if newname then
 				if filename and directory then
-					local data = filesystem.Read(filename, directory)
+					local data = filesystem.Read(filename, directory, nil, sdisk)
 					if data then
 						if directory == "/" and filename == "" then
 							text3.Text = "Cannot rename Root."
@@ -2502,13 +2670,13 @@ local success, Error1 = pcall(function()
 							text3.Text = "Confirm"
 						else
 							filesystem.Write(filename, nil, directory)
-							local result = filesystem.Write(newname, data, directory)
+							local result = filesystem.Write(newname, data, directory, sdisk)
 							if result == "Success i think" then
 								text3.Text = "Success?"
 								task.wait(2)
 								text3.Text = "Confirm"
 							else
-								filesystem.Write(filename, data, directory)
+								filesystem.Write(filename, data, directory, sdisk)
 								text3.Text = "Failed?"
 								task.wait(2)
 								text3.Text = "Confirm"
@@ -2534,18 +2702,22 @@ local success, Error1 = pcall(function()
 
 	local function createshortcut()
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Create Shortcut", false, false ,false, "Create Shortcut", false)
-		
+
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select shortcut path", window)
 		local renamebutton, text4 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.4), "Enter shortcut name (Click to update)", window)
 		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
-		
+
 		local filename
 		local directory
+		local sdisk
+		local sindex
 		local newdirectory
+		local ndisk
 		local newdirname
 		local newdir
 		local newname
+		local nindex
 
 		renamebutton.MouseButton1Up:Connect(function()
 			if keyboardinput then
@@ -2556,16 +2728,16 @@ local success, Error1 = pcall(function()
 				text4.Text = newname or "Enter shortcut name (Click to update)"
 			end
 		end)
-		
+
 		filebutton.MouseButton1Up:Connect(function()
-			loaddisk(if not directory then "/" else directory, function(name, dir)
+			loaddisk(if not directory then "/" else directory, function(name, dir, cd, index)
 				if not window then return end
 				if string.find(name, "%.lnk") then
-					local data = tostring(filesystem.Read(name, dir)) or ""
+					local data = tostring(filesystem.Read(name, dir, nil, cd)) or ""
 					local split = data:split("/")
 					local file = split[#split]
 					local dir1 = ""
-		
+
 					for index, value in ipairs(split) do
 						if index < #split and index > 1 then
 							dir1 = dir1.."/"..value
@@ -2581,32 +2753,36 @@ local success, Error1 = pcall(function()
 				end
 				directory = dir
 				filename = name
-				
+				sdisk = cd
+				sindex = index
+
 				text1.Text = filename
 			end, true)
 		end)
-		
+
 		folderbutton.MouseButton1Up:Connect(function()
-			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
+			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir, cd, index)
 				if not window then return end
 				if name ~= "" or dir == "/" then
 					newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				end
 				newdirname = name
 				newdir = dir
-				
+				ndisk = cd
+				nindex = index
+
 				text2.Text = newdirectory
 			end, true)
 		end)
-		
+
 		confirm.MouseButton1Up:Connect(function()
 			if newdirectory then
 				if filename and directory then
-					local data = filesystem.Read(filename, directory)
+					local data = filesystem.Read(filename, directory, nil, sdisk)
 					if data then
-						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
+						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir, nil, ndisk)) == "table" then
 							if directory == "/" and filename == "" then
-								local result = filesystem.Write((newname or "Root")..".lnk", "/", newdirectory)
+								local result = filesystem.Write((newname or "Root")..".lnk", (if sindex ~= 1 then sindex else "").."/", newdirectory, ndisk)
 								if result == "Success i think" then
 									text3.Text = "Success?"
 									task.wait(2)
@@ -2616,8 +2792,12 @@ local success, Error1 = pcall(function()
 									task.wait(2)
 									text3.Text = "Confirm"
 								end
-							else
-								local result = filesystem.Write((newname or filename)..".lnk", if directory ~= "/" then directory.."/"..filename else "/"..filename, newdirectory)
+					        else
+					            local filedata1 = if sindex ~= 1 then sindex else ""
+
+						        filedata1 = tostring(filedata1)..if directory ~= "/" then directory.."/"..filename else "/"..filename
+
+								local result = filesystem.Write((newname or filename)..".lnk", filedata1, newdirectory, ndisk)
 								if result == "Success i think" then
 									text3.Text = "Success?"
 									task.wait(2)
@@ -2628,7 +2808,7 @@ local success, Error1 = pcall(function()
 									text3.Text = "Confirm"
 								end
 							end
-							
+
 						else
 							text3.Text = "The selected new path is not a valid table/folder."
 							task.wait(2)
@@ -2638,7 +2818,7 @@ local success, Error1 = pcall(function()
 						text3.Text = "File does not exist."
 						task.wait(2)
 						text3.Text = "Confirm"
-					end																						
+					end
 				else
 					text3.Text = "No file selected."
 					task.wait(2)
@@ -2654,46 +2834,50 @@ local success, Error1 = pcall(function()
 
 	local function movefile()
 		local window = CreateWindow(UDim2.fromScale(0.7, 0.7), "Move File", false, false ,false, "Move File", false)
-		
+
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0), "Select File", window)
 		local folderbutton, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.2), "Select new path", window)
 		local confirm, text3 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0,0.8), "Confirm", window)
-		
+
 		local filename
 		local directory
+		local sdisk
+		local ndisk
 		local newdirectory
 		local newdirname
 		local newdir
-		
+
 		filebutton.MouseButton1Up:Connect(function()
-			loaddisk(if not directory then "/" else directory, function(name, dir)
+			loaddisk(if not directory then "/" else directory, function(name, dir, cd)
 				if not window then return end
 				directory = dir
 				filename = name
-				
+				sdisk = cd
+
 				text1.Text = filename
 			end, true)
 		end)
-		
+
 		folderbutton.MouseButton1Up:Connect(function()
-			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir)
+			loaddisk(if not newdirectory then "/" else newdirectory, function(name, dir, cd)
 				if not window then return end
 				if name ~= "" or dir == "/" then
 					newdirectory = if dir ~= "/" then dir.."/"..name else "/"..name
 				end
 				newdirname = name
 				newdir = dir
-				
+				ndisk = cd
+
 				text2.Text = newdirectory
 			end, true)
 		end)
-		
+
 		confirm.MouseButton1Up:Connect(function()
 			if newdirectory then
 				if filename and directory then
-					local data = filesystem.Read(filename, directory)
+					local data = filesystem.Read(filename, directory, nil, sdisk)
 					if data then
-						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir)) == "table" then
+						if newdirectory == "/" or typeof(filesystem.Read(newdirname, newdir, nil, ndisk)) == "table" then
 							local newpath = ""
 							if directory == "/" then
 								newpath = directory..filename
@@ -2706,14 +2890,14 @@ local success, Error1 = pcall(function()
 									task.wait(2)
 									text3.Text = "Confirm"
 								else
-									filesystem.Write(filename, nil, directory)
-									local result = filesystem.Write(filename, data, newdirectory)
+									filesystem.Write(filename, nil, directory, sdisk)
+									local result = filesystem.Write(filename, data, newdirectory, ndisk)
 									if result == "Success i think" then
 										text3.Text = "Success?"
 										task.wait(2)
 										text3.Text = "Confirm"
 									else
-										filesystem.Write(filename, data, directory)
+										filesystem.Write(filename, data, directory, sdisk)
 										text3.Text = "Failed?"
 										task.wait(2)
 										text3.Text = "Confirm"
@@ -2806,73 +2990,74 @@ local success, Error1 = pcall(function()
 		end
 	end
 
+
 	local function windowsmanager()
 		local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs = CreateWindow(UDim2.fromScale(0.7, 0.7), "Windows Manager", false, false, false, "WM", false)
-		
+
 		local scroll
-		
+
 		local selectedwindow = nil
-		
+
 		local function reload()
-		
+
 			if scroll then scroll:Destroy() end
-		
+
 			selectedwindow = nil
-		
+
 			scroll = funcs:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = UDim2.fromScale(1, 0.6), CanvasSize = UDim2.fromScale(0, 0), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0.2)})
-		
+
 			scroll.CanvasSize += UDim2.fromOffset(0, 25)
-		
+
 			local selectionui = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 1), Image = "rbxassetid://8677487226", ImageTransparency = 1, BackgroundTransparency = 1})
-		
+
 			scroll:AddChild(selectionui)
-		
+
 			local start = 0
-		
+
 			for i, window in ipairs(windows) do
-		
+
 				if window.FunctionsTable and not window.FunctionsTable:IsClosed() then
 					local text = if typeof(window.Name) == "function" then tostring(window.Name()) else tostring(window.Name)
-		
+
 					if text == "nil" then
 						text = "Untitled program"
 					end
-		
+
 					local button = createnicebutton(UDim2.new(1, 0, 0, 25), UDim2.fromOffset(0, 25*start), text, scroll)
-		
+
 					button.MouseButton1Up:Connect(function()
 						selectionui.ImageTransparency = 0.2
 						button:AddChild(selectionui)
 						selectedwindow = window
 					end)
-		
+
 					scroll.CanvasSize += UDim2.fromOffset(0, 25)
-		
+
 					start += 1
 				end
 			end
 		end
-		
+
 		reload()
-		
+
 		local refresh = createnicebutton(UDim2.fromScale(1, 0.15), UDim2.fromScale(0, 0), "Refresh", window)
 		local endbutton = createnicebutton(UDim2.fromScale(1/3, 0.15), UDim2.fromScale(0, 0.85), "Close", window)
 		local resetposbutton = createnicebutton(UDim2.fromScale(1/3, 0.15), UDim2.fromScale(1/3, 0.85), "Reset Pos.", window)
 		local toggleminbutton = createnicebutton(UDim2.fromScale(1/3, 0.15), UDim2.fromScale((1/3)*2, 0.85), "Toggle minimized", window)
-		
+
 		resetposbutton.MouseButton1Up:Connect(function()
 			if selectedwindow then
 				selectedwindow.Window.Position = UDim2.fromScale(0, 0)
 			end
 		end)
-		
+
 		endbutton.MouseButton1Up:Connect(function()
 			if selectedwindow then
 				selectedwindow.FunctionsTable:Close()
 				reload()
 			end
 		end)
-		
+
 		toggleminbutton.MouseButton1Up:Connect(function()
 			if selectedwindow then
 				if selectedwindow.FunctionsTable:IsMinimized() then
@@ -2882,7 +3067,7 @@ local success, Error1 = pcall(function()
 				end
 			end
 		end)
-		
+
 		refresh.MouseButton1Up:Connect(function()
 			reload()
 		end)
@@ -2935,7 +3120,7 @@ local success, Error1 = pcall(function()
 		local filename = nil
 		local id = nil
 		local toggled = 1
-																								
+
 		local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0), "Select file", mainframe)
 
 		filebutton.MouseButton1Up:Connect(function()
@@ -2945,7 +3130,7 @@ local success, Error1 = pcall(function()
 					if toggled ~= 1 then return end
 					directory = dir
 					filename = name
-	
+
 					text1.Text = filename
 				end, true)
 			elseif toggled == 2 then
@@ -2953,10 +3138,10 @@ local success, Error1 = pcall(function()
 					id = keyboardinput:gsub("\n", "")
 					text1.Text = id
 				end
-			end                               
+			end
 		end)
 
-																									
+
 		local toggle, text2 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromScale(0, 0.3), "File mode", mainframe)
 
 		toggle.MouseButton1Up:Connect(function()
@@ -3142,7 +3327,7 @@ local success, Error1 = pcall(function()
 				if string.find(text, "b/") then
 					textlabel.TextColor3 = Color3.fromRGB(85, 85, 255)
 				end
-																																			
+
 				scrollingframe:AddChild(textlabel)
 				start += 25
 				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
@@ -3448,17 +3633,17 @@ local success, Error1 = pcall(function()
 		if shutdownpoly and not putermode then
 			TriggerPort(shutdownpoly)
 		elseif putermode then
-		    pcall(TriggerPort, 2)
+	        pcall(TriggerPort, 2)
 		end
 	end
 
 	local function shutdownprompt()
 		local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs, index = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 
-		holderframe.ZIndex = (2^31)-2
+        holderframe.ZIndex = (2^31)-2
 
 		windows[index] = {Focused = windows[index].Focused, CloseButton = closebutton}
-																																
+
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
 		local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 		no.MouseButton1Up:Connect(function()
@@ -3506,10 +3691,10 @@ local success, Error1 = pcall(function()
 	local function restartprompt()
 		local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs, index = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 
-		holderframe.ZIndex = (2^31)-2
+        holderframe.ZIndex = (2^31)-2
 
 		windows[index] = {Focused = windows[index].Focused, CloseButton = closebutton}
-																																
+
 		local yes = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0, 0, 0.25, 0), "Yes", window)
 		local no = createnicebutton(UDim2.new(0.5, 0, 0.75, 0), UDim2.new(0.5, 0, 0.25, 0), "No", window)
 		no.MouseButton1Up:Connect(function()
@@ -3543,6 +3728,7 @@ local success, Error1 = pcall(function()
 				backgroundcolor.BackgroundTransparency = i
 				wallpaper.ImageTransparency = i
 			end
+
 			if mainframe then
 			    mainframe:Destroy()
 			end
@@ -3552,7 +3738,9 @@ local success, Error1 = pcall(function()
 	end
 
 	local previousframe
-	function openrightclickprompt(frame, name, dir, boolean1, boolean2, x, y)
+	function openrightclickprompt(frame, name, dir, boolean1, boolean2, x, y, cd)
+	    local disk = cd or disk
+
 		if rightclickmenu then
 			rightclickmenu:Destroy()
 			rightclickmenu = nil
@@ -3603,7 +3791,7 @@ local success, Error1 = pcall(function()
 			openbutton.MouseButton1Up:Connect(function()
 				rightclickmenu:Destroy()
 				rightclickmenu = nil
-				readfile(filesystem.Read(name, dir), name, dir)
+				readfile(filesystem.Read(name, dir, nil, disk), name, dir)
 			end)
 
 			local deletebutton = createnicebutton(UDim2.fromScale(1, 1/3), UDim2.fromScale(0, (1/3) + (1/3)), "Delete", rightclickmenu)
@@ -3619,7 +3807,7 @@ local success, Error1 = pcall(function()
 				end)
 
 				deletebutton.MouseButton1Up:Connect(function()
-					filesystem.Write(name, nil, dir)
+					filesystem.Write(name, nil, dir, disk)
 					funcs:Close()
 					loaddesktopicons()
 				end)
@@ -3681,10 +3869,10 @@ local success, Error1 = pcall(function()
 		if resolutionframe then
 			resolutionframe:AddChild(selectionimage)
 		end
-		
+
 		desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.9,0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,0.9,0), ScrollBarThickness = 5})
 		wallpaper:AddChild(desktopscrollingframe)
-		
+
 		local desktopfiles = filesystem.Read("Desktop", "/")
 
 		if not desktopfiles then
@@ -3748,7 +3936,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		table.insert(desktopicons, {["Holder"] = mycomputer, ["Icon"] = imagelabel1, ["TextLabel"] = textlabel1})
-																				
+
 		if typeof(desktopfiles) == "table" then
 			for filename, data in pairs(desktopfiles) do
 				if yScale + iconsize >= 1 - iconsize then
@@ -3763,7 +3951,7 @@ local success, Error1 = pcall(function()
 				holderbutton:AddChild(imagelabel)
 				local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(filename), TextStrokeColor3 = Color3.new(0,0,0), TextColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0.25})
 				holderbutton:AddChild(textlabel)
-															
+
 				if string.find(filename, "%.aud") then
 					imagelabel.Image = "rbxassetid://16137076689"
 				end
@@ -3801,55 +3989,61 @@ local success, Error1 = pcall(function()
 
 					local split = tostring(data):split("/")
 					if split then
-						local file = split[#split]
-						local dir = ""
-			
-						for index, value in ipairs(split) do
-							if index < #split and index > 1 then
-								dir = dir.."/"..value
-							end
-						end
+                        local file = split[#split]
+                        local dir = ""
 
-						local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true)
-			
-						if dir == "" and file == "" then
-							data1 = disk:ReadEntireDisk()
-						end
-			
-			                        if data1 then
-    
-							if string.find(file, "%.aud") then
-								imagelabel.Image = "rbxassetid://16137076689"
-							end
-							
-							if string.find(file, "%.img") then
-								imagelabel.Image = "rbxassetid://16138716524"
-							end
-							
-							if string.find(file, "%.vid") then
-								imagelabel.Image = "rbxassetid://16137079551"
-							end
-							
-							if string.find(file, "%.lua") then
-								imagelabel.Image = "rbxassetid://16137086052"
-							end
-								
-							if typeof(data1) == "table" then
-								local length = 0
-								
-								for i, v in pairs(data1) do
-									length += 1
-								end
-			    
-			    
-								if length > 0 then
-									imagelabel.Image = "rbxassetid://16137091192"
-								else
-									imagelabel.Image = "rbxassetid://16137073439"
-								end
-							end
-						end
-					end
+                        local disk = disks[1]
+
+                        if tonumber(split[1]) then
+                            disk = disks[tonumber(split[1])]
+                        end
+
+                        for index, value in ipairs(split) do
+                            if index < #split and index > 1 then
+                                dir = dir.."/"..value
+                            end
+                        end
+
+                        local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, disk)
+
+                        if dir == "" and file == "" then
+                            data1 = disk:ReadEntireDisk()
+                        end
+
+                        if data1 then
+
+                            if string.find(file, "%.aud") then
+                                imagelabel.Image = "rbxassetid://16137076689"
+                            end
+
+                            if string.find(file, "%.img") then
+                                imagelabel.Image = "rbxassetid://16138716524"
+                            end
+
+                            if string.find(file, "%.vid") then
+                                imagelabel.Image = "rbxassetid://16137079551"
+                            end
+
+                            if string.find(file, "%.lua") then
+                                imagelabel.Image = "rbxassetid://16137086052"
+                            end
+
+                            if typeof(data1) == "table" then
+                                local length = 0
+
+                                for i, v in pairs(data1) do
+                                    length += 1
+                                end
+
+
+                                if length > 0 then
+                                    imagelabel.Image = "rbxassetid://16137091192"
+                                else
+                                    imagelabel.Image = "rbxassetid://16137073439"
+                                end
+                            end
+                        end
+			    	end
 				end
 
 				holderbutton.MouseButton1Down:Connect(function()
@@ -3876,13 +4070,13 @@ local success, Error1 = pcall(function()
 						if speaker then speaker:PlaySound(clicksound) end
 					end
 				end)
-															
+
 				table.insert(desktopicons, {["Holder"] = holderbutton, ["Icon"] = imagelabel, ["TextLabel"] = textlabel})
 				task.wait()
 			end
 		end
 	end
-												
+
 	local function terminal()
 		local keyboardevent
 		local commandline = {}
@@ -3919,7 +4113,7 @@ local success, Error1 = pcall(function()
 
 		local window = holderframe
 
-		local name = "GustavDOS For GustavOSDesktop7"
+		local name = "GustavDOS For GustavOS Unstable"
 
 		local button = createnicebutton(UDim2.new(0.2, 0, 0.2, 0), UDim2.new(0.8, 0, 0.8, 0), "Run", window)
 
@@ -3935,6 +4129,8 @@ local success, Error1 = pcall(function()
 
 		local background
 		local commandlines
+
+		local disk = disk
 
 		local function loadluafile(microcontrollers, screen, code)
 			local success = false
@@ -4081,6 +4277,23 @@ local success, Error1 = pcall(function()
 				commandlines, background = commandline.new(screen)
 				background.Size = UDim2.new(1, 0, 0.8, 0)
 				window:AddChild(background)
+				commandlines:insert(dir..":")
+			elseif text:lower():sub(1, 11) == "setstorage " then
+				local text = text:sub(12, string.len(text))
+
+				local text = tonumber(text)
+
+				if disks[text] then
+				    disk = disks[text]
+				    commandlines:insert("Success")
+			    else
+			       commandlines:insert("Invalid storage media number.")
+			    end
+				commandlines:insert(dir..":")
+			elseif text:lower():sub(1, 12) == "showstorages" then
+				for i, val in ipairs(disks) do
+				    commandlines:insert(tostring(i))
+			    end
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 6) == "reboot" then
 				restartprompt()
@@ -4331,7 +4544,7 @@ local success, Error1 = pcall(function()
 					else
 						file = getfileontable(disk, filename, dir)
 					end
-		
+
 					if file then
 						copydir = dir
 						copyname = filename
@@ -4351,11 +4564,11 @@ local success, Error1 = pcall(function()
 					else
 						file = getfileontable(disk, copyname, copydir)
 					end
-		
+
 					if not file then
 						file = copydata
 					end
-		
+
 					if file then
 						local split = dir:split("/")
 						if #split == 2 and split[2] == "" then
@@ -4367,7 +4580,7 @@ local success, Error1 = pcall(function()
 							end
 						else
 							local result = createfileontable(disk, copyname, file, dir)
-		
+
 							if disk:Read(split[2]) == result then
 								commandlines:insert("Success?")
 							else
@@ -4386,13 +4599,13 @@ local success, Error1 = pcall(function()
 				local split1 = misc:split("/")
 				local filename = split1[1]
 				local newname = ""
-		
+
 				for index, value in ipairs(split1) do
 					if index >= 2 then
 						newname = newname..value
 					end
 				end
-				
+
 				if filename and filename ~= "" then
 					local file
 					local split = dir:split("/")
@@ -4412,7 +4625,7 @@ local success, Error1 = pcall(function()
 							end
 							commandlines:insert("Renamed.")
 						else
-							commandlines:insert("The new filename wasn't specified.")	
+							commandlines:insert("The new filename wasn't specified.")
 						end
 					else
 						commandlines:insert("The specified file was not found on this directory.")
@@ -4421,7 +4634,7 @@ local success, Error1 = pcall(function()
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 3) == "cd " then
 				local filename = text:sub(4, string.len(text))
-		
+
 				if filename and filename ~= "" and filename ~= "./" then
 					local split = dir:split("/")
 					local file
@@ -4430,7 +4643,7 @@ local success, Error1 = pcall(function()
 					else
 						file = getfileontable(disk, filename, dir)
 					end
-		
+
 					if file then
 						dir = if dir == "/" then dir..filename else dir.."/"..filename
 						commandlines:insert("Success?")
@@ -4661,6 +4874,8 @@ local success, Error1 = pcall(function()
 				commandlines:insert("cd table/folder or ./ for parent table/folder")
 				commandlines:insert("copy filename")
 				commandlines:insert("paste")
+				commandlines:insert("showstorages")
+				commandlines:insert("setstorage number")
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 4) == "help" then
 				commandlines:insert("Did you mean cmds")
@@ -4788,24 +5003,6 @@ local success, Error1 = pcall(function()
 		end
 
 		function bootdos()
-			if disks and #disks > 0 then
-				print(tostring(romport).."\\"..tostring(disksport))
-				if romport ~= disksport then
-					for i,v in ipairs(disks) do
-						if rom ~= v then
-							disk = v
-							break
-						end
-					end
-				else
-					for i,v in ipairs(disks) do
-						if rom ~= v and i ~= romindexusing then
-							disk = v
-							break
-						end
-					end
-				end
-			end
 			if not screen then
 				if regularscreen then screen = regularscreen end
 			end
@@ -4820,7 +5017,7 @@ local success, Error1 = pcall(function()
 				commandlines:insert("/:")
 				if keyboardevent then keyboardevent:Unbind() end
 				keyboardevent = button.MouseButton1Up:Connect(function()
-					local text = keyboardinput
+				    local text = keyboardinput
 					if text:sub(1, 2) ~= "!s" then
 						commandlines:insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 						runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
@@ -4828,7 +5025,7 @@ local success, Error1 = pcall(function()
 						text = text:sub(3, string.len(text))
 						commandlines:insert(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
 						runtext(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
-					end	
+					end
 				end)
 			elseif screen then
 				screen:ClearElements()
@@ -4870,7 +5067,6 @@ local success, Error1 = pcall(function()
 		end
 		bootdos()
 	end
-
 	local restartkey
 	local leftctrlpressed = false
 
