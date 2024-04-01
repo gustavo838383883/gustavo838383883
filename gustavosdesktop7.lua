@@ -2210,6 +2210,8 @@ local success, Error1 = pcall(function()
 		end)
 
 		refreshbutton.MouseButton1Up:Connect(function()
+			if not currentdisk then return end
+
 			local data
 			local split = directory:split("/")
 
