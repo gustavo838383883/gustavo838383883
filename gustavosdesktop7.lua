@@ -1836,7 +1836,7 @@ local success, Error1 = pcall(function()
 	end
 
 	function loaddisk(directory: string, func: any, boolean1: boolean, cd)
-	    local currentdisk = cd
+	   	local currentdisk = cd
 		local scrollsize = if boolean1 then UDim2.new(1, 0, 0.7, 0) else UDim2.new(1, 0, 0.85, 0)
 		local directory = directory or "/"
 		local start = 0
@@ -1870,7 +1870,7 @@ local success, Error1 = pcall(function()
 		local selecteddir
 		local selectedname
 		local selecteddisk
-		local diskin
+		local diskin = table.find(disks, currentdisk)
 
 		if boolean1 then
 			selected = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.8, 0.15), Position = UDim2.fromScale(0, 0.85), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "Select a file"})
