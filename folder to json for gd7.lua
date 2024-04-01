@@ -18,12 +18,14 @@ local filebutton, text1 = createnicebutton(UDim2.fromScale(1, 0.2), UDim2.fromSc
 
 local directory
 local filename
+local sdisk
 
 filebutton.MouseButton1Up:Connect(function()
-	explorer(dir or "/", function(name, dir)
+	explorer(dir or "/", function(name, dir, cd)
 		text1.Text = name
 		filename = name
 		directory = dir
+		sdisk = cd
 	end, true)
 end)
 
@@ -33,10 +35,10 @@ save.MouseButton1Up:Connect(function()
 	if directory and filename then
 
 		if typeof(filesystem.Read(filename, directory)) == "table" then
-			text2.Text = tostring(filesystem.Write(filename, JSONEncode(filesystem.Read(filename, directory)), directory))
+			text2.Text = tostring(filesystem.Write(filename, JSONEncode(filesystem.Read(filename, directory, nil, sdisk)), directory, sdisk))
 		else
 			local success = pcall(function()
-				text2.Text = tostring(filesystem.Write(filename, JSONDecode(filesystem.Read(filename, directory)), directory))
+				text2.Text = tostring(filesystem.Write(filename, JSONDecode(filesystem.Read(filename, directory, nil, sdisk)), directory, sdisk))
 			end)
 			if not success then
 				text2.Text = "The selected file is not a JSON."
