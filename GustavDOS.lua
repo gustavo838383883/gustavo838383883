@@ -802,6 +802,23 @@ local function runtext(text)
 		commandlines, background = commandline.new(screen)
 		position = UDim2.new(0,0,0,0)
 		commandlines.insert(dir..":")
+	elseif text:lower():sub(1, 11) == "setstorage " then
+		local text = text:sub(12, string.len(text))
+
+		local text = tonumber(text)
+
+		if disks[text] then
+			disk = disks[text]
+			commandlines.insert("Success")
+	   	else
+	       		commandlines.insert("Invalid storage media number.")
+	    	end
+		commandlines.insert(dir..":")
+	elseif text:lower():sub(1, 12) == "showstorages" then
+		for i, val in ipairs(disks) do
+			commandlines.insert(tostring(i))
+	    	end
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 6) == "reboot" then
 		task.wait(1)
 		Beep(1)
@@ -1377,6 +1394,8 @@ local function runtext(text)
 		commandlines.insert("write filename/filedata (with the /)")
 		commandlines.insert("shutdown")
 		commandlines.insert("clear")
+		commandlines.insert("showstorages")
+		commandlines.insert("setstorage number")
 		commandlines.insert("reboot")
 		commandlines.insert("delete filename")
 		commandlines.insert("createdir filename")
@@ -1516,19 +1535,59 @@ function bootos()
 	if disks and #disks > 0 then
 		print(tostring(romport).."\\"..tostring(disksport))
 		if romport ~= disksport then
+		    local indexusing1
+
 			for i,v in ipairs(disks) do
 				if rom ~= v then
 					disk = v
-					break
+					indexusing1 = i
+
+				        break
 				end
-			end
-		else
-			for i,v in ipairs(disks) do
+		    end
+
+		    local diskstable2 = {
+	            [1] = disk
+            }
+
+            for i, v in ipairs(disks) do
+                if i ~= indexusing1 then
+                    table.insert(diskstable2, v)
+                end
+            end
+
+	        disks = diskstable2
+	    else
+	        local diskstable = {}
+
+	        for i, v in ipairs(disks) do
 				if rom ~= v and i ~= romindexusing then
-					disk = v
-					break
+					table.insert(diskstable, v)
 				end
-			end
+		    end
+
+		    disks = diskstable
+
+	        local indexusing1
+
+			for i, v in ipairs(disks) do
+				disk = v
+				indexusing1 = i
+
+			    break
+		    end
+
+		    local diskstable2 = {
+	            [1] = disk
+	        }
+
+		    for i, v in ipairs(disks) do
+				if i ~= indexusing1 then
+				   table.insert(diskstable2, v)
+			    end
+	        end
+
+	        disks = diskstable2
 		end
 	end
 	if not screen then
