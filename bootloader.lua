@@ -150,7 +150,6 @@ local function getstuff()
 		end
 	end
 end
-getstuff()
 local commandline = {}
 
 function commandline.new(screen)
@@ -184,8 +183,6 @@ end
 
 
 local name = "Bootloader"
-
-if not screen then screen = regularscreen end
 
 if microcontroller then
 	local polyports = GetPartsFromPort(microcontroller, "Port")
@@ -255,7 +252,10 @@ local function loadmicro(micro, text, lines)
 end
 
 local function boot()
+	getstuff()
 
+	if not screen then screen = regularscreen end
+	
 	if screen then
 
 		screen:ClearElements()
@@ -384,7 +384,13 @@ local function boot()
 					elseif gsubed:lower() == "y" then
 						filecreator()
 					elseif gsubed:lower() == "n" then
-						boot()
+						screen:ClearElements()
+
+						if polysiliconport then
+
+							TriggerPort(polysiliconport)
+
+						end
 					end
 				end
 			end
@@ -413,6 +419,7 @@ local function boot()
 					lines.insert("Enter file number to boot.")
 					lines.insert("Enter createfile to create a bootable file.")
 					lines.insert("Enter deletefile to delete a bootable file.")
+					lines.insert("Enter shutdown to shutdown.")
 
 					func = function(text)
 						local text = text:gsub("\n", "")
@@ -423,6 +430,14 @@ local function boot()
 							filecreator()
 						elseif text:lower() == "deletefile" then
 							filedeletor()
+						elseif text:lower() == "shutdown" then
+							screen:ClearElements()
+
+							if polysiliconport then
+
+								TriggerPort(polysiliconport)
+
+							end
 						elseif tonumber(text) then
 							local code = codes[tonumber(text)]
 
