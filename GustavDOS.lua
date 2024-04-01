@@ -809,6 +809,7 @@ local function runtext(text)
 
 		if disks[text] then
 			disk = disks[text]
+			directory = ""
 			commandlines.insert("Success")
 	   	else
 	       		commandlines.insert("Invalid storage media number.")
