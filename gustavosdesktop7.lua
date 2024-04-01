@@ -2187,8 +2187,10 @@ local success, Error1 = pcall(function()
 					if directory == "/" then
 						deletebutton.Size = UDim2.new(0,0,0,0)
 						deletebutton.Visible = false
-						parentbutton.Size = UDim2.new(0,0,0,0)
-						parentbutton.Visible = false
+						if not currentdisk then
+							parentbutton.Size = UDim2.new(0,0,0,0)
+							parentbutton.Visible = false
+						end
 					end
 					titletext.Text = directory
 					start = 0
