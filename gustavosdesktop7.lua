@@ -1897,6 +1897,10 @@ local success, Error1 = pcall(function()
 				local imagebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1, Image = "rbxassetid://16971885886"})
 				button:AddChild(imagebutton)
 
+				if index == 1 then
+					imagebutton.Image = "rbxassetid://16985185504"
+				end
+
 				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
 				start += 25
 				imagebutton.MouseButton1Up:Connect(function()
