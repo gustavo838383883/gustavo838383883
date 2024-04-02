@@ -1869,7 +1869,7 @@ local success, Error1 = pcall(function()
 		local selected
 		local selecteddir
 		local selectedname
-		local selecteddisk
+		local selecteddisk = currentdisk
 		local diskin = table.find(disks, currentdisk) or 0
 
 		if boolean1 then
@@ -5437,6 +5437,7 @@ local success, Error1 = pcall(function()
 			Modem = modem,
 			Speaker = speaker,
 			Disk = disk,
+			Disks = disks,
 			CreateWindow = CreateWindow,
 			createnicebutton = createnicebutton,
 			createnicebutton2 = createnicebutton2,
