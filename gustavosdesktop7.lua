@@ -4136,6 +4136,11 @@ local success, Error1 = pcall(function()
 		local background
 		local commandlines
 
+		local copydir
+		local copydisk
+		local copyname
+		local copydata
+
 		local disk = disk
 
 		local function loadluafile(microcontrollers, screen, code)
@@ -4291,7 +4296,7 @@ local success, Error1 = pcall(function()
 
 				if disks[text] then
 				    disk = disks[text]
-					directory = ""
+				    directory = ""
 				    commandlines:insert("Success")
 			    else
 			       commandlines:insert("Invalid storage media number.")
@@ -4555,6 +4560,7 @@ local success, Error1 = pcall(function()
 					if file then
 						copydir = dir
 						copyname = filename
+						copydisk = disk
 						copydata = file
 						commandlines:insert("Copied, use the paste command to paste the file.")
 					else
@@ -4567,9 +4573,9 @@ local success, Error1 = pcall(function()
 					local split = copydir:split("/")
 					local file
 					if #split == 2 and split[2] == "" then
-						file = disk:Read(copyname)
+						file = copydisk:Read(copyname)
 					else
-						file = getfileontable(disk, copyname, copydir)
+						file = getfileontable(copydisk, copyname, copydir)
 					end
 
 					if not file then
