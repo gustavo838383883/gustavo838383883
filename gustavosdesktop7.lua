@@ -392,12 +392,18 @@ local function getstuff()
 		end
 
 		if not microcontrollers then
-			success, Error = pcall(GetPartsFromPort, i, "Microcontroller")
-			if success then
-				local microtable = GetPartsFromPort(i, "Microcontroller")
-				if microtable then
-					if #microtable > 0 then
-						microcontrollers = microtable
+			local cancel = false
+			if i ~= 6 and putermode then
+				cancel = true
+			end
+			if not cancel then
+				success, Error = pcall(GetPartsFromPort, i, "Microcontroller")
+				if success then
+					local microtable = GetPartsFromPort(i, "Microcontroller")
+					if microtable then
+						if #microtable > 0 then
+							microcontrollers = microtable
+						end
 					end
 				end
 			end
