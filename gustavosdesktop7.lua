@@ -3350,7 +3350,7 @@ local success, Error1 = pcall(function()
 				scrollingframe:AddChild(textlabel)
 				start += 25
 				scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
-				scrollingframe.CanvasPosition = Vector3.new(0, start + 25)
+				scrollingframe.CanvasPosition = Vector2.new(0, start + 25)
 			end)
 		else
 			local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,0), Position = UDim2.new(0,0,0,0), BackgroundTransparency = 1})
