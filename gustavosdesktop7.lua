@@ -305,7 +305,7 @@ local function getstuff()
 	for i=1, 128 do
 		if not rom then
 			local cancel = false
-			if i == 1 and putermode then
+			if i ~= 6 and putermode then
 				cancel = true
 			end
 			if not cancel then
@@ -352,7 +352,7 @@ local function getstuff()
 
 		if disks and #disks > 1 and romport == disksport and not sharedport then
 			local cancel = false
-			if i == 1 and putermode then
+			if i ~= 6 and putermode then
 				cancel = true
 			end
 
