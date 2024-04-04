@@ -338,10 +338,6 @@ local function getstuff()
 				if disktable then
 					if #disktable > 0 then
 						local cancel = false
-						local tempport = GetPartFromPort(i, "Port")
-						if tempport and tempport.PortID == romport then
-							cancel = true
-						end
 						if romport == i and #disktable == 1 then
 							cancel = true
 						end
@@ -355,34 +351,41 @@ local function getstuff()
 		end
 
 		if disks and #disks > 1 and romport == disksport and not sharedport then
-			for index,v in ipairs(disks) do
-				if v then
-					if #(v:ReadEntireDisk()) == 0 then
-						rom = v
-						romport = i
-						romindexusing = index
-						sharedport = true
-						break
-					elseif v:Read("GD7Library") then
-						if v:Read("GustavOSLibrary") then
+			local cancel = false
+			if i == 1 and putermode then
+				cancel = true
+			end
+
+			if not cancel then
+				for index,v in ipairs(disks) do
+					if v then
+						if #(v:ReadEntireDisk()) == 0 then
+							rom = v
+							romport = i
+							romindexusing = index
+							sharedport = true
+							break
+						elseif v:Read("GD7Library") then
+							if v:Read("GustavOSLibrary") then
+								v:Write("GustavOSLibrary", nil)
+							end
+							if v:Read("GDOSLibrary") then
+								v:Write("GDOSLibrary", nil)
+							end
+							rom = v
+							romindexusing = index
+							romport = i
+							sharedport = true
+							break
+						elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") or v:Read("GDOSLibrary") then
 							v:Write("GustavOSLibrary", nil)
-						end
-						if v:Read("GDOSLibrary") then
 							v:Write("GDOSLibrary", nil)
+							rom = v
+							romport = i
+							romindexusing = index
+							sharedport = true
+							break
 						end
-						rom = v
-						romindexusing = index
-						romport = i
-						sharedport = true
-						break
-					elseif #(v:ReadEntireDisk()) == 1 and v:Read("GustavOSLibrary") or v:Read("GDOSLibrary") then
-						v:Write("GustavOSLibrary", nil)
-						v:Write("GDOSLibrary", nil)
-						rom = v
-						romport = i
-						romindexusing = index
-						sharedport = true
-						break
 					end
 				end
 			end
