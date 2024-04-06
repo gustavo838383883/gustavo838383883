@@ -974,11 +974,31 @@ local success, Error1 = pcall(function()
 			end
 		end
 
+		windowmeta = setmetatable({
+			Destroy = function(self)
+				functions:Close()
+			end,
+		}, {
+			__index = holderframe,
+			__newindex = function(array, i, v)
+				if not pcall(function() return holderframe[i] end) then
+					print(`{i} is not a valid nember of the Instance: {holderframe}`)
+					error(`{i} is not a valid nember of the Instance: {holderframe}`)
+				else
+					holderframe[i] = v
+				end
+			end,
+			__len = function()
+				print("Attempt to get length of a Instance value")
+				error("Attempt to get length of a Instance value")
+			end,
+		})
+				
 		frameindex = #windows + 1
 				
 		windows[frameindex] = {Name = text or title, Holderframe = window, Window = holderframe, CloseButton = closebutton, MaximizeButton = maximizebutton, TextLabel = textlabel, ResizeButton = resizebutton, MinimizeButton = minimizebutton, FunctionsTable = functions, Focused = true}
 				
-		return window, holderframe, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions, frameindex
+		return window, windowmeta, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions, frameindex
 	end
 
 	function commandline.new(boolean, udim2, screen)
