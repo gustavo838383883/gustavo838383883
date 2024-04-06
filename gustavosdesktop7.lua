@@ -993,6 +993,15 @@ local success, Error1 = pcall(function()
 				error("Attempt to get length of a Instance value")
 			end,
 		})
+
+
+		functions = setmetatable({}, {
+			__index = functions,
+			__newindex = function(array, i, v)
+				print("Attempt to write to the functions table")
+				error("Attempt to write to the functions table")
+			end,
+		})
 				
 		frameindex = #windows + 1
 				
