@@ -20,11 +20,9 @@ Click the repository with my username and then click script.lua for GustavOS Cla
 For GustavOSDesktop7(GustavOS 2) open the file named gustavosdesktop7.lua.
 
 
-GD7Library Documentation:
+GD7Library:
 
-window, holderFrame, closeButton, maximizeButton, textLabel (the title TextLabel), resizeButton, minimizeButton, functionsTable CreateWindow(udim2: UDim2, title: string?, maximizeDisabled: boolean, resizingDisabled: boolean, movingDisabled: boolean, minimizedtext: string? or function?, minimizingDisabled: boolean, unminimizeButtonImageChangesOnMouseButton1Down: boolean, resizeButtonImageChangesOnClick: boolean)
-
-GD7Library: function(): {
+GD7Library: () -> {
 	Screen: TouchScreen,
 	Keyboard: Keyboard,
 	Microphone: Microphone,
