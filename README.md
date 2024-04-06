@@ -25,7 +25,7 @@ GD7Library:
 GD7Library = () -> {
 	Screen: TouchScreen,
 	Keyboard: Keyboard,
-	Microphone: Microphone,
+	Microphone: Microphone?,
 	Speaker: Speaker,
 	Disk: Disk,
 	Disks: {Disk},
