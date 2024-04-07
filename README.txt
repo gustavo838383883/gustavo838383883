@@ -5,6 +5,15 @@ For GustavOSDesktop7(GustavOS 2) open the file named gustavosdesktop7.lua.
 
 GD7Library:
 
+FrameIndex is for finding it in gputer.getWindows()
+
+windowMeta = {
+	Destroy: () -> ()
+	FunctionsTable: functionsTable,
+	FrameIndex: IntValue,
+	__index: ImageButton
+}
+
 GD7Library = () -> {
 	Screen: TouchScreen,
 	Keyboard: Keyboard,
@@ -17,7 +26,7 @@ GD7Library = () -> {
 	Taskbar: {ScrollingFrame: ScrollingFrame, ImageLabel: ImageLabel, ImageButton: ImageButton},
 	screenresolution: Frame,
 	mainframe : Frame,
-	CreateWindow: (udim2: UDim2, title: string?, maximizeDisabled: boolean, resizingDisabled: boolean, movingDisabled: boolean, minimizedtext: any, minimizingDisabled: boolean, unminimizeButtonImageChangesOnMouseButton1Down: boolean, resizeButtonImageChangesOnClick: boolean) -> (window, holderFrame, closeButton, maximizeButton, titleTextLabel, resizeButton, minimizeButton, functionsTable),
+	CreateWindow: (udim2: UDim2, title: string?, maximizeDisabled: boolean, resizingDisabled: boolean, movingDisabled: boolean, minimizedtext: any, minimizingDisabled: boolean, unminimizeButtonImageChangesOnMouseButton1Down: boolean, resizeButtonImageChangesOnClick: boolean) -> (holderFrame, windowMeta, closeButton, maximizeButton, titleTextLabel, resizeButton, minimizeButton, functionsTable),
 	FileExplorer: (directory: string, functionForSelectingFile: (name: string, dir: string) -> never, selectFile: boolean, disk: Disk) -> never,
 	createnicebutton: (size: UDim2, position: UDim2, text: string, parent: ScreenObject) -> (ImageButton, TextLabel),
 	createnicebutton2: (size: UDim2, position: UDim2, text: string, parent: ScreenObject) -> (ImageButton, TextLabel),
