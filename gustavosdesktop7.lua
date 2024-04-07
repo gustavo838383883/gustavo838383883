@@ -979,7 +979,7 @@ local success, Error1 = pcall(function()
 
 		functions.FrameIndex = frameindex
 	
-		local prevfunctions = functions
+		local prevfunctions = table.clone(functions)
 	
 		functions = setmetatable({}, {
 			__index = functions,
