@@ -974,10 +974,23 @@ local success, Error1 = pcall(function()
 			end
 		end
 
+
+		functions = setmetatable({}, {
+			__index = functions,
+			__newindex = function(array, i, v)
+				print("Attempt to write to the functions table")
+				error("Attempt to write to the functions table")
+			end,
+		})
+				
+		frameindex = #windows + 1
+
 		windowmeta = setmetatable({
 			Destroy = function(self)
 				functions:Close()
 			end,
+			FunctionsTable = functions,
+			FrameIndex = frameindex
 		}, {
 			__index = holderframe,
 			__newindex = function(array, i, v)
@@ -993,17 +1006,6 @@ local success, Error1 = pcall(function()
 				error("Attempt to get length of a Instance value")
 			end,
 		})
-
-
-		functions = setmetatable({}, {
-			__index = functions,
-			__newindex = function(array, i, v)
-				print("Attempt to write to the functions table")
-				error("Attempt to write to the functions table")
-			end,
-		})
-				
-		frameindex = #windows + 1
 				
 		windows[frameindex] = {Name = text or title, Holderframe = window, Window = holderframe, CloseButton = closebutton, MaximizeButton = maximizebutton, TextLabel = textlabel, ResizeButton = resizebutton, MinimizeButton = minimizebutton, FunctionsTable = functions, Focused = true}
 				
