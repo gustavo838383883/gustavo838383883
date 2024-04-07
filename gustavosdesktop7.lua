@@ -975,6 +975,12 @@ local success, Error1 = pcall(function()
 		end
 
 
+		frameindex = #windows + 1
+
+		functions.FrameIndex = frameindex
+	
+		local prevfunctions = functions
+	
 		functions = setmetatable({}, {
 			__index = functions,
 			__newindex = function(array, i, v)
@@ -982,16 +988,8 @@ local success, Error1 = pcall(function()
 				error("Attempt to write to the functions table")
 			end,
 		})
-				
-		frameindex = #windows + 1
-
-		windowmeta = setmetatable({
-			Destroy = function(self)
-				functions:Close()
-			end,
-			FunctionsTable = functions,
-			FrameIndex = frameindex
-		}, {
+	
+		windowmeta = setmetatable(prevfunctions, {
 			__index = holderframe,
 			__newindex = function(array, i, v)
 				if not pcall(function() return holderframe[i] end) then
@@ -1002,8 +1000,7 @@ local success, Error1 = pcall(function()
 				end
 			end,
 			__len = function()
-				print("Attempt to get length of a Instance value")
-				error("Attempt to get length of a Instance value")
+				return 0
 			end,
 		})
 				
