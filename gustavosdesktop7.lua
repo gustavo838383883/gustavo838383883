@@ -988,6 +988,10 @@ local success, Error1 = pcall(function()
 				error("Attempt to write to the functions table")
 			end,
 		})
+
+		prevfunctions.AddChild = function(self, child)
+			holderframe:AddChild(child)
+		end
 	
 		windowmeta = setmetatable(prevfunctions, {
 			__index = holderframe,
