@@ -7,12 +7,20 @@ GD7Library:
 
 FrameIndex is for finding it in gputer.getWindows()
 
-windowMeta = {
-	Destroy: () -> ()
-	FunctionsTable: functionsTable,
-	FrameIndex: IntValue,
-	__index: ImageButton
-}
+windowMeta = setmetatable(functionsTable, {
+	__index = window,
+	__newindex = function(array, i, v)
+		if not pcall(function() return holderframe[i] end) then
+			print(`{i} is not a valid nember of the Instance: {holderframe}`)
+			error(`{i} is not a valid nember of the Instance: {holderframe}`)
+		else
+			holderframe[i] = v
+		end
+	end,
+	__len = function()
+		return 0
+	end,
+})
 
 GD7Library = () -> {
 	Screen: TouchScreen,
