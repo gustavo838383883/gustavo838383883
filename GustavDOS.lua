@@ -162,7 +162,7 @@ local function createfileontable(disk, filename, filedata, directory)
 		if split[1] and split[2] then
 			local rootfile = disk:Read(split[2])
 			local tablez = {
-			[1] = rootfile,
+				[1] = rootfile,
 			}
 			if typeof(rootfile) == "table" then
 				local resulttable = rootfile
@@ -174,36 +174,12 @@ local function createfileontable(disk, filename, filedata, directory)
 						end
 					end
 				end
-			end
-			if tablez then
-				local lasttable = nil
-				local number = 1
-				for i=#split - number,0,-1 do
-					if i == #split - number and i ~= 0 then
-						local temptable = tablez[i]
-						if temptable then
-							if typeof(temptable) == "table" then
-								temptable[filename] = filedata
-								lasttable = temptable
-							end
-						end
-					end
-					if i < #split-number and i >= 1 then
-						if lasttable then
-							local temptable = tablez[i]
-							if typeof(temptable) == "table" then
-								temptable[split[i+2]] = lasttable
-								lasttable = temptable
-							end
-						end
-					elseif i == 0 then
-						returntable = lasttable
-						if typeof(disk:Read(split[2])) == "table" then
-							disk:Write(split[2], lasttable)
-						end
-					end
-				end
-			end
+	        end
+	        tablez[#tablez][filename] = filedata
+
+	        returntable = rootfile
+
+		    disk:Write(split[2], rootfile)
 		end
 	end
 	return returntable
@@ -218,7 +194,7 @@ local function getfileontable(disk, filename, directory)
 		if split[1] and split[2] then
 			local rootfile = disk:Read(split[2])
 			local tablez = {
-			[1] = rootfile,
+				[1] = rootfile,
 			}
 			if typeof(rootfile) == "table" then
 				local resulttable = rootfile
