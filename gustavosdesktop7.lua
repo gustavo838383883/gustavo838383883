@@ -1769,7 +1769,7 @@ local success, Error1 = pcall(function()
 				directory = "/"
 			end
 
-			if not string.find(nameondisk, "%.lnk") and not string.find(nameondisk, "%.lua") and not string.find(nameondisk, "%.img") and not string.find(nameondisk, "%.aud") and not string.find(nameondisk, "%.vid") and typeof(txt) ~= "table" then
+			if not string.find(string.lower(nameondisk), "%.gui") and not string.find(string.lower(nameondisk), "%.lnk") and not string.find(string.lower(nameondisk), "%.lua") and not string.find(string.lower(nameondisk), "%.img") and not string.find(string.lower(nameondisk), "%.aud") and not string.find(string.lower(nameondisk), "%.vid") and typeof(txt) ~= "table" then
 				readfile(txt, nameondisk, directory, disk)
 			end
 		end
@@ -1846,14 +1846,14 @@ local success, Error1 = pcall(function()
 			loaddisk(newdirectory, nil, nil, disk)
 		end
 
-		if string.find(string.lower(tostring(txt)), "<woshtml>") then
+		if string.find(string.lower(tostring(txt)), "<woshtml>") or string.find(string.lower(tostring(nameondisk)), "%.gui") then
 			woshtmlfile(txt, screen, nameondisk)
 		end
 
 	end
 
 	function loaddisk(directory: string, func: any, boolean1: boolean, cd)
-	   	local currentdisk = cd
+	    local currentdisk = cd
 		local scrollsize = if boolean1 then UDim2.new(1, 0, 0.7, 0) else UDim2.new(1, 0, 0.85, 0)
 		local directory = directory or "/"
 		local start = 0
@@ -1997,6 +1997,10 @@ local success, Error1 = pcall(function()
 					imagebutton.Image = "rbxassetid://16137086052"
 				end
 
+				if string.find(filename, "%.gui") or string.find(string.lower(tostring(dataz)), "<woshtml>") then
+					imagebutton.Image = "rbxassetid://17104255245"
+				end
+
 				if typeof(dataz) == "table" then
 					local length = 0
 
@@ -2053,6 +2057,10 @@ local success, Error1 = pcall(function()
 					if string.find(file, "%.lua") then
 						imagebutton.Image = "rbxassetid://16137086052"
 					end
+
+					if string.find(file, "%.gui") or string.find(string.lower(tostring(data1)), "<woshtml>") then
+					    imagebutton.Image = "rbxassetid://17104255245"
+				    end
 
 					if typeof(data1) == "table" then
 						local length = 0
@@ -2208,9 +2216,10 @@ local success, Error1 = pcall(function()
 					if directory == "/" then
 						deletebutton.Size = UDim2.new(0,0,0,0)
 						deletebutton.Visible = false
+
 						if not currentdisk then
-							parentbutton.Size = UDim2.new(0,0,0,0)
-							parentbutton.Visible = false
+						    parentbutton.Size = UDim2.new(0,0,0,0)
+						    parentbutton.Visible = false
 						end
 					end
 					titletext.Text = directory
@@ -2231,7 +2240,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		refreshbutton.MouseButton1Up:Connect(function()
-			if not currentdisk then return end
+		    if not currentdisk then return end
 
 			local data
 			local split = directory:split("/")
@@ -2310,7 +2319,7 @@ local success, Error1 = pcall(function()
             			loadfile(filename, dataz, currentdisk)
             		end
 
-                else
+		else
 
                     if boolean1 then
                         selecteddisk = nil
@@ -3995,6 +4004,10 @@ local success, Error1 = pcall(function()
 					imagelabel.Image = "rbxassetid://16137086052"
 				end
 
+				if string.find(filename, "%.gui") or string.find(string.lower(tostring(data)), "<woshtml>") then
+					imagelabel.Image = "rbxassetid://17104255245"
+				end
+
 				if typeof(data) == "table" then
 					local length = 0
 
@@ -4054,6 +4067,10 @@ local success, Error1 = pcall(function()
                             if string.find(file, "%.lua") then
                                 imagelabel.Image = "rbxassetid://16137086052"
                             end
+
+                            if string.find(file, "%.gui") or string.find(string.lower(tostring(data1)), "<woshtml>") then
+					            imagelabel.Image = "rbxassetid://17104255245"
+				            end
 
                             if typeof(data1) == "table" then
                                 local length = 0
