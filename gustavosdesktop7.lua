@@ -512,7 +512,7 @@ local success, Error1 = pcall(function()
 	local minimizedammount = 0
 
 	function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4, boolean5, boolean6)
-		udim2 += UDim2.fromScale(0, defaultbuttonsize.X, 0, defaultbuttonsize.Y + (defaultbuttonsize.Y/2))
+		udim2 += UDim2.new(0, defaultbuttonsize.X, 0, defaultbuttonsize.Y + (defaultbuttonsize.Y/2))
 		local holderframe = screen:CreateElement("ImageButton", {Size = udim2, BackgroundTransparency = 1, Image = "rbxassetid://8677487226", ImageTransparency = 0.2})
 		if not holderframe then return end
 		programholder1:AddChild(holderframe)
