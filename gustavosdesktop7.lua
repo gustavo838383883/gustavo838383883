@@ -1862,7 +1862,7 @@ local success, Error1 = pcall(function()
 		end
 	end
 
-	local function keyboardtextinputted(func: (text, player) -> ()): {Unbind: (self) -> ()}
+	local function keyboardtextinputted(func: (text: string, player: string) -> ()): {Unbind: (self) -> ()}
 		local returntable = {}
 	
 		local index = #keyboardconnections + 1
