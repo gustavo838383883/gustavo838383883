@@ -4177,7 +4177,7 @@ local success, Error1 = pcall(function()
 			end
 			return lines, background
 		end
-		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
+		local holderframe, window = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Terminal", false, false ,false, "Terminal", false)
 
 		local window = holderframe
 
@@ -5070,6 +5070,7 @@ local success, Error1 = pcall(function()
 				commandlines:insert("/:")
 				if keyboardevent then keyboardevent:Unbind() end
 				keyboardevent = keyboardtextinputted(function(text, player)
+					if not window:IsFocused() then return end
 					if text:sub(1, 2) ~= "!s" then
 						commandlines:insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 						runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
