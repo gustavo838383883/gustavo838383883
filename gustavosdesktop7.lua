@@ -1851,6 +1851,30 @@ local success, Error1 = pcall(function()
 		end
 
 	end
+								
+	local keyboardconnections = {}
+
+	function textchanged(text, player)
+		for i, func in ipairs(keyboardconnections) do
+			if typeof(func) == "function" then
+				func(text, player)
+			end
+		end
+	end
+
+	local function keyboardtextinputted(func: (text, player) -> ()): {Unbind: (self) -> ()}
+		local returntable = {}
+	
+		local index = #keyboardconnections + 1
+	
+		keyboardconnections[index] = func
+	
+		function returntable:Unbind()
+			keyboardconnections[index] = false
+		end
+	
+		return returntable
+	end
 
 	function loaddisk(directory: string, func: any, boolean1: boolean, cd)
 	    local currentdisk = cd
@@ -4159,18 +4183,6 @@ local success, Error1 = pcall(function()
 
 		local name = "GustavDOS For GustavOS Unstable"
 
-		local button = createnicebutton(UDim2.new(0.2, 0, 0.2, 0), UDim2.new(0.8, 0, 0.8, 0), "Run", window)
-
-		local textbox, textboxtext = createnicebutton(UDim2.new(0.8, 0, 0.2, 0), UDim2.new(0, 0, 0.8, 0), "Command (Click to update)", window)
-		local textinput
-
-		textbox.MouseButton1Up:Connect(function()
-			if keyboardinput then
-				textinput = tostring(keyboardinput)
-				textboxtext.Text = tostring(keyboardinput):gsub("\n", " ")
-			end
-		end)
-
 		local background
 		local commandlines
 
@@ -4324,7 +4336,6 @@ local success, Error1 = pcall(function()
 				task.wait(0.1)
 				if background then background:Destroy() end
 				commandlines, background = commandline.new(screen)
-				background.Size = UDim2.new(1, 0, 0.8, 0)
 				window:AddChild(background)
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 11) == "setstorage " then
@@ -4929,38 +4940,30 @@ local success, Error1 = pcall(function()
 				commandlines:insert("setstorage number")
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 4) == "help" then
-				commandlines:insert("Did you mean cmds")
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("cmds", "Microcontroller")
+		
 			elseif text:lower():sub(1, 10) == "stopmicro " then
-				commandlines:insert("Did you mean stoplua "..text:sub(11, string.len(text)))
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("stoplua "..text:sub(11, string.len(text)), "Microcontroller")
+				
 			elseif text:lower():sub(1, 10) == "playvideo " then
-				commandlines:insert("Did you mean displayvideo "..text:sub(11, string.len(text)))
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("displayvideo "..text:sub(11, string.len(text)), "Microcontroller")
+				
 			elseif text:lower():sub(1, 8) == "makedir " then
-				commandlines:insert("Did you mean createdir "..text:sub(9, string.len(text)))
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("createdir "..text:sub(9, string.len(text)), "Microcontroller")
 			elseif text:lower():sub(1, 6) == "mkdir " then
-				commandlines:insert("Did you mean createdir "..text:sub(7, string.len(text)))
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("createdir "..text:sub(7, string.len(text)), "Microcontroller")
 			elseif text:lower():sub(1, 5) == "echo " then
-				commandlines:insert("Did you mean print "..text:sub(6, string.len(text)))
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("print "..text:sub(6, string.len(text)), "Microcontroller")
 			elseif text:lower():sub(1, 10) == "playaudio " then
-				commandlines:insert("Did you mean playsound "..text:sub(11, string.len(text)))
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("playsound "..text:sub(11, string.len(text)), "Microcontroller")
 			elseif text:lower():sub(1, 10) == "readaudio " then
-				commandlines:insert("Did you mean readsound "..text:sub(11, string.len(text)))
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("readsound "..text:sub(11, string.len(text)), "Microcontroller")
 			elseif text:lower():sub(1, 10) == "stopaudios" then
-				commandlines:insert("Did you mean stopsounds")
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("stopsounds", "Microcontroller")
 			elseif text:lower():sub(1, 9) == "stopaudio" then
-				commandlines:insert("Did you mean stopsounds")
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("stopsounds", "Microcontroller")
 			elseif text:lower():sub(1, 9) == "stopsound" then
-				commandlines:insert("Did you mean stopsounds")
-				commandlines:insert(dir..":")
+				keyboard:SimulateTextInput("stopsounds", "Microcontroller")
 			else
 				local filename = text
 				local split = nil
@@ -5060,15 +5063,13 @@ local success, Error1 = pcall(function()
 			if screen and keyboard and disk and rom then
 				commandlines, background = commandline.new(screen)
 				window:AddChild(background)
-				background.Size = UDim2.new(1, 0, 0.8, 0)
 				task.wait(1)
 				Beep(1)
 				commandlines:insert(name.." Command line")
 				task.wait(1)
 				commandlines:insert("/:")
 				if keyboardevent then keyboardevent:Unbind() end
-				keyboardevent = button.MouseButton1Up:Connect(function()
-				    local text = keyboardinput
+				keyboardevent = keyboardtextinputted(function(text, player)
 					if text:sub(1, 2) ~= "!s" then
 						commandlines:insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 						runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
@@ -5394,6 +5395,8 @@ local success, Error1 = pcall(function()
 					keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 						keyboardinput = text
 						playerthatinputted = player
+
+						textchanged(text, player)
 					end)
 					if restartkey then restartkey:Unbind() end
 
@@ -5494,6 +5497,7 @@ local success, Error1 = pcall(function()
 			getWindows = function()
 			    return windows
 			end,
+			textinputted = keyboardtextinputted
 		} end)
 
 		startbutton7.MouseButton1Down:Connect(function()
@@ -5858,6 +5862,8 @@ function bootos()
 			keyboardevent = keyboard:Connect("TextInputted", function(text, player)
 				keyboardinput = text
 				playerthatinputted = player
+
+				textchanged(text, player)
 			end)
 		else
 			bluescreen()
