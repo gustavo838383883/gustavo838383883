@@ -4181,7 +4181,7 @@ local success, Error1 = pcall(function()
 
 		local window = holderframe
 
-		local name = "GustavDOS For GustavOS Unstable"
+		local name = "GustavDOS For GustavOSDesktop7"
 
 		local background
 		local commandlines
