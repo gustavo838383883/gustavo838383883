@@ -5108,7 +5108,6 @@ local success, Error1 = pcall(function()
 					local keyboardevent = keyboardtextinputted(function(text, player)
                        				if windowz:IsClosed() then keyboardevent:Unbind() return end
                         			if not windowz:IsFocused() then return end
-						getstuff()
 						bootdos()
 						keyboardevent:Unbind()
 					end)
@@ -5120,7 +5119,6 @@ local success, Error1 = pcall(function()
 					local keyboardevent = keyboardtextinputted(function(text, player)
                        				if windowz:IsClosed() then keyboardevent:Unbind() return end
                         			if not windowz:IsFocused() then return end
-						getstuff()
 						bootdos()
 						keyboardevent:Unbind()
 					end)
