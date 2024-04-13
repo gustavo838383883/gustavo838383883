@@ -188,19 +188,12 @@ local function loadmicro(micro, text, lines)
 	if micro then
 		micro:Configure({Code = tostring(text)})
 
-		local polyports = GetPartsFromPort(micro, "Port")
-		local polyport
+		local poly = GetPartsFromPort(micro, "Polysilicon")
 
-		for i, val in ipairs(polyports) do
-			if GetPartFromPort(val, "Polysilicon") then
-				polyport = val
-			end
-		end
-
-		if polyport then
-			local poly = GetPartFromPort(polyport, "Polysilicon")
-
-			if poly then
+		if poly then
+			local polyport = GetPartFromPort(poly, "Polysilicon")
+	
+			if polyport then
 				screen:ClearElements()
 				
 				poly:Configure({PolysiliconMode = 1})
@@ -213,17 +206,13 @@ local function loadmicro(micro, text, lines)
 
 				poly:Configure({PolysiliconMode = 1})
 
-				if polysiliconport then
-
-					TriggerPort(polysiliconport)
-
-				end
+				TriggerPort(polyport)
 
 			else
-				lines.insert("No polysilicon attached to the port of the found microcontroller.")
+				lines.insert("No port attached to the found microcontroller or no polysilicon attached to that found port.")
 			end
 		else
-			lines.insert("No port attached to the found microcontroller or no polysilicon attached to that found port.")
+			lines.insert("No polysilicon attached to the port of the found microcontroller.")
 		end
 	else
 		lines.insert("No microcontroller was found.")
@@ -234,19 +223,12 @@ local function boot()
 	getstuff()
 
 	if microcontroller then
-		local polyports = GetPartsFromPort(microcontroller, "Port")
-		local polyport
+		local poly = GetPartsFromPort(microcontroller, "Polysilicon")
+
+		if poly then
+			local polyport = GetPartFromPort(poly, "Polysilicon")
 	
-		for i, val in ipairs(polyports) do
-			if GetPartFromPort(val, "Polysilicon") then
-				polyport = val
-			end
-		end
-	
-		if polyport then
-			local poly = GetPartFromPort(polyport, "Polysilicon")
-	
-			if poly then
+			if polyport then
 				poly:Configure({PolysiliconMode = 1})
 	
 				TriggerPort(polyport)
