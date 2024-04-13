@@ -188,7 +188,7 @@ local function loadmicro(micro, text, lines)
 	if micro then
 		micro:Configure({Code = tostring(text)})
 
-		local poly = GetPartsFromPort(micro, "Polysilicon")
+		local poly = GetPartFromPort(micro, "Polysilicon")
 
 		if poly then
 			local polyport = GetPartFromPort(poly, "Polysilicon")
@@ -223,7 +223,7 @@ local function boot()
 	getstuff()
 
 	if microcontroller then
-		local poly = GetPartsFromPort(microcontroller, "Polysilicon")
+		local poly = GetPartFromPort(microcontroller, "Polysilicon")
 
 		if poly then
 			local polyport = GetPartFromPort(poly, "Polysilicon")
