@@ -1855,24 +1855,28 @@ local success, Error1 = pcall(function()
 	local keyboardconnections = {}
 
 	function textchanged(text, player)
-		for i, func in ipairs(keyboardconnections) do
-			if typeof(func) == "function" then
-				func(text, player)
+		for i, array in ipairs(keyboardconnections) do
+			if typeof(array) == "table" then
+				array.Function(text, player)
 			end
 		end
 	end
 
 	local function keyboardtextinputted(func: (text, player) -> ()): {Unbind: (self) -> ()}
 		local returntable = {}
-	
+		
 		local index = #keyboardconnections + 1
-	
-		keyboardconnections[index] = func
-	
+		
+		returntable.Function = func
+		
 		function returntable:Unbind()
+			if not index then return end
 			keyboardconnections[index] = false
+			index = nil
 		end
-	
+		
+		keyboardconnections[index] = returntable
+		
 		return returntable
 	end
 
@@ -5070,7 +5074,8 @@ local success, Error1 = pcall(function()
 				commandlines:insert("/:")
 				if keyboardevent then keyboardevent:Unbind() end
 				keyboardevent = keyboardtextinputted(function(text, player)
-					if not windowz:IsFocused() then return end
+                        		if windowz:IsClosed() then keyboardevent:Unbind() return end
+                        		if not windowz:IsFocused() then return end
 					if text:sub(1, 2) ~= "!s" then
 						commandlines:insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 						runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
@@ -5100,7 +5105,9 @@ local success, Error1 = pcall(function()
 					commandlines:insert([[No empty disk or disk with the file "GDOSLibrary" was found.]])
 				end
 				if keyboard then
-					local keyboardevent = button.MouseButton1Up:Connect(function()
+					local keyboardevent = keyboardtextinputted(function(text, player)
+                       				if windowz:IsClosed() then keyboardevent:Unbind() return end
+                        			if not windowz:IsFocused() then return end
 						getstuff()
 						bootdos()
 						keyboardevent:Unbind()
@@ -5110,7 +5117,9 @@ local success, Error1 = pcall(function()
 				Beep(0.5)
 				print("No screen was found.")
 				if keyboard then
-					local keyboardevent = button.MouseButton1Up:Connect(function()
+					local keyboardevent = keyboardtextinputted(function(text, player)
+                       				if windowz:IsClosed() then keyboardevent:Unbind() return end
+                        			if not windowz:IsFocused() then return end
 						getstuff()
 						bootdos()
 						keyboardevent:Unbind()
@@ -5629,11 +5638,15 @@ local success, Error1 = pcall(function()
 		coroutine.resume(coroutine1)
 
 		if boolean1 then
-			if boolean2 then
-				shutdownallmicros(microcontrollers)
-			else
-				shutdownallmicros(microcontrollers)
-			end
+			shutdownallmicros(microcontrollers)
+
+			for i, array in ipairs(keyboardconnections) do
+	            		if typeof(array) == "table" then
+	                   		array:Unbind() 
+               			end
+            		end
+        
+            		keyboardconnections = {}
 		end
 
 		task.wait(3)
@@ -5810,6 +5823,14 @@ function bootos()
 			if microcontrollers then
 
 				shutdownallmicros(microcontrollers)
+
+				for i, array in ipairs(keyboardconnections) do
+		            		if typeof(array) == "table" then
+		                   		array:Unbind() 
+	               			end
+	            		end
+	        
+	            		keyboardconnections = {}
 		
 			end
 
