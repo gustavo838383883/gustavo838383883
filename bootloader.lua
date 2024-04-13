@@ -191,7 +191,7 @@ local function loadmicro(micro, text, lines)
 		local poly = GetPartFromPort(micro, "Polysilicon")
 
 		if poly then
-			local polyport = GetPartFromPort(poly, "Polysilicon")
+			local polyport = GetPartFromPort(poly, "Port")
 	
 			if polyport then
 				screen:ClearElements()
@@ -226,7 +226,7 @@ local function boot()
 		local poly = GetPartFromPort(microcontroller, "Polysilicon")
 
 		if poly then
-			local polyport = GetPartFromPort(poly, "Polysilicon")
+			local polyport = GetPartFromPort(poly, "Port")
 	
 			if polyport then
 				poly:Configure({PolysiliconMode = 1})
