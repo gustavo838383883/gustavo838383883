@@ -460,6 +460,7 @@ local videovolume = 0.5
 local loadingscreen
 local mainframe
 local windows = {}
+local keyboardconnections = {}
 
 local success, Error1 = pcall(function()
 	local holding = false
@@ -1851,8 +1852,6 @@ local success, Error1 = pcall(function()
 		end
 
 	end
-								
-	local keyboardconnections = {}
 
 	function textchanged(text, player)
 		for i, array in ipairs(keyboardconnections) do
