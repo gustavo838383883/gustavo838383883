@@ -357,7 +357,7 @@ painting.MouseButton1Down:Connect(function()
 	pressed = true
 end)
 
-painting.MouseButton1Up:Connect(function()
+painting.MouseButton1Click:Connect(function()
 	pressed = false
 	addrevert()
 end)
