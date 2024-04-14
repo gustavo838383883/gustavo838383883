@@ -1342,7 +1342,6 @@ local success, Error1 = pcall(function()
 		local changecolorbutton, changecolorbutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Color", holderframe)
 
 		local data = nil
-		local filename = nil
 
 		color.MouseButton1Down:Connect(function()
 			if keyboardinput then
@@ -1352,7 +1351,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		changecolorbutton.MouseButton1Down:Connect(function()
-			if color2.Text ~= "RGB (Click to update)" and data then
+			if data then
 				disk:Write("BackgroundColor", data)
 				local colordata = string.split(data, ",")
 				if colordata then
@@ -1365,8 +1364,20 @@ local success, Error1 = pcall(function()
 						end
 						task.wait(2)
 						changecolorbutton2.Text = "Change Color"
+					else
+					    changecolorbutton2.Text.Text = "Invalid RGB color."
+				        task.wait(2)
+				        changecolorbutton2.Text.Text = "Change Color"
 					end
+				else
+				    changecolorbutton2.Text.Text = "Invalid RGB color."
+			        task.wait(2)
+			        changecolorbutton2.Text.Text = "Change Color"
 				end
+			else
+			    changecolorbutton2.Text.Text = "No RGB color was inputted."
+		        task.wait(2)
+		        changecolorbutton2.Text.Text = "Change Color"
 			end
 		end)
 	end
@@ -1380,7 +1391,6 @@ local success, Error1 = pcall(function()
 
 
 		local data = nil
-		local filename = nil
 		local tile = false
 		local tilenumb = "0.2, 0, 0.2, 0"
 
@@ -1410,7 +1420,7 @@ local success, Error1 = pcall(function()
 		end)
 
 		changebackimg.MouseButton1Down:Connect(function()
-			if id2.Text ~= "Image ID (Click to update)" and data then
+			if data then
 				if tonumber(data) then
 					disk:Write("BackgroundImage", data..","..tostring(tile)..","..tilenumb)
 					wallpaper.Image = "rbxthumb://type=Asset&id="..tonumber(data).."&w=420&h=420"
@@ -1426,7 +1436,14 @@ local success, Error1 = pcall(function()
 					end
 					task.wait(2)
 					changebackimg2.Text = "Change Background Image"
+				else
+				    changebackimg2.Text = "The image id is not a number."
+				    task.wait(2)
+				    changebackimg2.Text = "Change Background Image"
 				end
+			    changebackimg2.Text = "No id was entered."
+			    task.wait(2)
+			    changebackimg2.Text = "Change Background Image"
 			end
 		end)
 	end
