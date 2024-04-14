@@ -933,11 +933,11 @@ local function runtext(text)
 				file = getfileontable(disk, filename, dir)
 			end
 
-			if file then
+			if typeof(file) == "table" then
 				dir = if dir == "/" then dir..filename else dir.."/"..filename
 				commandlines.insert("Success?")
 			else
-				commandlines.insert("The table/folder does not exist.")
+				commandlines.insert("The specified file is not a table.")
 			end
 		elseif filename == "./" then
 			local split = dir:split("/")
