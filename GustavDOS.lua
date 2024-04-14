@@ -1579,6 +1579,8 @@ function bootos()
 		end
 		screen:ClearElements()
 
+		commandlines, background = commandline.new(screen)
+
 		rom:Write("GustavOSLibrary", nil)
 		rom:Write("GD7Library", nil)
 		rom:Write("GDOSLibrary", nil)
@@ -1588,10 +1590,9 @@ function bootos()
 			Modem = modem,
 			Speaker = speaker,
 			Disk = disk,
-			lines = commandlines,
+			lines = function() return commandlines end,
 			background = background,
 		})
-		commandlines, background = commandline.new(screen)
 		task.wait(1)
 		position = UDim2.new(0,0,0,0)
 		Beep(1)
