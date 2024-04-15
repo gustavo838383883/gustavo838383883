@@ -1338,12 +1338,12 @@ local success, Error1 = pcall(function()
 
 	local function changecolor()
 		local holderframe = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), "Change Desktop Color", false, false, false, "Change Desktop Color", false)
-		local color, color2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "RGB (Click to update)", holderframe)
+		local color1, color2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0, 0), "RGB (Click to update)", holderframe)
 		local changecolorbutton, changecolorbutton2 = createnicebutton(UDim2.new(1,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Change Color", holderframe)
 
 		local data = nil
 
-		color.MouseButton1Down:Connect(function()
+		color1.MouseButton1Down:Connect(function()
 			if keyboardinput then
 				color2.Text = keyboardinput:gsub("\n", "")
 				data = keyboardinput:gsub("\n", "")
@@ -1356,7 +1356,9 @@ local success, Error1 = pcall(function()
 				local colordata = string.split(data, ",")
 				if colordata then
 					if tonumber(colordata[1]) and tonumber(colordata[2]) and tonumber(colordata[3]) then
-						backgroundcolor.BackgroundColor3 = Color3.new(tonumber(colordata[1])/255, tonumber(colordata[2])/255, tonumber(colordata[3])/255)
+					    local color3 = Color3.new(tonumber(colordata[1])/255, tonumber(colordata[2])/255, tonumber(colordata[3])/255)
+					    color = color3
+						backgroundcolor.BackgroundColor3 = color3
 						changecolorbutton2.Text = "Success"
 						if backgroundimage then
 							disk:Write("BackgroundImage", "")
@@ -1391,7 +1393,7 @@ local success, Error1 = pcall(function()
 
 
 		local data = nil
-		local tile = false
+		local tilen = false
 		local tilenumb = "0.2, 0, 0.2, 0"
 
 		id.MouseButton1Down:Connect(function()
@@ -1402,12 +1404,12 @@ local success, Error1 = pcall(function()
 		end)
 
 		tiletoggle.MouseButton1Down:Connect(function()
-			if tile then
-				tile = false
+			if tilen then
+				tilen = false
 				tiletoggle2.Text = "Enable tile"
 			else
 				tiletoggle2.Text = "Disable tile"
-				tile = true
+				tilen = true
 			end
 		end)
 
@@ -1422,14 +1424,17 @@ local success, Error1 = pcall(function()
 		changebackimg.MouseButton1Down:Connect(function()
 			if data then
 				if tonumber(data) then
-					disk:Write("BackgroundImage", data..","..tostring(tile)..","..tilenumb)
-					wallpaper.Image = "rbxthumb://type=Asset&id="..tonumber(data).."&w=420&h=420"
+					disk:Write("BackgroundImage", data..","..tostring(tilen)..","..tilenumb)
+					backgroundimage = "rbxthumb://type=Asset&id="..tonumber(data).."&w=420&h=420"
+					wallpaper.Image = backgroundimage
 					changebackimg2.Text = "Success"
-					if tile then
+					if tilen then
 						local tilenumb = string.split(tilenumb, ",")
 						if tonumber(tilenumb[1]) and tonumber(tilenumb[2]) and tonumber(tilenumb[3]) and tonumber(tilenumb[4]) then
+                            tile = true
+                            tilesize = UDim2.new(tonumber(tilenumb[1]), tonumber(tilenumb[2]), tonumber(tilenumb[3]), tonumber(tilenumb[4]))
 							wallpaper.ScaleType = Enum.ScaleType.Tile
-							wallpaper.TileSize = UDim2.new(tonumber(tilenumb[1]), tonumber(tilenumb[2]), tonumber(tilenumb[3]), tonumber(tilenumb[4]))
+							wallpaper.TileSize = tilesize
 						end
 					else
 						wallpaper.ScaleType = Enum.ScaleType.Stretch
