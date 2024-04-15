@@ -564,7 +564,7 @@ local success, Error1 = pcall(function()
 					local y_axis
 
 					for index,cur in pairs(cursors) do
-						local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, holderframe)
+						local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, resizebutton)
 						if boolean then
 							cursor = cur
 							x_axis = x_Axis
@@ -626,7 +626,7 @@ local success, Error1 = pcall(function()
 					local y_axis
 
 					for index,cur in pairs(cursors) do
-						local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, holderframe)
+						local boolean, x_Axis, y_Axis = getCursorColliding(cur.X, cur.Y, button)
 						if boolean then
 							cursor = cur
 							x_axis = x_Axis
