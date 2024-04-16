@@ -2415,7 +2415,7 @@ local success, Error1 = pcall(function()
 		local data = nil
 		local filename = nil
 		local directory = ""
-		local disk = nil
+		local disk = disk
 
 		local getfilebutton, getfilebutton2 = createnicebutton(UDim2.new(1,0,1/6,0), UDim2.new(0, 0, (1/6)*3, 0), [[Select directory instead]], scrollingframe)
 
