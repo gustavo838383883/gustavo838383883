@@ -1016,7 +1016,7 @@ local function writedisk(screen, disk)
 			end
 			if inputtedtext == " " then inputtedtext = ""; end
 			local split = string.split(inputtedtext, "/")
-			if split and split[2] ~= "GustavOSLibrary" then
+			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				if #split >= 3 then
 					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
@@ -1884,15 +1884,6 @@ local function loadmenu()
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder1:AddChild(programholder2)
 	window:AddChild(programholder1)
-	
-	disk:Write("GustavOSLibrary", {
-		Screen = screen,
-		Keyboard = keyboard,
-		Modem = modem,
-		Speaker = speaker,
-	})
-	disk:Write("GD7Library", nil)
-	disk:Write("GDOSLibrary", nil)
 
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
