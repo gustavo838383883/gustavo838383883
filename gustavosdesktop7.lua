@@ -3219,7 +3219,7 @@ local success, Error1 = pcall(function()
 					text1.Text = filename
 				end, true)
 			elseif toggled == 2 then
-				if tonumber(keyboardinput) then
+				if keyboardinput then
 					id = keyboardinput:gsub("\n", "")
 					text1.Text = id
 				end
