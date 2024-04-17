@@ -1015,7 +1015,7 @@ local function writedisk(screen, disk)
 			end
 			if inputtedtext == " " then inputtedtext = ""; end
 			local split = string.split(inputtedtext, "/")
-			if split and split[2] ~= "GustavOSLibrary" then
+			if split then
 				local removedlast = inputtedtext:sub(1, -(string.len(split[#split]))-2)
 				if #split >= 3 then
 					if typeof(getfileontable(disk, split[#split], removedlast)) == "table" then
