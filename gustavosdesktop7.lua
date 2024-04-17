@@ -3540,7 +3540,7 @@ local success, Error1 = pcall(function()
 		local  button10 = createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.6, 0), "0", holderframe)
 		button10.MouseButton1Down:Connect(function()
 			if not type then
-				if tostring(number2) ~= "0" and tostring(number2) ~= "-0" then
+				if tostring(number1) ~= "0" and tostring(number1) ~= "-0" then
 					if tonumber(tostring(number1).."0") then
 						number1 = tostring(number1).."0"
 						part1.Text = number1
