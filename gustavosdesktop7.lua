@@ -1080,7 +1080,7 @@ local success, Error1 = pcall(function()
 
 	local function StringToGui(screen, text, parent)
 		local start = UDim2.new(0,0,0,0)
-		local source = string.lower(text)
+		local source = text
 
 		for name, value in source:gmatch('<backimg(.-)(.-)>') do
 			local link = nil
@@ -5225,7 +5225,7 @@ local success, Error1 = pcall(function()
 		mainframe:AddChild(taskbarholder)
 		taskbarholder:AddChild(startbutton7)
 
-		taskbarholderscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(0.9, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0.9, 0, 1, 0), Position = UDim2.new(0.1, 0, 0, 0), ScrollBarThickness = 2.5})
+		taskbarholderscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(0.9, 0, 1, 0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0.9, 0, 1, 0), Position = UDim2.new(0.1, 0, 0, 0), ScrollBarThickness = 2.5, Active = true, ScrollingDirection = Enum.ScrollingDirection.X})
 		taskbarholder:AddChild(taskbarholderscrollingframe)
 
 		if not disk:Read("sounds") and not disk:Read("Desktop") then
@@ -5277,7 +5277,7 @@ local success, Error1 = pcall(function()
 			   	elseif typeof(object) == "Instance" then
 					object:AddChild(startmenu)
 				end
-				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2.6, 0), BackgroundTransparency = 1, ScrollBarThickness = 5})
+				local scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.8,0), CanvasSize = UDim2.new(1, 0, 2.6, 0), BackgroundTransparency = 1, ScrollBarThickness = 5, Active = true})
 				startmenu:AddChild(scrollingframe)
 				local settingsopen = createnicebutton(UDim2.new(1,0,0.2/scrollingframe.CanvasSize.Y.Scale,0), UDim2.fromScale(0, 0), "Settings", scrollingframe)
 				settingsopen.MouseButton1Up:Connect(function()
