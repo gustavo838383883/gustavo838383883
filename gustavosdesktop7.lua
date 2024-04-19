@@ -1114,7 +1114,12 @@ local success, Error1 = pcall(function()
 					if (string.find(value, [[transparency="]])) then
 						local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
 						text = string.sub(text, 1, string.find(text, '"') - 1)
-						url.ImageTransparency = tonumber(text)
+						url.ImageTransparency = tonumber(text) or 0
+					end
+					if (string.find(value, [[zindex="]])) then
+						local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
+						text = string.sub(text, 1, string.find(text, '"') - 1)
+						url.ZIndex = tonumber(text) or 1
 					end
 					parent:AddChild(url)
 				end
@@ -1134,7 +1139,12 @@ local success, Error1 = pcall(function()
 				if (string.find(value, [[transparency="]])) then
 					local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
 					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.Transparency = tonumber(text)
+					url.Transparency = tonumber(text) or 0
+				end
+				if (string.find(value, [[zindex="]])) then
+					local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					url.ZIndex = tonumber(text) or 1
 				end
 				if (string.find(value, [[size="]])) then
 					local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
@@ -1187,7 +1197,12 @@ local success, Error1 = pcall(function()
 					if (string.find(value, [[transparency="]])) then
 						local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
 						text = string.sub(text, 1, string.find(text, '"') - 1)
-						url.ImageTransparency = tonumber(text)
+						url.ImageTransparency = tonumber(text) or 0
+					end
+					if (string.find(value, [[zindex="]])) then
+						local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
+						text = string.sub(text, 1, string.find(text, '"') - 1)
+						url.ZIndex = tonumber(text) or 1
 					end
 					if (string.find(value, [[size="]])) then
 						local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
@@ -1248,6 +1263,11 @@ local success, Error1 = pcall(function()
 						text = string.sub(text, 1, string.find(text, '"') - 1)
 						local color = string.split(text, ",")
 						url.TextColor3 = Color3.new(tonumber(color[1])/255,tonumber(color[2])/255,tonumber(color[3])/255)
+					end
+					if (string.find(value, [[zindex="]])) then
+						local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
+						text = string.sub(text, 1, string.find(text, '"') - 1)
+						url.ZIndex = tonumber(text) or 1
 					end
 					url.TextScaled = true
 					url.TextWrapped = true
