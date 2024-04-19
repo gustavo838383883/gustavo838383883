@@ -657,6 +657,7 @@ local success, Error1 = pcall(function()
 			if not holderframe then return end
 			if not window then return end
 			windows[frameindex].Focused = false
+			windows[frameindex] = {}
 			if minimizepressed then
 				functions:Unminimize()
 			end
@@ -2050,6 +2051,10 @@ local success, Error1 = pcall(function()
 					imagebutton.Image = "rbxassetid://17104255245"
 				end
 
+				if typeof(dataz) == "function" then
+					imagebutton.Image = "rbxassetid://17205316410" 
+				end
+
 				if typeof(dataz) == "table" then
 					local length = 0
 
@@ -2108,8 +2113,12 @@ local success, Error1 = pcall(function()
 					end
 
 					if string.find(file, "%.gui") or string.find(string.lower(tostring(data1)), "<woshtml>") then
-					    imagebutton.Image = "rbxassetid://17104255245"
-				    end
+						imagebutton.Image = "rbxassetid://17104255245"
+					end
+
+					if typeof(data1) == "function" then
+						imagebutton.Image = "rbxassetid://17205316410" 
+					end
 
 					if typeof(data1) == "table" then
 						local length = 0
@@ -4057,6 +4066,10 @@ local success, Error1 = pcall(function()
 					imagelabel.Image = "rbxassetid://17104255245"
 				end
 
+				if typeof(data) == "function" then
+					imagelabel.Image = "rbxassetid://17205316410" 
+				end
+
 				if typeof(data) == "table" then
 					local length = 0
 
@@ -4078,65 +4091,69 @@ local success, Error1 = pcall(function()
 
 					local split = tostring(data):split("/")
 					if split then
-                        local file = split[#split]
-                        local dir = ""
+						local file = split[#split]
+						local dir = ""
+			
+						local disk = disks[1]
+			
+						if tonumber(split[1]) then
+						    disk = disks[tonumber(split[1])]
+						end
+			
+						for index, value in ipairs(split) do
+						    if index < #split and index > 1 then
+							dir = dir.."/"..value
+						    end
+						end
+			
+						local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, disk)
+			
+						if dir == "" and file == "" then
+						    data1 = disk:ReadEntireDisk()
+						end
+			
+						if data1 then
+			
+						    if string.find(file, "%.aud") then
+							imagelabel.Image = "rbxassetid://16137076689"
+						    end
+			
+						    if string.find(file, "%.img") then
+							imagelabel.Image = "rbxassetid://16138716524"
+						    end
+			
+						    if string.find(file, "%.vid") then
+							imagelabel.Image = "rbxassetid://16137079551"
+						    end
+			
+						    if string.find(file, "%.lua") then
+							imagelabel.Image = "rbxassetid://16137086052"
+						    end
+			
+						    if string.find(file, "%.gui") or string.find(string.lower(tostring(data1)), "<woshtml>") then
+							    imagelabel.Image = "rbxassetid://17104255245"
+						    end
 
-                        local disk = disks[1]
-
-                        if tonumber(split[1]) then
-                            disk = disks[tonumber(split[1])]
-                        end
-
-                        for index, value in ipairs(split) do
-                            if index < #split and index > 1 then
-                                dir = dir.."/"..value
-                            end
-                        end
-
-                        local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, disk)
-
-                        if dir == "" and file == "" then
-                            data1 = disk:ReadEntireDisk()
-                        end
-
-                        if data1 then
-
-                            if string.find(file, "%.aud") then
-                                imagelabel.Image = "rbxassetid://16137076689"
-                            end
-
-                            if string.find(file, "%.img") then
-                                imagelabel.Image = "rbxassetid://16138716524"
-                            end
-
-                            if string.find(file, "%.vid") then
-                                imagelabel.Image = "rbxassetid://16137079551"
-                            end
-
-                            if string.find(file, "%.lua") then
-                                imagelabel.Image = "rbxassetid://16137086052"
-                            end
-
-                            if string.find(file, "%.gui") or string.find(string.lower(tostring(data1)), "<woshtml>") then
-					            imagelabel.Image = "rbxassetid://17104255245"
-				            end
-
-                            if typeof(data1) == "table" then
-                                local length = 0
-
-                                for i, v in pairs(data1) do
-                                    length += 1
-                                end
-
-
-                                if length > 0 then
-                                    imagelabel.Image = "rbxassetid://16137091192"
-                                else
-                                    imagelabel.Image = "rbxassetid://16137073439"
-                                end
-                            end
-                        end
-			    	end
+						    if typeof(data1) == "function" then
+							    imagelabel.Image = "rbxassetid://17205316410" 
+						    end
+			
+						    if typeof(data1) == "table" then
+							local length = 0
+			
+							for i, v in pairs(data1) do
+							    length += 1
+							end
+			
+			
+							if length > 0 then
+							    imagelabel.Image = "rbxassetid://16137091192"
+							else
+							    imagelabel.Image = "rbxassetid://16137073439"
+							end
+						    end
+						end
+					end
 				end
 
 				holderbutton.MouseButton1Down:Connect(function()
