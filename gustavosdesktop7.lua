@@ -1234,7 +1234,7 @@ local success, Error1 = pcall(function()
 
 					local url = screen:CreateElement("TextLabel", { })
 					url.BackgroundTransparency = 1
-					url.Size = UDim2.new(0, 250, 0, 50)
+					url.Size = UDim2.new(0, 100, 0, 50)
 
 					link = string.gsub(link, "_quote_", '"')
 					link = string.gsub(link, "_higher_", '>')
