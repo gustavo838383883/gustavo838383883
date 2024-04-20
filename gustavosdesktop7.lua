@@ -2006,8 +2006,13 @@ local success, Error1 = pcall(function()
 					titletext.Text = directory
 
 					if boolean1 then
-					    selecteddisk = disk
-				    end
+						selecteddisk = disk
+						selecteddir = "/"
+						selectedname = nil
+						selecteddisk = currentdisk
+						selected.Text = "Root"
+				    	end
+
 
 					if directory == "/" then
 						deletebutton.Size = UDim2.new(0,0,0,0)
@@ -2269,8 +2274,6 @@ local success, Error1 = pcall(function()
 						if boolean1 then
 							selectedname = split2[#split2]
 							selected.Text = selectedname
-						end
-						if boolean1 then
 							selecteddir = removedlast
 						end
 						directory = removedlast1
@@ -2351,8 +2354,6 @@ local success, Error1 = pcall(function()
             			if boolean1 then
             				selectedname = nil
             				selected.Text = "Root"
-            			end
-            			if boolean1 then
             				selecteddir = "/"
             			end
             		elseif #split > 2 then
