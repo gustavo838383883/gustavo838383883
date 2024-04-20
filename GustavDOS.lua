@@ -443,14 +443,14 @@ local keyboardevent
 
 local function StringToGui(screen, text, parent)
 	local start = UDim2.new(0,0,0,0)
-	local source = string.lower(text)
+	local source = text
 
 	for name, value in source:gmatch('<backimg(.-)(.-)>') do
 		local link = nil
 		if (string.find(value, 'src="')) then
 			local link = string.sub(value, string.find(value, 'src="') + string.len('src="'), string.len(value))
 			link = string.sub(link, 1, string.find(link, '"') - 1)
-			if not(string.find(value, "load")) then
+			if true then
 
 				local url = screen:CreateElement("ImageLabel", { })
 				url.BackgroundTransparency = 1
@@ -476,7 +476,7 @@ local function StringToGui(screen, text, parent)
 				if (string.find(value, [[transparency="]])) then
 					local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
 					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.ImageTransparency = tonumber(text)
+					url.ImageTransparency = tonumber(text) or 0
 				end
 				parent:AddChild(url)
 			end
@@ -484,7 +484,7 @@ local function StringToGui(screen, text, parent)
 	end
 	for name, value in source:gmatch('<frame(.-)(.-)>') do
 		local link = nil
-		if not(string.find(value, "load")) then
+		if true then
 
 			local url = screen:CreateElement("Frame", { })
 			url.Size = UDim2.new(0, 50, 0, 50)
@@ -496,7 +496,12 @@ local function StringToGui(screen, text, parent)
 			if (string.find(value, [[transparency="]])) then
 				local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
 				text = string.sub(text, 1, string.find(text, '"') - 1)
-				url.Transparency = tonumber(text)
+				url.Transparency = tonumber(text) or 0
+			end
+			if (string.find(value, [[zindex="]])) then
+				local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
+				text = string.sub(text, 1, string.find(text, '"') - 1)
+				url.ZIndex = tonumber(text) or 1
 			end
 			if (string.find(value, [[size="]])) then
 				local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
@@ -517,7 +522,7 @@ local function StringToGui(screen, text, parent)
 				local udim2 = string.split(text, ",")
 				url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
 			else
-				start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
+				start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
 			end
 			parent:AddChild(url)
 		end
@@ -527,7 +532,7 @@ local function StringToGui(screen, text, parent)
 		if (string.find(value, 'src="')) then
 			local link = string.sub(value, string.find(value, 'src="') + string.len('src="'), string.len(value))
 			link = string.sub(link, 1, string.find(link, '"') - 1)
-			if not(string.find(value, "load")) then
+			if true then
 
 				local url = screen:CreateElement("ImageLabel", { })
 				url.BackgroundTransparency = 1
@@ -549,13 +554,25 @@ local function StringToGui(screen, text, parent)
 				if (string.find(value, [[transparency="]])) then
 					local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
 					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.ImageTransparency = tonumber(text)
+					url.ImageTransparency = tonumber(text) or 0
+				end
+				if (string.find(value, [[zindex="]])) then
+					local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					url.ZIndex = tonumber(text) or 1
 				end
 				if (string.find(value, [[size="]])) then
 					local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
 					text = string.sub(text, 1, string.find(text, '"') - 1)
 					local udim2 = string.split(text, ",")
 					url.Size = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
+				end
+				if (string.find(value, [[fit="]])) then
+					local text = string.sub(value, string.find(value, [[fit="]]) + string.len([[fit="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					if text == "true" then
+						url.ScaleType = Enum.ScaleType.Fit
+					end
 				end
 				url.Position = start
 				if (string.find(value, [[position="]])) then
@@ -564,7 +581,7 @@ local function StringToGui(screen, text, parent)
 					local udim2 = string.split(text, ",")
 					url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
 				else
-					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
+					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
 				end
 				parent:AddChild(url)
 			end
@@ -575,7 +592,7 @@ local function StringToGui(screen, text, parent)
 		if (string.find(value, 'display="')) then
 			local link = string.sub(value, string.find(value, 'display="') + string.len('display="'), string.len(value))
 			link = string.sub(link, 1, string.find(link, '"') - 1)
-			if not(string.find(value, "load")) then
+			if true then
 
 				local url = screen:CreateElement("TextLabel", { })
 				url.BackgroundTransparency = 1
@@ -604,6 +621,11 @@ local function StringToGui(screen, text, parent)
 					local color = string.split(text, ",")
 					url.TextColor3 = Color3.new(tonumber(color[1])/255,tonumber(color[2])/255,tonumber(color[3])/255)
 				end
+				if (string.find(value, [[zindex="]])) then
+					local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
+					text = string.sub(text, 1, string.find(text, '"') - 1)
+					url.ZIndex = tonumber(text) or 1
+				end
 				url.TextScaled = true
 				url.TextWrapped = true
 				url.Position = start
@@ -613,7 +635,7 @@ local function StringToGui(screen, text, parent)
 					local udim2 = string.split(text, ",")
 					url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
 				else
-					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)				
+					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
 				end
 				parent:AddChild(url)
 			end
