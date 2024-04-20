@@ -1116,11 +1116,6 @@ local success, Error1 = pcall(function()
 						text = string.sub(text, 1, string.find(text, '"') - 1)
 						url.ImageTransparency = tonumber(text) or 0
 					end
-					if (string.find(value, [[zindex="]])) then
-						local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
-						text = string.sub(text, 1, string.find(text, '"') - 1)
-						url.ZIndex = tonumber(text) or 1
-					end
 					parent:AddChild(url)
 				end
 			end
