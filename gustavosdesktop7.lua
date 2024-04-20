@@ -1088,7 +1088,7 @@ local success, Error1 = pcall(function()
 			if (string.find(value, 'src="')) then
 				local link = string.sub(value, string.find(value, 'src="') + string.len('src="'), string.len(value))
 				link = string.sub(link, 1, string.find(link, '"') - 1)
-				if not(string.find(value, "load")) then
+				if true then
 
 					local url = screen:CreateElement("ImageLabel", { })
 					url.BackgroundTransparency = 1
@@ -1127,7 +1127,7 @@ local success, Error1 = pcall(function()
 		end
 		for name, value in source:gmatch('<frame(.-)(.-)>') do
 			local link = nil
-			if not(string.find(value, "load")) then
+			if true then
 
 				local url = screen:CreateElement("Frame", { })
 				url.Size = UDim2.new(0, 50, 0, 50)
@@ -1175,7 +1175,7 @@ local success, Error1 = pcall(function()
 			if (string.find(value, 'src="')) then
 				local link = string.sub(value, string.find(value, 'src="') + string.len('src="'), string.len(value))
 				link = string.sub(link, 1, string.find(link, '"') - 1)
-				if not(string.find(value, "load")) then
+				if true then
 
 					local url = screen:CreateElement("ImageLabel", { })
 					url.BackgroundTransparency = 1
@@ -1235,7 +1235,7 @@ local success, Error1 = pcall(function()
 			if (string.find(value, 'display="')) then
 				local link = string.sub(value, string.find(value, 'display="') + string.len('display="'), string.len(value))
 				link = string.sub(link, 1, string.find(link, '"') - 1)
-				if not(string.find(value, "load")) then
+				if true then
 
 					local url = screen:CreateElement("TextLabel", { })
 					url.BackgroundTransparency = 1
