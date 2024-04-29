@@ -2662,7 +2662,7 @@ local success, Error1 = pcall(function()
 
 		renamebutton.MouseButton1Up:Connect(function()
 			if keyboardinput then
-				newname = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+				newname = keyboardinput:gsub("/", ""):gsub("\n", ""):gsub("/n\\", "\n")
 				if newname == "" then
 					newname = nil
 				end
@@ -2834,7 +2834,7 @@ local success, Error1 = pcall(function()
 
 		renamebutton.MouseButton1Up:Connect(function()
 			if keyboardinput then
-				newname = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+				newname = keyboardinput:gsub("/", ""):gsub("\n", ""):gsub("/n\\", "\n")
 				if newname == "" then
 					newname = nil
 				end
