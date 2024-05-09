@@ -1771,6 +1771,8 @@ local success, Error1 = pcall(function()
 		end,
 	}
 
+	table.freeze(filesystem)
+
 	local function readfile(txt, nameondisk, directory, cd)
 	    local disk = cd or disk
 		local filegui, window, closebutton, maximizebutton, textlabel, resize, min, funcs = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, nameondisk or "File", false)
