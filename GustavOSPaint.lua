@@ -352,14 +352,31 @@ function unrevert()
 end
 
 local pressed = false
+local playerpressing = ""
 
 painting.MouseButton1Down:Connect(function()
-	pressed = true
+	for i, cursor in pairs(gputer.Screen:GetCursors()) do
+		if cursor and typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(cursor["Player"]) == "string" then
+			if getCursorCollidingCopy(cursor.X, cursor.Y, painting) then
+				playerpressing = cursor["Player"]
+				pressed = true
+				break
+			end
+		end
+	end
 end)
 
 painting.MouseButton1Up:Connect(function()
 	pressed = false
-	addrevert()
+	for i, cursor in pairs(gputer.Screen:GetCursors()) do
+		if cursor and typeof(cursor["X"]) == "number" and typeof(cursor["Y"]) == "number" and typeof(cursor["Player"]) == "string" then
+			if getCursorCollidingCopy(cursor.X, cursor.Y, painting) and cursor["Player"] == playerpressing then
+				addrevert()
+				break
+			end
+		end
+	end
+	playerpressing = ""
 end)
 
 local x = 0
@@ -788,7 +805,8 @@ local CoroutineLoop = coroutine.create(function()
 		if pressed then
 			local cursors = gputer.Screen:GetCursors()
 
-			for i, cursor in pairs(cursors) do	
+			for i, cursor in pairs(cursors) do
+				if cursor and cursor["Player"] ~= playerpressing then continue end
 				for i, ui in ipairs(colorblocks) do
 					if mode < 3 then
 						if getCursorColliding(cursor.X, cursor.Y, ui) then
