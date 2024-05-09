@@ -154,7 +154,7 @@ end
 local function createfileontable(disk, filename, filedata, directory)
 	local returntable = nil
 	local directory = directory
-	if directory:sub(-1, -1) == "/" then directory = directory:sub(0, -2) end
+	if directory:sub(-1, -1) == "/" then directory = directory:sub(1, -2) end
 	local split = string.split(directory, "/")
 
 	if split then
@@ -186,7 +186,7 @@ end
 
 local function getfileontable(disk, filename, directory)
 	local directory = directory
-	if directory:sub(-1, -1) == "/" then directory = directory:sub(0, -2) end
+	if directory:sub(-1, -1) == "/" then directory = directory:sub(1, -2) end
 	local split = string.split(directory, "/")
 	local file = nil
 	if split then
