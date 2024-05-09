@@ -607,6 +607,10 @@ local success, Error1 = pcall(function()
 			boolean = not boolean
 		end
 
+		function functions:IsMinizingDisabled()
+			return boolean4
+		end
+
 		function functions:IsMinimized()
 			return minimizepressed
 		end
