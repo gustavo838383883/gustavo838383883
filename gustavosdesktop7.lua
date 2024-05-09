@@ -591,7 +591,7 @@ local success, Error1 = pcall(function()
 			return maximizepressed
 		end
 
-		function functions:IsMaximizedDisabled()
+		function functions:IsMaximizingDisabled()
 			return boolean
 		end
 
