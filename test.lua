@@ -158,7 +158,7 @@ local  button10 = screen:CreateElement("TextButton", {TextScaled = true, Size = 
 holderframe:AddChild(button10)
 button10.MouseButton1Down:Connect(function()
 	if not type then
-		if tostring(number2) ~= "0" and tostring(number2) ~= "-0" then
+		if tostring(number1) ~= "0" and tostring(number1) ~= "-0" then
 			if tonumber(tostring(number1).."0") then
 				number1 = tostring(number1).."0"
 				part1.Text = number1
