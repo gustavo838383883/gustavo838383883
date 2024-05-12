@@ -55,17 +55,30 @@ function SpeakerHandler:LoopSound(id, soundLength, pitch, speaker)
 
 	speaker:Configure({Audio = id, Pitch = pitch})
 
+	local loopcoroutine = coroutine.create(function()
+        while true do
+           task.wait(tonumber(length))
+
+           speaker:Configure({Audio = id, Pitch = pitch})
+        end
+    end)
+
 	SpeakerHandler._LoopedSounds[speaker.GUID] = {
 		Speaker = speaker,
 		Length = soundLength / pitch,
-		TimePlayed = tick()
+		TimePlayed = tick(),
+		coroutineloop = loopcoroutine
 	}
+
+    coroutine.resume(loopcoroutine)
 
 	speaker:Trigger()
 	return true
 end
 
 function SpeakerHandler:RemoveSpeakerFromLoop(speaker)
+    coroutine.close(SpeakerHandler._LoopedSounds[speaker.GUID].coroutineloop)
+
 	SpeakerHandler._LoopedSounds[speaker.GUID] = nil
 
 	speaker:Configure({Audio = 0, Pitch = 1})
@@ -3793,6 +3806,7 @@ local success, Error1 = pcall(function()
 			task.wait(1)
 			if speaker then
 				speaker:ClearSounds()
+				SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 			end
 			for i=0,1,0.01 do
@@ -3842,6 +3856,7 @@ local success, Error1 = pcall(function()
 			task.wait(1)
 			if speaker then
 				speaker:ClearSounds()
+				SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 				SpeakerHandler.PlaySound(shutdownsound, 1, nil, speaker)
 			end
 			for i=0,1,0.05 do
@@ -4972,7 +4987,7 @@ local success, Error1 = pcall(function()
 				playsound(txt)
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 10) == "stopsounds" then
-				speaker.ClearSounds()
+				speaker:ClearSounds()
 				SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 				commandlines:insert(dir..":")
 			elseif text:lower():sub(1, 4) == "cmds" then
@@ -5723,9 +5738,11 @@ local success, Error1 = pcall(function()
 		else
 			if boolean2 then
 				speaker:ClearSounds()
+				SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 				shutdownnow()
 			else
 				speaker:ClearSounds()
+				SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 				restartnow()
 			end
 		end
