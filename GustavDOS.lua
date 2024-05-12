@@ -63,6 +63,18 @@ function SpeakerHandler:LoopSound(id, soundLength, pitch, speaker)
 			speaker:Trigger()
 		end
 	end)
+
+	SpeakerHandler._LoopedSounds[speaker.GUID] = {
+		Speaker = speaker,
+		Length = soundLength / pitch,
+		TimePlayed = tick(),
+		coroutineloop = loopcoroutine
+	}
+
+	coroutine.resume(loopcoroutine)
+
+	speaker:Trigger()
+	return true
 end
 
 function SpeakerHandler:RemoveSpeakerFromLoop(speaker)
