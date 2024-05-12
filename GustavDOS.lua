@@ -48,34 +48,46 @@ function SpeakerHandler:LoopSound(id, soundLength, pitch, speaker)
 	speaker = speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler:LoopSound]: No speaker provided")
 	id = tonumber(id)
 	pitch = tonumber(pitch) or 1
-	
+
 	if SpeakerHandler._LoopedSounds[speaker.GUID] then
 		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 	end
-	
+
 	speaker:Configure({Audio = id, Pitch = pitch})
-	if typeof(soundLength) == "number" then
-		SpeakerHandler._LoopedSounds[speaker.GUID] = {
-			Speaker = speaker,
-			Length = soundLength / pitch,
-			TimePlayed = tick()
-		}
-	end
-	
+
+	local loopcoroutine = coroutine.create(function()
+        while true do
+           task.wait(tonumber(length))
+
+           speaker:Configure({Audio = id, Pitch = pitch})
+        end
+    end)
+
+	SpeakerHandler._LoopedSounds[speaker.GUID] = {
+		Speaker = speaker,
+		Length = soundLength / pitch,
+		TimePlayed = tick(),
+		coroutineloop = loopcoroutine
+	}
+
+    coroutine.resume(loopcoroutine)
+
 	speaker:Trigger()
 	return true
 end
 
 function SpeakerHandler:RemoveSpeakerFromLoop(speaker)
+    coroutine.close(SpeakerHandler._LoopedSounds[speaker.GUID].coroutineloop)
+
 	SpeakerHandler._LoopedSounds[speaker.GUID] = nil
-	
+
 	speaker:Configure({Audio = 0, Pitch = 1})
 	speaker:Trigger()
 end
 
 function SpeakerHandler:UpdateSoundLoop(dt) -- Triggers any speakers if it's time for them to be triggered
 	dt = dt or 0
-	
+
 	for _, sound in pairs(SpeakerHandler._LoopedSounds) do
 		local currentTime = tick() - dt
 		local timePlayed = currentTime - sound.TimePlayed
@@ -88,7 +100,7 @@ function SpeakerHandler:UpdateSoundLoop(dt) -- Triggers any speakers if it's tim
 end
 
 function SpeakerHandler:StartSoundLoop() -- If you use this, you HAVE to put it at the end of your code.
-	
+
 	while true do
 		local dt = task.wait()
 		SpeakerHandler:UpdateSoundLoop(dt)
@@ -97,7 +109,7 @@ end
 
 function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length: number, Speaker: any } ) -- Psuedo sound object, kinda bad
 	config.Pitch = config.Pitch or 1
-	
+
 	local sound = {
 		ClassName = "SpeakerHandler.Sound",
 		Id = config.Id,
@@ -106,49 +118,49 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 		_OnCooldown = false, -- For sound cooldowns
 		_Looped = false
 	}
-	
+
 	if config.Length then
 		sound.Length = config.Length / config.Pitch
 	end
-	
+
 	function sound:Play(cooldownSeconds)
 		if sound._OnCooldown then
 			return
 		end
-		
+
 		sound._Speaker:Configure({Audio = sound.Id, Pitch = sound.Pitch})
 		sound._Speaker:Trigger()
-		
+
 		if not cooldownSeconds then
 			return
 		end
-		
+
 		sound._OnCooldown = true
 		task.delay(cooldownSeconds, function()
 			sound._OnCooldown = false
 		end)
 	end
-	
+
 	function sound:Stop()
 		sound._Speaker:Configure({Audio = 0, Pitch = 1})
 		sound._Speaker:Trigger()
-		
+
 		sound._OnCooldown = false
 	end
-	
+
 	function sound:Loop()
 		sound._Looped = true
 		SpeakerHandler:LoopSound(sound.Id, sound.Length, sound.Pitch, sound._Speaker)
 	end
-	
+
 	function sound:Destroy()
 		if sound._Looped then
 			SpeakerHandler:RemoveSpeakerFromLoop(sound._Speaker)
 		end
-		
+
 		table.clear(sound)
 	end
-	
+
 	return sound
 end
 
@@ -832,7 +844,10 @@ local function runtext(text)
 			task.wait(1)
 			Beep(1)
 			screen:ClearElements()
-			if speaker then speaker:ClearSounds() end
+			if speaker then
+				speaker:ClearSounds()
+				SpeakerHandler:RemoveSpeakerFromLoop(speaker)
+			end
 			if shutdownpoly then
 				TriggerPort(shutdownpoly)
 			end
