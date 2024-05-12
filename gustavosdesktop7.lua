@@ -48,20 +48,21 @@ function SpeakerHandler:LoopSound(id, soundLength, pitch, speaker)
 	speaker = speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler:LoopSound]: No speaker provided")
 	id = tonumber(id)
 	pitch = tonumber(pitch) or 1
-
+	
 	if SpeakerHandler._LoopedSounds[speaker.GUID] then
 		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 	end
-
+	
 	speaker:Configure({Audio = id, Pitch = pitch})
-
+	
 	local loopcoroutine = coroutine.create(function()
-        while true do
-           task.wait(tonumber(soundLength))
-
-           speaker:Configure({Audio = id, Pitch = pitch})
-        end
-    end)
+	while true do
+		task.wait(tonumber(soundLength))
+		
+		speaker:Configure({Audio = id, Pitch = pitch})
+		speaker:Trigger()
+	end
+end)
 
 	SpeakerHandler._LoopedSounds[speaker.GUID] = {
 		Speaker = speaker,
