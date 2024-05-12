@@ -57,7 +57,7 @@ function SpeakerHandler:LoopSound(id, soundLength, pitch, speaker)
 
 	local loopcoroutine = coroutine.create(function()
         while true do
-           task.wait(tonumber(length))
+           task.wait(tonumber(soundLength))
 
            speaker:Configure({Audio = id, Pitch = pitch})
         end
@@ -124,7 +124,6 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 	end
 
 	function sound:Play(cooldownSeconds)
-		print("huh")
 		if sound._OnCooldown then
 			return
 		end
