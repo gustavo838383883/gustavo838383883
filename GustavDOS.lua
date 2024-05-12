@@ -1371,7 +1371,7 @@ local function runtext(text)
 		playsound(txt)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "stopsounds" then
-		speaker.ClearSounds()
+		speaker:ClearSounds()
 		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 11) == "soundpitch " then
