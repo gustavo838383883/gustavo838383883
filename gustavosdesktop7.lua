@@ -124,6 +124,7 @@ function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length:
 	end
 
 	function sound:Play(cooldownSeconds)
+		print("huh")
 		if sound._OnCooldown then
 			return
 		end
@@ -1636,7 +1637,6 @@ local success, Error1 = pcall(function()
 		end
 
 		local pausebutton, pausebutton2 = createnicebutton2(UDim2.new(0.2, 0, 0.2, 0), UDim2.new(0, 0, 0.8, 0), "Stop", holderframe)
-
 
 		sound = SpeakerHandler.CreateSound({
 			Id = tonumber(data),
