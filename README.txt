@@ -36,7 +36,7 @@ GD7Library = () -> {
 	screenresolution: Frame,
 	mainframe: Frame,
 	textinputted: (func: (text: string, player: string) -> ()) -> {Unbind: (self) -> ()},
-	CreateWindow: (udim2: UDim2, title: string?, maximizeDisabled: boolean, resizingDisabled: boolean, movingDisabled: boolean, minimizedtext: () -> string? | string?, minimizingDisabled: boolean, unminimizeButtonImageChangesOnMouseButton1Down: boolean, resizeButtonImageChangesOnClick: boolean) -> (holderFrame, windowMeta, closeButton, maximizeButton, titleTextLabel, resizeButton, minimizeButton, functionsTable),
+	CreateWindow: (udim2: UDim2, title: string?, maximizeDisabled: boolean, resizingDisabled: boolean, movingDisabled: boolean, minimizedtext: () -> string? | string?, minimizingDisabled: boolean, unminimizeButtonImageChangesOnMouseButton1Down: boolean, resizeButtonImageChangesOnClick: boolean) -> (holderFrame, windowMeta, closeButton, maximizeButton?, titleTextLabel?, resizeButton?, minimizeButton?, functionsTable),
 	FileExplorer: (directory: string, functionForSelectingFile: (name: string, dir: string) -> never, selectFile: boolean, disk: Disk) -> never,
 	createnicebutton: (size: UDim2, position: UDim2, text: string, parent: ScreenObject) -> (ImageButton, TextLabel),
 	createnicebutton2: (size: UDim2, position: UDim2, text: string, parent: ScreenObject) -> (ImageButton, TextLabel),
