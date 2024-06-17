@@ -994,7 +994,7 @@ local success, Error1 = pcall(function()
 			holderframe:AddChild(child)
 		end
 	
-		windowmeta = setmetatable(prevfunctions, {
+		local windowmeta = setmetatable(prevfunctions, {
 			__index = holderframe,
 			__newindex = function(array, i, v)
 				if not pcall(function() return holderframe[i] end) then
