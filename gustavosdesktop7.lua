@@ -911,7 +911,7 @@ local success, Error1 = pcall(function()
 		closebutton = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X, 0, defaultbuttonsize.Y), BackgroundColor3 = Color3.new(1,0,0), Image = "rbxassetid://15617983488"})
 		holderframe:AddChild(closebutton)
 
-		closebutton.MouseButton1Down:Connect(function()
+		closebutton.MouseButton1Up:Connect(function()
 			closebutton.Image = "rbxassetid://15617984474"
 		end)
 
