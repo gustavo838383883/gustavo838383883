@@ -1406,19 +1406,19 @@ local success, Error1 = pcall(function()
 						task.wait(2)
 						changecolorbutton2.Text = "Change Color"
 					else
-					    changecolorbutton2.Text.Text = "Invalid RGB color."
+					    changecolorbutton2.Text = "Invalid RGB color."
 				        task.wait(2)
-				        changecolorbutton2.Text.Text = "Change Color"
+				        changecolorbutton2.Text = "Change Color"
 					end
 				else
-				    changecolorbutton2.Text.Text = "Invalid RGB color."
+				    changecolorbutton2.Text = "Invalid RGB color."
 			        task.wait(2)
-			        changecolorbutton2.Text.Text = "Change Color"
+			        changecolorbutton2.Text = "Change Color"
 				end
 			else
-			    changecolorbutton2.Text.Text = "No RGB color was inputted."
+			    changecolorbutton2.Text = "No RGB color was inputted."
 		        task.wait(2)
-		        changecolorbutton2.Text.Text = "Change Color"
+		        changecolorbutton2.Text = "Change Color"
 			end
 		end)
 	end
