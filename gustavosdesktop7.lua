@@ -5593,6 +5593,7 @@ local success, Error1 = pcall(function()
 			buttondown = true
 		end)
 		startbutton7.MouseButton1Up:Connect(function()
+			startbutton7.Image = "rbxassetid://15617866125"
 			buttondown = false
 			openstartmenu()
 			speaker:PlaySound(clicksound)
