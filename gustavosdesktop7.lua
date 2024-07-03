@@ -5286,7 +5286,6 @@ local success, Error1 = pcall(function()
 					end
 				end
 			end
-			end
 		end)
 
 		startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0.1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
