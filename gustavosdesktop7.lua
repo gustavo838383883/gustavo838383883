@@ -5541,24 +5541,23 @@ local success, Error1 = pcall(function()
 								end
 								loaddesktop()
 							end
-				elseif key == Enum.KeyCode.Q and leftctrlpressed then
-					for i, window in ipairs(windows) do
-						if typeof(window) ~= "table" then windows[i] = {}; window = {} end
-						
-						if not window.Focused then continue end
-						
-						window.FunctionsTable:Close()
-						break
-					end
-				elseif key == Enum.KeyCode.M and leftctrlpressed then
-					
-					for i, window in ipairs(windows) do		
-						if typeof(window) ~= "table" then windows[i] = {} end				
-						if window.FunctionsTable then
-							window.FunctionsTable:Minimize()
-						end
-					end
-				end
+						elseif key == Enum.KeyCode.Q and leftctrlpressed then
+							for i, window in ipairs(windows) do
+								if typeof(window) ~= "table" then windows[i] = {}; window = {} end
+								
+								if not window.Focused then continue end
+								
+								window.FunctionsTable:Close()
+								break
+							end
+						elseif key == Enum.KeyCode.M and leftctrlpressed then
+							
+							for i, window in ipairs(windows) do		
+								if typeof(window) ~= "table" then windows[i] = {} end				
+								if window.FunctionsTable then
+									window.FunctionsTable:Minimize()
+								end
+							end
 						end
 					end)
 				end)
