@@ -531,7 +531,7 @@ local success, Error1 = pcall(function()
 		if not holderframe then return end
 		programholder1:AddChild(holderframe)
 		
-		for i, v in ipairs(windows) do
+		for i, v in pairs(windows) do
 			v.Focused = false
 
 			if v.CloseButton then
@@ -674,9 +674,8 @@ local success, Error1 = pcall(function()
 		function functions:Close()
 			if not holderframe then return end
 			if not window then return end
-			if typeof(windows[frameindex]) ~= "table" then windows[frameindex] = {} end
-			windows[frameindex].Focused = false
-			windows[frameindex] = {}
+			if typeof(windows[frameindex]) ~= "table" or functions:IsClosed() then return end
+			windows[frameindex] =  nil
 			if minimizepressed then
 				functions:Unminimize()
 			end
@@ -703,7 +702,7 @@ local success, Error1 = pcall(function()
 		end
 
 		function functions:IsFocused()
-			if typeof(windows[frameindex]) ~= "table" then windows[frameindex] = {} end
+			if typeof(windows[frameindex]) ~= "table" or functions:IsClosed() then return end
 			return windows[frameindex].Focused
 		end
 
@@ -715,7 +714,7 @@ local success, Error1 = pcall(function()
 			resolutionframe:AddChild(holderframe)
 			holderframe.Visible = false
 			minimizepressed = true
-			if typeof(windows[frameindex]) ~= "table" then windows[frameindex] = {} end
+			if typeof(windows[frameindex]) ~= "table" or functions:IsClosed() then return end
 			windows[frameindex].Focused = false
 			local unminimizebutton = screen:CreateElement("ImageButton", {Image = "rbxassetid://15625805900", BackgroundTransparency = 1, Size = UDim2.new(0, defaultbuttonsize.X*2, 1, 0), Position = UDim2.new(0, minimizedammount * (defaultbuttonsize.X*2), 0, 0)})
 			local unminimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = if typeof(mintext) == "function" then tostring(mintext()) else tostring(mintext)})
@@ -737,7 +736,7 @@ local success, Error1 = pcall(function()
 				unminimizebutton:Destroy()
 				minimizepressed = false
 				minimizedammount -= 1
-				for i, v in ipairs(windows) do
+				for i, v in pairs(windows) do
 					v.Focused = false
 
 					if v.CloseButton then
@@ -745,7 +744,7 @@ local success, Error1 = pcall(function()
 					end
 				end
 
-				if typeof(windows[frameindex]) ~= "table" then windows[frameindex] = {} end
+				if typeof(windows[frameindex]) ~= "table" or functions:IsClosed() then return end
 				windows[frameindex].Focused = true
 
 				if closebutton then
@@ -867,7 +866,7 @@ local success, Error1 = pcall(function()
 			if holding then return end
 			programholder2:AddChild(holderframe)
 			programholder1:AddChild(holderframe)
-			for i, v in ipairs(windows) do
+			for i, v in pairs(windows) do
 				v.Focused = false
 
 				if v.CloseButton then
@@ -875,7 +874,7 @@ local success, Error1 = pcall(function()
 				end
 			end
 
-			if typeof(windows[frameindex]) ~= "table" then windows[frameindex] = {} end
+			if typeof(windows[frameindex]) ~= "table" or functions:IsClosed() then return end
 			windows[frameindex].Focused = true
 
 			if closebutton then
@@ -3146,9 +3145,9 @@ local success, Error1 = pcall(function()
 
 			local start = 0
 
-			for i, window in ipairs(windows) do
+			for i, window in pairs(windows) do
 
-				if window.FunctionsTable and not window.FunctionsTable:IsClosed() then
+				if window and window.FunctionsTable and not window.FunctionsTable:IsClosed() then
 					local text = if typeof(window.Name) == "function" then tostring(window.Name()) else tostring(window.Name)
 
 					if text == "nil" then
@@ -5247,7 +5246,7 @@ local success, Error1 = pcall(function()
 						taskbarholder:Destroy()
 					end					
 
-					for i, window in ipairs(windows) do
+					for i, window in pairs(windows) do
 						if window.FunctionsTable then
 							window.FunctionsTable:Close()
 						end
@@ -5269,8 +5268,8 @@ local success, Error1 = pcall(function()
 					loaddesktop()
 				end
 			elseif key == Enum.KeyCode.Q and leftctrlpressed then
-				for i, window in ipairs(windows) do
-					if typeof(window) ~= "table" then windows[i] = {}; window = {} end
+				for i, window in pairs(windows) do
+					if typeof(window) ~= "table" then continue end
 					
 					if not window.Focused then continue end
 					
@@ -5279,8 +5278,8 @@ local success, Error1 = pcall(function()
 				end
 			elseif key == Enum.KeyCode.M and leftctrlpressed then
 				
-				for i, window in ipairs(windows) do		
-					if typeof(window) ~= "table" then windows[i] = {} end				
+				for i, window in pairs(windows) do		
+					if typeof(window) ~= "table" then continue end			
 					if window.FunctionsTable then
 						window.FunctionsTable:Minimize()
 					end
@@ -5519,7 +5518,7 @@ local success, Error1 = pcall(function()
 									taskbarholder:Destroy()
 								end					
 			
-								for i, window in ipairs(windows) do
+								for i, window in pairs(windows) do
 									if window.FunctionsTable then
 										window.FunctionsTable:Close()
 									end
@@ -5541,8 +5540,8 @@ local success, Error1 = pcall(function()
 								loaddesktop()
 							end
 						elseif key == Enum.KeyCode.Q and leftctrlpressed then
-							for i, window in ipairs(windows) do
-								if typeof(window) ~= "table" then windows[i] = {}; window = {} end
+							for i, window in pairs(windows) do
+								if typeof(window) ~= "table" then continue end
 								
 								if not window.Focused then continue end
 								
@@ -5551,8 +5550,8 @@ local success, Error1 = pcall(function()
 							end
 						elseif key == Enum.KeyCode.M and leftctrlpressed then
 							
-							for i, window in ipairs(windows) do		
-								if typeof(window) ~= "table" then windows[i] = {} end				
+							for i, window in pairs(windows) do		
+								if typeof(window) ~= "table" then continue end			
 								if window.FunctionsTable then
 									window.FunctionsTable:Minimize()
 								end
