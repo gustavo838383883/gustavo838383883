@@ -1994,6 +1994,7 @@ local success, Error1 = pcall(function()
 	    local loadfile
 
         local function loaddiskicon(disk, index)
+			if currentdisk then return end
 			if disk then
 				local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(index), scrollingframe)
 				textlabel.Size = UDim2.new(1, -25, 1, 0)
@@ -2055,8 +2056,9 @@ local success, Error1 = pcall(function()
 						parentbutton.Size = UDim2.new(0.2, 0, 0.15, 0)
 						parentbutton.Visible = true
 					end
-
+					local startdir = directory
 					for index, value in pairs(information) do
+						if directory ~= startdir then break end
 						loadfile(index, value, currentdisk)
 						task.wait()
 					end
@@ -2225,8 +2227,9 @@ local success, Error1 = pcall(function()
 							parentbutton.Size = UDim2.new(0.2, 0, 0.15, 0)
 							parentbutton.Visible = true
 						end
-
+						local startdir = directory
 						for index, value in pairs(information) do
+							if directory ~= startdir then break end
 							loadfile(index, value, currentdisk)
 							task.wait()
 						end
@@ -2237,8 +2240,9 @@ local success, Error1 = pcall(function()
 		end
 
         if currentdisk then
-
+		local startdir = directory
 		    for filename, dataz in pairs(data) do
+			if directory ~= startdir then break end
 		    	loadfile(filename, dataz, currentdisk)
 			    task.wait()
 		    end
@@ -2327,7 +2331,9 @@ local success, Error1 = pcall(function()
 					scrollingframe = screen:CreateElement("ScrollingFrame", {ScrollBarThickness = 5, Size = scrollsize, CanvasSize = UDim2.new(0, 0, 0, 0), Position = UDim2.new(0, 0, 0.15, 0), BackgroundTransparency = 1})
 					holderframe:AddChild(scrollingframe)
 					if typeof(data) == "table" then
+						local startdir = directory
 						for filename, dataz in pairs(data) do
+							if directory ~= startdir then break end
 							loadfile(filename, dataz, currentdisk)
 							task.wait()
 						end
@@ -2358,9 +2364,11 @@ local success, Error1 = pcall(function()
 			holderframe:AddChild(scrollingframe)
 
 			if typeof(data) ~= "table" then data = {} end
-
-			for filename, dataz in pairs(data) do
+			local startdir = directory
+			for filename, dataz in pairs(data) do]
+				if directory ~= startdir then break end
 				loadfile(filename, dataz, currentdisk)
+				task.wait()
 			end
 		end)
 
@@ -2411,9 +2419,11 @@ local success, Error1 = pcall(function()
             			    parentbutton.Visible = false
             			end
             		end
-
+			local startdir = directory
             		for filename, dataz in pairs(data) do
+				if directory ~= startdir then break end
             			loadfile(filename, dataz, currentdisk)
+				task.wait()
             		end
 
 		else
