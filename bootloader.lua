@@ -204,10 +204,6 @@ local function loadmicro(micro, text, lines)
 
 				TriggerPort(polyport)
 
-				poly:Configure({PolysiliconMode = 1})
-
-				TriggerPort(polyport)
-
 			else
 				lines.insert("No port attached to the found microcontroller or no polysilicon attached to that found port.")
 			end
