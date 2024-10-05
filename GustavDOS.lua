@@ -274,7 +274,9 @@ function commandline.new(scr)
 	local biggesttextx = 0
 
 	function lines.clear()
-		background:ClearAllChildren()
+		for i, child in ipairs(background:GetChildren()) do
+		    child:Destroy()
+		end
 		lines.number = UDim2.new(0,0,0,0)
 		biggesttextx = 0
 	end
