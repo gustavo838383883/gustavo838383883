@@ -1,168 +1,12 @@
-local SpeakerHandler = {
-	_LoopedSounds = {},
-	_ChatCooldowns = {}, -- Cooldowns of Speaker:Chat
-	_SoundCooldowns = {}, -- Sounds played by SpeakerHandler.PlaySound
-	DefaultSpeaker = nil,
-}
-function SpeakerHandler.Chat(text, cooldownTime, speaker)
-	speaker = speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler.Chat]: No speaker provided")
+local function getfileextension(filename, boolean)
+	local result = string.match(filename, "%.[%w%p]+%s*$")
+	if not result then return end
+	result = result:lower()
+	local nospace = string.gsub(result, "%s", "")
 
-	if SpeakerHandler._ChatCooldowns[speaker.GUID..text] then
-		return
+	if result then
+		return boolean and result or nospace
 	end
-
-	speaker:Chat(text)
-
-	if not cooldownTime then
-		return
-	end
-
-	SpeakerHandler._ChatCooldowns[speaker.GUID..text] = true
-	task.delay(cooldownTime, function()
-		SpeakerHandler._ChatCooldowns[speaker.GUID..text] = nil
-	end)
-end
-
-function SpeakerHandler.PlaySound(id, pitch, cooldownTime, speaker)
-	speaker = speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler.PlaySound]: No speaker provided")
-	id = tonumber(id)
-	pitch = tonumber(pitch) or 1
-
-	if SpeakerHandler._SoundCooldowns[speaker.GUID..id] then
-		return
-	end
-
-	speaker:Configure({Audio = id, Pitch = pitch})
-	speaker:Trigger()
-
-	if cooldownTime then
-		SpeakerHandler._SoundCooldowns[speaker.GUID..id] = true
-
-		task.delay(cooldownTime, function()
-			SpeakerHandler._SoundCooldowns[speaker.GUID..id] = nil
-		end)
-	end
-end
-
-function SpeakerHandler:LoopSound(id, soundLength, pitch, speaker)
-	speaker = speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler:LoopSound]: No speaker provided")
-	id = tonumber(id)
-	pitch = tonumber(pitch) or 1
-	
-	if SpeakerHandler._LoopedSounds[speaker.GUID] then
-		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
-	end
-	
-	speaker:Configure({Audio = id, Pitch = pitch})
-	
-	local loopcoroutine = coroutine.create(function()
-		while true do
-			task.wait(tonumber(soundLength))
-			
-			speaker:Configure({Audio = id, Pitch = pitch})
-			speaker:Trigger()
-		end
-	end)
-
-	SpeakerHandler._LoopedSounds[speaker.GUID] = {
-		Speaker = speaker,
-		Length = soundLength / pitch,
-		TimePlayed = tick(),
-		coroutineloop = loopcoroutine
-	}
-
-	coroutine.resume(loopcoroutine)
-
-	speaker:Trigger()
-	return true
-end
-
-function SpeakerHandler:RemoveSpeakerFromLoop(speaker)
-    coroutine.close(SpeakerHandler._LoopedSounds[speaker.GUID].coroutineloop)
-
-	SpeakerHandler._LoopedSounds[speaker.GUID] = nil
-
-	speaker:Configure({Audio = 0, Pitch = 1})
-	speaker:Trigger()
-end
-
-function SpeakerHandler:UpdateSoundLoop(dt) -- Triggers any speakers if it's time for them to be triggered
-	dt = dt or 0
-
-	for _, sound in pairs(SpeakerHandler._LoopedSounds) do
-		local currentTime = tick() - dt
-		local timePlayed = currentTime - sound.TimePlayed
-
-		if timePlayed >= sound.Length then
-			sound.TimePlayed = tick()
-			sound.Speaker:Trigger()
-		end
-	end
-end
-
-function SpeakerHandler:StartSoundLoop() -- If you use this, you HAVE to put it at the end of your code.
-
-	while true do
-		local dt = task.wait()
-		SpeakerHandler:UpdateSoundLoop(dt)
-	end
-end
-
-function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length: number, Speaker: any } ) -- Psuedo sound object, kinda bad
-	config.Pitch = config.Pitch or 1
-
-	local sound = {
-		ClassName = "SpeakerHandler.Sound",
-		Id = config.Id,
-		Pitch = config.Pitch,
-		_Speaker = config.Speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler.CreateSound]: A speaker must be provided"),
-		_OnCooldown = false, -- For sound cooldowns
-		_Looped = false
-	}
-
-	if config.Length then
-		sound.Length = config.Length / config.Pitch
-	end
-
-	function sound:Play(cooldownSeconds)
-		if sound._OnCooldown then
-			return
-		end
-
-		sound._Speaker:Configure({Audio = sound.Id, Pitch = sound.Pitch})
-		sound._Speaker:Trigger()
-
-		if not cooldownSeconds then
-			return
-		end
-
-		sound._OnCooldown = true
-		task.delay(cooldownSeconds, function()
-			sound._OnCooldown = false
-		end)
-	end
-
-	function sound:Stop()
-		sound._Speaker:Configure({Audio = 0, Pitch = 1})
-		sound._Speaker:Trigger()
-
-		sound._OnCooldown = false
-	end
-
-	function sound:Loop()
-		sound._Looped = true
-		SpeakerHandler:LoopSound(sound.Id, sound.Length, sound.Pitch, sound._Speaker)
-	end
-
-	function sound:Destroy()
-		if sound._Looped then
-			SpeakerHandler:RemoveSpeakerFromLoop(sound._Speaker)
-		end
-
-		table.clear(sound)
-	end
-
-	return sound
 end
 
 local function createfileontable(disk, filename, filedata, directory)
@@ -187,12 +31,12 @@ local function createfileontable(disk, filename, filedata, directory)
 						end
 					end
 				end
-	        end
-	        tablez[#tablez][filename] = filedata
+			end
+			tablez[#tablez][filename] = filedata
 
-	        returntable = rootfile
+			returntable = rootfile
 
-		    disk:Write(split[2], rootfile)
+			disk:Write(split[2], rootfile)
 		end
 	end
 	return returntable
@@ -372,7 +216,7 @@ local function getstuff()
 				end
 			end
 		end
-	
+
 		if not shutdownpoly then
 			success, Error = pcall(GetPartFromPort, i, "Polysilicon")
 			if success then
@@ -381,7 +225,7 @@ local function getstuff()
 				end
 			end
 		end
-		
+
 		if not speaker then
 			success, Error = pcall(GetPartFromPort, i, "Speaker")
 			if success then
@@ -421,31 +265,45 @@ local commandline = {}
 
 local position = UDim2.new(0,0,0,0)
 
-function commandline.new(screen)
+function commandline.new(scr)
+	local screen = scr or screen
 	local background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
 	local lines = {
-		insert = function(text, udim2)
-			print(text)
-			local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextScaled = true, RichText = true, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Size = UDim2.new(1, 0, 0, 25), Position = position})
-			if textlabel then
-				background:AddChild(textlabel)
-				background.CanvasSize = UDim2.new(1, 0, 0, position.Y.Offset + 25)
-				if typeof(udim2) == "UDim2" then
-					textlabel.Size = udim2
-					background.CanvasSize -= UDim2.fromOffset(0, 25)
-					background.CanvasSize += UDim2.new(0, 0, 0, udim2.Y.Offset)
-					if udim2.X.Offset > screen:GetDimensions().X then
-						background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
-					end
-					position -= UDim2.new(0,0,0,25)
-					position += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
-				end
-				position += UDim2.new(0, 0, 0, 25)
-				background.CanvasPosition = Vector2.new(0, position.Y.Offset)
-			end
-			return textlabel
-		end,
+		number = UDim2.new(0,0,0,0)
 	}
+	local biggesttextx = 0
+
+	function lines.clear()
+		background:ClearAllChildren()
+		lines.number = UDim2.new(0,0,0,0)
+		biggesttextx = 0
+	end
+
+	function lines.insert(text, udim2)
+		local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextSize = 20, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
+		if textlabel then
+			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+			if textlabel.TextBounds.X > biggesttextx then
+				biggesttextx = textlabel.TextBounds.X
+			end
+			textlabel.Parent = background
+			background.CanvasSize = UDim2.new(0, biggesttextx, 0, lines.number.Y.Offset + math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+			if typeof(udim2) == "UDim2" then
+				textlabel.Size = udim2
+				local newsizex = if udim2.X.Offset > biggesttextx then udim2.X.Offset else 0
+				background.CanvasSize -= UDim2.fromOffset(newsizex, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+				background.CanvasSize += UDim2.new(0, newsizex, 0, udim2.Y.Offset)
+				if udim2.X.Offset > screen:GetDimensions().X then
+					background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
+				end
+				lines.number -= UDim2.new(0,0,0,math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+				lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
+			end
+			lines.number += UDim2.new(0, 0, 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+			background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
+		end
+		return textlabel
+	end
 	return lines, background
 end
 
@@ -491,7 +349,7 @@ local function StringToGui(screen, text, parent)
 					text = string.sub(text, 1, string.find(text, '"') - 1)
 					url.ImageTransparency = tonumber(text) or 0
 				end
-				parent:AddChild(url)
+				url.Parent = parent
 			end
 		end
 	end
@@ -537,7 +395,7 @@ local function StringToGui(screen, text, parent)
 			else
 				start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
 			end
-			parent:AddChild(url)
+			url.Parent = parent
 		end
 	end
 	for name, value in source:gmatch('<img(.-)(.-)>') do
@@ -596,7 +454,7 @@ local function StringToGui(screen, text, parent)
 				else
 					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
 				end
-				parent:AddChild(url)
+				url.Parent = parent
 			end
 		end
 	end
@@ -650,7 +508,7 @@ local function StringToGui(screen, text, parent)
 				else
 					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
 				end
-				parent:AddChild(url)
+				url.Parent = parent
 			end
 		end
 	end
@@ -677,9 +535,9 @@ local function loadluafile(microcontrollers, screen, code)
 						polysilicon:Configure({PolysiliconMode = 0})
 						TriggerPort(polyport)
 						success = true
-				
+
 						commandlines.insert("Using microcontroller:")
-						
+
 						commandlines.insert(micronumber)
 						break
 					else
@@ -713,7 +571,7 @@ local function playsound(txt)
 			else
 				pitch = splitted[2]
 			end
-			
+
 			if string.find(tostring(txt), "length:") then
 				local splitted = string.split(tostring(txt), "length:")
 				if string.find(splitted[2], " ") then
@@ -723,28 +581,28 @@ local function playsound(txt)
 				end
 			end
 			if not length then
-				SpeakerHandler.PlaySound(spacesplitted[1], tonumber(pitch), nil, speaker)
+				speaker:PlaySound(`rbxassetid://{spacesplitted[1]}`)
 			else
-				SpeakerHandler:LoopSound(spacesplitted[1], tonumber(length), tonumber(pitch), speaker)
+				speaker:LoadSound(`rbxassetid://{spacesplitted[1]}`).Looped = true
 			end
 		elseif string.find(tostring(txt), "length:") then
-			
+
 			local splitted = string.split(tostring(txt), "length:")
-			
+
 			local spacesplitted = string.split(tostring(txt), " ")
-			
+
 			local length = nil
-				
+
 			if string.find(splitted[2], " ") then
 				length = (string.split(splitted[2], " "))[1]
 			else
 				length = splitted[2]
 			end
-			
-			SpeakerHandler:LoopSound(spacesplitted[1], nil, tonumber(pitch), speaker)
-			
+
+			speaker:LoadSound(`rbxassetid://{spacesplitted[1]}`).Looped = true
+
 		else
-			SpeakerHandler.PlaySound(txt, nil, nil, speaker)
+			speaker:PlaySound(`rbxassetid://{txt}`)
 		end
 	end
 end
@@ -824,14 +682,14 @@ local function runtext(text)
 			disk = disks[text]
 			directory = ""
 			commandlines.insert("Success")
-	   	else
-	       		commandlines.insert("Invalid storage media number.")
-	    	end
+		else
+			commandlines.insert("Invalid storage media number.")
+		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 12) == "showstorages" then
 		for i, val in ipairs(disks) do
 			commandlines.insert(tostring(i))
-	    	end
+		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 6) == "reboot" then
 		task.wait(1)
@@ -847,7 +705,6 @@ local function runtext(text)
 			screen:ClearElements()
 			if speaker then
 				speaker:ClearSounds()
-				SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 			end
 			if shutdownpoly then
 				TriggerPort(shutdownpoly)
@@ -932,7 +789,7 @@ local function runtext(text)
 				newname = newname..value
 			end
 		end
-		
+
 		if filename and filename ~= "" then
 			local file
 			local split = dir:split("/")
@@ -1252,7 +1109,7 @@ local function runtext(text)
 			end
 			if not split or split[2] == "" then
 				local output = disk:Read(filename)
-				if string.find(string.lower(tostring(output)), "<woshtml>") then
+				if string.find(string.lower(tostring(output)), "<woshtml>") or tostring(getfileextension(filename)):lower() == ".gui" then
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
@@ -1313,14 +1170,14 @@ local function runtext(text)
 				local id = disk:Read(filename)
 				local textlabel = commandlines.insert(id, UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
-				textlabel:AddChild(videoframe)
+				videoframe.Parent = textlabel
 				videoframe.Playing = true
 				print(disk:Read(filename))
 			else
 				local id = tostring(getfileontable(disk, filename, dir))
 				local textlabel = commandlines.insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
-				textlabel:AddChild(videoframe)
+				videoframe.Parent = textlabel
 				videoframe.Playing = true
 				print(getfileontable(disk, filename, dir))
 			end
@@ -1350,7 +1207,7 @@ local function runtext(text)
 		if id and id ~= "" then
 			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 			local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
-			textlabel:AddChild(videoframe)
+			videoframe.Parent = textlabel
 			videoframe.Playing = true
 		else
 			commandlines.insert("No id specified")
@@ -1388,7 +1245,6 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "stopsounds" then
 		speaker:ClearSounds()
-		SpeakerHandler:RemoveSpeakerFromLoop(speaker)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 11) == "soundpitch " then
 		if speaker and tonumber(text:sub(12, string.len(text))) then
@@ -1434,13 +1290,13 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 4) == "help" then
 		keyboard:SimulateTextInput("cmds", "Microcontroller")
-		
+
 	elseif text:lower():sub(1, 10) == "stopmicro " then
 		keyboard:SimulateTextInput("stoplua "..text:sub(11, string.len(text)), "Microcontroller")
-		
+
 	elseif text:lower():sub(1, 10) == "playvideo " then
 		keyboard:SimulateTextInput("displayvideo "..text:sub(11, string.len(text)), "Microcontroller")
-		
+
 	elseif text:lower():sub(1, 8) == "makedir " then
 		keyboard:SimulateTextInput("createdir "..text:sub(9, string.len(text)), "Microcontroller")
 	elseif text:lower():sub(1, 6) == "mkdir " then
@@ -1466,34 +1322,34 @@ local function runtext(text)
 		if not split or split[2] == "" then
 			local output = disk:Read(filename)
 			if output then
-				if string.find(filename, "%.aud") then
+				if tostring(getfileextension(filename)):lower() == ".aud" then
 					commandlines.insert(tostring(output))
-					playsound(output)
+					playsound(output, filename)
 					commandlines.insert(dir..":")
 					print(output)
-				elseif string.find(filename, "%.img") then
-					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
-					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
-					commandlines.insert(dir..":")
-					background.CanvasPosition -= Vector2.new(0, 25)
-					print(output)
-				elseif string.find(filename, "%.vid") then
+				elseif tostring(getfileextension(filename)):lower() == ".vid" then
 					commandlines.insert(tostring(output))
 					local id = output
-					local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+					local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 					local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
-					textlabel:AddChild(videoframe)
+					videoframe.Parent = textlabel
 					videoframe.Playing = true
 					commandlines.insert(dir..":")
 					print(output)
 					background.CanvasPosition -= Vector2.new(0, 25)
-				elseif string.find(filename, "%.lua") then
+				elseif tostring(getfileextension(filename)):lower() == ".img" then
+					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
+					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+					commandlines.insert(dir..":")
+					background.CanvasPosition -= Vector2.new(0, 25)
+					print(output)
+				elseif tostring(getfileextension(filename)):lower() == ".lua" then
 					commandlines.insert(tostring(output))
-					loadluafile(microcontrollers, screen, output)
+					loadluafile({}, screen, output)
 					commandlines.insert(dir..":")
 				else
 					if string.find(string.lower(tostring(output)), "<woshtml>") then
-						local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 						StringToGui(screen, tostring(output):lower(), textlabel)
 						textlabel.TextTransparency = 1
 						commandlines.insert(dir..":")
@@ -1512,24 +1368,24 @@ local function runtext(text)
 		else
 			local output = getfileontable(disk, filename, dir)
 			if output then
-				if string.find(filename, "%.aud") then
+				if getfileextension(filename, true) == ".aud" then
 					commandlines.insert(tostring(output))
 					playsound(output)
 					commandlines.insert(dir..":")
 					print(output)
-				elseif string.find(filename, "%.img") then
-					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				elseif getfileextension(filename, true) == ".img" then
+					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
 					print(output)
-				elseif string.find(filename, "%.lua") then
+				elseif getfileextension(filename, true) == ".lua" then
 					commandlines.insert(tostring(output))
-					loadluafile(microcontrollers, screen, output)
+					loadluafile({}, screen, output)
 					commandlines.insert(dir..":")
 				else
 					if string.find(string.lower(tostring(output)), "<woshtml>") then
-						local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+						local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 						StringToGui(screen, tostring(output):lower(), textlabel)
 						textlabel.TextTransparency = 1
 						commandlines.insert(dir..":")
@@ -1553,59 +1409,59 @@ function bootos()
 	if disks and #disks > 0 then
 		print(tostring(romport).."\\"..tostring(disksport))
 		if romport ~= disksport then
-		    local indexusing1
+			local indexusing1
 
 			for i,v in ipairs(disks) do
 				if rom ~= v then
 					disk = v
 					indexusing1 = i
 
-				        break
+					break
 				end
-		    end
+			end
 
-		    local diskstable2 = {
-	            [1] = disk
-            }
+			local diskstable2 = {
+				[1] = disk
+			}
 
-            for i, v in ipairs(disks) do
-                if i ~= indexusing1 then
-                    table.insert(diskstable2, v)
-                end
-            end
+			for i, v in ipairs(disks) do
+				if i ~= indexusing1 then
+					table.insert(diskstable2, v)
+				end
+			end
 
-	        disks = diskstable2
-	    else
-	        local diskstable = {}
+			disks = diskstable2
+		else
+			local diskstable = {}
 
-	        for i, v in ipairs(disks) do
+			for i, v in ipairs(disks) do
 				if rom ~= v and i ~= romindexusing then
 					table.insert(diskstable, v)
 				end
-		    end
+			end
 
-		    disks = diskstable
+			disks = diskstable
 
-	        local indexusing1
+			local indexusing1
 
 			for i, v in ipairs(disks) do
 				disk = v
 				indexusing1 = i
 
-			    break
-		    end
+				break
+			end
 
-		    local diskstable2 = {
-	            [1] = disk
-	        }
+			local diskstable2 = {
+				[1] = disk
+			}
 
-		    for i, v in ipairs(disks) do
+			for i, v in ipairs(disks) do
 				if i ~= indexusing1 then
-				   table.insert(diskstable2, v)
-			    end
-	        end
+					table.insert(diskstable2, v)
+				end
+			end
 
-	        disks = diskstable2
+			disks = diskstable2
 		end
 	end
 	if not screen then
@@ -1644,7 +1500,7 @@ function bootos()
 				runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 			else
 				local text = string.sub(tostring(text), 3, string.len(text))
-				
+
 				commandlines.insert(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
 				runtext(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
 			end			
