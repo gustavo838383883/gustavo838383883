@@ -5,7 +5,36 @@ local ports = GetPartsFromPort(2, "Port")
 local microcontroller = GetPartFromPort(10, "Microcontroller")
 local polysilicon = GetPartFromPort(1, "Polysilicon")
 local micropolysilicon = GetPartFromPort(10, "Polysilicon")
-print(micropolysilicon)
+do
+	local regularscreen = nil
+
+	for i, port in ipairs(ports) do
+		local ts = GetPartFromPort(port, "TouchScreen")
+		local rs = GetPartFromPort(port, "Screen")
+		local k = GetPartFromPort(port, "Keyboard")
+		
+		if ts and not screen then
+			screen = ts
+		end
+
+		if rs and not regularscreen and not screen then
+			regularscreen = rs
+		end
+
+		if k and not keyboard then
+			keyboard = k
+		end
+
+		if screen and keyboard then
+			break
+		end
+	end
+	
+	if not screen and regularscreen then
+		screen = regularscreen
+		regularscreen = nil
+	end
+end
 
 local function createfileontable(disk, filename, filedata, directory)
 	local returntable = nil
@@ -92,34 +121,6 @@ local function getfileontable(disk, filename, directory)
 	return file
 end
 
-local function getstuff()
-	screen = nil
-	local regularscreen = nil
-	keyboard = nil
-
-	for i, port in ipairs(ports) do
-		local ts = GetPartFromPort(port, "TouchScreen")
-		local rs = GetPartFromPort(port, "Screen")
-		local k = GetPartFromPort(port, "Keyboard")
-		
-		if ts and not screen then
-			screen = ts
-		end
-
-		if rs and not regularscreen then
-			regularscreen = rs
-		end
-
-		if k and not keyboard then
-			keyboard = k
-		end
-	end
-	
-	if not screen and regularscreen then
-		screen = regularscreen
-		regularscreen = nil
-	end
-end
 local commandline = {}
 
 function commandline.new(scr)
@@ -139,6 +140,7 @@ function commandline.new(scr)
 	end
 
 	function lines.insert(text, udim2)
+		print(text)
 		local textlabel = screen:CreateElement("TextBox", {TextSize = 10, ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
 			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
@@ -173,7 +175,6 @@ local name = "Bootloader"
 
 local function loadmicro(micro, text, lines)
 	if micro then
-		print(text)
 		micro:Configure({Code = tostring(text)})
 		screen:ClearElements()
 
@@ -191,7 +192,6 @@ local function loadmicro(micro, text, lines)
 end
 
 local function boot()
-	getstuff()
 	micropolysilicon:Configure({PolysiliconMode = 1})
 
 	TriggerPort(10)
@@ -246,7 +246,6 @@ local function boot()
 				for name, data in pairs(allbootable or {}) do
 					amount += 1
 					lines.insert(amount)
-					print(name)
 					lines.insert(name)
 
 					names[amount] = name
@@ -267,7 +266,6 @@ local function boot()
 
 					if (tonumber(text) and not boolean) or boolean then
 						local name = names[tonumber(text)]
-						print(name)
 
 						f(text, name)
 
@@ -479,8 +477,6 @@ local function boot()
 						TriggerPort(polysilicon)
 					elseif name then
 						local code = allbootable[name]
-						print(name)
-						print(code)
 
 						if code then
 							loadmicro(microcontroller, code, lines)
