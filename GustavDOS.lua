@@ -1307,7 +1307,7 @@ local function runtext(text)
 	elseif text:lower():sub(1, 9) == "stopsound" then
 		keyboard:SimulateTextInput("stopsounds", "Microcontroller")
 	else
-		local filename = text
+		local filename = text or ""
 		local split = nil
 		if dir ~= "" then
 			split = string.split(dir, "/")
@@ -1315,6 +1315,7 @@ local function runtext(text)
 		if not split or split[2] == "" then
 			local output = disk:Read(filename)
 			if output then
+				print
 				if tostring(getfileextension(filename)):lower() == ".aud" then
 					commandlines.insert(tostring(output))
 					playsound(output, filename)
