@@ -963,7 +963,7 @@ local function runtext(text)
 							end
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] == "" then
-						for i,v in pairs(disk:ReadEntireDisk()) do
+						for i,v in pairs(Disk:ReadAll()) do
 							commandlines.insert(tostring(i))
 							print(i)
 						end
@@ -982,7 +982,7 @@ local function runtext(text)
 				end
 			end
 		elseif inputtedtext == "" then
-			for i,v in pairs(disk:ReadEntireDisk()) do
+			for i,v in pairs(Disk:ReadAll()) do
 				commandlines.insert(tostring(i))
 			end
 		else
@@ -1496,7 +1496,7 @@ function bootos()
 		task.wait(1)
 		commandlines.insert("/:")
 		if keyboardevent then keyboardevent:Unbind() end
-		keyboardevent = keyboard:Connect("TextInputted", function(text, player)
+		keyboardevent = keyboard.TextInputted:Connect(function(text, player)
 			if string.sub(tostring(text), 1, 2) ~= "!s" then
 				commandlines.insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
 				runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
@@ -1527,7 +1527,7 @@ function bootos()
 			commandlines.insert([[No empty disk or disk with the file "GDOSLibrary" was found.]])
 		end
 		if keyboard then
-			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
+			local keyboardevent = keyboard.KeyPressed:Connect(function(key)
 				if key == Enum.KeyCode.Return then
 					getstuff()
 					bootos()
@@ -1539,7 +1539,7 @@ function bootos()
 		Beep(0.5)
 		print("No screen was found.")
 		if keyboard then
-			local keyboardevent = keyboard:Connect("KeyPressed", function(key)
+			local keyboardevent = keyboard.KeyPressed:Connect(function(key)
 				if key == Enum.KeyCode.Return then
 					getstuff()
 					bootos()
