@@ -115,7 +115,7 @@ local function getstuff()
 
 	local previ = 0
 	for i=1, 128 do
-		if i - previ > 10 then
+		if i - previ > 5 then
 			previ = i
 			task.wait()
 		end
