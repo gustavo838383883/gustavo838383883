@@ -114,7 +114,7 @@ local function getstuff()
 	sharedport = nil
 
 	local previ = 0
-	for i=1, 128 do
+	for i=1, 64 do
 		print(i)
 		if i - previ > 5 then
 			previ = i
