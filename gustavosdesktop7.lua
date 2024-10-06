@@ -2365,7 +2365,7 @@ local success, Error1 = pcall(function()
 
 			if typeof(data) ~= "table" then data = {} end
 			local startdir = directory
-			for filename, dataz in pairs(data) do]
+			for filename, dataz in pairs(data) do
 				if directory ~= startdir then break end
 				loadfile(filename, dataz, currentdisk)
 				task.wait()
