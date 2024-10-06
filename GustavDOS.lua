@@ -282,6 +282,7 @@ function commandline.new(scr)
 	end
 
 	function lines.insert(text, udim2)
+		print(text)
 		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
 			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
@@ -333,7 +334,6 @@ local function StringToGui(screen, text, parent)
 						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
 					else
 						url.Image = "rbxthumb://type=Asset&id="..tonumber(string.match(link, "%d+")).."&w=420&h=420"
-						print(string.match(link, "%d+"))
 					end
 				end
 				url.ScaleType = Enum.ScaleType.Tile
@@ -415,7 +415,6 @@ local function StringToGui(screen, text, parent)
 						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
 					else
 						url.Image = "rbxthumb://type=Asset&id="..tonumber(string.match(link, "%d+")).."&w=420&h=420"
-						print(string.match(link, "%d+"))
 					end
 				end
 				url.Size = UDim2.new(0, 50, 0, 50)
@@ -619,7 +618,6 @@ local function runtext(text)
 		local txt = text:sub(5, string.len(text))
 		local inputtedtext = txt
 		local tempsplit = string.split(inputtedtext, "/")
-		print(inputtedtext)
 		if tempsplit then
 			if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
 				inputtedtext = "/"..inputtedtext
@@ -671,8 +669,7 @@ local function runtext(text)
 		end
 	elseif text:lower():sub(1, 5) == "clear" then
 		task.wait(0.1)
-		screen:ClearElements()
-		commandlines, background = commandline.new(screen)
+		commandlines.clear()
 		position = UDim2.new(0,0,0,0)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 11) == "setstorage " then
@@ -716,11 +713,9 @@ local function runtext(text)
 		end
 	elseif text:lower():sub(1, 6) == "print " then
 		commandlines.insert(text:sub(7, string.len(text)))
-		print(text:sub(7, string.len(text)))
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 5) == "copy " then
 		local filename = text:sub(6, string.len(text))
-		print(filename)
 		if filename and filename ~= "" then
 			local file
 			local split = dir:split("/")
@@ -862,7 +857,6 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 8) == "stoplua " then
 		local number = tonumber(text:sub(9, string.len(text)))
-		print(number)
 		local start = 0
 		local success = false
 		for index,value in pairs(microcontrollers) do
@@ -893,12 +887,10 @@ local function runtext(text)
 		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "runlua " then
-		print(text)
 		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 8) == "readlua " then
 		local filename = text:sub(9, string.len(text))
-		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			if dir ~= "" then
@@ -919,7 +911,6 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 5) == "beep " then
 		local number = tonumber(text:sub(6, string.len(text)))
-		print(number)
 		if number then
 			Beep(number)
 		else
@@ -947,7 +938,6 @@ local function runtext(text)
 				if typeof(output) == "table" then
 					for i,v in pairs(output) do
 						commandlines.insert(tostring(i))
-						print(i)
 					end
 				else
 					commandlines.insert("Invalid directory")
@@ -959,19 +949,16 @@ local function runtext(text)
 						if typeof(output) == "table" then
 							for i,v in pairs(output) do
 								commandlines.insert(tostring(i))
-								print(i)
 							end
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] == "" then
 						for i,v in pairs(Disk:ReadAll()) do
 							commandlines.insert(tostring(i))
-							print(i)
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] ~= "" then
 						if typeof(disk:Read(split[#split])) == "table" then
 							for i,v in pairs(disk:Read(split[#split])) do
 								commandlines.insert(tostring(i))
-								print(i)
 							end
 						end
 					else
@@ -991,7 +978,6 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "createdir " then
 		local filename = text:sub(11, string.len(text))
-		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			local returntable = nil
@@ -1030,7 +1016,6 @@ local function runtext(text)
 				filedata = filedata.."/"..v
 			end
 		end
-		print(filename, filedata)
 		if filename and filename ~= "" then
 			if filedata and filedata ~= "" then
 				local split = nil
@@ -1069,7 +1054,6 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "delete " then
 		local filename = text:sub(8, string.len(text))
-		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			local returntable = nil
@@ -1103,7 +1087,6 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 5) == "read " then
 		local filename = text:sub(6, string.len(text))
-		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			if dir ~= "" then
@@ -1115,10 +1098,8 @@ local function runtext(text)
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
-					print(output)
 				else
 					commandlines.insert(tostring(output))
-					print(output)
 				end
 			else
 				local output = getfileontable(disk, filename, dir)
@@ -1126,11 +1107,8 @@ local function runtext(text)
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
-					print(output)
 				else
 					commandlines.insert(tostring(output))
-					print(output)
-				end
 			end
 		else
 			commandlines.insert("No filename specified")
@@ -1138,7 +1116,6 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "readimage " then
 		local filename = text:sub(11, string.len(text))
-		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			if dir ~= "" then
@@ -1147,11 +1124,9 @@ local function runtext(text)
 			if not split or split[2] == "" then
 				local textlabel = commandlines.insert(tostring(disk:Read(filename)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(disk:Read(filename)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
-				print(disk:Read(filename))
 			else
 				local textlabel = commandlines.insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(getfileontable(disk, filename, dir)))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
-				print(getfileontable(disk, filename, dir))
 			end
 		else
 			commandlines.insert("No filename specified")
@@ -1162,7 +1137,6 @@ local function runtext(text)
 		end
 	elseif text:lower():sub(1, 10) == "readvideo " then
 		local filename = text:sub(11, string.len(text))
-		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			if dir ~= "" then
@@ -1174,14 +1148,12 @@ local function runtext(text)
 				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 				videoframe.Parent = textlabel
 				videoframe.Playing = true
-				print(disk:Read(filename))
 			else
 				local id = tostring(getfileontable(disk, filename, dir))
 				local textlabel = commandlines.insert(tostring(getfileontable(disk, filename, dir)), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 				local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 				videoframe.Parent = textlabel
 				videoframe.Playing = true
-				print(getfileontable(disk, filename, dir))
 			end
 		else
 			commandlines.insert("No filename specified")
@@ -1192,7 +1164,6 @@ local function runtext(text)
 		end
 	elseif text:lower():sub(1, 13) == "displayimage " then
 		local id = text:sub(14, string.len(text))
-		print(id)
 		if id and id ~= "" then
 			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 			StringToGui(screen, [[<img src="]]..tostring(tonumber(id))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
@@ -1205,7 +1176,6 @@ local function runtext(text)
 		end
 	elseif text:lower():sub(1, 13) == "displayvideo " then
 		local id = text:sub(14, string.len(text))
-		print(id)
 		if id and id ~= "" then
 			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
 			local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
@@ -1221,7 +1191,6 @@ local function runtext(text)
 	elseif text:lower():sub(1, 10) == "readsound " then
 		local filename = text:sub(11, string.len(text))
 		local txt
-		print(filename)
 		if filename and filename ~= "" then
 			local split = nil
 			if dir ~= "" then
@@ -1230,11 +1199,9 @@ local function runtext(text)
 			if not split or split[2] == "" then
 				local textlabel = commandlines.insert(tostring(disk:Read(filename)))
 				txt = disk:Read(filename)
-				print(disk:Read(filename))
 			else
 				local textlabel = commandlines.insert(tostring(getfileontable(disk, filename, dir)))
 				txt = getfileontable(disk, filename, dir)
-				print(getfileontable(disk, filename, dir))
 			end
 		else
 			commandlines.insert("No filename specified")
@@ -1252,7 +1219,6 @@ local function runtext(text)
 		if speaker and tonumber(text:sub(12, string.len(text))) then
 			speaker:Configure({Pitch = tonumber(text:sub(12, string.len(text)))})
 			speaker:Trigger()
-			print(text:sub(12, string.len(text)))
 		else
 			commandlines.insert("Invalid pitch number or no speaker was found.")
 		end
@@ -1328,7 +1294,6 @@ local function runtext(text)
 					commandlines.insert(tostring(output))
 					playsound(output, filename)
 					commandlines.insert(dir..":")
-					print(output)
 				elseif tostring(getfileextension(filename)):lower() == ".vid" then
 					commandlines.insert(tostring(output))
 					local id = output
@@ -1337,14 +1302,12 @@ local function runtext(text)
 					videoframe.Parent = textlabel
 					videoframe.Playing = true
 					commandlines.insert(dir..":")
-					print(output)
 					background.CanvasPosition -= Vector2.new(0, 25)
 				elseif tostring(getfileextension(filename)):lower() == ".img" then
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
-					print(output)
 				elseif tostring(getfileextension(filename)):lower() == ".lua" then
 					commandlines.insert(tostring(output))
 					loadluafile({}, screen, output)
@@ -1356,11 +1319,9 @@ local function runtext(text)
 						textlabel.TextTransparency = 1
 						commandlines.insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
-						print(output)
 					else
 						commandlines.insert(tostring(output))
 						commandlines.insert(dir..":")
-						print(output)
 					end
 				end
 			else
@@ -1374,13 +1335,11 @@ local function runtext(text)
 					commandlines.insert(tostring(output))
 					playsound(output)
 					commandlines.insert(dir..":")
-					print(output)
 				elseif getfileextension(filename, true) == ".img" then
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 					StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
-					print(output)
 				elseif getfileextension(filename, true) == ".lua" then
 					commandlines.insert(tostring(output))
 					loadluafile({}, screen, output)
@@ -1392,11 +1351,9 @@ local function runtext(text)
 						textlabel.TextTransparency = 1
 						commandlines.insert(dir..":")
 						background.CanvasPosition -= Vector2.new(0, 25)
-						print(output)
 					else
 						commandlines.insert(tostring(output))
 						commandlines.insert(dir..":")
-						print(output)
 					end
 				end
 			else
