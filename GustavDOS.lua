@@ -1109,6 +1109,7 @@ local function runtext(text)
 					textlabel.TextTransparency = 1
 				else
 					commandlines.insert(tostring(output))
+				end
 			end
 		else
 			commandlines.insert("No filename specified")
