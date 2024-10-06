@@ -115,6 +115,7 @@ local function getstuff()
 
 	local previ = 0
 	for i=1, 128 do
+		print(i)
 		if i - previ > 5 then
 			previ = i
 			task.wait()
@@ -965,7 +966,7 @@ local function runtext(text)
 							end
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] == "" then
-						for i,v in pairs(Disk:ReadAll()) do
+						for i,v in pairs(disk:ReadAll()) do
 							commandlines.insert(tostring(i))
 						end
 					elseif tempsplit[1] == "" and tempsplit[2] ~= "" then
@@ -982,7 +983,7 @@ local function runtext(text)
 				end
 			end
 		elseif inputtedtext == "" then
-			for i,v in pairs(Disk:ReadAll()) do
+			for i,v in pairs(disk:ReadAll()) do
 				commandlines.insert(tostring(i))
 			end
 		else
