@@ -113,7 +113,12 @@ local function getstuff()
 	romindexusing = nil
 	sharedport = nil
 
+	local previ = 0
 	for i=1, 128 do
+		if i - previ > 10 then
+			previ = i
+			task.wait()
+		end
 		if not rom then
 			success, Error = pcall(GetPartFromPort, i, "Disk")
 			if success then
