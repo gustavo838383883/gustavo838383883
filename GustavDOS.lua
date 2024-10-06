@@ -124,7 +124,7 @@ local function getstuff()
 			if success then
 				local temprom = GetPartFromPort(i, "Disk")
 				if temprom then
-					if #temprom:ReadEntireDisk() == 0 then
+					if #temprom:ReadAll() == 0 then
 						rom = temprom
 						romport = i
 					elseif temprom:Read("GDOSLibrary") then
@@ -136,7 +136,7 @@ local function getstuff()
 						end
 						rom = temprom
 						romport = i
-					elseif #temprom:ReadEntireDisk() == 1 and temprom:Read("GD7Library") then
+					elseif #temprom:ReadAll() == 1 and temprom:Read("GD7Library") then
 						temprom:Write("GD7Library", nil)
 						rom = temprom
 						romport = i
@@ -170,7 +170,7 @@ local function getstuff()
 		if disks and #disks > 1 and romport == disksport and not sharedport then
 			for index,v in ipairs(disks) do
 				if v then
-					if #v:ReadEntireDisk() == 0 then
+					if #v:ReadAll() == 0 then
 						rom = v
 						romport = i
 						romindexusing = index
@@ -188,7 +188,7 @@ local function getstuff()
 						romport = i
 						sharedport = true
 						break
-					elseif #v:ReadEntireDisk() == 1 and v:Read("GustavOSLibrary") or v:Read("GD7Library") then
+					elseif #v:ReadAll() == 1 and v:Read("GustavOSLibrary") or v:Read("GD7Library") then
 						v:Write("GustavOSLibrary", nil)
 						v:Write("GD7Library", nil)
 						rom = v
