@@ -922,6 +922,14 @@ local function runtext(text)
 			commandlines.insert("Invalid number")
 		end
 		commandlines.insert(dir..":")
+	elseif text:lower():sub(1, 10) == "setvolume " then
+		local number = tonumber(text:sub(11, string.len(text)))
+		if number then
+			speaker.Volume = number
+		else
+			commandlines.insert("Invalid number")
+		end
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "showdir" then
 		local inputtedtext = dir
 		local tempsplit = string.split(inputtedtext, "/")
