@@ -672,7 +672,7 @@ local function runtext(text)
 			commandlines.insert("Invalid directory")
 			commandlines.insert(dir..":")
 		end
-	elseif text:lower():sub(1, 5) == "clear" then
+	elseif text:lower():gsub("%s", "") == "clear" then
 		task.wait(0.1)
 		commandlines.clear()
 		position = UDim2.new(0,0,0,0)
@@ -690,19 +690,19 @@ local function runtext(text)
 			commandlines.insert("Invalid storage media number.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 12) == "showstorages" then
+	elseif text:lower():gsub("%s", "") == "showstorages" then
 		for i, val in ipairs(disks) do
 			commandlines.insert(tostring(i))
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 6) == "reboot" then
+	elseif text:lower():gsub("%s", "") == "reboot" then
 		task.wait(1)
 		Beep(1)
 		getstuff()
 		dir = "/"
 		if keyboardevent then keyboardevent:Unbind() end
 		bootos()
-	elseif text:lower():sub(1, 8) == "shutdown" then
+	elseif text:lower():gsub("%s", "") == "shutdown" then
 		if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
 			task.wait(1)
 			Beep(1)
