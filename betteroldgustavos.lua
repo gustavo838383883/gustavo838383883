@@ -1,59 +1,3 @@
-local SpeakerHandler = {
-	_LoopedSounds = {},
-	_ChatCooldowns = {}, -- Cooldowns of Speaker:Chat
-	_SoundCooldowns = {}, -- Sounds played by SpeakerHandler.PlaySound
-	DefaultSpeaker = nil,
-}
-
-function SpeakerHandler.CreateSound(config: { Id: number, Pitch: number, Length: number, Speaker: any } )
-	config.Pitch = config.Pitch or 1
-	
-	local sound = {
-		ClassName = "SpeakerHandler.Sound",
-		Id = config.Id,
-		Pitch = config.Pitch,
-		_Speaker = config.Speaker or SpeakerHandler.DefaultSpeaker or error("[SpeakerHandler.CreateSound]: A speaker must be provided"),
-		_OnCooldown = false, -- For sound cooldowns
-		_Looped = false
-	}
-	
-	if config.Length then
-		sound.Length = config.Length / config.Pitch
-	end
-	
-	function sound:Play(cooldownSeconds)
-		if sound._OnCooldown then
-			return
-		end
-		
-		sound._Speaker:Configure({Audio = sound.Id, Pitch = sound.Pitch})
-		sound._Speaker:Trigger()
-		
-		if not cooldownSeconds then
-			return
-		end
-		
-		sound._OnCooldown = true
-		task.delay(cooldownSeconds, function()
-			sound._OnCooldown = false
-		end)
-	end
-	
-	function sound:Stop()
-		sound._Speaker:Configure({Audio = 0, Pitch = 1})
-		sound._Speaker:Trigger()
-		
-		sound._OnCooldown = false
-	end
-	
-	
-	function sound:Destroy()
-		table.clear(sound)
-	end
-	
-	return sound
-end
-
 local disk = nil
 local screen = nil
 local keyboard = nil
@@ -385,11 +329,7 @@ local function audioui(screen, disk, data, speaker)
 	local pausebutton = screen:CreateElement("TextButton", {Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, 0, 1, -25), Text = "Stop", TextScaled = true})
 	holderframe:AddChild(pausebutton)
 	
-	sound = SpeakerHandler.CreateSound({
-		Id = tonumber(data),
-		Pitch = 1,
-		Speaker = speaker,
-	})
+	sound = speaker:LoadSound(`rbxassetid://{tonumber(data)}`)
 	sound:Play()
 
 	pausebutton.MouseButton1Down:Connect(function()
