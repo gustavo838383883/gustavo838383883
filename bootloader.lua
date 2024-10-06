@@ -1,9 +1,11 @@
 local screen = nil
-local disk = nil
+local disk = GetPartFromPort(1, "Disk")
 local keyboard = nil
-local regularscreen = nil
-local microcontroller = nil
-local polysiliconport = nil
+local ports = GetPartsFromPort(2, "Port")
+local microcontroller = GetPartFromPort(10, "Microcontroller")
+local polysilicon = GetPartFromPort(1, "Polysilicon")
+local micropolysilicon = GetPartFromPort(10, "Polysilicon")
+print(micropolysilicon)
 
 local function createfileontable(disk, filename, filedata, directory)
 	local returntable = nil
@@ -15,7 +17,7 @@ local function createfileontable(disk, filename, filedata, directory)
 		if split[1] and split[2] then
 			local rootfile = disk:Read(split[2])
 			local tablez = {
-			[1] = rootfile,
+				[1] = rootfile,
 			}
 			if typeof(rootfile) == "table" then
 				local resulttable = rootfile
@@ -71,7 +73,7 @@ local function getfileontable(disk, filename, directory)
 		if split[1] and split[2] then
 			local rootfile = disk:Read(split[2])
 			local tablez = {
-			[1] = rootfile,
+				[1] = rootfile,
 			}
 			if typeof(rootfile) == "table" then
 				local resulttable = rootfile
@@ -92,92 +94,77 @@ end
 
 local function getstuff()
 	screen = nil
-	disk = nil
-	regularscreen = nil
+	local regularscreen = nil
 	keyboard = nil
-	microcontroller = nil
-	polysiliconport = nil
 
-	for i=1, 128 do
-		if not disk then
-			success, Error = pcall(GetPartFromPort, i, "Disk")
-			if success then
-				local diskz = GetPartFromPort(i, "Disk")
-				if diskz then
-					disk = diskz
-				end
-			end
+	for i, port in ipairs(ports) do
+		local ts = GetPartFromPort(port, "TouchScreen")
+		local rs = GetPartFromPort(port, "Screen")
+		local k = GetPartFromPort(port, "Keyboard")
+		
+		if ts and not screen then
+			screen = ts
 		end
-		if not screen then
-			success, Error = pcall(GetPartFromPort, i, "TouchScreen")
-			if success then
-				if GetPartFromPort(i, "TouchScreen") then
-					screen = GetPartFromPort(i, "TouchScreen")
-				end
-			end
+
+		if rs and not regularscreen then
+			regularscreen = rs
 		end
-		if not microcontroller then
-			success, Error = pcall(GetPartFromPort, i, "Microcontroller")
-			if success then
-				if GetPartFromPort(i, "Microcontroller") then
-					microcontroller = GetPartFromPort(i, "Microcontroller")
-				end
-			end
+
+		if k and not keyboard then
+			keyboard = k
 		end
-		if not polysiliconport then
-			success, Error = pcall(GetPartFromPort, i, "Polysilicon")
-			if success then
-				if GetPartFromPort(i, "Polysilicon") then
-					polysiliconport = GetPort(i)
-				end
-			end
-		end
-		if not regularscreen then
-			success, Error = pcall(GetPartFromPort, i, "Screen")
-			if success then
-				if GetPartFromPort(i, "Screen") then
-					regularscreen = GetPartFromPort(i, "Screen")
-				end
-			end
-		end
-		if not keyboard then
-			success, Error = pcall(GetPartFromPort, i, "Keyboard")
-			if success then
-				if GetPartFromPort(i, "Keyboard") then
-					keyboard = GetPartFromPort(i, "Keyboard")
-				end
-			end
-		end
+	end
+	
+	if not screen and regularscreen then
+		screen = regularscreen
+		regularscreen = nil
 	end
 end
 local commandline = {}
 
-function commandline.new(screen)
-	local position = UDim2.new(0,0,0,0)
-
+function commandline.new(scr)
+	local screen = scr or screen
 	local background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
 	local lines = {
-		insert = function(text, udim2)
-			local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text), TextScaled = true, RichText = true, TextWrapped = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Size = UDim2.new(1, 0, 0, 25), Position = position})
-			if textlabel then
-				background:AddChild(textlabel)
-				background.CanvasSize = UDim2.new(1, 0, 0, position.Y.Offset + 25)
-				if typeof(udim2) == "UDim2" then
-					textlabel.Size = udim2
-					background.CanvasSize -= UDim2.fromOffset(0, 25)
-					background.CanvasSize += UDim2.new(0, 0, 0, udim2.Y.Offset)
-					if udim2.X.Offset > screen:GetDimensions().X then
-						background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
-					end
-					position -= UDim2.new(0,0,0,25)
-					position += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
-				end
-				position += UDim2.new(0, 0, 0, 25)
-				background.CanvasPosition = Vector2.new(0, position.Y.Offset)
-			end
-			return textlabel
-		end,
+		number = UDim2.new(0,0,0,0)
 	}
+	local biggesttextx = 0
+
+	function lines.clear()
+		for i, child in ipairs(background:GetChildren()) do
+			child:Destroy()
+		end
+		lines.number = UDim2.new(0,0,0,0)
+		biggesttextx = 0
+	end
+
+	function lines.insert(text, udim2)
+		local textlabel = screen:CreateElement("TextBox", {TextSize = 10, ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text:gsub("\n", "")), RichText = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
+		if textlabel then
+			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+			local textbounds = textlabel.TextBounds
+
+			if textbounds.X > biggesttextx then
+				biggesttextx = textbounds.X
+			end
+			textlabel.Parent = background
+			background.CanvasSize = UDim2.new(0, biggesttextx, 0, lines.number.Y.Offset + math.max(textbounds.Y, textlabel.TextSize))
+			if typeof(udim2) == "UDim2" then
+				textlabel.Size = udim2
+				local newsizex = if udim2.X.Offset > biggesttextx then udim2.X.Offset else 0
+				background.CanvasSize -= UDim2.fromOffset(newsizex, math.max(textbounds.Y, textlabel.TextSize))
+				background.CanvasSize += UDim2.new(0, newsizex, 0, udim2.Y.Offset)
+				if udim2.X.Offset > screen:GetDimensions().X then
+					background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
+				end
+				lines.number -= UDim2.new(0,0,0,math.max(textbounds.Y, textlabel.TextSize))
+				lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
+			end
+			lines.number += UDim2.new(0, 0, 0, math.max(textbounds.Y, textlabel.TextSize))
+			background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset-5)
+		end
+		return textlabel
+	end
 	return lines, background
 end
 
@@ -186,67 +173,109 @@ local name = "Bootloader"
 
 local function loadmicro(micro, text, lines)
 	if micro then
+		print(text)
 		micro:Configure({Code = tostring(text)})
+		screen:ClearElements()
 
-		local poly = GetPartFromPort(micro, "Polysilicon")
+		micropolysilicon:Configure({PolysiliconMode = 1})
 
-		if poly then
-			local polyport = GetPartFromPort(poly, "Port")
-	
-			if polyport then
-				screen:ClearElements()
-				
-				poly:Configure({PolysiliconMode = 1})
+		TriggerPort(10)
 
-				TriggerPort(polyport)
+		micropolysilicon:Configure({PolysiliconMode = 0})
 
-				poly:Configure({PolysiliconMode = 0})
-
-				TriggerPort(polyport)
-
-			else
-				lines.insert("No port attached to the found microcontroller or no polysilicon attached to that found port.")
-			end
-		else
-			lines.insert("No polysilicon attached to the port of the found microcontroller.")
-		end
+		TriggerPort(10)
+		TriggerPort(1)
 	else
-		lines.insert("No microcontroller was found.")
+		lines.insert("No microcontroller found.")
 	end
 end
 
 local function boot()
 	getstuff()
+	micropolysilicon:Configure({PolysiliconMode = 1})
 
-	if microcontroller then
-		local poly = GetPartFromPort(microcontroller, "Polysilicon")
+	TriggerPort(10)
 
-		if poly then
-			local polyport = GetPartFromPort(poly, "Port")
-	
-			if polyport then
-				poly:Configure({PolysiliconMode = 1})
-	
-				TriggerPort(polyport)
-			end
-		end
-	end
-
-	if not screen then screen = regularscreen end
-	
 	if screen then
 
 		screen:ClearElements()
 
 		local lines, background = commandline.new(screen)
 
-		lines.insert("Welcome to "..name)
+		lines.insert(name)
 
 		Beep(1)
 
 		task.wait(1)
-	
+
 		if disk then
+			
+			local inputfunc = nil
+			local allbootable = disk:Read("Boot")
+			local autobootfile = disk:Read("AutoBoot")
+			local autobootcode = (allbootable or {})[autobootfile]
+			local inputentered
+			
+			if keyboard then
+
+				keyboard.TextInputted:Connect(function(text)
+					inputentered = true
+					if inputfunc then
+						inputfunc(text)
+					end
+				end)
+
+			else
+				lines.insert("No keyboard was found.")
+			end
+			
+			if autobootcode then
+				lines.insert("Auto booting...")
+				lines.insert("Type anything to cancel")
+				task.wait(2)
+				if not inputentered then
+					loadmicro(microcontroller, autobootcode, lines)
+					TriggerPort(polysilicon)
+				end
+			end
+			
+			local function showfiles(f, boolean)
+				local amount = 0
+				local names = {}
+				
+				for name, data in pairs(allbootable or {}) do
+					amount += 1
+					lines.insert(amount)
+					print(name)
+					lines.insert(name)
+
+					names[amount] = name
+				end
+				
+				if amount < 1 then
+					return true
+				end
+				
+				if not boolean then
+					lines.insert("Enter file number.")
+				end
+
+				inputfunc = function(text)
+					local text = text:gsub("\n", "")
+
+					lines.insert(text)
+
+					if (tonumber(text) and not boolean) or boolean then
+						local name = names[tonumber(text)]
+						print(name)
+
+						f(text, name)
+
+					else
+						lines.insert("Invalid")
+					end
+				end
+			end
 
 			local function filecreator()
 				lines.insert("Enter file name")
@@ -254,7 +283,7 @@ local function boot()
 				local name = ""
 				local data = ""
 
-				func = function(text)
+				inputfunc = function(text)
 					name = text:gsub("\n", "")
 
 					if name == "" then return end
@@ -263,7 +292,7 @@ local function boot()
 
 					lines.insert("Enter file data")
 
-					func = function(text)
+					inputfunc = function(text)
 						data = text
 
 						lines.insert(data:gsub("\n", ""))
@@ -272,7 +301,7 @@ local function boot()
 
 						lines.insert("Save? (Y/N)")
 
-						func = function(text)
+						inputfunc = function(text)
 							local gsubed = text:gsub("\n", "")
 							lines.insert(gsubed)
 
@@ -303,32 +332,85 @@ local function boot()
 					end
 				end
 			end
+			
+			local function autobootdeleter()
+				lines.insert("Are you sure?")
+				
+				inputfunc = function(text)
+					local gsubed = text:gsub("\n", "")
+					lines.insert(gsubed)
 
-			local function filedeletor()
+					if gsubed:lower() ~= "y" and gsubed:lower() ~= "n" then
+						lines.insert("Are you sure? (Y/N)")
+					elseif gsubed:lower() == "n" then
+						boot()
+					elseif gsubed:lower() == "y" then
+						if disk then
+							disk:Write("AutoBoot", nil)
+
+							boot()
+						else
+							lines.insert("No disk was found.")
+						end
+					end
+				end
+			end
+			
+			local function autobootcreator()
+				lines.insert("Enter file name")
+
+				local name = ""
+				local data = ""
+				
+				showfiles(function(text, name)
+					if name then
+						lines.insert("Are you sure? (Y/N)")
+
+						inputfunc = function(text)
+							local gsubed = text:gsub("\n", "")
+							lines.insert(gsubed)
+
+							if gsubed:lower() ~= "y" and gsubed:lower() ~= "n" then
+								lines.insert("Are you sure? (Y/N)")
+							elseif gsubed:lower() == "n" then
+								boot()
+							elseif gsubed:lower() == "y" then
+								if disk then
+									disk:Write("AutoBoot", name)
+
+									boot()
+								else
+									lines.insert("No disk was found.")
+								end
+							end
+						end
+					else
+						lines.insert("No file was selected.")
+						lines.clear()
+						autobootcreator()
+					end
+				end)
+			end
+			
+			local function filedeleter()
 				lines.insert("Enter file name")
 
 				local name = ""
 				local data = ""
 
-				func = function(text)
-					name = text:gsub("\n", "")
+				showfiles(function(text, name)
+					if name then
+						lines.insert("Delete? (Y/N)")
+						
+						inputfunc = function(text)
+							local gsubed = text:gsub("\n", "")
+							lines.insert(gsubed)
 
-					if name == "" then return end
-
-					lines.insert(name)
-
-					lines.insert("Delete? (Y/N)")
-
-					func = function(text)
-						local gsubed = text:gsub("\n", "")
-						lines.insert(gsubed)
-
-						if gsubed:lower() ~= "y" and gsubed:lower() ~= "n" then
-							lines.insert("Delete? (Y/N)")
-						elseif gsubed:lower() == "n" then
-							boot()
-						elseif gsubed:lower() == "y" then
-							if name ~= "" then
+							if gsubed:lower() ~= "y" and gsubed:lower() ~= "n" then
+								lines.insert("Delete? (Y/N)")
+							elseif gsubed:lower() == "n" then
+								boot()
+							elseif gsubed:lower() == "y" then
 								if disk then
 									if not disk:Read("Boot") then
 										disk:Write("Boot", {})
@@ -340,95 +422,80 @@ local function boot()
 								else
 									lines.insert("No disk was found.")
 								end
-							else
-								lines.insert("No name was specified.")
-								task.wait(1)
-								boot()
 							end
 						end
+					else
+						lines.insert("No file was selected.")
+						lines.clear()
+						filedeleter()
 					end
-				end
+				end)
 			end
 
-			function bootcreate()
+			local function bootcreate()
 				lines.insert("Would you like to create a bootable file? (Y/N)")
 
-				func = function(text)
+				inputfunc = function(text)
 					local gsubed = text:gsub("\n", "")
 					lines.insert(gsubed)
-
 					if gsubed:lower() ~= "y" and gsubed:lower() ~= "n" then
+						lines.clear()
 						bootcreate()
 					elseif gsubed:lower() == "y" then
+						lines.clear()
 						filecreator()
 					elseif gsubed:lower() == "n" then
 						screen:ClearElements()
 
-						if polysiliconport then
-
-							TriggerPort(polysiliconport)
-
-						end
+						TriggerPort(polysilicon)
 					end
 				end
 			end
 
-			local allbootable = disk:Read("Boot")
-
 			if allbootable then
+				lines.insert("Enter file number to boot.")
+				lines.insert("Enter createfile to create a bootable file.")
+				lines.insert("Enter deletefile to delete a bootable file.")
+				lines.insert("Enter setautobootfile to make the computer automatically run a bootable file when turned on.")
+				lines.insert("Enter disableautoboot to disable auto boot.")
+				lines.insert("Enter shutdown to shutdown.")
+				local isempty = showfiles(function(text, name)
+					local lowered = text:lower()
+					if lowered == "createfile" then
+						lines.clear()
+						filecreator()
+					elseif lowered == "setautobootfile" then
+						lines.clear()
+						autobootcreator()
+					elseif lowered == "disableautoboot" then
+						lines.clear()
+						autobootdeleter()
+					elseif lowered == "deletefile" then
+						lines.clear()
+						filedeleter()
+					elseif lowered == "shutdown" then
+						screen:ClearElements()
 
-				local amount = 0
+						TriggerPort(polysilicon)
+					elseif name then
+						local code = allbootable[name]
+						print(name)
+						print(code)
 
-				local codes = {}
+						if code then
+							loadmicro(microcontroller, code, lines)
+						else
+							lines.insert("Invalid number")
+						end
 
-				for name, data in pairs(allbootable) do
-					amount += 1
-					lines.insert(amount)
-					print(name)
-					lines.insert(name)
-
-					codes[amount] = data
-				end
-
-				if amount == 0 then
+					else
+						lines.insert("Invalid")
+					end
+				end, true)
+				
+				if isempty then
 					lines.insert("No bootable file was found.")
 					bootcreate()
-				else
-					lines.insert("Enter file number to boot.")
-					lines.insert("Enter createfile to create a bootable file.")
-					lines.insert("Enter deletefile to delete a bootable file.")
-					lines.insert("Enter shutdown to shutdown.")
-
-					func = function(text)
-						local text = text:gsub("\n", "")
-
-						lines.insert(text)
-
-						if text:lower() == "createfile" then
-							filecreator()
-						elseif text:lower() == "deletefile" then
-							filedeletor()
-						elseif text:lower() == "shutdown" then
-							screen:ClearElements()
-
-							if polysiliconport then
-
-								TriggerPort(polysiliconport)
-
-							end
-						elseif tonumber(text) then
-							local code = codes[tonumber(text)]
-
-							if code then
-								loadmicro(microcontroller, code, lines)
-							else
-								lines.insert("Invalid number")
-							end
-							
-						else
-							lines.insert("Invalid")
-						end
-					end
 				end
 
 			else
@@ -436,18 +503,6 @@ local function boot()
 				lines.insert("No bootable file was found.")
 				bootcreate()
 
-			end
-
-			if keyboard then
-
-				keyboard:Connect("TextInputted", function(text)
-					if func then
-						func(text)
-					end
-				end)
-
-			else
-				lines.insert("No keyboard was found.")
 			end
 
 		else
