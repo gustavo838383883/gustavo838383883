@@ -8,8 +8,12 @@ local function getstuff()
 	screen = nil
 	keyboard = nil
 	speaker = nil
-
+	local previ = 0
 	for i=1, 128 do
+		if i - previ > 5 then
+			task.wait()
+			previ = i
+		end
 		if not disk then
 			success, Error = pcall(GetPartFromPort, i, "Disk")
 			if success then
