@@ -1307,7 +1307,7 @@ local function runtext(text)
 	elseif text:lower():sub(1, 9) == "stopsound" then
 		keyboard:SimulateTextInput("stopsounds", "Microcontroller")
 	else
-		local filename = if text then tostring(text) or ""
+		local filename = if text then tostring(text) else ""
 		local split = nil
 		if dir ~= "" then
 			split = string.split(dir, "/")
