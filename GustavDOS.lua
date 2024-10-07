@@ -1482,13 +1482,13 @@ function bootos()
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard.TextInputted:Connect(function(text, player)
 			if string.sub(tostring(text), 1, 2) ~= "!s" then
-				commandlines.insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
-				runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
+				commandlines.insert(tostring(text):gsub("\n", ""):gsub("\\n", "\n"))
+				runtext(tostring(text):gsub("\n", ""):gsub("\\n", "\n"))
 			else
 				local text = string.sub(tostring(text), 3, string.len(text))
 
-				commandlines.insert(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
-				runtext(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
+				commandlines.insert(tostring(text):gsub("\n", " "):gsub("\\n", "\n"))
+				runtext(tostring(text):gsub("\n", " "):gsub("\\n", "\n"))
 			end			
 		end)
 	elseif screen then
