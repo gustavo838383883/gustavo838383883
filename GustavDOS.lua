@@ -1519,6 +1519,8 @@ function bootos()
 					keyboardevent:Unbind()
 				end
 			end)
+		else
+			while true do task.wait(1) end
 		end
 	elseif not screen then
 		Beep(0.5)
@@ -1531,6 +1533,8 @@ function bootos()
 					keyboardevent:Unbind()
 				end
 			end)
+		else
+			while true do task.wait(1) end
 		end
 	end
 end
