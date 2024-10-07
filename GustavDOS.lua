@@ -1282,7 +1282,7 @@ local function runtext(text)
 		commandlines.insert("copy filename")
 		commandlines.insert("paste")
 		commandlines.insert("rename filename/new filename (with the /)")
-		commandlines.insert("You can put !s before the command to make it replace the new lines with a space instead of removing them.")
+		commandlines.insert("You can put !s before the command to make it replace the new lines with spaces instead of removing them.")
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 4) == "help" then
 		keyboard:SimulateTextInput("cmds", "Microcontroller")
