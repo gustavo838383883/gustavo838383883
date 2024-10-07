@@ -2517,14 +2517,14 @@ local success, Error1 = pcall(function()
 
 		filenamebutton.MouseButton1Down:Connect(function()
 			if keyboardinput then
-				filenamebutton2.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n"):gsub("/", "")
-				filename = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n"):gsub("/", "")
+				filenamebutton2.Text = keyboardinput:gsub("\n", ""):gsub("\\n", "\n"):gsub("/", "")
+				filename = keyboardinput:gsub("\n", ""):gsub("\\n", "\n"):gsub("/", "")
 			end
 		end)
 
 		directorybutton.MouseButton1Down:Connect(function()
 			if keyboardinput then
-				local inputtedtext = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+				local inputtedtext = keyboardinput:gsub("\n", ""):gsub("\\n", "\n")
 				local tempsplit = string.split(inputtedtext, "/")
 				if tempsplit then
 					if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
@@ -2580,12 +2580,12 @@ local success, Error1 = pcall(function()
 		filedatabutton.MouseButton1Down:Connect(function()
 			if keyboardinput then
 				if keyboardinput:sub(1, 2) ~= "!s" then
-					filedatabutton2.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
-					data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+					filedatabutton2.Text = keyboardinput:gsub("\n", ""):gsub("\\n", "\n")
+					data = keyboardinput:gsub("\n", ""):gsub("\\n", "\n")
 				else
 					local keyboardinput = keyboardinput:sub(3, string.len(keyboardinput))
-					filedatabutton2.Text = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
-					data = keyboardinput:gsub("\n", " "):gsub("/n\\", "\n")
+					filedatabutton2.Text = keyboardinput:gsub("\n", " "):gsub("\\n", "\n")
+					data = keyboardinput:gsub("\n", " "):gsub("\\n", "\n")
 				end
 			end
 		end)
@@ -2690,7 +2690,7 @@ local success, Error1 = pcall(function()
 
 		renamebutton.MouseButton1Up:Connect(function()
 			if keyboardinput then
-				newname = keyboardinput:gsub("/", ""):gsub("\n", ""):gsub("/n\\", "\n")
+				newname = keyboardinput:gsub("/", ""):gsub("\n", ""):gsub("\\n", "\n")
 				if newname == "" then
 					newname = nil
 				end
@@ -2795,7 +2795,7 @@ local success, Error1 = pcall(function()
 
 		namebutton.MouseButton1Up:Connect(function()
 			if keyboardinput then
-				newname = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+				newname = keyboardinput:gsub("\n", ""):gsub("\\n", "\n")
 				text2.Text = newname
 			end
 		end)
@@ -2862,7 +2862,7 @@ local success, Error1 = pcall(function()
 
 		renamebutton.MouseButton1Up:Connect(function()
 			if keyboardinput then
-				newname = keyboardinput:gsub("/", ""):gsub("\n", ""):gsub("/n\\", "\n")
+				newname = keyboardinput:gsub("/", ""):gsub("\n", ""):gsub("\\n", "\n")
 				if newname == "" then
 					newname = nil
 				end
@@ -5166,12 +5166,12 @@ local success, Error1 = pcall(function()
                         		if windowz:IsClosed() then keyboardevent:Unbind() return end
                         		if not windowz:IsFocused() then return end
 					if text:sub(1, 2) ~= "!s" then
-						commandlines:insert(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
-						runtext(tostring(text):gsub("\n", ""):gsub("/n\\", "\n"))
+						commandlines:insert(tostring(text):gsub("\n", ""):gsub("\\n", "\n"))
+						runtext(tostring(text):gsub("\n", ""):gsub("\\n", "\n"))
 					else
 						text = text:sub(3, string.len(text))
-						commandlines:insert(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
-						runtext(tostring(text):gsub("\n", " "):gsub("/n\\", "\n"))
+						commandlines:insert(tostring(text):gsub("\n", " "):gsub("\\n", "\n"))
+						runtext(tostring(text):gsub("\n", " "):gsub("\\n", "\n"))
 					end
 				end)
 			elseif screen then
