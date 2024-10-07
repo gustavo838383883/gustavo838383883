@@ -588,6 +588,7 @@ local function playsound(txt)
 			end
 			if not length then
 				local sound = speaker:LoadSound(`rbxassetid://{spacesplitted[1]}`)
+				sound.Pitch = pitch or 1
 				sound:Play()
 
 				if sound.Ended then
@@ -595,6 +596,7 @@ local function playsound(txt)
 				end
 			else
 				local sound = speaker:LoadSound(`rbxassetid://{spacesplitted[1]}`)
+				sound.Pitch = pitch or 1
 				sound.Looped = true
 			end
 		elseif string.find(tostring(txt), "length:") then
