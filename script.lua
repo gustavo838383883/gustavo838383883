@@ -995,14 +995,14 @@ local function writedisk(screen, disk)
 
 	filenamebutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filenamebutton.Text = keyboardinput:gsub("/n\\", "\n"):gsub("\n", ""):gsub("/", "")
-			filename = keyboardinput:gsub("/n\\", "\n"):gsub("\n", ""):gsub("/", "")
+			filenamebutton.Text = keyboardinput:gsub("\\n", "\n"):gsub("\n", ""):gsub("/", "")
+			filename = keyboardinput:gsub("\\n", "\n"):gsub("\n", ""):gsub("/", "")
 		end
 	end)
 
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			local inputtedtext = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			local inputtedtext = keyboardinput:gsub("\n", ""):gsub("\\n", "\n")
 			local tempsplit = string.split(inputtedtext, "/")
 			if tempsplit then
 				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
@@ -1057,8 +1057,8 @@ local function writedisk(screen, disk)
 
 	filedatabutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			filedatabutton.Text = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
-			data = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			filedatabutton.Text = keyboardinput:gsub("\n", ""):gsub("\\n", "\n")
+			data = keyboardinput:gsub("\n", ""):gsub("\\n", "\n")
 		end
 	end)
 
@@ -1632,8 +1632,8 @@ local function mediaplayer(screen, disk, speaker)
 	
 	Filename.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			Filename.Text = keyboardinput:gsub("/n\\", "\n"):gsub("\n", "")
-			data = keyboardinput:gsub("/n\\", "\n"):gsub("\n", "")
+			Filename.Text = keyboardinput:gsub("\\n", "\n"):gsub("\n", "")
+			data = keyboardinput:gsub("\\n", "\n"):gsub("\n", "")
 		end
 	end)
 
@@ -1643,7 +1643,7 @@ local function mediaplayer(screen, disk, speaker)
 	
 	directorybutton.MouseButton1Down:Connect(function()
 		if keyboardinput then
-			local inputtedtext = keyboardinput:gsub("\n", ""):gsub("/n\\", "\n")
+			local inputtedtext = keyboardinput:gsub("\n", ""):gsub("\\n", "\n")
 			local tempsplit = string.split(inputtedtext, "/")
 			if tempsplit then
 				if tempsplit[1] ~= "" and disk:Read(tempsplit[1]) then
