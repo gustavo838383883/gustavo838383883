@@ -919,11 +919,13 @@ local function runtext(text)
 		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "setvolume " then
-		local number = tonumber(text:sub(11, string.len(text)))
-		if number and speaker then
-			speaker.Volume = number
-		else
-			commandlines.insert("Invalid number")
+		if speaker then
+			local number = tonumber(text:sub(11, string.len(text)))
+			if number then
+				speaker.Volume = number
+			else
+				commandlines.insert("Invalid number")
+			end
 		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "showdir" then
