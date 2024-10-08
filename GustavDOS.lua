@@ -77,7 +77,7 @@ local speaker = nil
 local modem = nil
 local rom = nil
 local disk = nil
-local microcontrollers = nil
+local microcontrollers = {}
 local regularscreen = nil
 local keyboardinput
 local playerthatinputted
@@ -920,7 +920,7 @@ local function runtext(text)
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 10) == "setvolume " then
 		local number = tonumber(text:sub(11, string.len(text)))
-		if number then
+		if number and speaker then
 			speaker.Volume = number
 		else
 			commandlines.insert("Invalid number")
