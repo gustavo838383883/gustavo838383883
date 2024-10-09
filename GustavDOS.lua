@@ -714,15 +714,6 @@ table.freeze(luaprogram)
 
 local function loadluafile(code, name)
 	local output = table.pack(runprogram(code, name))
-	local success = output[1]
-	
-	commandlines.insert(if success then "Success" else "An error has occurred")
-	commandlines.insert("Output:")
-	for i, v in ipairs(output) do
-		if i > 1 then
-			commandlines.insert(tostring(v))
-		end
-	end
 end
 
 local copydir = ""
