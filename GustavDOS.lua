@@ -144,23 +144,23 @@ local function getstuff()
 			end
 		end
 		if not disks then
-				local disktable = GetPartsFromPort(i, "Disk")
-				if disktable then
-					if #disktable > 0 then
-						local cancel = false
-						local tempport = GetPartFromPort(i, "Port")
-						if tempport and tempport.PortID == romport then
-							cancel = true
-						end
-						if romport == i and #disktable == 1 then
-							cancel = true
-						end
-						if not cancel then
-							disks = disktable
-							disksport = i
-						end
+			local disktable = GetPartsFromPort(i, "Disk")
+			if disktable then
+				if #disktable > 0 then
+					local cancel = false
+					local tempport = GetPartFromPort(i, "Port")
+					if tempport and tempport.PortID == romport then
+						cancel = true
+					end
+					if romport == i and #disktable == 1 then
+						cancel = true
+					end
+					if not cancel then
+						disks = disktable
+						disksport = i
 					end
 				end
+			end
 		end
 
 		if disks and #disks > 1 and romport == disksport and not sharedport then
@@ -561,41 +561,6 @@ local usedmicros = {}
 local background
 local commandlines
 
-local function loadluafile(microcontrollers, screen, code)
-	local success = false
-	local micronumber = 0
-	if typeof(microcontrollers) == "table" and #microcontrollers > 0 then
-		for index, value in pairs(microcontrollers) do
-			micronumber += 1
-			if not table.find(usedmicros, value) then
-				table.insert(usedmicros, value)
-				local polysilicon = GetPartFromPort(value, "Polysilicon")
-				local polyport = GetPartFromPort(polysilicon, "Port")
-				if polysilicon then
-					if polyport then
-						value:Configure({Code = code})
-						polysilicon:Configure({PolysiliconMode = 0})
-						TriggerPort(polyport)
-						success = true
-
-						commandlines.insert("Using microcontroller:")
-
-						commandlines.insert(micronumber)
-						break
-					else
-						commandlines.insert("No port connected to polysilicon")
-					end
-				else
-					commandlines.insert("No polysilicon connected to microcontroller")
-				end
-			end
-		end
-	end
-	if not success then
-		commandlines.insert("No microcontrollers left.")
-	end
-end
-
 local bootos
 local dir = "/"
 
@@ -662,12 +627,110 @@ local function playsound(txt)
 	end
 end
 
+local coroutineprograms = {}
+
+local function getprograms()
+	local t = {}
+	
+	for i, v in ipairs(coroutineprograms) do
+		if coroutine.status(v.coroutine) == "dead" then
+			table.remove(coroutineprograms, i)
+			continue
+		end
+		table.insert(t, v.name)
+	end
+	
+	return t
+end
+
+local function stopprogram(i)
+	local program = coroutineprograms[i]
+	if not program then
+		return false
+	end
+	
+	if coroutine.status(program.coroutine) ~= "dead" then
+		coroutine.close(program.coroutine)
+	end
+	
+	table.remove(coroutineprograms, i)
+	
+	return true
+end
+
+local luaprogram
+local runtext
+local cmdsenabled = true
+
+local function runprogram(text, name)
+	if not text then error("no code to run was given in parameter two.") end
+	if typeof(name) ~= "string" then
+		name = "untitled"
+	end
+	local fenv = getfenv()
+	fenv["luaprogram"] = luaprogram
+	fenv["lines"] = {
+		clear = commandlines.clear,
+		insert = commandlines.insert,
+		background = background,
+		disablecmds = function()
+			cmdsenabled = false
+		end,
+		enablecmds = function()
+			cmdsenabled = true
+		end,
+		cmdsenabled = function()
+			return cmdsenabled
+		end,
+	}
+	fenv["screen"] = screen
+	fenv["keyboard"] = keyboard
+	fenv["modem"] = modem
+	fenv["speaker"] = speaker
+	fenv["disk"] = disk
+	fenv["runtext"] = runtext
+	
+	local prg = coroutine.create(loadstring(text))
+	table.insert(coroutineprograms, {name = name, coroutine = prg})
+	return coroutine.resume(prg)
+end
+
+local function stopprograms()
+	for i, v in ipairs(coroutineprograms) do
+		if coroutine.status(v.coroutine) ~= "dead" then
+			coroutine.close(v.coroutine)
+		end
+	end
+	coroutineprograms = {}
+end
+
+luaprogram = {
+	getPrograms = getprograms,
+	stopProgram = stopprogram,
+	runProgram = runprogram,
+}
+
+table.freeze(luaprogram)
+
+local function loadluafile(code, name)
+	local output = table.pack(runprogram(code, name))
+	local success = output[1]
+	
+	commandlines.insert(if success then "Success" else "An error has occurred")
+	commandlines.insert("Output:")
+	for i, v in ipairs(output) do
+		if i > 1 then
+			commandlines.insert(tostring(v))
+		end
+	end
+end
+
 local copydir = ""
 local copyname = ""
 local copydata = ""
 local copydisk
 
-local function runtext(text)
+function runtext(text)
 	if text:lower():sub(1, 4) == "dir " then
 		local txt = text:sub(5, string.len(text))
 		local inputtedtext = txt
@@ -733,7 +796,7 @@ local function runtext(text)
 
 		if disks[text] then
 			disk = disks[text]
-			directory = ""
+			dir = "/"
 			commandlines.insert("Success")
 		else
 			commandlines.insert("Invalid storage media number.")
@@ -853,51 +916,24 @@ local function runtext(text)
 			commandlines.insert("The table/folder name was not specified.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 10) == "showmicros" then
-		if microcontrollers then
-			local start = 0
-			for i,v in pairs(microcontrollers) do
-				start += 1
-				commandlines.insert("Microcontroller")
-				commandlines.insert(start)
-			end
-		else
-			commandlines.insert("No microcontrollers found.")
+	elseif text:lower():sub(1, 8) == "showluas" then
+		for i,v in pairs(getprograms()) do
+			commandlines.insert(v)
+			commandlines.insert(i)
 		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 8) == "stoplua " then
 		local number = tonumber(text:sub(9, string.len(text)))
-		local start = 0
 		local success = false
-		for index,value in pairs(microcontrollers) do
-			start += 1
-			if start == number then
-				local polysilicon = GetPartFromPort(value, "Polysilicon")
-				local polyport = GetPartFromPort(polysilicon, "Port")
-				if polysilicon then
-					if polyport then
-						value:Configure({Code = ""})
-						polysilicon:Configure({PolysiliconMode = 1})
-						TriggerPort(polyport)
-						if table.find(usedmicros, value) then
-							table.remove(usedmicros, table.find(usedmicros, value))
-						end
-						success = true
-						commandlines.insert("Microcontroller turned off.")
-					else
-						commandlines.insert("No port connected to polysilicon")
-					end
-				else
-					commandlines.insert("No polysilicon connected to microcontroller")
-				end
-			end
+		if typeof(number) == "number" then
+			local success = stopprogram(number)
 		end
 		if not success then
 			commandlines.insert("Invalid microcontroller number")
 		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "runlua " then
-		loadluafile(microcontrollers, screen, text:sub(8, string.len(text)))
+		loadluafile(text:sub(8, string.len(text)))
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 8) == "readlua " then
 		local filename = text:sub(9, string.len(text))
@@ -905,7 +941,7 @@ local function runtext(text)
 			local output = filesystem.Read(filename, dir, true, disk)
 			local output = output
 			commandlines.insert(output)
-			loadluafile(microcontrollers, screen, output)
+			loadluafile(output, filename)
 		else
 			commandlines.insert("No filename specified")
 		end
@@ -991,7 +1027,7 @@ local function runtext(text)
 		local filename = text:sub(11, string.len(text))
 		if filename and filename ~= "" then
 			local result = filesystem.Write(filename, {}, dir, disk)
-			
+
 			commandlines.insert(result)
 		else
 			commandlines.insert("No filename specified")
@@ -1144,7 +1180,7 @@ local function runtext(text)
 		commandlines.insert("createdir filename")
 		commandlines.insert("stoplua number")
 		commandlines.insert("runlua lua")
-		commandlines.insert("showmicros")
+		commandlines.insert("showluas")
 		commandlines.insert("readlua filename")
 		commandlines.insert("beep number")
 		commandlines.insert("print text")
@@ -1163,6 +1199,8 @@ local function runtext(text)
 
 	elseif text:lower():sub(1, 10) == "stopmicro " then
 		keyboard:SimulateTextInput("stoplua "..text:sub(11, string.len(text)), "Microcontroller")
+	elseif text:lower():sub(1, 10) == "showmicros" then
+		keyboard:SimulateTextInput("showluas", "Microcontroller")
 
 	elseif text:lower():sub(1, 10) == "playvideo " then
 		keyboard:SimulateTextInput("displayvideo "..text:sub(11, string.len(text)), "Microcontroller")
@@ -1198,7 +1236,7 @@ local function runtext(text)
 				background.CanvasPosition -= Vector2.new(0, 25)
 			elseif getfileextension(filename, true) == ".lua" then
 				commandlines.insert(tostring(output))
-				loadluafile({}, screen, output)
+				loadluafile(output, filename)
 				commandlines.insert(dir..":")
 			else
 				if string.find(string.lower(tostring(output)), "<woshtml>") then
@@ -1288,19 +1326,6 @@ function bootos()
 		screen:ClearElements()
 
 		commandlines, background = commandline.new(screen)
-
-		rom:Write("GustavOSLibrary", nil)
-		rom:Write("GD7Library", nil)
-		rom:Write("GDOSLibrary", nil)
-		rom:Write("GDOSLibrary", {
-			Screen = screen,
-			Keyboard = keyboard,
-			Modem = modem,
-			Speaker = speaker,
-			Disk = disk,
-			lines = function() return commandlines end,
-			background = background,
-		})
 		task.wait(1)
 		position = UDim2.new(0,0,0,0)
 		Beep(1)
@@ -1309,6 +1334,7 @@ function bootos()
 		commandlines.insert("/:")
 		if keyboardevent then keyboardevent:Unbind() end
 		keyboardevent = keyboard.TextInputted:Connect(function(text, player)
+			if not cmdsenabled then return end
 			if string.sub(tostring(text), 1, 2) ~= "!s" then
 				commandlines.insert(tostring(text):gsub("\n", ""):gsub("\\n", "\n"))
 				runtext(tostring(text):gsub("\n", ""):gsub("\\n", "\n"))
