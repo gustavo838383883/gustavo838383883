@@ -926,10 +926,10 @@ function runtext(text)
 		local number = tonumber(text:sub(9, string.len(text)))
 		local success = false
 		if typeof(number) == "number" then
-			local success = stopprogram(number)
+			success = stopprogram(number)
 		end
 		if not success then
-			commandlines.insert("Invalid microcontroller number")
+			commandlines.insert("Failed")
 		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "runlua " then
