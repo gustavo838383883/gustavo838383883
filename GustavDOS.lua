@@ -119,7 +119,7 @@ local function getstuff()
 		end
 		if i - previ > 5 then
 			previ = i
-			task.wait()
+			task.wait(0.1)
 		end
 		if not rom then
 			local temprom = GetPartFromPort(i, "Disk")
