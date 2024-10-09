@@ -929,7 +929,7 @@ function runtext(text)
 			success = stopprogram(number)
 		end
 		if not success then
-			commandlines.insert("Failed")
+			commandlines.insert("Invalid program number.")
 		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "runlua " then
