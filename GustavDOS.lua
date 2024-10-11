@@ -240,6 +240,7 @@ getstuff()
 local commandline = {}
 
 local position = UDim2.new(0,0,0,0)
+local richtext = false
 
 function commandline.new(scr)
 	local screen = scr or screen
@@ -259,7 +260,7 @@ function commandline.new(scr)
 
 	function lines.insert(text, udim2)
 		print(text)
-		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
+		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = richtext, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
 			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
 			if textlabel.TextBounds.X > biggesttextx then
@@ -819,6 +820,16 @@ function runtext(text)
 		else
 			commandlines.insert(dir..":")
 		end
+	elseif text:lower():sub(1, 9) == "richtext " then
+		local bool = text:sub(10, string.len(text)):gsub("%s", ""):lower()
+		if bool == "true" then
+			richtext = true
+		elseif bool == "false" then
+			richtext = false
+		else
+			commandlines.insert("No valid boolean was given.")
+		end
+		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 6) == "print " then
 		commandlines.insert(text:sub(7, string.len(text)))
 		commandlines.insert(dir..":")
@@ -1172,6 +1183,7 @@ function runtext(text)
 		commandlines.insert("stoplua number")
 		commandlines.insert("runlua lua")
 		commandlines.insert("showluas")
+		commandlines.insert("richtext boolean")
 		commandlines.insert("readlua filename")
 		commandlines.insert("beep number")
 		commandlines.insert("print text")
