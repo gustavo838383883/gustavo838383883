@@ -664,7 +664,7 @@ local function runprogram(text, name)
 	if typeof(name) ~= "string" then
 		name = "untitled"
 	end
-	local fenv = getfenv()
+	local fenv = table.clone(getfenv())
 	fenv["luaprogram"] = luaprogram
 	fenv["lines"] = {
 		clear = commandlines.clear,
@@ -687,7 +687,7 @@ local function runprogram(text, name)
 	fenv["disk"] = disk
 	fenv["runtext"] = runtext
 	
-	local prg = coroutine.create(loadstring(text))
+	local prg = coroutine.create(loadstring(text, fenv))
 	table.insert(coroutineprograms, {name = name, coroutine = prg})
 	return coroutine.resume(prg)
 end
