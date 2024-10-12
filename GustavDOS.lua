@@ -305,12 +305,8 @@ local filesystem = {
 				returntable = createfileontable(disk, filename, filedata, dir)
 			end
 			if not split or split[2] == "" then
-				if disk:Read(filename) then
-					if disk:Read(filename) == filedata then
-						value = "Success i think"
-					else
-						value = "Failed"
-					end
+				if disk:Read(filename) == filedata then
+					value = "Success i think"
 				else
 					value = "Failed"
 				end
