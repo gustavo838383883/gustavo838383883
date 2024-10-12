@@ -88,7 +88,6 @@ local screen = nil
 local keyboard = nil
 local speaker = nil
 local modem = nil
-local microcontrollers = nil
 
 local shutdownpoly = nil
 
@@ -1624,15 +1623,17 @@ local function mediaplayer(screen, disk, speaker)
 	end)
 end
 
-local function shutdownmicros(screen, micros)
+local function shutdownmicros(screen)
 	local holderframe = CreateNewWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false ,false)
 
 	local scrollingframe
+	local update = false
 
 	local function update()
 		if scrollingframe then
 			scrollingframe:Destroy()
 		end
+		update = false
 		
 		scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
 		scrollingframe.Parent = holderframe
@@ -1646,7 +1647,10 @@ local function shutdownmicros(screen, micros)
 				button.Text = "Program closed."
 				button.Active = false
 				task.wait(2)
-				update()
+				if not update then
+					update()
+					update = true
+				end
 			end)
 		end
 	end
@@ -1670,11 +1674,11 @@ local function customprogramthing(screen, micros)
 		end
 	end)
 
-	local stopcodesbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.6, 0), Text = "Shutdown microcontrollers", TextScaled = true, TextWrapped = true})
+	local stopcodesbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.6, 0), Text = "Task manager", TextScaled = true, TextWrapped = true})
 	stopcodesbutton.Parent = holderframe
 
 	stopcodesbutton.MouseButton1Up:Connect(function()
-		shutdownmicros(screen, microcontrollers)
+		shutdownmicros(screen)
 	end)
 
 	local runcodebutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 0.2, 0), Position = UDim2.new(0, 0, 0.8, 0), Text = "Run lua", TextScaled = true, TextWrapped = true})
