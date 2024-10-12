@@ -10,6 +10,8 @@ local function isscreenempty()
 		return false
 	elseif #screencontents == 1 and (screencontents[1].ClassName == "ImageLabel" and screencontents[1].Image == "rbxassetid://123464338631816") then
 		return true, screencontents[1]
+	elseif #screencontents == 1 then
+		return false
 	end
 
 	return true
