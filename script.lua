@@ -563,7 +563,9 @@ local function runprogram(text, name)
 	fenv["disk"] = disk
 	fenv["CreateNewWindow"] = CreateNewWindow
 
-	local prg = coroutine.create(loadstring(text, fenv))
+	local func = loadstring(text)
+	setfenv(func, fenv)
+	local prg = coroutine.create(func)
 	table.insert(coroutineprograms, {name = name, coroutine = prg})
 	return coroutine.resume(prg)
 end
