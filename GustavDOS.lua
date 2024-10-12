@@ -93,8 +93,6 @@ local disksport
 local romindexusing
 local sharedport
 
-local shutdownpoly = nil
-
 local CreateWindow
 
 local function getstuff()
@@ -104,7 +102,6 @@ local function getstuff()
 	screen = nil
 	keyboard = nil
 	speaker = nil
-	shutdownpoly = nil
 	modem = nil
 	regularscreen = nil
 	disksport = nil
@@ -201,12 +198,6 @@ local function getstuff()
 			local tempmodem = GetPartFromPort(i, "Modem")
 			if tempmodem then
 				modem = tempmodem
-			end
-		end
-
-		if not shutdownpoly then
-			if GetPartFromPort(i, "Polysilicon") then
-				shutdownpoly = i
 			end
 		end
 
@@ -809,9 +800,7 @@ function runtext(text)
 			if speaker then
 				speaker:ClearSounds()
 			end
-			if shutdownpoly then
-				TriggerPort(shutdownpoly)
-			end
+			Microcontroller:Shutdown()
 		else
 			commandlines.insert(dir..":")
 		end
