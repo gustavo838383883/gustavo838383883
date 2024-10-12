@@ -799,7 +799,7 @@ function runtext(text)
 		Beep(1)
 		getstuff()
 		dir = "/"
-		if keyboardevent then keyboardevent:Unbind() end
+		if keyboardevent then keyboardevent:Disconnect() end
 		bootos()
 	elseif lowered:gsub("%s", "") == "shutdown" then
 		if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
@@ -1330,7 +1330,7 @@ function bootos()
 		commandlines.insert(name.." Command line")
 		task.wait(1)
 		commandlines.insert("/:")
-		if keyboardevent then keyboardevent:Unbind() end
+		if keyboardevent then keyboardevent:Disconnect() end
 		keyboardevent = keyboard.TextInputted:Connect(function(text, player)
 			if not cmdsenabled then return end
 			if string.sub(tostring(text), 1, 2) ~= "!s" then
@@ -1367,7 +1367,7 @@ function bootos()
 				if key == Enum.KeyCode.Return then
 					getstuff()
 					bootos()
-					keyboardevent:Unbind()
+					keyboardevent:Disconnect()
 				end
 			end)
 		else
@@ -1381,7 +1381,7 @@ function bootos()
 				if key == Enum.KeyCode.Return then
 					getstuff()
 					bootos()
-					keyboardevent:Unbind()
+					keyboardevent:Disconnect()
 				end
 			end)
 		else
