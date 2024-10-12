@@ -1646,10 +1646,10 @@ local function shutdownmicros(screen)
 				stopprogram(index)
 				button.Text = "Program closed."
 				button.Active = false
+				update = true
 				task.wait(2)
 				if not update then
 					update()
-					update = true
 				end
 			end)
 		end
