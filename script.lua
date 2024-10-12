@@ -568,7 +568,7 @@ local function runprogram(text, name)
 	setfenv(func, fenv)
 	local prg = coroutine.create(func)
 	table.insert(coroutineprograms, {name = name, coroutine = prg})
-	return coroutine.resume(prg)
+	return task.spawn(prg)
 end
 
 local function stopprograms()
