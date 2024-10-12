@@ -562,7 +562,7 @@ local function runprogram(text, name)
 	fenv["speaker"] = speaker
 	fenv["disk"] = disk
 	fenv["CreateNewWindow"] = CreateNewWindow
-	fenv["getkeyboardinput"] = function() return keyboardinput end
+	fenv["getkeyboardinput"] = function() return keyboardinput, playerthatinputted end
 
 	local func = loadstring(text)
 	setfenv(func, fenv)
