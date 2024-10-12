@@ -1139,7 +1139,7 @@ local function chatthing(screen, disk, modem)
 
 		local start = 0
 
-		messagesent = modem:Connect("MessageSent", function(text)
+		messagesent = modem.MessageSentConnect(function(text)
 			if not holderframe then messagesent:Unbind() end
 			print(text)
 			local textlabel = screen:CreateElement("TextLabel", {RichText = true, Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
@@ -1773,25 +1773,9 @@ local function loadmenu()
 					openchat.Parent = holdingframe
 					local openluaexecutor = screen:CreateElement("TextButton", {Text = "Lua executor", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0), Position = UDim2.new(0, 0, 1/5*4, 0)})
 					openluaexecutor.Parent = holdingframe
-					local resetkeyboardinput = screen:CreateElement("TextButton", {Text = "Reset Keyboard Input", TextScaled = true, Size = UDim2.new(1, 0, 1/5, 0), Position = UDim2.new(1, 0, 0, 0)})
-					resetkeyboardinput.Parent = holdingframe
 
 					opencalculator.MouseButton1Down:Connect(function()
 						calculator(screen)
-						startui:Destroy()
-						startui = nil
-						pressed = false
-					end)
-
-					resetkeyboardinput.MouseButton1Down:Connect(function()
-						if keyboardevent then
-							keyboardevent:Unbind()
-							keyboardevent = nil
-						end
-						keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-							keyboardinput = text
-							playerthatinputted = plr
-						end)
 						startui:Destroy()
 						startui = nil
 						pressed = false
@@ -1949,10 +1933,6 @@ local function loadmenu()
 										keyboardevent:Unbind()
 										keyboardevent = nil
 									end
-									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-										keyboardinput = text
-										playerthatinputted = plr
-									end)
 								else
 									local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 									Beep(1)
@@ -2038,10 +2018,6 @@ function startload()
 						keyboardevent:Unbind()
 						keyboardevent = nil
 					end
-					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
-						keyboardinput = text
-						playerthatinputted = plr
-					end)
 					if disk:Read("BackgroundImage") or disk:Read("Color") or disk:Read("sounds") then
 						loadmenu()
 						Beep(0.25)
