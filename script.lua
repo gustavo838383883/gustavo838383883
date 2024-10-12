@@ -1143,7 +1143,7 @@ local function chatthing(screen, disk, modem)
 		local start = 0
 
 		messagesent = modem.MessageSent:Connect(function(text)
-			if not holderframe then messagesent:Unbind() end
+			if not pcall(function() holderframe.Name = holderframe.Name end) then messagesent:Disconnect() end
 			print(text)
 			local textlabel = screen:CreateElement("TextLabel", {RichText = true, Text = tostring(text), Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.new(0, 0, 0, start), TextScaled = true})
 			textlabel.Parent = scrollingframe
@@ -1926,7 +1926,7 @@ local function loadmenu()
 									task.wait(0.1)
 									Beep(1)
 									if keyboardevent then
-										keyboardevent:Unbind()
+										keyboardevent:Disconnect()
 										keyboardevent = nil
 									end
 									keyboardevent = keyboard.TextInputted:Connect(function(text, plr)
@@ -1996,7 +1996,7 @@ local function loadmenu()
 					task.wait(0.1)
 					Beep(0.25)
 					if keyboardevent then
-						keyboardevent:Unbind()
+						keyboardevent:Disconnect()
 						keyboardevent = nil
 					end
 					if shutdownpoly then
@@ -2015,7 +2015,7 @@ function startload()
 			if speaker then
 				if keyboard then
 					if keyboardevent then
-						keyboardevent:Unbind()
+						keyboardevent:Disconnect()
 						keyboardevent = nil
 					end
 					keyboardevent = keyboard.TextInputted:Connect(function(text, plr)
