@@ -666,6 +666,7 @@ local function runprogram(text, name)
 	end
 	local fenv = table.clone(getfenv())
 	fenv["luaprogram"] = luaprogram
+	fenv["filesystem"] = filesystem
 	fenv["lines"] = {
 		clear = commandlines.clear,
 		insert = commandlines.insert,
@@ -716,7 +717,8 @@ local copydata = ""
 local copydisk
 
 function runtext(text)
-	if text:lower():sub(1, 4) == "dir " then
+	local lowered = text:lower()
+	if lowered:sub(1, 4) == "dir " then
 		local txt = text:sub(5, string.len(text))
 		local inputtedtext = txt
 		local tempsplit = string.split(inputtedtext, "/")
@@ -769,12 +771,12 @@ function runtext(text)
 			commandlines.insert("Invalid directory")
 			commandlines.insert(dir..":")
 		end
-	elseif text:lower():gsub("%s", "") == "clear" then
+	elseif lowered:gsub("%s", "") == "clear" then
 		task.wait(0.1)
 		commandlines.clear()
 		position = UDim2.new(0,0,0,0)
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 11) == "setstorage " then
+	elseif lowered:sub(1, 11) == "setstorage " then
 		local text = text:sub(12, string.len(text))
 
 		local text = tonumber(text)
@@ -787,19 +789,19 @@ function runtext(text)
 			commandlines.insert("Invalid storage media number.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():gsub("%s", "") == "showstorages" then
+	elseif lowered:gsub("%s", "") == "showstorages" then
 		for i, val in ipairs(disks) do
 			commandlines.insert(tostring(i))
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():gsub("%s", "") == "reboot" then
+	elseif lowered:gsub("%s", "") == "reboot" then
 		task.wait(1)
 		Beep(1)
 		getstuff()
 		dir = "/"
 		if keyboardevent then keyboardevent:Unbind() end
 		bootos()
-	elseif text:lower():gsub("%s", "") == "shutdown" then
+	elseif lowered:gsub("%s", "") == "shutdown" then
 		if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
 			task.wait(1)
 			Beep(1)
@@ -813,7 +815,7 @@ function runtext(text)
 		else
 			commandlines.insert(dir..":")
 		end
-	elseif text:lower():sub(1, 9) == "richtext " then
+	elseif lowered:sub(1, 9) == "richtext " then
 		local bool = text:sub(10, string.len(text)):gsub("%s", ""):lower()
 		if bool == "true" then
 			richtext = true
@@ -823,10 +825,10 @@ function runtext(text)
 			commandlines.insert("No valid boolean was given.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 6) == "print " then
+	elseif lowered:sub(1, 6) == "print " then
 		commandlines.insert(text:sub(7, string.len(text)))
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 5) == "copy " then
+	elseif lowered:sub(1, 5) == "copy " then
 		local filename = text:sub(6, string.len(text))
 		if filename and filename ~= "" then
 			local file = filesystem.Read(filename, dir, true, disk)
@@ -842,7 +844,7 @@ function runtext(text)
 			end
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 5) == "paste" then
+	elseif lowered:sub(1, 5) == "paste" then
 		if copydir ~= "" and copyname ~= "" then
 			local file = filesystem.Read(copyname, copydir, true, copydisk)
 
@@ -860,7 +862,7 @@ function runtext(text)
 			commandlines.insert("No file has been copied.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 7) == "rename " then
+	elseif lowered:sub(1, 7) == "rename " then
 		local misc = text:sub(8, string.len(text))
 		local split1 = misc:split("/")
 		local filename = split1[1]
@@ -887,7 +889,7 @@ function runtext(text)
 			end
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 3) == "cd " then
+	elseif lowered:sub(1, 3) == "cd " then
 		local filename = text:sub(4, string.len(text))
 
 		if filename and filename ~= "" and filename ~= "./" then
@@ -911,13 +913,13 @@ function runtext(text)
 			commandlines.insert("The table/folder name was not specified.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 8) == "showluas" then
+	elseif lowered:sub(1, 8) == "showluas" then
 		for i,v in pairs(getprograms()) do
 			commandlines.insert(v)
 			commandlines.insert(i)
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 8) == "stoplua " then
+	elseif lowered:sub(1, 8) == "stoplua " then
 		local number = tonumber(text:sub(9, string.len(text)))
 		local success = false
 		if typeof(number) == "number" then
@@ -927,10 +929,10 @@ function runtext(text)
 			commandlines.insert("Invalid program number.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 7) == "runlua " then
+	elseif lowered:sub(1, 7) == "runlua " then
 		runprogram(text:sub(8, string.len(text)))
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 8) == "readlua " then
+	elseif lowered:sub(1, 8) == "readlua " then
 		local filename = text:sub(9, string.len(text))
 		if filename and filename ~= "" then
 			local output = filesystem.Read(filename, dir, true, disk)
@@ -941,7 +943,7 @@ function runtext(text)
 			commandlines.insert("No filename specified")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 5) == "beep " then
+	elseif lowered:sub(1, 5) == "beep " then
 		local number = tonumber(text:sub(6, string.len(text)))
 		if number then
 			Beep(number)
@@ -949,7 +951,7 @@ function runtext(text)
 			commandlines.insert("Invalid number")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 10) == "setvolume " then
+	elseif lowered:sub(1, 10) == "setvolume " then
 		if speaker then
 			local number = tonumber(text:sub(11, string.len(text)))
 			if number then
@@ -959,7 +961,7 @@ function runtext(text)
 			end
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 7) == "showdir" then
+	elseif lowered:sub(1, 7) == "showdir" then
 		local inputtedtext = dir
 		local tempsplit = string.split(inputtedtext, "/")
 		if tempsplit then
@@ -1018,7 +1020,7 @@ function runtext(text)
 			commandlines.insert("Invalid directory")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 10) == "createdir " then
+	elseif lowered:sub(1, 10) == "createdir " then
 		local filename = text:sub(11, string.len(text))
 		if filename and filename ~= "" then
 			local result = filesystem.Write(filename, {}, dir, disk)
@@ -1028,7 +1030,7 @@ function runtext(text)
 			commandlines.insert("No filename specified")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 6) == "write " then
+	elseif lowered:sub(1, 6) == "write " then
 		local texts = text:sub(7, string.len(text))
 		local filename = texts:split("/")[1]
 		local filedata = texts:split("/")[2]
@@ -1049,7 +1051,7 @@ function runtext(text)
 			commandlines.insert("No filename specified")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 7) == "delete " then
+	elseif lowered:sub(1, 7) == "delete " then
 		local filename = text:sub(8, string.len(text))
 		if filename then
 			local result = filesystem.Write(filename, nil, dir, disk)
@@ -1059,7 +1061,7 @@ function runtext(text)
 			commandlines.insert("No filename specified")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 5) == "read " then
+	elseif lowered:sub(1, 5) == "read " then
 		local filename = text:sub(6, string.len(text))
 		if filename then
 			local output = filesystem.Read(filename, dir, true, disk)
@@ -1074,7 +1076,7 @@ function runtext(text)
 			commandlines.insert("No filename specified")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 10) == "readimage " then
+	elseif lowered:sub(1, 10) == "readimage " then
 		local filename = text:sub(11, string.len(text))
 		if filename and filename ~= "" then
 			local output = filesystem.Read(filename, dir, true, disk)
@@ -1087,7 +1089,7 @@ function runtext(text)
 		if filename and filename ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
-	elseif text:lower():sub(1, 10) == "readvideo " then
+	elseif lowered:sub(1, 10) == "readvideo " then
 		local filename = text:sub(11, string.len(text))
 		if filename and filename ~= "" then
 			local output = filesystem.Read(filename, dir, true, disk)
@@ -1102,7 +1104,7 @@ function runtext(text)
 		if filename and filename ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
-	elseif text:lower():sub(1, 13) == "displayimage " then
+	elseif lowered:sub(1, 13) == "displayimage " then
 		local id = text:sub(14, string.len(text))
 		if id and id ~= "" then
 			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
@@ -1114,7 +1116,7 @@ function runtext(text)
 		if id and id ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
-	elseif text:lower():sub(1, 13) == "displayvideo " then
+	elseif lowered:sub(1, 13) == "displayvideo " then
 		local id = text:sub(14, string.len(text))
 		if id and id ~= "" then
 			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
@@ -1128,7 +1130,7 @@ function runtext(text)
 		if id and id ~= "" then
 			background.CanvasPosition -= Vector2.new(0, 25)
 		end
-	elseif text:lower():sub(1, 10) == "readsound " then
+	elseif lowered:sub(1, 10) == "readsound " then
 		local filename = text:sub(11, string.len(text))
 		local txt
 		if filename and filename ~= "" then
@@ -1140,14 +1142,14 @@ function runtext(text)
 		end
 		playsound(txt)
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 10) == "playsound " then
+	elseif lowered:sub(1, 10) == "playsound " then
 		local txt = text:sub(11, string.len(text))
 		playsound(txt)
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 10) == "stopsounds" then
+	elseif lowered:sub(1, 10) == "stopsounds" then
 		speaker:ClearSounds()
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 11) == "soundpitch " then
+	elseif lowered:sub(1, 11) == "soundpitch " then
 		if speaker and tonumber(text:sub(12, string.len(text))) then
 			speaker:Configure({Pitch = tonumber(text:sub(12, string.len(text)))})
 			speaker:Trigger()
@@ -1155,7 +1157,7 @@ function runtext(text)
 			commandlines.insert("Invalid pitch number or no speaker was found.")
 		end
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 4) == "cmds" then
+	elseif lowered:sub(1, 4) == "cmds" then
 		commandlines.insert("Commands:")
 		commandlines.insert("cmds")
 		commandlines.insert("stopsounds")
@@ -1190,32 +1192,32 @@ function runtext(text)
 		commandlines.insert("rename filename/new filename (with the /)")
 		commandlines.insert("You can put !s before the command to make it replace the new lines with spaces instead of removing them.")
 		commandlines.insert(dir..":")
-	elseif text:lower():sub(1, 4) == "help" then
+	elseif lowered:sub(1, 4) == "help" then
 		keyboard:SimulateTextInput("cmds", "Microcontroller")
 
-	elseif text:lower():sub(1, 10) == "stopmicro " then
+	elseif lowered:sub(1, 10) == "stopmicro " then
 		keyboard:SimulateTextInput("stoplua "..text:sub(11, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 10) == "showmicros" then
+	elseif lowered:sub(1, 10) == "showmicros" then
 		keyboard:SimulateTextInput("showluas", "Microcontroller")
 
-	elseif text:lower():sub(1, 10) == "playvideo " then
+	elseif lowered:sub(1, 10) == "playvideo " then
 		keyboard:SimulateTextInput("displayvideo "..text:sub(11, string.len(text)), "Microcontroller")
 
-	elseif text:lower():sub(1, 8) == "makedir " then
+	elseif lowered:sub(1, 8) == "makedir " then
 		keyboard:SimulateTextInput("createdir "..text:sub(9, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 6) == "mkdir " then
+	elseif lowered:sub(1, 6) == "mkdir " then
 		keyboard:SimulateTextInput("createdir "..text:sub(7, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 5) == "echo " then
+	elseif lowered:sub(1, 5) == "echo " then
 		keyboard:SimulateTextInput("print "..text:sub(6, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 10) == "playaudio " then
+	elseif lowered:sub(1, 10) == "playaudio " then
 		keyboard:SimulateTextInput("playsound "..text:sub(11, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 10) == "readaudio " then
+	elseif lowered:sub(1, 10) == "readaudio " then
 		keyboard:SimulateTextInput("readsound "..text:sub(11, string.len(text)), "Microcontroller")
-	elseif text:lower():sub(1, 10) == "stopaudios" then
+	elseif lowered:sub(1, 10) == "stopaudios" then
 		keyboard:SimulateTextInput("stopsounds", "Microcontroller")
-	elseif text:lower():sub(1, 9) == "stopaudio" then
+	elseif lowered:sub(1, 9) == "stopaudio" then
 		keyboard:SimulateTextInput("stopsounds", "Microcontroller")
-	elseif text:lower():sub(1, 9) == "stopsound" then
+	elseif lowered:sub(1, 9) == "stopsound" then
 		keyboard:SimulateTextInput("stopsounds", "Microcontroller")
 	else
 		local filename = text
