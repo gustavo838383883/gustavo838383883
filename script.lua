@@ -1719,18 +1719,6 @@ local function loadmenu()
 	programholder2 = screen:CreateElement("Frame", {Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1})
 	programholder2.Parent = programholder1
 
-	disk:Write("GD7Library", nil)
-	disk:Write("GDOSLibrary", nil)
-	disk:Write("GustavOSLibrary", nil)
-
-	disk:Write("GustavOSLibrary", {
-		Screen = screen,
-		Keyboard = keyboard,
-		Modem = modem,
-		Speaker = speaker,
-		programholders = {programholder1, programholder2}
-	})
-
 	startmenu.MouseButton1Down:Connect(function()
 		if pressed == true then
 			if startui then
@@ -1934,6 +1922,10 @@ local function loadmenu()
 										keyboardevent:Unbind()
 										keyboardevent = nil
 									end
+									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
+										keyboardinput = text
+										playerthatinputted = plr
+									end)
 								else
 									local textbutton = screen:CreateElement("TextButton", {Size = UDim2.new(1, 0, 1, 0), Text = "No keyboard was found.", TextScaled = true})
 									Beep(1)
@@ -2019,6 +2011,10 @@ function startload()
 						keyboardevent:Unbind()
 						keyboardevent = nil
 					end
+					keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
+						keyboardinput = text
+						playerthatinputted = plr
+					end)
 					if disk:Read("BackgroundImage") or disk:Read("Color") or disk:Read("sounds") then
 						loadmenu()
 						Beep(0.25)
