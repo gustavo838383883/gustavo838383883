@@ -709,10 +709,6 @@ luaprogram = {
 
 table.freeze(luaprogram)
 
-local function loadluafile(code, name)
-	local output = table.pack(runprogram(code, name))
-end
-
 local copydir = ""
 local copyname = ""
 local copydata = ""
@@ -931,7 +927,7 @@ function runtext(text)
 		end
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 7) == "runlua " then
-		loadluafile(text:sub(8, string.len(text)))
+		runprogram(text:sub(8, string.len(text)))
 		commandlines.insert(dir..":")
 	elseif text:lower():sub(1, 8) == "readlua " then
 		local filename = text:sub(9, string.len(text))
@@ -939,7 +935,7 @@ function runtext(text)
 			local output = filesystem.Read(filename, dir, true, disk)
 			local output = output
 			commandlines.insert(output)
-			loadluafile(output, filename)
+			runprogram(output, filename)
 		else
 			commandlines.insert("No filename specified")
 		end
@@ -1235,7 +1231,7 @@ function runtext(text)
 				background.CanvasPosition -= Vector2.new(0, 25)
 			elseif getfileextension(filename, true) == ".lua" then
 				commandlines.insert(tostring(output))
-				loadluafile(output, filename)
+				runprogram(output, filename)
 				commandlines.insert(dir..":")
 			else
 				if string.find(string.lower(tostring(output)), "<woshtml>") then
