@@ -3783,7 +3783,7 @@ local success, Error1 = pcall(function()
 	local function shutdownprompt()
 		local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs, index = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 
-        holderframe.ZIndex = (2^31)-2
+        	holderframe.ZIndex = (2^31)-3
 
 		windows[index] = {Focused = windows[index].Focused, CloseButton = closebutton}
 
@@ -3835,7 +3835,7 @@ local success, Error1 = pcall(function()
 	local function restartprompt()
 		local window, holderframe, closebutton, maximize, textlabel, resize, minimize, funcs, index = CreateWindow(UDim2.new(0.4, 0, 0.25, 0), "Are you sure?",true,true,false,nil,true)
 
-        holderframe.ZIndex = (2^31)-2
+        	holderframe.ZIndex = (2^31)-3
 
 		windows[index] = {Focused = windows[index].Focused, CloseButton = closebutton}
 
@@ -5727,7 +5727,7 @@ local success, Error1 = pcall(function()
 				end
 			end
 			if not players[cursor.Player] then
-				local a = screen:CreateElement("ImageLabel", {ScaleType = Enum.ScaleType.Fit, AnchorPoint = Vector2.new(0.5, 0.5), Image = "rbxassetid://8679825641", BackgroundTransparency = 1, Size = UDim2.fromScale(0.2, 0.2), Position = UDim2.fromScale(0.5, 0.5), ZIndex = (2^31)-1})
+				local a = screen:CreateElement("ImageLabel", {ScaleType = Enum.ScaleType.Fit, AnchorPoint = Vector2.new(0.5, 0.5), Image = "rbxassetid://8679825641", BackgroundTransparency = 1, Size = UDim2.fromScale(0.2, 0.2), Position = UDim2.fromScale(0.5, 0.5), ZIndex = (2^31)-2})
 				local b = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1.5, 0.25), Position = UDim2.fromScale(-0.25, 1), BackgroundTransparency = 1, TextScaled = true, Text = tostring(cursor.Player), TextStrokeTransparency = 0, TextStrokeColor3 = Color3.new(1, 1, 1)})
 				a:AddChild(b)
 				
