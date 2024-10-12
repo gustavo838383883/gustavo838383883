@@ -555,15 +555,16 @@ local function runprogram(text, name)
 	if typeof(name) ~= "string" then
 		name = "untitled"
 	end
-	local fenv = getfenv()
+	local fenv = table.clone(getfenv())
 	fenv["luaprogram"] = luaprogram
 	fenv["screen"] = screen
 	fenv["keyboard"] = keyboard
 	fenv["modem"] = modem
 	fenv["speaker"] = speaker
 	fenv["disk"] = disk
+	fenv["CreateNewWindow"] = CreateNewWindow
 
-	local prg = coroutine.create(loadstring(text))
+	local prg = coroutine.create(loadstring(text, fenv))
 	table.insert(coroutineprograms, {name = name, coroutine = prg})
 	return coroutine.resume(prg)
 end
