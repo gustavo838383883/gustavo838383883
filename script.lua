@@ -1928,7 +1928,7 @@ local function loadmenu()
 										keyboardevent:Unbind()
 										keyboardevent = nil
 									end
-									keyboardevent = keyboard:Connect("TextInputted", function(text, plr)
+									keyboardevent = keyboard.TextInputted:Connect(function(text, plr)
 										keyboardinput = text
 										playerthatinputted = plr
 									end)
