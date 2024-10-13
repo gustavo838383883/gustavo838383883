@@ -29,6 +29,7 @@ local pressedtick
 
 local function getportfunction(x)
 	return function()
+		if speaker:IsDestroyed() then return end
 		pressedtick = tick()
 		if not volumeframe then
 			createvolumegui()
