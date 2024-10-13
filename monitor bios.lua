@@ -144,6 +144,7 @@ end
 
 local waittime = 1
 local main = false
+local textposition
 while true do
 	if volumeframe and hasvolumecontrol then
 		if tick() - pressedtick > 2 then
@@ -156,6 +157,7 @@ while true do
 		if exists(imagelabel) then
 			setdirection(imagelabel)
 			imagelabel.Position += UDim2.fromOffset(translatex, translatey)
+			textposition = imagelabel.Position
 		end
 
 		local empty = isscreenempty()
@@ -170,7 +172,7 @@ while true do
 		local empty, e = isscreenempty()
 		if empty then
 			if exists(e) then e:Destroy() end
-			imagelabel = ts:CreateElement("ImageLabel", {ResampleMode = Enum.ResamplerMode.Pixelated, Image = "rbxassetid://123464338631816", Size = UDim2.fromOffset(68, 15.8), BackgroundColor3 = Color3.new(0, 0, 1), Position = UDim2.fromOffset(math.random(0, math.floor(maxx/20))*20, math.random(0, math.floor(maxy/20))*20)})
+			imagelabel = ts:CreateElement("ImageLabel", {ResampleMode = Enum.ResamplerMode.Pixelated, Image = "rbxassetid://123464338631816", Size = UDim2.fromOffset(68, 15.8), BackgroundColor3 = Color3.new(0, 0, 1), Position = textposition or UDim2.fromOffset(math.random(0, math.floor(maxx/20))*20, math.random(0, math.floor(maxy/20))*20)})
 			main = true
 			waittime = 0.25
 		end
