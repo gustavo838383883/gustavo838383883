@@ -14,8 +14,8 @@ local volumebar
 local function createvolumegui()
 	volumeframe = screen:CreateElement("Frame", {BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)})
 	local speakerimage = screen:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://83229244752624", Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
-	local minusimage = screen:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0) Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
-	local plusimage = screen:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://134501568804650", Position = UDim2.new(1, -25, 0, 0) Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
+	local minusimage = screen:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
+	local plusimage = screen:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://134501568804650", Position = UDim2.new(1, -25, 0, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
 	local barbackground = screen:CreateElement("Frame", {Size = UDim2.new(1, -75, 0.5, 0), BorderSizePixel = 0, Position = UDim2.new(0, 50, 0.25, 0), BackgroundColor3 = Color3.new(0, 0, 0})
 	volumebar = screen:CreateElement("Frame", {Size = UDim2.fromScale(speaker.Volume, 1), BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1})
 	speakerimage.Parent = volumeframe
