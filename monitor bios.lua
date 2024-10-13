@@ -28,12 +28,19 @@ end
 
 local pressedtick
 
+local function exists(frame)
+	if frame and pcall(function() frame.Name = frame.Name end) then
+		return true
+	end
+	return false
+end
+
 local function getportfunction(x)
 	return function()
 		pressedtick = tick()
 		local destroyed = speaker:IsDestroyed()
 		local newvolume = if destroyed then 0 else speaker.Volume
-		if not volumeframe then
+		if not exists(volumebar) then
 			createvolumegui(newvolume)
 		elseif not destroyed then
 			newvolume = math.clamp(x + math.round(speaker.Volume*10), 0, 10)/10
@@ -89,13 +96,6 @@ if math.random(1, 2) == 1 then
 else
 	translatex = xspeed
 	direction = direction.."e"
-end
-
-local function exists(frame)
-	if frame and pcall(function() frame.Name = frame.Name end) then
-		return true
-	end
-	return false
 end
 
 local function setlimits(frame)
