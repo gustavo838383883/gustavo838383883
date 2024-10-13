@@ -12,6 +12,7 @@ local volumeframe
 local volumebar
 
 local function createvolumegui(x)
+	if ts:IsDestroyed() then return end
 	volumeframe = ts:CreateElement("Frame", {ZIndex = (2^31)-1, BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)})
 	local speakerimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://83229244752624", Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
 	local minusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
@@ -147,6 +148,7 @@ local waittime = 2
 local main = false
 local textposition
 while true do
+	if ts:IsDestroyed() then break end
 	if volumeframe and hasvolumecontrol then
 		if tick() - pressedtick > 2 then
 			volumeframe:Destroy()
