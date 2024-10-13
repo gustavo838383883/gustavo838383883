@@ -142,7 +142,7 @@ local function setdirection(frame)
 	end
 end
 
-local waittime = 1
+local waittime = 2
 local main = false
 local textposition
 while true do
@@ -166,7 +166,7 @@ while true do
 				imagelabel:Destroy()
 			end
 			main = false
-			waittime = 1
+			waittime = 2
 		end
 	else
 		local empty, e = isscreenempty()
