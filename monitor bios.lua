@@ -12,12 +12,12 @@ local volumeframe
 local volumebar
 
 local function createvolumegui()
-	volumeframe = screen:CreateElement("Frame", {BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)})
-	local speakerimage = screen:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://83229244752624", Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
-	local minusimage = screen:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
-	local plusimage = screen:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://134501568804650", Position = UDim2.new(1, -25, 0, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
-	local barbackground = screen:CreateElement("Frame", {Size = UDim2.new(1, -75, 0.5, 0), BorderSizePixel = 0, Position = UDim2.new(0, 50, 0.25, 0), BackgroundColor3 = Color3.new(0, 0, 0)})
-	volumebar = screen:CreateElement("Frame", {Size = UDim2.fromScale(speaker.Volume, 1), BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1})
+	volumeframe = ts:CreateElement("Frame", {BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)})
+	local speakerimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://83229244752624", Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
+	local minusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
+	local plusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://134501568804650", Position = UDim2.new(1, -25, 0, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
+	local barbackground = ts:CreateElement("Frame", {Size = UDim2.new(1, -75, 0.5, 0), BorderSizePixel = 0, Position = UDim2.new(0, 50, 0.25, 0), BackgroundColor3 = Color3.new(0, 0, 0)})
+	volumebar = ts:CreateElement("Frame", {Size = UDim2.fromScale(speaker.Volume, 1), BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1)})
 	speakerimage.Parent = volumeframe
 	minusimage.Parent = volumeframe
 	plusimage.Parent = volumeframe
@@ -33,16 +33,18 @@ local function getportfunction(x)
 		if not volumeframe then
 			createvolumegui()
 		else
-			local newvolume = math.clamp(x + math.floor(speaker.Volume*10)/10, 0, 1)
+			local newvolume = math.clamp(x + math.round(speaker.Volume*10), 0, 10)/10
 			speaker.Volume = newvolume
 			volumebar.Size = UDim2.fromScale(newvolume, 1)
 		end
 	end
 end
 
-upport.Triggered:Connect(getportfunction(0.1))
-
-downport.Triggered:Connect(getportfunction(-0.1))
+if hasvolumecontrol then
+	upport.Triggered:Connect(getportfunction(-1))
+	
+	downport.Triggered:Connect(getportfunction(1))
+end
 
 local imagelabel = nil
 local screencanvas = ts:GetCanvas()
@@ -142,8 +144,8 @@ end
 local waittime = 1
 local main = false
 while true do
-	if volumeframe then
-		if tick() - pressedtick() > 2 then
+	if volumeframe and hasvolumecontrol then
+		if tick() - pressedtick > 2 then
 			volumeframe:Destroy()
 			volumeframe = nil
 			volumebar = nil
