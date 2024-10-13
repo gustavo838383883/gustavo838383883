@@ -11,13 +11,13 @@ end
 local volumeframe
 local volumebar
 
-local function createvolumegui()
+local function createvolumegui(x)
 	volumeframe = ts:CreateElement("Frame", {ZIndex = (2^31)-1, BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)})
 	local speakerimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://83229244752624", Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
 	local minusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
 	local plusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://134501568804650", Position = UDim2.new(1, -25, 0, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
 	local barbackground = ts:CreateElement("Frame", {Size = UDim2.new(1, -75, 0.5, 0), BorderSizePixel = 0, Position = UDim2.new(0, 50, 0.25, 0), BackgroundColor3 = Color3.new(0, 0, 0)})
-	volumebar = ts:CreateElement("Frame", {Size = UDim2.fromScale(speaker.Volume, 1), BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1)})
+	volumebar = ts:CreateElement("Frame", {Size = UDim2.fromScale(x, 1), BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1)})
 	speakerimage.Parent = volumeframe
 	minusimage.Parent = volumeframe
 	plusimage.Parent = volumeframe
@@ -29,12 +29,13 @@ local pressedtick
 
 local function getportfunction(x)
 	return function()
-		if speaker:IsDestroyed() then return end
 		pressedtick = tick()
+		local destroyed = speaker:IsDestroyed()
+		local newvolume = if destroyed then 0 else speaker.Volume
 		if not volumeframe then
-			createvolumegui()
-		else
-			local newvolume = math.clamp(x + math.round(speaker.Volume*10), 0, 10)/10
+			createvolumegui(newvolume)
+		elseif not destroyed then
+			newvolume = math.clamp(x + math.round(speaker.Volume*10), 0, 10)/10
 			speaker.Volume = newvolume
 			volumebar.Size = UDim2.fromScale(newvolume, 1)
 		end
