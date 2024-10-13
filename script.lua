@@ -564,7 +564,8 @@ local function runprogram(text, name)
 	fenv["CreateNewWindow"] = CreateNewWindow
 	fenv["getkeyboardinput"] = function() return keyboardinput, playerthatinputted end
 
-	local func = loadstring(text)
+	local func, b = loadstring(text)
+	print(b)
 	setfenv(func, fenv)
 	local prg = coroutine.create(func)
 	table.insert(coroutineprograms, {name = name, coroutine = prg})
