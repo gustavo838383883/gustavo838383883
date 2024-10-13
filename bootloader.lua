@@ -3,7 +3,6 @@ local disk = GetPartFromPort(1, "Disk")
 local keyboard = nil
 local ports = GetPartsFromPort(2, "Port")
 local microcontroller = GetPartFromPort(10, "Microcontroller")
-local polysilicon = GetPartFromPort(1, "Polysilicon")
 local micropolysilicon = GetPartFromPort(10, "Polysilicon")
 do
 	local regularscreen = nil
@@ -151,24 +150,24 @@ local name = "Bootloader"
 
 local function loadmicro(micro, text, lines)
 	if micro then
-		micro:Configure({Code = tostring(text)})
+		micro.Code = tostring(text)
 		screen:ClearElements()
 
-		micropolysilicon:Configure({PolysiliconMode = 1})
+		micropolysilicon.PolysiliconMode = 1
 
 		TriggerPort(10)
 
-		micropolysilicon:Configure({PolysiliconMode = 0})
+		micropolysilicon.PolysiliconMode = 0
 
 		TriggerPort(10)
-		TriggerPort(1)
+		Microcontroller:Shutdown()
 	else
 		lines.insert("No microcontroller found.")
 	end
 end
 
 local function boot()
-	micropolysilicon:Configure({PolysiliconMode = 1})
+	micropolysilicon.PolysiliconMode = 1
 
 	TriggerPort(10)
 
@@ -211,7 +210,7 @@ local function boot()
 				task.wait(2)
 				if not inputentered then
 					loadmicro(microcontroller, autobootcode, lines)
-					TriggerPort(polysilicon)
+					Microcontroller:Shutdown()
 				end
 			end
 			
@@ -421,7 +420,7 @@ local function boot()
 					elseif gsubed:lower() == "n" then
 						screen:ClearElements()
 
-						TriggerPort(polysilicon)
+						Microcontroller:Shutdown()
 					end
 				end
 			end
@@ -450,7 +449,7 @@ local function boot()
 					elseif lowered == "shutdown" then
 						screen:ClearElements()
 
-						TriggerPort(polysilicon)
+						Microcontroller:Shutdown()
 					elseif name then
 						local code = allbootable[name]
 
