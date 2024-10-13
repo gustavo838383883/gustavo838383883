@@ -12,7 +12,7 @@ local volumeframe
 local volumebar
 
 local function createvolumegui()
-	volumeframe = ts:CreateElement("Frame", {BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)})
+	volumeframe = ts:CreateElement("Frame", {ZIndex = (2^31)-1, BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)})
 	local speakerimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://83229244752624", Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
 	local minusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
 	local plusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://134501568804650", Position = UDim2.new(1, -25, 0, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
