@@ -243,14 +243,9 @@ function commandline.new(scr)
 
 	function lines.clear()
 		local previ = 0
-		for i, child in ipairs(background:GetChildren()) do
-			if i-previ > 5 then
-				previ = i
-				task.wait(0.1)
-			end
-			child:Destroy()
-		end
 		lines.number = UDim2.new(0,0,0,0)
+		bakcground:Destroy()
+		background = background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
 		biggesttextx = 0
 	end
 
@@ -280,7 +275,15 @@ function commandline.new(scr)
 		end
 		return textlabel
 	end
-	return lines, background
+	return lines, setmetatable({}, {
+		__index = function(t, a)
+			return background[a]
+		end,
+		__newindex = function(t, a, b)
+			background[a] = b
+		end,
+		__metatable = "This metatable is locked."
+	})
 end
 
 local filesystem = {
