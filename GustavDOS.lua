@@ -678,10 +678,12 @@ local function runprogram(text, name)
 	fenv["speaker"] = speaker
 	fenv["disk"] = disk
 	fenv["runtext"] = runtext
+	local prg
+	fenv["getprg"] = function() return prg end
 	local func, b = loadstring(text)
 	if func then
 		setfenv(func, fenv)
-		local prg = coroutine.create(func)
+		prg = coroutine.create(func)
 		table.insert(coroutineprograms, {name = name, coroutine = prg})
 		coroutine.resume(prg)
 	end
