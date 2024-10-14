@@ -563,13 +563,17 @@ local function runprogram(text, name)
 	fenv["disk"] = disk
 	fenv["CreateNewWindow"] = CreateNewWindow
 	fenv["getkeyboardinput"] = function() return keyboardinput, playerthatinputted end
-
+	local prg
+	fenv["getprg"] = function() return prg end
 	local func, b = loadstring(text)
-	print(b)
-	setfenv(func, fenv)
-	local prg = coroutine.create(func)
-	table.insert(coroutineprograms, {name = name, coroutine = prg})
-	return task.spawn(prg)
+	if func then
+		setfenv(func, fenv)
+		prg = coroutine.create(func)
+		table.insert(coroutineprograms, {name = name, coroutine = prg})
+		coroutine.resume(prg)
+	else
+		print(b)
+	end
 end
 
 local function stopprograms()
