@@ -242,7 +242,12 @@ function commandline.new(scr)
 	local biggesttextx = 0
 
 	function lines.clear()
+		local previ = 0
 		for i, child in ipairs(background:GetChildren()) do
+			if i-previ > 5 then
+				previ = i
+				task.wait(0.1)
+			end
 			child:Destroy()
 		end
 		lines.number = UDim2.new(0,0,0,0)
