@@ -1000,6 +1000,8 @@ local function changecolor(screen, disk)
 
 	changecolorbutton.MouseButton1Down:Connect(function()
 		if color.Text ~= "RGB (Click to update)" then
+			disk:Write("BackgroundImage", nil)
+			backgroundimageframe.Image = ""
 			disk:Write("Color", data)
 			local colordata = string.split(data, ",")
 			if colordata then
