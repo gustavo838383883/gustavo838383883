@@ -110,7 +110,7 @@ function commandline.new(scr)
 		local previ = 0
 		lines.number = UDim2.new(0,0,0,0)
 		bakcground:Destroy()
-		background = background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
+		background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
 		biggesttextx = 0
 	end
 
