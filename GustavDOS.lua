@@ -680,10 +680,13 @@ local function runprogram(text, name)
 	fenv["runtext"] = runtext
 	local func, b = loadstring(text)
 	print(b)
-	setfenv(func, fenv)
-	local prg = coroutine.create(func)
-	table.insert(coroutineprograms, {name = name, coroutine = prg})
-	task.spawn(prg)
+	if func then
+		setfenv(func, fenv)
+		local prg = coroutine.create(func)
+		table.insert(coroutineprograms, {name = name, coroutine = prg})
+		coroutine.resume(prg)
+	end
+	return b
 end
 
 local function stopprograms()
@@ -920,7 +923,8 @@ function runtext(text)
 		end
 		commandlines.insert(dir..":")
 	elseif lowered:sub(1, 7) == "runlua " then
-		runprogram(text:sub(8, string.len(text)))
+		local err = runprogram(text:sub(8, string.len(text)))
+		if err then commandlines.insert(err) end
 		commandlines.insert(dir..":")
 	elseif lowered:sub(1, 8) == "readlua " then
 		local filename = text:sub(9, string.len(text))
@@ -928,7 +932,8 @@ function runtext(text)
 			local output = filesystem.Read(filename, dir, true, disk)
 			local output = output
 			commandlines.insert(output)
-			runprogram(output, filename)
+			local err = runprogram(output, filename)
+			if err then commandlines.insert(err) end
 		else
 			commandlines.insert("No filename specified")
 		end
@@ -1224,7 +1229,8 @@ function runtext(text)
 				background.CanvasPosition -= Vector2.new(0, 25)
 			elseif getfileextension(filename, true) == ".lua" then
 				commandlines.insert(tostring(output))
-				runprogram(output, filename)
+				local err = runprogram(output, filename)
+				if err then commandlines.insert(err) end
 				commandlines.insert(dir..":")
 			else
 				if string.find(string.lower(tostring(output)), "<woshtml>") then
