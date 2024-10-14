@@ -819,7 +819,15 @@ function runtext(text)
 		end
 		commandlines.insert(dir..":")
 	elseif lowered:sub(1, 6) == "print " then
-		commandlines.insert(text:sub(7, string.len(text)))
+		local output = text:sub(7, string.len(text))
+		local spacesplitted = string.split(tostring(output), "\n")
+		if spacesplitted then
+			for i, v in ipairs(spacesplitted) do
+				commandlines.insert(v)
+			end
+		else
+			commandlines.insert(tostring(output))
+		end
 		commandlines.insert(dir..":")
 	elseif lowered:sub(1, 5) == "copy " then
 		local filename = text:sub(6, string.len(text))
@@ -1065,7 +1073,14 @@ function runtext(text)
 				StringToGui(screen, tostring(output):lower(), textlabel)
 				textlabel.TextTransparency = 1
 			else
-				commandlines.insert(tostring(output))
+				local spacesplitted = string.split(tostring(output), "\n")
+				if spacesplitted then
+					for i, v in ipairs(spacesplitted) do
+						commandlines.insert(v)
+					end
+				else
+					commandlines.insert(tostring(output))
+				end
 			end
 		else
 			commandlines.insert("No filename specified")
@@ -1185,7 +1200,9 @@ function runtext(text)
 		commandlines.insert("copy filename")
 		commandlines.insert("paste")
 		commandlines.insert("rename filename/new filename (with the /)")
-		commandlines.insert("You can put !s before the command to make it replace the new lines with spaces instead of removing them.")
+		commandlines.insert("Put !s before the command to replace the new lines with spaces instead of removing them.")
+		commandlines.insert("Put !n before the command to replace \\\\n with a new line.")
+		commandlines.insert("Put !k before the command to not remove the new lines.")
 		commandlines.insert(dir..":")
 	elseif lowered:sub(1, 4) == "help" then
 		keyboard:SimulateTextInput("cmds", "Microcontroller")
@@ -1240,7 +1257,14 @@ function runtext(text)
 					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 25)
 				else
-					commandlines.insert(tostring(output))
+					local spacesplitted = string.split(tostring(output), "\n")
+					if spacesplitted then
+						for i, v in ipairs(spacesplitted) do
+							commandlines.insert(v)
+						end
+					else
+						commandlines.insert(tostring(output))
+					end
 					commandlines.insert(dir..":")
 				end
 			end
@@ -1326,18 +1350,36 @@ function bootos()
 		commandlines.insert(name.." Command line")
 		task.wait(1)
 		commandlines.insert("/:")
+		local exclmarkthings = {
+			["!s"] = function(text)
+				local text = string.sub(tostring(text), 3, string.len(text)):gsub("\n", " ")
+
+				commandlines.insert(text)
+				runtext(text)
+			end,
+			["!n"] = function()
+				local text = string.sub(tostring(text), 3, string.len(text)):gsub("\n", ""):gsub("\\n", "")
+
+				commandlines.insert(text)
+				runtext(text)
+			end,
+			["!k"] = function()
+				local text = string.sub(tostring(text), 3, string.len(text))
+
+				commandlines.insert(text)
+				runtext(text)
+			end,
+		}
 		if keyboardevent then keyboardevent:Disconnect() end
 		keyboardevent = keyboard.TextInputted:Connect(function(text, player)
 			if not cmdsenabled then return end
-			if string.sub(tostring(text), 1, 2) ~= "!s" then
-				commandlines.insert(tostring(text):gsub("\n", ""):gsub("\\nl", "\n"))
-				runtext(tostring(text):gsub("\n", ""):gsub("\\nl", "\n"))
+			local func = exclmarkthings[string.sub(tostring(text), 1, 2)]
+			if not func then
+				commandlines.insert(tostring(text):gsub("\n", ""))
+				runtext(tostring(text):gsub("\n", ""))
 			else
-				local text = string.sub(tostring(text), 3, string.len(text))
-
-				commandlines.insert(tostring(text):gsub("\n", " "):gsub("\\nl", "\n"))
-				runtext(tostring(text):gsub("\n", " "):gsub("\\nl", "\n"))
-			end			
+				func(text)
+			end
 		end)
 	elseif screen then
 		screen:ClearElements()
