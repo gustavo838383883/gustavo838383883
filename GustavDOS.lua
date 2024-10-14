@@ -679,7 +679,6 @@ local function runprogram(text, name)
 	fenv["disk"] = disk
 	fenv["runtext"] = runtext
 	local func, b = loadstring(text)
-	print(b)
 	if func then
 		setfenv(func, fenv)
 		local prg = coroutine.create(func)
