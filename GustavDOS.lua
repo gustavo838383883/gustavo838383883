@@ -1356,13 +1356,13 @@ function bootos()
 				commandlines.insert(text)
 				runtext(text)
 			end,
-			["!n"] = function()
+			["!n"] = function(text)
 				local text = string.sub(tostring(text), 3, string.len(text)):gsub("\n", ""):gsub("\\n", "")
 
 				commandlines.insert(text)
 				runtext(text)
 			end,
-			["!k"] = function()
+			["!k"] = function(text)
 				local text = string.sub(tostring(text), 3, string.len(text))
 
 				commandlines.insert(text)
