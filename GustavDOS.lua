@@ -1357,7 +1357,7 @@ function bootos()
 				runtext(text)
 			end,
 			["!n"] = function(text)
-				local text = string.sub(tostring(text), 3, string.len(text)):gsub("\n", ""):gsub("\\n", "")
+				local text = string.sub(tostring(text), 3, string.len(text)):gsub("\n", ""):gsub("\\n", "\n")
 
 				commandlines.insert(text)
 				runtext(text)
