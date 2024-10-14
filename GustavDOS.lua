@@ -259,7 +259,7 @@ function commandline.new(scr)
 				biggesttextx = textlabel.TextBounds.X
 			end
 			textlabel.Parent = background
-			background.CanvasSize = UDim2.new(0, biggesttextx, 0, lines.number.Y.Offset + math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+			background.CanvasSize = UDim2.new(0, biggesttextx, 0, math.max(screen:GetDimensions().Y, lines.number.Y.Offset + math.max(textlabel.TextBounds.Y, textlabel.TextSize)))
 			if typeof(udim2) == "UDim2" then
 				textlabel.Size = udim2
 				local newsizex = if udim2.X.Offset > biggesttextx then udim2.X.Offset else 0
