@@ -1098,9 +1098,9 @@ local function chatthing(screen, disk, modem)
 
 		idui.MouseButton1Up:Connect(function()
 			if tonumber(keyboardinput) then
-				idui.Text = tonumber(keyboardinput)
-				id = tonumber(keyboardinput)
-				modem:Configure({NetworkID = tonumber(keyboardinput)})
+				idui.Text = keyboardinput:gsub("\n", "")
+				id = keyboardinput:gsub("\n", "")
+				modem:Configure({NetworkID = keyboardinput:gsub("\n", "")})
 			end
 		end)
 
