@@ -949,7 +949,6 @@ function runtext(text)
 		if filename and filename ~= "" then
 			local output = filesystem.Read(filename, dir, true, disk)
 			local output = output
-			commandlines.insert(output)
 			local err = runprogram(output, filename)
 			if err then commandlines.insert(err) end
 		else
@@ -1255,7 +1254,6 @@ function runtext(text)
 				commandlines.insert(dir..":")
 				background.CanvasPosition -= Vector2.new(0, 25)
 			elseif getfileextension(filename, true) == ".lua" then
-				commandlines.insert(tostring(output))
 				local err = runprogram(output, filename)
 				if err then commandlines.insert(err) end
 				commandlines.insert(dir..":")
