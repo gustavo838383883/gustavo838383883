@@ -233,7 +233,7 @@ while true do
 			imagelabel = ts:CreateElement("ImageLabel", {ResampleMode = Enum.ResamplerMode.Pixelated, Image = "rbxassetid://123464338631816", Size = UDim2.fromOffset(68, 15.8), BackgroundColor3 = Color3.new(0, 0, 1), Position = textposition or UDim2.fromOffset(math.random(0, math.floor(maxx/20))*20, math.random(0, math.floor(maxy/20))*20), ZIndex = 242})
 			main = true
 			waittime = 0.25
-		elseif not volumeframe then
+		elseif not volumeframe and hasvolumecontrol then
 			destroyoldvolumegui()
 		end
 	end
