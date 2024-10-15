@@ -11,14 +11,22 @@ end
 local volumeframe
 local volumebar
 
+local volumeframedict = {ZIndex = (2^31)-1, BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)}
+local speakerimagedict = {BackgroundTransparency = 1, Image = "rbxassetid://83229244752624", Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated}
+local minusimagedict = {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated}
+local plusimagedict = {BackgroundTransparency = 1, Image = "rbxassetid://134501568804650", Position = UDim2.new(1, -25, 0, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated}
+local barbackgrounddict = {Size = UDim2.new(1, -75, 0.5, 0), BorderSizePixel = 0, Position = UDim2.new(0, 50, 0.25, 0), BackgroundColor3 = Color3.new(0, 0, 0)}
+local volumebardict = {BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1)}
+
 local function createvolumegui(x)
 	if ts:IsDestroyed() then return end
-	volumeframe = ts:CreateElement("Frame", {ZIndex = (2^31)-1, BackgroundColor3 = Color3.new(0, 0, 1), Size = UDim2.new(0.5, 0, 0, 25), Position = UDim2.new(0.25, 0, 1, -50)})
-	local speakerimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://83229244752624", Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
-	local minusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://105700715661994", Position = UDim2.fromOffset(25, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
-	local plusimage = ts:CreateElement("ImageLabel", {BackgroundTransparency = 1, Image = "rbxassetid://134501568804650", Position = UDim2.new(1, -25, 0, 0), Size = UDim2.fromOffset(25, 25), ResampleMode = Enum.ResamplerMode.Pixelated})
-	local barbackground = ts:CreateElement("Frame", {Size = UDim2.new(1, -75, 0.5, 0), BorderSizePixel = 0, Position = UDim2.new(0, 50, 0.25, 0), BackgroundColor3 = Color3.new(0, 0, 0)})
-	volumebar = ts:CreateElement("Frame", {Size = UDim2.fromScale(x, 1), BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1)})
+	volumeframe = ts:CreateElement("Frame", volumeframedict)
+	local speakerimage = ts:CreateElement("ImageLabel", speakerimagedict)
+	local minusimage = ts:CreateElement("ImageLabel", minusimagedict)
+	local plusimage = ts:CreateElement("ImageLabel", plusimagedict)
+	local barbackground = ts:CreateElement("Frame", barbackgrounddict)
+	volumebar = ts:CreateElement("Frame", volumebardict)
+	volumebar.Size = UDim2.fromScale(x, 1)
 	speakerimage.Parent = volumeframe
 	minusimage.Parent = volumeframe
 	plusimage.Parent = volumeframe
