@@ -671,6 +671,7 @@ local function runprogram(text, name)
 	fenv["modem"] = modem
 	fenv["speaker"] = speaker
 	fenv["disk"] = disk
+	fenv["disks"] = disks
 	fenv["runtext"] = runtext
 	local prg
 	fenv["getprg"] = function() return prg end
