@@ -59,7 +59,7 @@ end
 
 local function destroyoldvolumegui()
 	local previ = 0
-	for i, c in ipairs(ts:GetChildren()) do
+	for i, c in ipairs(screencanvas:GetChildren()) do
 		if i-previ > 5 then
 			previ = i
 			task.wait(0.2)
