@@ -563,6 +563,7 @@ local function playsound(txt)
 			if not length then
 				local sound = speaker:LoadSound(`rbxassetid://{spacesplitted[1]}`)
 				sound.Pitch = pitch or 1
+				sound.Volume = 1
 				sound:Play()
 
 				if sound.Ended then
@@ -570,8 +571,10 @@ local function playsound(txt)
 				end
 			else
 				local sound = speaker:LoadSound(`rbxassetid://{spacesplitted[1]}`)
+				sound.Volume = 1
 				sound.Pitch = pitch or 1
 				sound.Looped = true
+				sound:Play()
 			end
 		elseif string.find(tostring(txt), "length:") then
 
@@ -588,10 +591,12 @@ local function playsound(txt)
 			end
 
 			local sound = speaker:LoadSound(`rbxassetid://{spacesplitted[1]}`)
+			sound.Volume = 1
 			sound.Looped = true
-
+			sound:Play()
 		else
 			local sound = speaker:LoadSound(`rbxassetid://{txt}`)
+			sound.Volume = 1
 			sound:Play()
 			if sound.Ended then
 				sound.Ended:Connect(function() sound:Destroy() end)
