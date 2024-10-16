@@ -1637,13 +1637,13 @@ local function shutdownmicros(screen)
 	local holderframe = CreateNewWindow(UDim2.new(0.75, 0, 0.75, 0), nil, false ,false)
 
 	local scrollingframe
-	local update = false
+	local upd = false
 
 	local function update()
 		if scrollingframe then
 			scrollingframe:Destroy()
 		end
-		update = false
+		upd = false
 		
 		scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, -25), Position = UDim2.new(0, 0, 0, 25), BackgroundTransparency = 1})
 		scrollingframe.Parent = holderframe
@@ -1656,9 +1656,9 @@ local function shutdownmicros(screen)
 				stopprogram(index)
 				button.Text = "Program closed."
 				button.Active = false
-				update = true
+				upd = true
 				task.wait(2)
-				if not update then
+				if not upd then
 					update()
 				end
 			end)
