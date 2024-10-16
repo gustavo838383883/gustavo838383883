@@ -2,7 +2,14 @@ local screen = nil
 local disk = GetPartFromPort(1, "Disk")
 local keyboard = nil
 local ports = GetPartsFromPort(2, "Port")
-local microcontroller = GetPartFromPort(10, "Microcontroller")
+local microcontrollers = GetPartsFromPort(10, "Microcontroller")
+local microcontroller
+for i, micro in ipairs(microcontrollers) do
+	if micro.GUID ~= Microcontroller.GUID then
+		microcontroller = micro
+		break
+	end
+end
 local micropolysilicon = GetPartFromPort(10, "Polysilicon")
 do
 	local regularscreen = nil
