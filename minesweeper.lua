@@ -163,8 +163,12 @@ local function youwon()
 
 	windowb:AddChild(screen:CreateElement("TextLabel", {Text = "You won!", Size = UDim2.fromScale(1, 1), TextScaled = true, BackgroundTransparency = 1}))
 
-	speaker:Configure({Audio = 12222253})
-	speaker:Trigger()
+	local sound = speaker:LoadSound("rbxassetid://12222253")
+	sound.Volume = 1
+	sound:Play()
+	if sound.Ended then
+		sound.Ended:Connect(function() sound:Destroy() end)
+	end
 end
 
 local function shownear(square)
@@ -192,11 +196,12 @@ local function shownear(square)
 end
 
 local function died()
-	starttime = nil
-	smileimg.Image = "rbxassetid://16268745056"
-	donttrigger = true
-	speaker:Configure({Audio = 3802269741})
-	speaker:Trigger()
+	local sound = speaker:LoadSound("rbxassetid://3802269741")
+	sound.Volume = 1
+	sound:Play()
+	if sound.Ended then
+		sound.Ended:Connect(function() sound:Destroy() end)
+	end
 end
 
 local textcolors = {
@@ -322,7 +327,7 @@ local function restartgamenow()
 					shownear(square)
 				end
 				if not donttrigger then
-					placeflagfunc(square, flag)
+					flag = placeflagfunc(square, flag)
 				end
 			end)
 
