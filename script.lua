@@ -490,6 +490,7 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 
 
 	sound = speaker:LoadSound(`rbxassetid://{tonumber(data)}`)
+	sound.Volume = 1
 	sound.Pitch = pitch
 
 	if length then
