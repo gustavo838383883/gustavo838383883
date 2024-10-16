@@ -1,12 +1,5 @@
-local disk = GetPartFromPort(1, "Disk")
-local gputer = disk:Read("GD7Library")()
-
-local CreateWindow = gputer.CreateWindow
-local speaker = gputer.Speaker
-local createnicebutton2 = gputer.createnicebutton2
-local normalcreatenicebutton = gputer.createnicebutton
-local screen = gputer.Screen
-local clicksound = GetPartFromPort(1, "Disk"):Read("ClickSound") or "rbxassetid://6977010128"
+local normalcreatenicebutton = createnicebutton
+local clicksound = rom:Read("ClickSound") or "rbxassetid://6977010128"
 
 local function createnicebutton(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
@@ -206,6 +199,17 @@ local function died()
 	speaker:Trigger()
 end
 
+local textcolors = {
+	[1] = Color3.fromRGB(0, 0, 125),
+	[2] = Color3.fromRGB(0, 255, 0),
+	[3] = Color3.fromRGB(255, 0, 0),
+	[4] = Color3.fromRGB(0, 0, 255),
+	[5] = Color3.fromRGB(190, 42, 42),
+	[6] = Color3.fromRGB(0, 200, 200),
+	[7] = Color3.fromRGB(20, 20, 20),
+	[8] = Color3.fromRGB(100, 100, 100)
+}
+
 function Trigger(mode, square, txtlabel)
 	if donttrigger then return end
 	local found = table.find(bombpositions, square.Position)
@@ -222,6 +226,10 @@ function Trigger(mode, square, txtlabel)
 		local returnval = findbombsnear(square)
 		if returnval > 0 then
 			txtlabel.Text = returnval
+			local textcolor = textcolors[returnval]
+			if textcolor then
+				txtlabel.TextColor3 = textcolor
+			end
 			square.Image = "rbxassetid://15625805069"
 		else
 			square.Image = "rbxassetid://15625805069"
@@ -241,6 +249,31 @@ flagbutton.MouseButton1Up:Connect(function()
 end)
 
 local firstclick = true
+
+local function placeflag(square, flag)
+	if flag then
+		flag:Destroy()
+		flag = nil
+		bombshower += 1
+		score.Text = bombshower
+	elseif square.Image ~= "rbxassetid://15625805069" and bombshower > 0 then
+		flag = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(squaresize, squaresize), Image = "rbxassetid://16268281465", Position = square.Position, BackgroundTransparency = 1})
+		squareholder:AddChild(flag)
+
+		bombshower -= 1
+		score.Text = bombshower
+
+		local sound = speaker:LoadSound("rbxassetid://4831091467")
+		sound.Volume = 1
+		sound:Play()
+		if sound.Ended then
+			sound.Ended:Connect(function() sound:Destroy() end)
+		end
+
+	end
+
+	return flag
+end
 
 local function restartgamenow()
 	starttime = tick()
@@ -278,21 +311,18 @@ local function restartgamenow()
 							Trigger(0, square, txt)
 						end
 					else
-
-						if flag then
-							flag:Destroy()
-							flag = nil
-							bombshower += 1
-							score.Text = bombshower
-						elseif square.Image ~= "rbxassetid://15625805069" then
-							flag = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(squaresize, squaresize), Image = "rbxassetid://16268281465", Position = square.Position, BackgroundTransparency = 1})
-							squareholder:AddChild(flag)
-
-							bombshower -= 1
-							score.Text = bombshower
-
-						end
+						flag = placeflag(square, flag)
 					end
+				end
+			end)
+			square.MouseButton2Up:Connect(function()
+				if firstclick then
+					startgame(square)
+					firstclick = false
+					shownear(square)
+				end
+				if not donttrigger then
+					placeflag(square, flag)
 				end
 			end)
 
