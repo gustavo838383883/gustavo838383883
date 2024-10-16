@@ -250,7 +250,7 @@ end)
 
 local firstclick = true
 
-local function placeflag(square, flag)
+local function placeflagfunc(square, flag)
 	if flag then
 		flag:Destroy()
 		flag = nil
@@ -311,7 +311,7 @@ local function restartgamenow()
 							Trigger(0, square, txt)
 						end
 					else
-						flag = placeflag(square, flag)
+						flag = placeflagfunc(square, flag)
 					end
 				end
 			end)
@@ -322,7 +322,7 @@ local function restartgamenow()
 					shownear(square)
 				end
 				if not donttrigger then
-					placeflag(square, flag)
+					placeflagfunc(square, flag)
 				end
 			end)
 
