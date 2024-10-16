@@ -124,17 +124,7 @@ local function getstuff()
 				if #temprom:ReadAll() == 0 then
 					rom = temprom
 					romport = i
-				elseif temprom:Read("GDOSLibrary") then
-					if temprom:Read("GustavOSLibrary") then
-						temprom:Write("GustavOSLibrary", nil)
-					end
-					if temprom:Read("GD7Library") then
-						temprom:Write("GD7Library", nil)
-					end
-					rom = temprom
-					romport = i
-				elseif #temprom:ReadAll() == 1 and temprom:Read("GD7Library") then
-					temprom:Write("GD7Library", nil)
+				elseif temprom:Read("SysDisk") then
 					rom = temprom
 					romport = i
 				end
@@ -169,24 +159,10 @@ local function getstuff()
 						romindexusing = index
 						sharedport = true
 						break
-					elseif v:Read("GDOSLibrary") then
-						if v:Read("GustavOSLibrary") then
-							v:Write("GustavOSLibrary", nil)
-						end
-						if v:Read("GD7Library") then
-							v:Write("GD7Library", nil)
-						end
+					elseif v:Read("SysDisk") then
 						rom = v
 						romindexusing = index
 						romport = i
-						sharedport = true
-						break
-					elseif #v:ReadAll() == 1 and v:Read("GustavOSLibrary") or v:Read("GD7Library") then
-						v:Write("GustavOSLibrary", nil)
-						v:Write("GD7Library", nil)
-						rom = v
-						romport = i
-						romindexusing = index
 						sharedport = true
 						break
 					end
@@ -655,6 +631,15 @@ local function stopprogram(i)
 	return true
 end
 
+local function stopprogrambyname(name)
+	for i, v in ipairs(coroutineprograms) do
+		if coroutine.status(program.coroutine) ~= "dead" then
+			coroutine.close(program.coroutine)
+			table.remove(coroutineprograms, table.find(coroutineprograms, v))
+		end
+	end
+end
+
 local luaprogram
 local runtext
 local cmdsenabled = true
@@ -711,6 +696,7 @@ end
 luaprogram = {
 	getPrograms = getprograms,
 	stopProgram = stopprogram,
+	stopProgramByName = stopprogrambyname,
 	runProgram = runprogram,
 }
 
@@ -924,7 +910,7 @@ function runtext(text)
 			commandlines.insert("The table/folder name was not specified.")
 		end
 		commandlines.insert(dir..":")
-	elseif lowered:sub(1, 8) == "showluas" then
+	elseif lowered:gsub("%s", "") == "showluas" then
 		for i,v in pairs(getprograms()) do
 			commandlines.insert(v)
 			commandlines.insert(i)
@@ -1176,7 +1162,7 @@ function runtext(text)
 			commandlines.insert("Invalid pitch number or no speaker was found.")
 		end
 		commandlines.insert(dir..":")
-	elseif lowered:sub(1, 4) == "cmds" then
+	elseif lowered:gsub("%s", "") == "cmds" then
 		commandlines.insert("Commands:")
 		commandlines.insert("cmds")
 		commandlines.insert("stopsounds")
@@ -1346,6 +1332,7 @@ function bootos()
 		if regularscreen then screen = regularscreen end
 	end
 	if screen and keyboard and disk and rom then
+		rom:Write("SysDisk", true)
 		if speaker then
 			speaker:ClearSounds()
 		end
