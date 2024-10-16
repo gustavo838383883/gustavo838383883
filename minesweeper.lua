@@ -30,53 +30,41 @@ end
 local function GetTouchingGuiObjects(gui, folder)
 
 	if gui then
-		if not folder then print("Table was not specified.") return end
 
-		if typeof(folder) ~= "table" then print("The specified table is not a valid table") return end
+		local instances = {}
 
-		if gui.ClassName == "Frame" or gui.ClassName == "ImageLabel" or gui.ClassName == "TextLabel" or gui.ClassName == "TextButton" or gui.ClassName == "ImageButton" then
-			local instances = {}
+		for i, ui in pairs(folder) do
 
-			for i, ui in pairs(folder) do
+			if ui.Visible then
+				local x = ui.AbsolutePosition.X
+				local y = ui.AbsolutePosition.Y
+				local y_axis = false
+				local x_axis = false
+				local guiposx = gui.AbsolutePosition.X + gui.AbsoluteSize.X
+				local number = ui.AbsoluteSize.X + gui.AbsoluteSize.X
 
-				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" or ui.ClassName == "ImageButton" then
-					if ui.Visible then
-						local x = ui.AbsolutePosition.X
-						local y = ui.AbsolutePosition.Y
-						local y_axis = false
-						local x_axis = false
-						local guiposx = gui.AbsolutePosition.X + gui.AbsoluteSize.X
-						local number = ui.AbsoluteSize.X + gui.AbsoluteSize.X
-
-						if x - guiposx >= -number then
-							if x - guiposx <= 0 then
-								x_axis = true
-							end
-						end
-
-						local guiposy = gui.AbsolutePosition.Y + gui.AbsoluteSize.Y
-						local number2 = ui.AbsoluteSize.Y + gui.AbsoluteSize.Y
-
-						if y - guiposy >= -number2 then
-							if y - guiposy <= 0 then
-								y_axis = true
-							end
-						end
-
-						if x_axis and y_axis then
-							table.insert(instances, ui)
-						end
+				if x - guiposx >= -number then
+					if x - guiposx <= 0 then
+						x_axis = true
 					end
+				end
+
+				local guiposy = gui.AbsolutePosition.Y + gui.AbsoluteSize.Y
+				local number2 = ui.AbsoluteSize.Y + gui.AbsoluteSize.Y
+
+				if y - guiposy >= -number2 then
+					if y - guiposy <= 0 then
+						y_axis = true
+					end
+				end
+
+				if x_axis and y_axis then
+					table.insert(instances, ui)
 				end
 			end
 
 			return instances
-
-		else
-			print(`{gui} is not a valid Gui Object.`)
 		end
-	else
-		print("The specified instance is not valid.")
 	end
 end
 
@@ -166,9 +154,8 @@ local function youwon()
 	local sound = speaker:LoadSound("rbxassetid://12222253")
 	sound.Volume = 1
 	sound:Play()
-	if sound.Ended then
-		sound.Ended:Connect(function() sound:Destroy() end)
-	end
+	task.wait(2)
+	sound:Destroy()
 end
 
 local function shownear(square)
@@ -196,12 +183,14 @@ local function shownear(square)
 end
 
 local function died()
+	starttime = nil
+	smileimg.Image = "rbxassetid://16268745056"
+	donttrigger = true
 	local sound = speaker:LoadSound("rbxassetid://3802269741")
 	sound.Volume = 1
 	sound:Play()
-	if sound.Ended then
-		sound.Ended:Connect(function() sound:Destroy() end)
-	end
+	task.wait(2)
+	sound:Destroy()
 end
 
 local textcolors = {
@@ -219,7 +208,7 @@ function Trigger(mode, square, txtlabel)
 	if donttrigger then return end
 	local found = table.find(bombpositions, square.Position)
 	if found and mode == 0 then
-		died()
+		pcall(died)
 		square.Image = "rbxassetid://15625805069"
 
 		for index, value in ipairs(bombpositions) do
@@ -271,9 +260,8 @@ local function placeflagfunc(square, flag)
 		local sound = speaker:LoadSound("rbxassetid://4831091467")
 		sound.Volume = 1
 		sound:Play()
-		if sound.Ended then
-			sound.Ended:Connect(function() sound:Destroy() end)
-		end
+		task.wait(1)
+		sound:Destroy()
 
 	end
 
@@ -458,33 +446,29 @@ end
 
 restartgame()
 
-local loop1 = coroutine.create(function()
-	while true do
-		task.wait(1)
-		if not donttrigger and not firstclick then
-			if starttime then
-				curtime.Text = math.floor(tick() - starttime)
-			else
-				curtime.Text = 0
-			end
-		end
-
-		if not donttrigger and not firstclick then
-	
-			local clickednumber = 0
-				
-			for index, value in ipairs(guis) do
-				if value.Image == "rbxassetid://15625805069" and not table.find(bombpositions, value.Position) then
-					clickednumber += 1
-				end
-			end
-		
-			if clickednumber == #guis - bombnumber then
-				donttrigger = true
-				youwon()
-			end
+while true do
+	task.wait(1)
+	if not donttrigger and not firstclick then
+		if starttime then
+			curtime.Text = math.floor(tick() - starttime)
+		else
+			curtime.Text = 0
 		end
 	end
-end)
 
-coroutine.resume(loop1)
+	if not donttrigger and not firstclick then
+	
+		local clickednumber = 0
+				
+		for index, value in ipairs(guis) do
+			if value.Image == "rbxassetid://15625805069" and not table.find(bombpositions, value.Position) then
+				clickednumber += 1
+			end
+		end
+		
+		if clickednumber == #guis - bombnumber then
+			donttrigger = true
+			youwon()
+		end
+	end
+end
