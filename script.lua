@@ -490,7 +490,7 @@ local function audioui(screen, disk, data, speaker, pitch, length)
 
 
 	sound = speaker:LoadSound(`rbxassetid://{tonumber(data)}`)
-
+	sound.Pitch = pitch
 
 	if length then
 		sound.Looped = true
