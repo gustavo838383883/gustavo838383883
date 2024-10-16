@@ -4,9 +4,9 @@ local clicksound = rom:Read("ClickSound") or "rbxassetid://6977010128"
 local function createnicebutton(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
 	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text), RichText = true})
-	txtbutton:AddChild(txtlabel)
+	txtlabel.Parent = txtbutton
 	if Parent then
-		Parent:AddChild(txtbutton)
+		txtbutton.Parent = Parent
 	end
 	txtbutton.MouseButton1Up:Connect(function()
 		speaker:PlaySound(clicksound)
@@ -17,9 +17,9 @@ end
 local function othercreatenicebutton2(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15617867263", Position = pos, BackgroundTransparency = 1})
 	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text), RichText = true})
-	txtbutton:AddChild(txtlabel)
+	txtlabel.Parent = txtbutton
 	if Parent then
-		Parent:AddChild(txtbutton)
+		txtbutton.Parent = Parent
 	end
 	txtbutton.MouseButton1Up:Connect(function()
 		speaker:PlaySound(clicksound)
@@ -74,24 +74,22 @@ local smilebutton, t = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.from
 
 local smileimg = screen:CreateElement("ImageLabel", {Image = "rbxassetid://16268341143", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1)})
 
-smilebutton:AddChild(smileimg)
+smileimg.Parent = smilebutton
 
 t:Destroy()
 
 local flagbutton, t = othercreatenicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0, 0), "", window)
 
-flagbutton:AddChild(screen:CreateElement("ImageLabel", {Image = "rbxassetid://16268281465", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1)}))
+screen:CreateElement("ImageLabel", {Image = "rbxassetid://16268281465", BackgroundTransparency = 1, Size = UDim2.fromScale(1, 1)}).Parent = flagbutton
 
 t:Destroy()
 
 local score = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.35, 0.2), Position = UDim2.fromScale(0.15, 0), Text = "0", BackgroundTransparency = 1, TextScaled = true})
-
-window:AddChild(score)
+score.Parent = window
 
 local curtime = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.35, 0.2), Position = UDim2.fromScale(0.65, 0), Text = "0", BackgroundTransparency = 1, TextScaled = true})
 local starttime = nil
-
-window:AddChild(curtime)
+curtime.Parent = window
 
 local restartgame
 local bombshower
@@ -119,15 +117,13 @@ local function findbombsnear(square)
 
 	for index, value in ipairs(bombpositions) do
 		local bomb = screen:CreateElement("Frame", {Size = UDim2.fromScale(squaresize, squaresize), Position = value, BackgroundTransparency = 1})
-		
-		squareholder:AddChild(bomb)
+		bomb.Parent = squareholder
 
 		table.insert(bombs, bomb)
 	end
 
 	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5), BackgroundTransparency = 1})
-
-	square:AddChild(bigsquare)
+	bigsquare.Parent = square
 
 	local colliding = GetTouchingGuiObjects(bigsquare, bombs)
 	
@@ -149,7 +145,7 @@ end
 local function youwon()
 	local windowb = CreateWindow(UDim2.fromScale(0.5, 0.5), "You won", true, true, false, nil, true, false)
 
-	windowb:AddChild(screen:CreateElement("TextLabel", {Text = "You won!", Size = UDim2.fromScale(1, 1), TextScaled = true, BackgroundTransparency = 1}))
+	screen:CreateElement("TextLabel", {Text = "You won!", Size = UDim2.fromScale(1, 1), TextScaled = true, BackgroundTransparency = 1}).Parent = windowb
 
 	local sound = speaker:LoadSound("rbxassetid://12222253")
 	sound.Volume = 1
@@ -160,8 +156,7 @@ end
 
 local function shownear(square)
 	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5)})
-
-	square:AddChild(bigsquare)
+	bigsquare.Parent = square
 	
 	local colliding = GetTouchingGuiObjects(bigsquare, guis)
 	
@@ -213,8 +208,7 @@ function Trigger(mode, square, txtlabel)
 
 		for index, value in ipairs(bombpositions) do
 			local bomb = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(squaresize, squaresize), Image = "rbxassetid://16268280434", Position = value, BackgroundTransparency = 1})
-
-			squareholder:AddChild(bomb)
+			bomb.Parent = squareholder
 		end
 	elseif not found then
 		local returnval = findbombsnear(square)
@@ -252,7 +246,7 @@ local function placeflagfunc(square, flag)
 		score.Text = bombshower
 	elseif square.Image ~= "rbxassetid://15625805069" and bombshower > 0 then
 		flag = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(squaresize, squaresize), Image = "rbxassetid://16268281465", Position = square.Position, BackgroundTransparency = 1})
-		squareholder:AddChild(flag)
+		flag.Parent = squareholder
 
 		bombshower -= 1
 		score.Text = bombshower
@@ -283,7 +277,7 @@ local function restartgamenow()
 	end
 
 	squareholder = screen:CreateElement("Frame", {Size = UDim2.fromScale(1, 0.8), BackgroundTransparency = 1, Position = UDim2.fromScale(0, 0.2)})
-	window:AddChild(squareholder)
+	squareholder.Parent = window
 
 	for x = 0, 1-squaresize, squaresize do
 
@@ -355,11 +349,10 @@ end
 
 local function createlist(frame, content, func)
 	local frame1 = screen:CreateElement("ImageLabel", {Image = "rbxassetid://8677487226", Size = UDim2.fromScale(1, 2), Position = UDim2.fromScale(1, 0), BackgroundTransparency = 1})
-	frame:AddChild(frame1)
+	frame1.Parent = frame
 
 	local scrollframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.fromScale(1, 1), CanvasSize = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, ScrollBarThickness = 5})
-
-	frame1:AddChild(scrollframe)
+	scrollframe.Parent = frame1
 
 	scrollframe.CanvasSize = UDim2.fromScale(0, #content*0.5)
 
@@ -382,10 +375,10 @@ function restartgame()
 	local windowa, frame1, closebutton, maximizebutton, textlabel, resizebutton, minimizebutton, functions, frameindex = CreateWindow(UDim2.fromScale(0.7, 0.7), "Select", false, false, false, nil, true, false)
 
 	local textlabel1 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.2), TextScaled = true, BackgroundTransparency = 1, Text = "Select Amount of mines"})
-	windowa:AddChild(textlabel1)
+	textlabel1.Parent = windowa
 
 	local textlabel2 = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(0.5, 0.2), Position = UDim2.fromScale(0.25, 0.2), TextScaled = true, BackgroundTransparency = 1, Text = bombnumber})
-	windowa:AddChild(textlabel2)
+	textlabel2.Parent = windowa
 
 	local selectedsize = bombnumber
 
@@ -415,7 +408,7 @@ function restartgame()
 	}
 
 	local textlabel3 = screen:CreateElement("TextLabel", {Position = UDim2.fromScale(0, 0.4), Size = UDim2.fromScale(1, 0.2), TextScaled = true, BackgroundTransparency = 1, Text = "Select the size of the squares"})
-	windowa:AddChild(textlabel3)
+	textlabel3.Parent = windowa
 
 	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.6), tempsize, windowa)
 
