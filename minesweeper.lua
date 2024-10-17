@@ -147,7 +147,7 @@ local function youwon()
 
 	screen:CreateElement("TextLabel", {Text = "You won!", Size = UDim2.fromScale(1, 1), TextScaled = true, BackgroundTransparency = 1}).Parent = windowb
 
-	pcall(function()
+	coroutine.resume(coroutine.create(function()
 		local sound = speaker:LoadSound("rbxassetid://12222253")
 		sound.Volume = 1
 		sound:Play()
@@ -161,8 +161,12 @@ local function shownear(square)
 	bigsquare.Parent = square
 	
 	local colliding = GetTouchingGuiObjects(bigsquare, guis)
-	
+
+	local previ = 0
 	for index, value in ipairs(colliding) do
+		if index - previ > 5 then
+			task.wait()
+		end
 		if value.Image ~= "rbxassetid://15625805069" then
 			local textlabl = nil
 			for ind, val in ipairs(txts) do
@@ -173,7 +177,6 @@ local function shownear(square)
 			
 			Trigger(1, value, textlabl)
 		end
-		task.wait()
 	end
 
 	bigsquare:Destroy()
@@ -183,7 +186,7 @@ local function died()
 	starttime = nil
 	smileimg.Image = "rbxassetid://16268745056"
 	donttrigger = true
-	pcall(function()
+	coroutine.resume(coroutine.create(function()
 		local sound = speaker:LoadSound("rbxassetid://3802269741")
 		sound.Volume = 1
 		sound:Play()
@@ -255,7 +258,7 @@ local function placeflagfunc(square, flag)
 		bombshower -= 1
 		score.Text = bombshower
 
-		pcall(function()
+		coroutine.resume(coroutine.create(function()
 			local sound = speaker:LoadSound("rbxassetid://4831091467")
 			sound.Volume = 1
 			sound:Play()
