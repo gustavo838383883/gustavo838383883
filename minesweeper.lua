@@ -147,11 +147,13 @@ local function youwon()
 
 	screen:CreateElement("TextLabel", {Text = "You won!", Size = UDim2.fromScale(1, 1), TextScaled = true, BackgroundTransparency = 1}).Parent = windowb
 
-	local sound = speaker:LoadSound("rbxassetid://12222253")
-	sound.Volume = 1
-	sound:Play()
-	task.wait(2)
-	sound:Destroy()
+	pcall(function()
+		local sound = speaker:LoadSound("rbxassetid://12222253")
+		sound.Volume = 1
+		sound:Play()
+		task.wait(2)
+		sound:Destroy()
+	end)
 end
 
 local function shownear(square)
@@ -181,11 +183,13 @@ local function died()
 	starttime = nil
 	smileimg.Image = "rbxassetid://16268745056"
 	donttrigger = true
-	local sound = speaker:LoadSound("rbxassetid://3802269741")
-	sound.Volume = 1
-	sound:Play()
-	task.wait(2)
-	sound:Destroy()
+	pcall(function()
+		local sound = speaker:LoadSound("rbxassetid://3802269741")
+		sound.Volume = 1
+		sound:Play()
+		task.wait(2)
+		sound:Destroy()
+	end)
 end
 
 local textcolors = {
@@ -251,12 +255,13 @@ local function placeflagfunc(square, flag)
 		bombshower -= 1
 		score.Text = bombshower
 
-		local sound = speaker:LoadSound("rbxassetid://4831091467")
-		sound.Volume = 1
-		sound:Play()
-		task.wait(1)
-		sound:Destroy()
-
+		pcall(function()
+			local sound = speaker:LoadSound("rbxassetid://4831091467")
+			sound.Volume = 1
+			sound:Play()
+			task.wait(1)
+			sound:Destroy()
+		end)
 	end
 
 	return flag
