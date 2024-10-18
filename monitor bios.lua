@@ -96,7 +96,7 @@ local function destroyoldvolumegui()
 end
 
 local function exists(frame)
-	if frame and pcall(function() frame.Name = frame.Name end) then
+	if frame and pcall(function() frame.Parent = frame.Parent end) then
 		return true
 	end
 	return false
