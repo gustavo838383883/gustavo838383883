@@ -1277,7 +1277,7 @@ end
 
 function bootos()
 	if disks and #disks > 0 then
-		print(tostring(romport).."\\"..tostring(disksport))
+		print(`{romport}\\{disksport}`)
 		if romport ~= disksport then
 			local indexusing1
 
