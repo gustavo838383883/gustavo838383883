@@ -226,29 +226,31 @@ function commandline.new(scr)
 		biggesttextx = 0
 	end
 
-	function lines.insert(text, udim2)
+	function lines.insert(text, udim2, dontscroll)
 		print(text)
-		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = richtext, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
+		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = (richtext or function() return false end)(), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
 			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
 			if textlabel.TextBounds.X > biggesttextx then
 				biggesttextx = textlabel.TextBounds.X
 			end
 			textlabel.Parent = background
-			background.CanvasSize = UDim2.new(0, biggesttextx, 0, math.max(screen:GetDimensions().Y, lines.number.Y.Offset + math.max(textlabel.TextBounds.Y, textlabel.TextSize)))
+			background.CanvasSize = UDim2.new(0, biggesttextx, 0, math.max(background.AbsoluteSize.Y, lines.number.Y.Offset + math.max(textlabel.TextBounds.Y, textlabel.TextSize)))
 			if typeof(udim2) == "UDim2" then
 				textlabel.Size = udim2
 				local newsizex = if udim2.X.Offset > biggesttextx then udim2.X.Offset else 0
 				background.CanvasSize -= UDim2.fromOffset(newsizex, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
 				background.CanvasSize += UDim2.new(0, newsizex, 0, udim2.Y.Offset)
-				if udim2.X.Offset > screen:GetDimensions().X then
-					background.CanvasSize += UDim2.new(0, udim2.X.Offset - screen:GetDimensions().X, 0, 0)
+				if udim2.X.Offset > background.AbsoluteSize.X then
+					background.CanvasSize += UDim2.new(0, udim2.X.Offset - background.AbsoluteSize.X, 0, 0)
 				end
 				lines.number -= UDim2.new(0,0,0,math.max(textlabel.TextBounds.Y, textlabel.TextSize))
 				lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
 			end
 			lines.number += UDim2.new(0, 0, 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
-			background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
+			if dontscroll then
+				background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
+			end
 		end
 		return textlabel
 	end
