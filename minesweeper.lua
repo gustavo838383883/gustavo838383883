@@ -1,5 +1,5 @@
 local normalcreatenicebutton = createnicebutton
-local clicksound = rom:Read("ClickSound") or "rbxassetid://6977010128"
+local clicksound = getsystemsoundid("clicksound")
 
 local function createnicebutton(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
