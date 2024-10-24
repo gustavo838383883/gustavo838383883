@@ -226,7 +226,7 @@ function commandline.new(scr)
 		biggesttextx = 0
 	end
 
-	function lines.insert(text, udim2, dontscroll)
+	function lines.insert(text, vec2, dontscroll)
 		print(text)
 		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = (richtext or function() return false end)(), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
@@ -236,20 +236,23 @@ function commandline.new(scr)
 			end
 			textlabel.Parent = background
 			background.CanvasSize = UDim2.new(0, biggesttextx, 0, math.max(background.AbsoluteSize.Y, lines.number.Y.Offset + math.max(textlabel.TextBounds.Y, textlabel.TextSize)))
-			if typeof(udim2) == "UDim2" then
-				textlabel.Size = udim2
-				local newsizex = if udim2.X.Offset > biggesttextx then udim2.X.Offset else 0
+			if typeof(vec2) == "UDim2" then
+				vec2 = Vector2.new(vec2.X.Offset + vec2.X.Scale*background.AbsoluteSize.X, vec2.Y.Offset + vec2.Y.Scale*background.AbsoluteSize.Y)
+			end
+			if typeof(vec2) == "Vector2" then
+				textlabel.Size = vec2
+				local newsizex = if vec2.X > biggesttextx then vec2.X else 0
 				background.CanvasSize -= UDim2.fromOffset(newsizex, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
-				background.CanvasSize += UDim2.new(0, newsizex, 0, udim2.Y.Offset)
+				background.CanvasSize += UDim2.new(0, newsizex, 0, vec2.Y)
 				if udim2.X.Offset > background.AbsoluteSize.X then
-					background.CanvasSize += UDim2.new(0, udim2.X.Offset - background.AbsoluteSize.X, 0, 0)
+					background.CanvasSize += UDim2.new(0, vec2.X - background.AbsoluteSize.X, 0, 0)
 				end
 				lines.number -= UDim2.new(0,0,0,math.max(textlabel.TextBounds.Y, textlabel.TextSize))
-				lines.number += UDim2.new(0, 0, udim2.Y.Scale, udim2.Y.Offset)
+				lines.number += UDim2.new(0, 0, vec2.Y, vec2.Y)
 			end
 			lines.number += UDim2.new(0, 0, 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
-			if dontscroll then
-				background.CanvasPosition = Vector2.new(0, lines.number.Y.Offset)
+			if not dontscroll then
+				background.CanvasPosition = Vector2.new(0, lines.number.Y)
 			end
 		end
 		return textlabel
@@ -1072,7 +1075,7 @@ function runtext(text)
 		if filename then
 			local output = filesystem.Read(filename, dir, true, disk)
 			if string.find(string.lower(tostring(output)), "<woshtml>") then
-				local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+				local textlabel = commandlines.insert(tostring(output), UDim2.fromScale(1, 1))
 				StringToGui(screen, tostring(output):lower(), textlabel)
 				textlabel.TextTransparency = 1
 			else
@@ -1093,7 +1096,7 @@ function runtext(text)
 		local filename = text:sub(11, string.len(text))
 		if filename and filename ~= "" then
 			local output = filesystem.Read(filename, dir, true, disk)
-			local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+			local textlabel = commandlines.insert(tostring(output), UDim2.fromScale(1, 1))
 			StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 		else
 			commandlines.insert("No filename specified")
@@ -1106,7 +1109,7 @@ function runtext(text)
 		local filename = text:sub(11, string.len(text))
 		if filename and filename ~= "" then
 			local output = filesystem.Read(filename, dir, true, disk)
-			local textlabel = commandlines.insert(output, UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+			local textlabel = commandlines.insert(output, UDim2.fromScale(1, 1))
 			local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..tostring(tonumber(output))})
 			videoframe.Parent = textlabel
 			videoframe.Playing = true
@@ -1120,7 +1123,7 @@ function runtext(text)
 	elseif lowered:sub(1, 13) == "displayimage " then
 		local id = text:sub(14, string.len(text))
 		if id and id ~= "" then
-			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+			local textlabel = commandlines.insert(tostring(id), UDim2.fromScale(1, 1))
 			StringToGui(screen, [[<img src="]]..tostring(tonumber(id))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 		else
 			commandlines.insert("No id specified")
@@ -1132,7 +1135,7 @@ function runtext(text)
 	elseif lowered:sub(1, 13) == "displayvideo " then
 		local id = text:sub(14, string.len(text))
 		if id and id ~= "" then
-			local textlabel = commandlines.insert(tostring(id), UDim2.fromOffset(screen:GetDimensions().X, screen:GetDimensions().Y))
+			local textlabel = commandlines.insert(tostring(id), UDim2.fromScale(1, 1))
 			local videoframe = screen:CreateElement("VideoFrame", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, Video = "rbxassetid://"..id})
 			videoframe.Parent = textlabel
 			videoframe.Playing = true
