@@ -14,7 +14,7 @@ local function GetTouchingGuiObjects(gui, folder)
 
 				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" and ui ~= gui then
 					if ui.Visible then
-						if ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y >= -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y <= 0 and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X >= -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X <= 0 then
+						if ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) >= -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) <= 0 and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) >= -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) <= 0 then
 							table.insert(instances, ui)
 							noinstance = false
 						end
@@ -52,7 +52,7 @@ local function GetCollidedGuiObjects(gui, folder)
 
 				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" and ui ~= gui then
 					if ui.Visible then
-						if ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y > -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y <= 0 and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X > -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X < 0 then
+						if ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) > -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) < 0 and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) > -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) < 0 then
 							table.insert(instances, ui)
 							noinstance = false
 						end
@@ -94,7 +94,7 @@ local function DetectGuiBelow(gui, folder)
 
 					if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" and ui ~= gui then
 						if ui.Visible then
-							if ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y > -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y <= 0 and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X > -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X < 0 then
+							if ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) > -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) < 0 and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) > -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) < 0 then
 								instance = ui
 								noinstance = false
 								stop = true
@@ -135,7 +135,7 @@ local function DetectGuiBelow2(gui, folder)
 
 					if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" and ui ~= gui then
 						if ui.Visible then
-							if ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y >= -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y <= 0 and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X >= -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X <= 0 then
+							if ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) >= -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) <= 0 and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) >= -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) <= 0 then
 								instance = ui
 								noinstance = false
 								stop = true
