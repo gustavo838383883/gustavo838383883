@@ -14,29 +14,7 @@ local function GetTouchingGuiObjects(gui, folder)
 
 				if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" and ui ~= gui then
 					if ui.Visible then
-						local x = ui.AbsolutePosition.X
-						local y = ui.AbsolutePosition.Y
-						local y_axis = false
-						local x_axis = false
-						local guiposx = gui.AbsolutePosition.X + gui.AbsoluteSize.X
-						local number = ui.AbsoluteSize.X + gui.AbsoluteSize.X
-
-						if x - guiposx >= -number then
-							if x - guiposx <= 0 then
-								x_axis = true
-							end
-						end
-
-						local guiposy = gui.AbsolutePosition.Y + gui.AbsoluteSize.Y
-						local number2 = ui.AbsoluteSize.Y + gui.AbsoluteSize.Y
-
-						if y - guiposy >= -number2 then
-							if y - guiposy <= 0 then
-								y_axis = true
-							end
-						end
-
-						if x_axis and y_axis then
+						if ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y >= -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y <= 0 and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X >= -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X <= 0 then
 							table.insert(instances, ui)
 							noinstance = false
 						end
@@ -96,7 +74,7 @@ local function GetCollidedGuiObjects(gui, folder)
 							end
 						end
 
-						if x_axis and y_axis then
+						if ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y > -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y <= 0 and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X > -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X < 0 then
 							table.insert(instances, ui)
 							noinstance = false
 						end
@@ -138,29 +116,7 @@ local function DetectGuiBelow(gui, folder)
 
 					if ui.ClassName == "Frame" or ui.ClassName == "ImageLabel" or ui.ClassName == "TextLabel" or ui.ClassName == "TextButton" and ui ~= gui then
 						if ui.Visible then
-							local x = ui.AbsolutePosition.X
-							local y = ui.AbsolutePosition.Y
-							local y_axis = false
-							local x_axis = false
-
-							local guiposy = gui.AbsolutePosition.Y + gui.AbsoluteSize.Y
-							local number2 = ui.AbsoluteSize.Y + gui.AbsoluteSize.Y
-							local guiposx = gui.AbsolutePosition.X + gui.AbsoluteSize.X
-							local number = ui.AbsoluteSize.X + gui.AbsoluteSize.X
-
-							if y - guiposy > -number2 then
-								if y - guiposy < 0 then
-									y_axis = true
-								end
-							end
-
-							if x - guiposx > -number then
-								if x - guiposx < 0 then
-									x_axis = true
-								end
-							end
-
-							if y_axis and x_axis then
+							if ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y > -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - gui.AbsolutePosition.Y + gui.AbsoluteSize.Y <= 0 and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X > -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - gui.AbsolutePosition.X + gui.AbsoluteSize.X < 0 then
 								instance = ui
 								noinstance = false
 								stop = true
