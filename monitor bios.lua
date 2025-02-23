@@ -154,6 +154,7 @@ else
 end
 
 local function setlimits(frame)
+	if not frame or not frame.Position then return end
 	if frame.Position.Y.Offset <= 0 then
 		if direction == 'nw' then
 			direction = 'sw'
