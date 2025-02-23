@@ -110,7 +110,7 @@ local function getstuff()
 	sharedport = nil
 
 	local previ = 0
-	for i=1, 64 do
+	for i=0, 64 do
 		if not GetPort(i) then
 			continue
 		end
