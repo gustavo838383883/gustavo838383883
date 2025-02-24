@@ -1080,7 +1080,7 @@ function runtext(text)
 			local output = filesystem.Read(filename, dir, true, disk)
 			if string.find(string.lower(tostring(output)), "<woshtml>") then
 				local textlabel = commandlines.insert(tostring(output), UDim2.fromScale(1, 1))
-				StringToGui(screen, tostring(output):lower(), textlabel)
+				StringToGui(screen, tostring(output), textlabel)
 				textlabel.TextTransparency = 1
 			else
 				local spacesplitted = string.split(tostring(output), "\n")
@@ -1260,7 +1260,8 @@ function runtext(text)
 				commandlines.insert(dir..":")
 			elseif getfileextension(filename, true) == ".gui" then
 				local textlabel = commandlines.insert(tostring(output), UDim2.fromScale(1, 1))
-				StringToGui(screen, [[<img src="]]..output..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+				StringToGui(screen, output, textlabel)
+				textlabel.TextTransparency = 1
 				commandlines.insert(dir..":")
 			else
 				if string.find(string.lower(tostring(output)), "<woshtml>") then
