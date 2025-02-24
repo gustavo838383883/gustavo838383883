@@ -158,75 +158,66 @@ end
 
 
 
-local disk = nil
 local screen = nil
+local regularscreen = nil
 local keyboard = nil
 local speaker = nil
 
 local shutdownpoly = nil
 
 local function getstuff()
-	disk = nil
 	screen = nil
+	regularscreen = nil
 	keyboard = nil
 	speaker = nil
-	shutdownpoly = nil
 
-	for i=1, 128 do
-		if not disk then
-			local success, Error = pcall(GetPartFromPort, i, "Disk")
-			if success then
-				if GetPartFromPort(i, "Disk") then
-					disk = GetPartFromPort(i, "Disk")
-				end
-			end
+	local previ = 0
+	for i=0, 64 do
+		if not GetPort(i) then
+			continue
+		end
+		if i - previ > 5 then
+			previ = i
+			task.wait(0.1)
 		end
 
-		if not shutdownpoly then
-			local success, Error = pcall(GetPartFromPort, i, "Polysilicon")
-			if success then
-				if GetPartFromPort(i, "Polysilicon") then
-					shutdownpoly = i
-				end
+		if not modem then
+			local tempmodem = GetPartFromPort(i, "Modem")
+			if tempmodem then
+				modem = tempmodem
 			end
 		end
 
 		if not speaker then
-			local success, Error = pcall(GetPartFromPort, i, "Speaker")
-			if success then
-				if GetPartFromPort(i, "Speaker") then
-					speaker = GetPartFromPort(i, "Speaker")
-				end
+			local tempspeaker = GetPartFromPort(i, "Speaker")
+			if tempspeaker then
+				speaker = tempspeaker
 			end
 		end
 		if not screen then
-			local success, Error = pcall(GetPartFromPort, i, "Screen")
-			if success then
-				if GetPartFromPort(i, "Screen") then
-					screen = GetPartFromPort(i, "Screen")
-				end
+			local tempscreen = GetPartFromPort(i, "TouchScreen")
+			if tempscreen then
+				screen = tempscreen
 			end
 		end
-		if not screen then
-			local success, Error = pcall(GetPartFromPort, i, "TouchScreen")
-			if success then
-				if GetPartFromPort(i, "TouchScreen") then
-					screen = GetPartFromPort(i, "TouchScreen")
-				end
+		if not regularscreen then
+			local tempscreen = GetPartFromPort(i, "Screen")
+			if tempscreen then
+				regularscreen = tempscreen
 			end
 		end
 		if not keyboard then
-			local success, Error = pcall(GetPartFromPort, i, "Keyboard")
-			if success then
-				if GetPartFromPort(i, "Keyboard") then
-					keyboard = GetPartFromPort(i, "Keyboard")
-				end
+			local tempkeyboard = GetPartFromPort(i, "Keyboard")
+			if tempkeyboard then
+				keyboard = tempkeyboard
 			end
 		end
 	end
 end
 
 getstuff()
+
+screen = screen or regularscreen
 
 screen:ClearElements()
 
