@@ -96,7 +96,7 @@ local function destroyoldvolumegui()
 end
 
 local function exists(frame)
-	if frame and pcall(function() frame.Parent = frame.Parent end) and frame.Destroy ~= nil then
+	if frame and frame.Destroy ~= nil then
 		return true
 	end
 	return false
