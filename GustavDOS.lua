@@ -1258,6 +1258,10 @@ function runtext(text)
 				local err = runprogram(output, filename)
 				if err then commandlines.insert(err) end
 				commandlines.insert(dir..":")
+			elseif getfileextension(filename, true) == ".gui" then
+				local textlabel = commandlines.insert(tostring(output), UDim2.fromScale(1, 1))
+				StringToGui(screen, [[<img src="]]..output..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+				commandlines.insert(dir..":")
 			else
 				if string.find(string.lower(tostring(output)), "<woshtml>") then
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
