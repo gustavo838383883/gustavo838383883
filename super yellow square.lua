@@ -285,36 +285,23 @@ local downnum = 0
 local right = false
 local left = false
 
-keyboard:Connect("KeyPressed", function(key, keystring, state)
-	if string.lower(keystring) == "d" then
-		rightnum += 1
-		if left == true then
-			leftnum = 0
-			left = false
-		end
-		
-		if rightnum == 1 then
+keyboard.UserInput:Connect(function(input)
+	local key = input.KeyCode.Name
+	if string.lower(key) == "d" then
+		if input.UserInputState.Name == "Begin" then
 			right = true
 		else
-			rightnum = 0
 			right = false
 		end
 	end
-	if string.lower(keystring) == "a" then
-		leftnum += 1
-		if right == true then
-			rightnum = 0
-			right = false
-		end
-		
-		if leftnum == 1 then
+	if string.lower(key) == "a" then
+		if input.UserInputState.Name == "Begin" then
 			left = true
 		else
-			leftnum = 0
 			left = false
 		end
 	end
-	if string.lower(keystring) == "w" then
+	if string.lower(key) == "w" then
 		if DetectGuiBelow2(hitbox, allobjects) then
 			hitbox.Position -= UDim2.new(0, 0, 0, 5)
 			if not GetCollidedGuiObjects(hitbox, allobjects) then
