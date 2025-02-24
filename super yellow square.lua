@@ -279,9 +279,6 @@ local lavas = {}
 
 table.insert(lavas, lava1)
 
-local rightnum = 0
-local leftnum = 0
-local downnum = 0
 local right = false
 local left = false
 
