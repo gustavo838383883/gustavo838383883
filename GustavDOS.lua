@@ -811,7 +811,11 @@ function runtext(text)
 			if speaker then
 				speaker:ClearSounds()
 			end
-			Microcontroller:Shutdown()
+			if not back then
+				Microcontroller:Shutdown()
+			else
+				back()
+			end
 		else
 			commandlines.insert(dir..":")
 		end
