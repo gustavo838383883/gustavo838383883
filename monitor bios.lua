@@ -207,9 +207,11 @@ while true do
 	if ts:IsDestroyed() then break end
 	if volumeframe and hasvolumecontrol then
 		if tick() - pressedtick > 2 then
-			volumeframe:Destroy()
-			volumeframe = nil
-			volumebar = nil
+			if volumeframe.Destroy then
+				volumeframe:Destroy()
+				volumeframe = nil
+				volumebar = nil
+			end
 		end
 	end
 	if main then
