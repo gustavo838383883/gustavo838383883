@@ -2131,7 +2131,6 @@ function loaddisk(directory: string, func: any, boolean1: boolean, cd)
 	end
 
 	local pressed = false
-
 	deletebutton.MouseButton1Up:Connect(function()
 		if pressed then return end
 		pressed = true
@@ -3679,6 +3678,9 @@ function shutdownprompt()
 		if programholder1 then
 			programholder1:Destroy()
 		end
+		if desktopscrollingframe then
+		    desktopscrollingframe:Destroy()
+	    end
 
 		if cursorevent then cursorevent:Disconnect() end
 		keyboardinput = nil
@@ -3739,6 +3741,9 @@ function restartprompt()
 		if programholder1 then
 			programholder1:Destroy()
 		end
+		if desktopscrollingframe then
+		    desktopscrollingframe:Destroy()
+	    end
 
 		if cursorevent then cursorevent:Disconnect() end
 		minimizedprograms = {}
@@ -5024,10 +5029,9 @@ local function loaddesktop()
 		pcall(loaddesktopicons)
 	end
 
-	local pressed = false
 	local startmenu
 	function openstartmenu(object, func)
-		if not pressed then
+		if not startmenu then
 			startmenu = screen:CreateElement("ImageButton", {BackgroundTransparency = 1, Image = "rbxassetid://15619032563", Size = UDim2.new(0.3, 0, 5, 0), Position = UDim2.new(0, 0, -5, 0), ImageTransparency = 0.2})
 			if not object then
 				startmenu.Parent = taskbarholder
@@ -5040,7 +5044,6 @@ local function loaddesktop()
 				{Text = "Settings", Function = function()
 				    startmenu:Destroy()
 					settings()
-					pressed = false
 
 					if func then
 						func("settings")
@@ -5058,7 +5061,7 @@ local function loaddesktop()
 				{Text = "Files", Function = function()
 				    startmenu:Destroy()
 					loaddisk("/", true)
-					pressed = false
+
 
 					if func then
 						func("loaddisk")
@@ -5067,7 +5070,7 @@ local function loaddesktop()
 				{Text = "Lua executor", Function = function()
 				    startmenu:Destroy()
 					customprogramthing(screen, {})
-					pressed = false
+
 
 					if func then
 						func("customprogramthing")
@@ -5076,7 +5079,7 @@ local function loaddesktop()
 				{Text = "Mediaplayer", Function = function()
 				    startmenu:Destroy()
 					mediaplayer()
-					pressed = false
+
 
 					if func then
 						func("mediaplayer")
@@ -5085,7 +5088,7 @@ local function loaddesktop()
 				{Text = "Chat", Function = function()
 				    startmenu:Destroy()
 					chatthing()
-					pressed = false
+
 
 					if func then
 						func("chatthing")
@@ -5094,7 +5097,7 @@ local function loaddesktop()
 				{Text = "Calculator", Function = function()
 				    startmenu:Destroy()
 					calculator()
-					pressed = false
+
 
 					if func then
 						func("calculator")
@@ -5103,7 +5106,7 @@ local function loaddesktop()
 				{Text = "Terminal", Function = function()
 				    startmenu:Destroy()
 					terminal()
-					pressed = false
+
 
 					if func then
 						func("terminal")
@@ -5112,7 +5115,7 @@ local function loaddesktop()
 				{Text = "Copy File", Function = function()
 				    startmenu:Destroy()
 					copyfile()
-					pressed = false
+
 
 					if func then
 						func("copyfile")
@@ -5121,7 +5124,7 @@ local function loaddesktop()
 				{Text = "Rename File", Function = function()
 				    startmenu:Destroy()
 					renamefile()
-					pressed = false
+
 
 					if func then
 						func("renamefile")
@@ -5130,7 +5133,7 @@ local function loaddesktop()
 				{Text = "Create Shortcut", Function = function()
 				    startmenu:Destroy()
 					createshortcut()
-					pressed = false
+
 
 					if func then
 						func("createshortcut")
@@ -5139,7 +5142,7 @@ local function loaddesktop()
 				{Text = "Move File", Function = function()
 				    startmenu:Destroy()
 					movefile()
-					pressed = false
+
 
 					if func then
 						func("movefile")
@@ -5157,7 +5160,7 @@ local function loaddesktop()
 
 			local shutdown = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0, 0, 0.8, 0), "Shutdown", startmenu)
 			shutdown.MouseButton1Up:Connect(function()
-				pressed = false
+
 				startmenu:Destroy()
 				shutdownprompt()
 
@@ -5168,7 +5171,7 @@ local function loaddesktop()
 
 			local restart = createnicebutton(UDim2.new(0.5,0,0.2,0), UDim2.new(0.5, 0, 0.8, 0), "Reboot", startmenu)
 			restart.MouseButton1Up:Connect(function()
-				pressed = false
+
 				startmenu:Destroy()
 				restartprompt()
 
@@ -5179,7 +5182,8 @@ local function loaddesktop()
 			pressed = true
 		else
 			startmenu:Destroy()
-			pressed = false
+			startmenu = nil
+
 		end
 
 		return startmenu
