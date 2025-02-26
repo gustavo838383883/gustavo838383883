@@ -673,6 +673,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4,
 	end)
 
 	holderframe.MouseButton1Up:Connect(function(x, y)
+	    if not startCursorPos then return end
 	    for index,cur in pairs(screen:GetCursors()) do
 			if (Vector2.new(x, y) - Vector2.new(cur.X, cur.Y)).Magnitude < 10 and cur.Player == startCursorPos.Player then
 	        	holding2 = false
@@ -5593,7 +5594,7 @@ while true do
 			end
 		end
     end
-    if startCursorPos and not screen:GetCursors()[startCursorPos] then
+    if startCursorPos and not screen:GetCursors()[Players:GetUserId(startCursorPos.Player)] then
         holding2 = false
         holding = false
     end
