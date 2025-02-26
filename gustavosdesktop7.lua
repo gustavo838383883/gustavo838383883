@@ -697,7 +697,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4,
 	if not boolean4 then
 		minimizebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0,defaultbuttonsize.X,0,defaultbuttonsize.Y), Image = "rbxassetid://15617867263", Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), BackgroundTransparency = 1})
 		minimizebutton.Parent = holderframe
-		local minimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "â†“"})
+		local minimizetext = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = "↓"})
 		minimizetext.Parent = minimizebutton
 		if title then
 			if textlabel then
@@ -3548,11 +3548,11 @@ local function calculator()
 		part3.Text = "/"
 	end)
 
-	local  button17 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.75, 0), "âˆš", holderframe)
+	local  button17 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0, 0, 0.75, 0), "√", holderframe)
 	button17.Parent = holderframe
 	button17.MouseButton1Down:Connect(function()
-		type = "âˆš"
-		part3.Text = "âˆš"
+		type = "√"
+		part3.Text = "√"
 	end)
 
 	local  button18 =  createnicebutton(UDim2.new(0.25, 0, 0.15, 0), UDim2.new(0.25, 0, 0.75, 0), "^", holderframe)
@@ -3601,7 +3601,7 @@ local function calculator()
 			type = nil
 		end
 
-		if type == "âˆš" then
+		if type == "√" then
 			part1.Text = tonumber(number2) ^ (1 / tonumber(number1))
 			number1 = tonumber(number2) ^ (1 / tonumber(number1))
 			part2.Text = ""
@@ -5181,7 +5181,7 @@ local function loaddesktop()
 			end)
 			pressed = true
 		else
-			startmenu:Destroy()
+			pcall(startmenu.Destroy, startmenu)
 			startmenu = nil
 
 		end
@@ -5598,3 +5598,13 @@ while true do
         holding = false
     end
 end
+
+
+
+
+
+
+
+
+
+
