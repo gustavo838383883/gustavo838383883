@@ -298,7 +298,7 @@ keyboard.UserInput:Connect(function(input)
 			left = false
 		end
 	end
-	if string.lower(key) == "w" then
+	if string.lower(key) == "w" and input.UserInputState.Name == "Begin" then
 		if DetectGuiBelow2(hitbox, allobjects) then
 			hitbox.Position -= UDim2.new(0, 0, 0, 5)
 			if not GetCollidedGuiObjects(hitbox, allobjects) then
