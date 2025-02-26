@@ -167,9 +167,7 @@ local function loadmicro(micro, text, lines)
 		micro.Code = tostring(text)
 		screen:ClearElements()
 
-		micropolysilicon.PolysiliconMode = 1
-
-		TriggerPort(10)
+		micro:Shutdown()
 
 		micropolysilicon.PolysiliconMode = 0
 
