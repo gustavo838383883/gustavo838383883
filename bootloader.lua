@@ -122,7 +122,7 @@ function commandline.new(scr)
 
 	function lines.insert(text, udim2)
 		print(text)
-		local textlabel = screen:CreateElement("TextBox", {TextSize = 10, ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
+		local textlabel = screen:CreateElement("TextBox", {TextSize = 10, ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tonumber(text) or tostring(text):gsub("\n", ""), RichText = true, TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
 			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
 			local textbounds = textlabel.TextBounds
