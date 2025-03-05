@@ -608,6 +608,7 @@ local function playsound(txt)
 			end
 		end
 	end
+	speaker.Volume = speaker.Volume
 end
 
 local coroutineprograms = {}
