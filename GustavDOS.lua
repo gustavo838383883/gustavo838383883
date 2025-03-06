@@ -654,6 +654,7 @@ end
 local luaprogram
 local runtext
 local cmdsenabled = true
+local iconnections = {}
 
 local function runprogram(text, name)
 	if not text then error("no code to run was given in parameter two.") end
@@ -676,6 +677,17 @@ local function runprogram(text, name)
 		cmdsenabled = function()
 			return cmdsenabled
 		end,
+		getinput = function(func)
+			assert(type(func) == "function", "The given parameter is not a function")
+			table.insert(iconnections, func)
+			return function()
+				local found = table.find(iconnections, func)
+				if found then
+					table.remove(iconnections, found)
+				end
+				found = nil
+			end
+		end
 	}
 	fenv["screen"] = screen
 	fenv["keyboard"] = keyboard
@@ -1395,7 +1407,10 @@ function bootos()
 				runtext(tostring(text):gsub("\n", ""))
 			else
 				func(text)
-			end
+			end					
+			for i, f in iconnections do
+				f(text)
+		    	end
 		end)
 	elseif screen then
 		screen:ClearElements()
