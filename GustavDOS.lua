@@ -1409,7 +1409,7 @@ function bootos()
 				func(text)
 			end					
 			for i, f in iconnections do
-				f(text)
+				f(text, player)
 		    	end
 		end)
 	elseif screen then
