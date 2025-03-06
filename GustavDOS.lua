@@ -1399,7 +1399,10 @@ function bootos()
 			end,
 		}
 		if keyboardevent then keyboardevent:Disconnect() end
-		keyboardevent = keyboard.TextInputted:Connect(function(text, player)
+		keyboardevent = keyboard.TextInputted:Connect(function(text, player)			
+			for i, f in iconnections do
+				f(text, player)
+		    	end
 			if not cmdsenabled then return end
 			local func = exclmarkthings[string.sub(tostring(text), 1, 2)]
 			if not func then
@@ -1407,10 +1410,7 @@ function bootos()
 				runtext(tostring(text):gsub("\n", ""))
 			else
 				func(text)
-			end					
-			for i, f in iconnections do
-				f(text, player)
-		    	end
+			end
 		end)
 	elseif screen then
 		screen:ClearElements()
