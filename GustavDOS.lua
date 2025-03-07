@@ -687,7 +687,8 @@ local function runprogram(text, name)
 				end
 				found = nil
 			end
-		end
+		end,
+		getDir = function() return dir end
 	}
 	fenv["screen"] = screen
 	fenv["keyboard"] = keyboard
