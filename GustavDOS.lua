@@ -697,7 +697,9 @@ local function runprogram(text, name)
 	fenv["disks"] = disks
 	fenv["runtext"] = runtext
 	local prg
-	fenv["getprg"] = function() return prg end
+	fenv["getSelf"] = function()
+        	return prg, name
+    	end
 	local func, b = loadstring(text)
 	if func then
 		setfenv(func, fenv)
