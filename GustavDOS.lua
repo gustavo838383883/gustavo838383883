@@ -696,7 +696,7 @@ local function runprogram(text, name)
 			end)
 			return disconnect
 		end,
-		getDir = function() return dir, disk end
+		getdir = function() return dir, disk end
 	}
 	fenv["screen"] = screen
 	fenv["keyboard"] = keyboard
