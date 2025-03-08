@@ -644,7 +644,7 @@ end
 
 local function stopprogrambyname(name)
 	for i, program in ipairs(coroutineprograms) do
-		if coroutine.status(program.coroutine) ~= "dead" then
+		if coroutine.status(program.coroutine) ~= "dead" and program.name == name then
 			coroutine.close(program.coroutine)
 			table.remove(coroutineprograms, table.find(coroutineprograms, program))
 		end
