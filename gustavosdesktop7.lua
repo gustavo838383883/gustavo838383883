@@ -816,7 +816,7 @@ function commandline.new(boolean, udim2, scr, richtext)
 
 	function lines.insert(text, vec2, dontscroll)
 		print(text)
-		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tostring(text):gsub("\n", ""), RichText = (richtext or function() return false end)(), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
+		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tonumber(text) or tostring(text):gsub("\n", ""), RichText = (richtext or function() return false end)(), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
 			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
 			if textlabel.TextBounds.X > biggesttextx then
@@ -863,7 +863,7 @@ local backgroundcolor
 
 local function createnicebutton(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15625805900", Position = pos, BackgroundTransparency = 1})
-	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text), RichText = true})
+	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tonumber(text) or tostring(text), RichText = true})
 	txtlabel.Parent = txtbutton
 	if Parent then
 		txtbutton.Parent = Parent
@@ -880,7 +880,7 @@ end
 
 local function createnicebutton2(udim2, pos, text, Parent)
 	local txtbutton = screen:CreateElement("ImageButton", {Size = udim2, Image = "rbxassetid://15617867263", Position = pos, BackgroundTransparency = 1})
-	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(text), RichText = true})
+	local txtlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tonumber(text) or tostring(text), RichText = true})
 	txtlabel.Parent = txtbutton
 	if Parent then
 		txtbutton.Parent = Parent
@@ -1056,7 +1056,7 @@ local function StringToGui(screen, text, parent)
 				link = string.gsub(link, "_higher_", '>')
 				link = string.gsub(link, "_lower_", '<')
 
-				url.Text = link
+				url.Text = tonumber(link) or link
 				url.RichText = true
 				if (string.find(value, [[rotation="]])) then
 					local text = string.sub(value, string.find(value, [[rotation="]]) + string.len([[rotation="]]), string.len(value))
@@ -1462,6 +1462,7 @@ local function audioui(screen, disk, data, speaker, pitch, length, name)
 		sound.Looped = true
 	end
 	sound:Play()
+	speaker.Volume = speaker.Volume
 
 	local soundplaying = true
 
@@ -1585,7 +1586,7 @@ end
 
 local function stopprogrambyname(name)
 	for i, program in ipairs(coroutineprograms) do
-		if coroutine.status(program.coroutine) ~= "dead" then
+		if coroutine.status(program.coroutine) ~= "dead" and program.name == name then
 			coroutine.close(program.coroutine)
 			table.remove(coroutineprograms, table.find(coroutineprograms, program))
 		end
@@ -1594,11 +1595,11 @@ end
 
 local luaprogram
 local runtext
-local cmdsenabled = true
 local readfile
 local openstartmenu
 local shutdownprompt
 local restartprompt
+local terminal
 
 local function runprogram(text, name, extraname, extra)
 	if not text then error("no code to run was given in parameter two.") end
@@ -1620,7 +1621,7 @@ local function runprogram(text, name, extraname, extra)
 		elseif name == "clicksound" then
 			return clicksound
 		end
-	end
+end
 	fenv["keyboard"] = keyboard
 	fenv["modem"] = modem
 	fenv["speaker"] = speaker
@@ -1636,6 +1637,7 @@ local function runprogram(text, name, extraname, extra)
 	fenv["openstartmenu"] = openstartmenu
 	fenv["programholder1"] = programholder1
 	fenv["programholder2"] = programholder2
+	fenv["defaultbuttonsize"] = defaultbuttonsize
 	fenv["resolutionframe"] = resolutionframe
 	fenv["mainframe"] = mainframe
 	fenv["TaskBar"] = {taskbarholderscrollingframe, taskbarholder, startbutton7}
@@ -1644,11 +1646,14 @@ local function runprogram(text, name, extraname, extra)
 	fenv["backgroundcolor"] = backgroundcolor
 	fenv["microphone"] = microphone
 	fenv["fileexplorer"] = loaddisk
+	fenv["terminal"] = terminal
 	fenv["getWindows"] = function()
 		return table.clone(windows)
 	end
 	local prg
-	fenv["getprg"] = function() return prg end
+	fenv["getSelf"] = function()
+        return prg, name
+    end
 
 	local func, b = loadstring(text)
 	if func then
@@ -1680,13 +1685,13 @@ table.freeze(luaprogram)
 
 function readfile(txt, nameondisk, directory, cd)
 	local disk = cd or disk
-	local filegui, window, closebutton, maximizebutton, textlabel, resize, min, funcs = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, nameondisk or "File", false)
+	local filegui, window, closebutton, maximizebutton, textlabel, resize, min, funcs = CreateWindow(UDim2.new(0.7, 0, 0.7, 0), nil, false, false, false, tonumber(nameondisk) or nameondisk or "File", false)
 	local deletebutton = nil
 	local prevdir = directory
 	local prevtxt = txt
 	local prevname = nameondisk
 
-	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tostring(txt), RichText = true, BackgroundTransparency = 1})
+	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tonumber(txt) or tostring(txt), RichText = true, BackgroundTransparency = 1})
 	disktext.Parent = filegui
 
 	print(txt)
@@ -1932,7 +1937,7 @@ function loaddisk(directory: string, func: any, boolean1: boolean, cd)
 
 	function loadfile(filename, dataz, disk)
 		if filename then
-			local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tostring(filename), scrollingframe)
+			local button, textlabel = createnicebutton(UDim2.new(1,0,0,25), UDim2.new(0, 0, 0, start), tonumber(filename) or tostring(filename), scrollingframe)
 			textlabel.Size = UDim2.new(1, -25, 1, 0)
 			textlabel.Position = UDim2.new(0, 25, 0, 0)
 
@@ -2062,7 +2067,7 @@ function loaddisk(directory: string, func: any, boolean1: boolean, cd)
 						selecteddir = directory
 						selectedname = filename
 						selecteddisk = disk
-						selected.Text = tostring(filename)
+						selected.Text = tonumber(filename) or tostring(filename)
 					end
 				else
 					if boolean1 then
@@ -3330,8 +3335,8 @@ local function chatthing()
 			end
 
 			local holdframe = screen:CreateElement("Frame", {BorderSizePixel = 0, BackgroundColor3 = backcolor, BackgroundTransparency = 0.5, Size = UDim2.new(1, 0, 0, 100), Position = UDim2.fromOffset(0, start)})
-			local playerlabel = screen:CreateElement("TextLabel", {Text = player, Size = UDim2.new(1, 0, 0, 50), BackgroundTransparency = 1, TextScaled = true, BackgroundColor3 = backcolor})
-			local textlabel = screen:CreateElement("TextLabel", {Text = data, Size = UDim2.new(1, 0, 0, 50), BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 50), TextScaled = true, BackgroundColor3 = backcolor})
+			local playerlabel = screen:CreateElement("TextLabel", {Text = player, Size = UDim2.new(1, 0, 0, 50), BackgroundTransparency = 1, TextScaled = true, TextColor3 = if backcolor == Color3.new(0, 0, 0) then Color3.new(1, 1, 1) else Color3.new(0, 0, 0)})
+			local textlabel = screen:CreateElement("TextLabel", {Text = data, Size = UDim2.new(1, 0, 0, 50), BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 50), TextScaled = true, TextColor3 = if backcolor == Color3.new(0, 0, 0) then Color3.new(1, 1, 1) else Color3.new(0, 0, 0)})
 			textlabel.Parent = holdframe
 			playerlabel.Parent = holdframe
 			holdframe.Parent = scrollingframe
@@ -3345,7 +3350,7 @@ local function chatthing()
 			scrollingframe.CanvasPosition = Vector2.new(0, start + 100)
 		end)
 	else
-		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,0), Position = UDim2.new(0,0,0,0), BackgroundTransparency = 1})
+		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
 		textlabel.Parent = holderframe
 	end
 end
@@ -3696,6 +3701,7 @@ function shutdownprompt()
 				local sound = speaker:LoadSound(`rbxassetid://{shutdownsound}`)
 				sound.Volume = 1
 				sound:Play()
+				speaker.Volume = speaker.Volume
 
 				task.wait(2)
 				sound:Destroy()
@@ -3990,7 +3996,7 @@ function loaddesktopicons()
 			holderbutton.Parent = desktopscrollingframe
 			local imagelabel = screen:CreateElement("ImageLabel", {Size = UDim2.fromScale(1, 0.5), ScaleType = Enum.ScaleType.Fit, BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
 			imagelabel.Parent = holderbutton
-			local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tostring(filename), TextStrokeColor3 = Color3.new(0,0,0), TextColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0.25})
+			local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tonumber(filename) or tostring(filename), TextStrokeColor3 = Color3.new(0,0,0), TextColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0.25})
 			textlabel.Parent = holderbutton
 
 			if string.find(filename, "%.gui") or string.find(string.lower(tostring(data)), "<woshtml>") then
@@ -4134,7 +4140,9 @@ function loaddesktopicons()
 	end
 end
 
-local function terminal()
+local iconnections = {}
+
+function terminal()
 	local richtext = false
 	local keyboardevent
 	local position = UDim2.new(0,0,0,0)
@@ -4198,8 +4206,11 @@ local function terminal()
 			else
 				audioui(screen, disk, txt, speaker, nil, nil, name)
 			end
-		end
+	    end
+	    speaker.Volume = speaker.Volume
 	end
+
+    local cmdsenabled = true
 
 	local prglines = {
 		clear = commandlines.clear,
@@ -4214,6 +4225,26 @@ local function terminal()
 		cmdsenabled = function()
 			return cmdsenabled
 		end,
+		getinput = function(func)
+		    assert(type(func) == "function", "The given parameter is not a function")
+		    local getprogram = getfenv().getSelf
+		    local disconnect = function()
+		        local found = table.find(iconnections, func)
+		        if found then
+		            table.remove(iconnections, found)
+		        end
+		        found = nil
+	        end
+		    table.insert(iconnections, function()
+		        if coroutine.status(getprogram()) == "dead" then
+		            disconnect()
+		            return
+	            end
+	            func()
+	        end)
+		    return disconnect
+        end,
+		getDir = function() return dir end
 	}
 
 	local function runtext(text)
@@ -4807,6 +4838,10 @@ local function terminal()
 			keyboardevent = keyboard.TextInputted:Connect(function(text, player)
 				if windowz:IsClosed() then keyboardevent:Disconnect() return end
 				if not windowz:IsFocused() then return end
+				for i, f in iconnections do
+				    f(text, player)
+			    end
+				if not cmdsenabled then return end
 				local func = exclmarkthings[string.sub(tostring(text), 1, 2)]
 				if not func then
 					commandlines.insert(text)
@@ -5335,6 +5370,7 @@ function loadingscreen(boolean1, boolean2)
 			local sound = speaker:LoadSound(`rbxassetid://{startsound}`)
 			sound.Volume = 1
 			sound:Play()
+			speaker.Volume = speaker.Volume
 
 			task.wait(3)
 			sound:Destroy()
@@ -5463,7 +5499,7 @@ function bootos()
 			iconsize = rom:Read("IconSize")
 			iconsize = tonumber(iconsize) or 0.2
 			if not color then color = disk:Read("Color") end
-			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15705296956,false") end
+			if not disk:Read("BackgroundImage") then disk:Write("BackgroundImage", "15617469527,false") end --15705296956
 			local diskbackgroundimage = disk:Read("BackgroundImage")
 			if color then
 				color = string.split(color, ",")
@@ -5599,13 +5635,3 @@ while true do
         holding = false
     end
 end
-
-
-
-
-
-
-
-
-
-
