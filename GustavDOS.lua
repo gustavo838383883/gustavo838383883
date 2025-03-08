@@ -679,14 +679,22 @@ local function runprogram(text, name)
 		end,
 		getinput = function(func)
 			assert(type(func) == "function", "The given parameter is not a function")
-			table.insert(iconnections, func)
-			return function()
+			local getprogram = getfenv().getSelf
+			local disconnect = function()
 				local found = table.find(iconnections, func)
 				if found then
 					table.remove(iconnections, found)
 				end
 				found = nil
 			end
+			table.insert(iconnections, function()
+				if coroutine.status(getprogram()) == "dead" then
+					disconnect()
+					return
+				end
+				func()
+			end)
+			return disconnect
 		end,
 		getDir = function() return dir end
 	}
