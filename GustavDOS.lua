@@ -1376,6 +1376,7 @@ function bootos()
 		if regularscreen then screen = regularscreen end
 	end
 	if screen and keyboard and disk and rom then
+		table.freeze(disks)
 		rom:Write("SysDisk", true)
 		if speaker then
 			speaker:ClearSounds()
