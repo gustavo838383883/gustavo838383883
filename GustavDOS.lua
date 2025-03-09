@@ -680,21 +680,14 @@ local function runprogram(text, name)
 		getinput = function(prg, func)
 			assert(type(func) == "function", "The given parameter is not a function")
 			local disconnect
-			local f = function(text, player)
-			        if not coroutineprograms[prg] then
-					disconnect()
-			    		return
-		            	end
-				func(text, player)
-			end
 			disconnect = function()
-				local found = table.find(iconnections, f)
+				local found = table.find(iconnections, func)
 				if found then
 					table.remove(iconnections, found)
 				end
 				found = nil
 			end
-			table.insert(iconnections, f)
+			table.insert(iconnections, func)
 			return disconnect
 		end,
 		getdir = function() return dir, disk end
@@ -822,6 +815,7 @@ function runtext(text)
 		end
 		commandlines.insert(dir..":")
 	elseif lowered:gsub("%s", "") == "reboot" then
+		iconnections = {}
 		task.wait(1)
 		Beep(1)
 		getstuff()
@@ -830,6 +824,7 @@ function runtext(text)
 		bootos()
 	elseif lowered:gsub("%s", "") == "shutdown" then
 		if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
+			iconnections = {}
 			task.wait(1)
 			Beep(1)
 			screen:ClearElements()
