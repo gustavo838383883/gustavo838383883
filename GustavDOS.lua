@@ -679,6 +679,7 @@ local function runprogram(text, name)
 		end,
 		getinput = function(prg, func)
 			assert(type(func) == "function", "The given parameter is not a function")
+			local disconnect
 			func = function()
 			        if not coroutineprograms[prg] then
 					disconnect()
@@ -686,7 +687,7 @@ local function runprogram(text, name)
 		            	end
 				func()
 			end
-			local disconnect = function()
+			disconnect = function()
 				local found = table.find(iconnections, func)
 				if found then
 					table.remove(iconnections, found)
