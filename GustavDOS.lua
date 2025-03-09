@@ -841,7 +841,7 @@ function runtext(text)
 		if not putermode then
 	    		bootos()
 		else
-			pcall(TriggerPort, 2)
+			pcall(TriggerPort, 3)
 		end
 	elseif lowered:gsub("%s", "") == "shutdown" then
 		if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
