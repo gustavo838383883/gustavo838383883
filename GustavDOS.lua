@@ -235,7 +235,7 @@ function commandline.new(scr)
 				biggesttextx = textlabel.TextBounds.X
 			end
 			textlabel.Parent = background
-			background.CanvasSize = UDim2.new(0, biggesttextx, 0, math.max(background.AbsoluteSize.Y, lines.number.Y.Offset + math.max(textlabel.TextBounds.Y, textlabel.TextSize)))
+			background.CanvasSize = UDim2.new(0, biggesttextx, 0, math.max(background.AbsoluteSize.Y, lines.number.Y.Offset + textlabel.TextSize))
 			if typeof(vec2) == "UDim2" then
 				vec2 = Vector2.new(vec2.X.Offset + vec2.X.Scale*background.AbsoluteSize.X, vec2.Y.Offset + vec2.Y.Scale*background.AbsoluteSize.Y)
 			end
