@@ -1372,6 +1372,7 @@ function bootos()
 		if regularscreen then screen = regularscreen end
 	end
 	if screen and keyboard and disk and rom then
+		table.clear(iconnections)
 		table.freeze(disks)
 		rom:Write("SysDisk", true)
 		if speaker then
@@ -1409,7 +1410,7 @@ function bootos()
 		if keyboardevent then keyboardevent:Disconnect() end
 		keyboardevent = keyboard.TextInputted:Connect(function(text, player)			
 			for i, f in iconnections do
-				f(text, player)
+				pcall(f, text, player)
 		    	end
 			if not cmdsenabled then return end
 			local func = exclmarkthings[string.sub(tostring(text), 1, 2)]
