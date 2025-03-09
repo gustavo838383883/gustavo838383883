@@ -95,6 +95,19 @@ local sharedport
 
 local CreateWindow
 
+local found, disk1s = pcall(GetPartsFromPort, 1, "Disk")
+local putermode = false
+
+if found and #disk1s > 0 then
+	for i, disk in disk1s do
+		if disk:Read("/") == "t:folder" then
+			putermode = true
+			print("putermode")
+			break
+		end
+	end
+end
+
 local function getstuff()
 	disks = nil
 	rom = nil
@@ -119,32 +132,36 @@ local function getstuff()
 			task.wait(0.1)
 		end
 		if not rom then
-			local temprom = GetPartFromPort(i, "Disk")
-			if temprom then
-				if #temprom:ReadAll() == 0 then
-					rom = temprom
-					romport = i
-				elseif temprom:Read("SysDisk") then
-					rom = temprom
-					romport = i
+			if (putermode and i ~= 1) or not putermode then
+				local temprom = GetPartFromPort(i, "Disk")
+				if temprom then
+					if #temprom:ReadAll() == 0 then
+						rom = temprom
+						romport = i
+					elseif temprom:Read("SysDisk") then
+						rom = temprom
+						romport = i
+					end
 				end
 			end
 		end
 		if not disks then
-			local disktable = GetPartsFromPort(i, "Disk")
-			if disktable then
-				if #disktable > 0 then
-					local cancel = false
-					local tempport = GetPartFromPort(i, "Port")
-					if tempport and tempport.PortID == romport then
-						cancel = true
-					end
-					if romport == i and #disktable == 1 then
-						cancel = true
-					end
-					if not cancel then
-						disks = disktable
-						disksport = i
+			if (putermode and i == 1) or not putermode then
+				local disktable = GetPartsFromPort(i, "Disk")
+				if disktable then
+					if #disktable > 0 then
+						local cancel = false
+						local tempport = GetPartFromPort(i, "Port")
+						if tempport and tempport.PortID == romport then
+							cancel = true
+						end
+						if romport == i and #disktable == 1 then
+							cancel = true
+						end
+						if not cancel then
+							disks = disktable
+							disksport = i
+						end
 					end
 				end
 			end
@@ -831,10 +848,14 @@ function runtext(text)
 			if speaker then
 				speaker:ClearSounds()
 			end
-			if not back then
-				Microcontroller:Shutdown()
+			if not putermode then
+    				if not back then
+					Microcontroller:Shutdown()
+				else
+					back()
+				end
 			else
-				back()
+				pcall(TriggerPort, 2)
 			end
 		else
 			commandlines.insert(dir..":")
