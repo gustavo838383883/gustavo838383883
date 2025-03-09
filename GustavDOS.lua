@@ -677,9 +677,15 @@ local function runprogram(text, name)
 		cmdsenabled = function()
 			return cmdsenabled
 		end,
-		getinput = function(func)
+		getinput = function(prg, func)
 			assert(type(func) == "function", "The given parameter is not a function")
-			local getprogram = getfenv().getSelf
+			func = function()
+			        if not coroutineprograms[prg] then
+					disconnect()
+			    		return
+		            	end
+				func()
+			end
 			local disconnect = function()
 				local found = table.find(iconnections, func)
 				if found then
@@ -687,13 +693,7 @@ local function runprogram(text, name)
 				end
 				found = nil
 			end
-			table.insert(iconnections, function()
-				if not coroutineprograms[getfenv().getSelf()] then
-					disconnect()
-					return
-				end
-				func()
-			end)
+			table.insert(iconnections, func)
 			return disconnect
 		end,
 		getdir = function() return dir, disk end
