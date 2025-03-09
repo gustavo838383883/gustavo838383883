@@ -230,7 +230,7 @@ function commandline.new(scr)
 		print(text)
 		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tonumber(text) or tostring(text):gsub("\n", ""), RichText = (richtext or function() return false end)(), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
-			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, textlabel.TextSize)
 			if textlabel.TextBounds.X > biggesttextx then
 				biggesttextx = textlabel.TextBounds.X
 			end
