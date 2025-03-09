@@ -94,19 +94,17 @@ local bootos
 
 local CreateWindow
 
-local disk6 = GetPartFromPort(6, "Disk")
+local found, disk1s = pcall(GetPartsFromPort, 1, "Disk")
 local putermode = false
 
-if disk6 and disk6:Read("PuterLibrary") then
-	disk6:ClearDisk()
-	disk6:Write("PuterMode", true)
-	putermode = true
-elseif disk6 and disk6:Read("PuterMode") == true then
-	putermode = true
-end
-
-if putermode then
-	pcall(TriggerPort, 4)
+if found and #disk1s > 0 then
+    for i, disk in disk1s do
+        if disk:Read("/") == "t:folder" then
+            putermode = true
+            print("putermode")
+            break
+        end
+    end
 end
 
 local function getstuff()
@@ -134,35 +132,40 @@ local function getstuff()
 			task.wait(0.1)
 		end
 		if not rom then
-			local temprom = GetPartFromPort(i, "Disk")
-			if temprom then
-				if #temprom:ReadAll() == 0 then
-					rom = temprom
-					romport = i
-				elseif temprom:Read("SysDisk") then
-					rom = temprom
-					romport = i
-				end
-			end
+		    if (putermode and i ~= 1) or not putermode then
+    			local temprom = GetPartFromPort(i, "Disk")
+    			if temprom then
+    				if #temprom:ReadAll() == 0 then
+    					rom = temprom
+    					romport = i
+    				elseif temprom:Read("SysDisk") then
+    					rom = temprom
+    					romport = i
+    				end
+    		    end
+		    end
 		end
 		if not disks then
-			local disktable = GetPartsFromPort(i, "Disk")
-			if disktable then
-				if #disktable > 0 then
-					local cancel = false
-					local tempport = GetPartFromPort(i, "Port")
-					if tempport and tempport.PortID == romport then
-						cancel = true
-					end
-					if romport == i and #disktable == 1 then
-						cancel = true
-					end
-					if not cancel then
-						disks = disktable
-						disksport = i
-					end
-				end
-			end
+		    if (putermode and i == 1) or not putermode then
+    		    print(i)
+    			local disktable = GetPartsFromPort(i, "Disk")
+    			if disktable then
+    				if #disktable > 0 then
+    					local cancel = false
+    					local tempport = GetPartFromPort(i, "Port")
+    					if tempport and tempport.PortID == romport then
+    						cancel = true
+    					end
+    					if romport == i and #disktable == 1 then
+    						cancel = true
+    					end
+    					if not cancel then
+    						disks = disktable
+    						disksport = i
+    					end
+    				end
+    		    end
+		    end
 		end
 
 		if disks and #disks > 1 and romport == disksport and not sharedport then
@@ -249,6 +252,7 @@ local minimizedprograms = {}
 
 local function getCursorColliding(X, Y, ui)
 	if X and Y and ui then else return end
+	if ui.AbsolutePosition then else return end
 	local x = ui.AbsolutePosition.X
 	local y = ui.AbsolutePosition.Y
 	local y_axis = nil
@@ -803,13 +807,7 @@ function commandline.new(boolean, udim2, scr, richtext)
 	local biggesttextx = 0
 
 	function lines.clear()
-		pcall(function()
-			background:Destroy()
-			background = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.new(0,0,0), ScrollBarThickness = 5})
-			if boolean then
-				background.Parent = holderframe
-			end
-		end)
+		pcall(background.ClearAllChildren, background)
 		lines.number = UDim2.new(0,0,0,0)
 		biggesttextx = 0
 	end
@@ -818,13 +816,13 @@ function commandline.new(boolean, udim2, scr, richtext)
 		print(text)
 		local textlabel = screen:CreateElement("TextBox", {ClearTextOnFocus = false, TextEditable = false, BackgroundTransparency = 1, TextColor3 = Color3.new(1,1,1), Text = tonumber(text) or tostring(text):gsub("\n", ""), RichText = (richtext or function() return false end)(), TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Top, Position = lines.number})
 		if textlabel then
-			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
+			textlabel.Size = UDim2.new(0, math.max(textlabel.TextBounds.X, textlabel.TextSize), 0, textlabel.TextSize)
 			if textlabel.TextBounds.X > biggesttextx then
 				biggesttextx = textlabel.TextBounds.X
 			end
 			textlabel.Parent = background
 			print(lines.number.Y.Offset)
-			background.CanvasSize = UDim2.new(0, biggesttextx, 0, math.max(background.AbsoluteSize.Y, lines.number.Y.Offset + math.max(textlabel.TextBounds.Y, textlabel.TextSize)))
+			background.CanvasSize = UDim2.new(0, biggesttextx, 0, math.max(background.AbsoluteSize.Y, lines.number.Y.Offset + textlabel.TextSize))
 			if typeof(vec2) == "UDim2" then
 				vec2 = Vector2.new(vec2.X.Offset + vec2.X.Scale*background.AbsoluteSize.X, vec2.Y.Offset + vec2.Y.Scale*background.AbsoluteSize.Y)
 			end
@@ -1104,9 +1102,7 @@ local function getfileextension(filename, boolean, only1)
 	local nospace = string.gsub(result, "%s", "")
 
 	if not only1 then
-	    print(only1)
 	    local splitted = string.split(boolean and result or nospace, ".")
-	    print(splitted[#splitted])
 	    if nospace then
 	        nospace = "."..splitted[#splitted] or nospace
         else
@@ -1526,7 +1522,7 @@ local filesystem = {
 		return value
 	end,
 	Read = function(filename, directory, boolean1, cd)
-		local disk = cd or disk
+	    local disk = cd or disk
 		local directory = directory or "/"
 		local dir = directory
 		local value = if boolean1 then nil else "No filename specified"
@@ -1602,7 +1598,7 @@ local restartprompt
 local terminal
 
 local function runprogram(text, name, extraname, extra)
-	if not text then error("no code to run was given in parameter two.") end
+	if not text then error("no code to run was given in parameter one.") end
 	if typeof(name) ~= "string" then
 		name = "untitled"
 	end
@@ -1690,13 +1686,15 @@ function readfile(txt, nameondisk, directory, cd)
 	local prevdir = directory
 	local prevtxt = txt
 	local prevname = nameondisk
-
-	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tonumber(txt) or tostring(txt), RichText = true, BackgroundTransparency = 1})
-	disktext.Parent = filegui
+	local fileextension = getfileextension(nameondisk, true)
+    if fileextension ~= ".lua" then
+    	local disktext = screen:CreateElement("TextLabel", {Size = UDim2.new(1, 0, 1, 0), Position = UDim2.new(0, 0, 0, 0), TextScaled = true, Text = tonumber(txt) or tostring(txt), RichText = true, BackgroundTransparency = 1})
+    	disktext.Parent = filegui
+	end
 
 	print(txt)
 
-	if string.find(string.lower(tostring(nameondisk)), "%.lnk") then
+	if fileextension == ".lnk" then
 		local split = tostring(txt):split("/")
 		local file = split[#split]
 		local dir = ""
@@ -1725,12 +1723,12 @@ function readfile(txt, nameondisk, directory, cd)
 			directory = "/"
 		end
 
-		if not string.find(string.lower(nameondisk), "%.gui") and not string.find(string.lower(nameondisk), "%.lnk") and not string.find(string.lower(nameondisk), "%.lua") and not string.find(string.lower(nameondisk), "%.img") and not string.find(string.lower(nameondisk), "%.aud") and not string.find(string.lower(nameondisk), "%.vid") and typeof(txt) ~= "table" then
+		if not getfileextension(nameondisk, true) == ".gui" and not string.find(string.lower(nameondisk), "%.lnk") and not string.find(string.lower(nameondisk), "%.lua") and not string.find(string.lower(nameondisk), "%.img") and not string.find(string.lower(nameondisk), "%.aud") and not string.find(string.lower(nameondisk), "%.vid") and typeof(txt) ~= "table" then
 			readfile(txt, nameondisk, directory, disk)
 		end
 	end
 
-	if string.find(string.lower(tostring(nameondisk)), "%.aud") then
+	if fileextension == ".aud" then
 		local txt = string.lower(tostring(txt))
 		if string.find(tostring(txt), "pitch:") then
 			local length = nil
@@ -1777,15 +1775,16 @@ function readfile(txt, nameondisk, directory, cd)
 		end
 	end
 
-	if string.find(string.lower(tostring(nameondisk)), "%.img") then
+	if fileextension == ".img" then
 		woshtmlfile([[<img src="]]..tostring(txt)..[[" size="1,0,1,0" position="0,0,0,0" fit="true">]], screen, true, nameondisk)
 	end
 
-	if string.find(string.lower(tostring(nameondisk)), "%.vid") then
+	if fileextension == ".vid" then
 		videoplayer(tostring(txt), nameondisk)
 	end
 
-	if string.find(string.lower(tostring(nameondisk)), "%.lua") then
+	if fileextension == ".lua" then
+	    window:Close()
 		runprogram(tostring(txt), nameondisk)
 	end
 	if typeof(txt) == "table" then
@@ -1802,7 +1801,7 @@ function readfile(txt, nameondisk, directory, cd)
 		loaddisk(newdirectory, nil, nil, disk)
 	end
 
-	if string.find(string.lower(tostring(txt)), "<woshtml>") or string.find(string.lower(tostring(nameondisk)), "%.gui") then
+	if string.find(string.lower(tostring(txt)), "<woshtml>") or fileextension == ".gui" then
 		woshtmlfile(txt, screen, nameondisk)
 	end
 
@@ -1943,24 +1942,25 @@ function loaddisk(directory: string, func: any, boolean1: boolean, cd)
 
 			local imagebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
 			imagebutton.Parent = button
+			local fileextension = getfileextension(filename, true)
 
-			if string.find(filename, "%.gui") or string.find(string.lower(tostring(dataz)), "<woshtml>") then
+			if fileextension == ".gui" or string.find(string.lower(tostring(dataz)), "<woshtml>") then
 				imagebutton.Image = "rbxassetid://17104255245"
 			end
 
-			if string.find(filename, "%.aud") then
+			if fileextension == ".aud" then
 				imagebutton.Image = "rbxassetid://16137076689"
 			end
 
-			if string.find(filename, "%.img") then
+			if fileextension == ".img" then
 				imagebutton.Image = "rbxassetid://16138716524"
 			end
 
-			if string.find(filename, "%.vid") then
+			if fileextension == ".vid" then
 				imagebutton.Image = "rbxassetid://16137079551"
 			end
 
-			if string.find(filename, "%.lua") then
+			if fileextension == ".lua" then
 				imagebutton.Image = "rbxassetid://16137086052"
 			end
 
@@ -1983,7 +1983,7 @@ function loaddisk(directory: string, func: any, boolean1: boolean, cd)
 				end
 			end
 
-			if string.find(filename, "%.lnk") then
+			if fileextension == ".lnk" then
 				local image2 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.4, 0, 0.4, 0), Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1, Image = "rbxassetid://16180413404", ScaleType = Enum.ScaleType.Fit})
 				image2.Parent = imagebutton
 
@@ -2008,24 +2008,25 @@ function loaddisk(directory: string, func: any, boolean1: boolean, cd)
 				if dir == "" and file == "" then
 					data1 = disk:ReadAll()
 				end
+				local fileextension = getfileextension(file, true)
 
-				if string.find(file, "%.gui") or string.find(string.lower(tostring(data1)), "<woshtml>") then
+				if fileextension == ".gui" or string.find(string.lower(tostring(data1)), "<woshtml>") then
 					imagebutton.Image = "rbxassetid://17104255245"
 				end
 
-				if string.find(file, "%.aud") then
+				if fileextension == ".aud" then
 					imagebutton.Image = "rbxassetid://16137076689"
 				end
 
-				if string.find(file, "%.img") then
+				if fileextension == ".img" then
 					imagebutton.Image = "rbxassetid://16138716524"
 				end
 
-				if string.find(file, "%.vid") then
+				if fileextension == ".vid" then
 					imagebutton.Image = "rbxassetid://16137079551"
 				end
 
-				if string.find(file, "%.lua") then
+				if fileextension == ".lua" then
 					imagebutton.Image = "rbxassetid://16137086052"
 				end
 
@@ -2752,7 +2753,7 @@ local function createshortcut()
 	filebutton.MouseButton1Up:Connect(function()
 		loaddisk(if not directory then "/" else directory, function(name, dir, cd, index)
 			if not window then return end
-			if string.find(name, "%.lnk") then
+			if getfileextension(name, true) == ".lnk" then
 				local data = tostring(filesystem.Read(name, dir, nil, cd)) or ""
 				local split = data:split("/")
 				local file = split[#split]
@@ -2962,7 +2963,7 @@ local function programmanager()
 		if scrollingframe then
 			scrollingframe:Destroy()
 		end
-		scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 0.8, 0), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1})
+		scrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1, 0, 0.8, 0), Position = UDim2.new(0, 0, 0.2, 0), BackgroundTransparency = 1})
 		scrollingframe.Parent = holderframe
 		for index, value in pairs(getprograms()) do
 			local button, button2 = createnicebutton(UDim2.new(1, 0, 0, 25), UDim2.new(0, 0, 0, (index-1)*25), index, scrollingframe)
@@ -3627,23 +3628,31 @@ local function calculator()
 	end)
 end
 
+local iconnections = {}
+
 local function restartnow()
 	task.wait(1)
 	screen:ClearElements()
+	table.clear(iconnections)
 	local commandlines = commandline.new(false, nil, screen)
-	commandlines:insert("Restarting...")
+	commandlines.insert("Restarting...")
 	task.wait(2)
 	screen:ClearElements()
 	getstuff()
 	task.wait(1)
-	bootos()
+	if not putermode then
+	    bootos()
+    else
+        pcall(TriggerPort, 3)
+    end
 end
 
 local function shutdownnow()
 	task.wait(1)
 	screen:ClearElements()
+	table.clear(iconnections)
 	local commandlines = commandline.new(false, nil, screen)
-	commandlines:insert("Shutting Down...")
+	commandlines.insert("Shutting Down...")
 	task.wait(2)
 	screen:ClearElements()
 	if not putermode then
@@ -3800,7 +3809,7 @@ function openrightclickprompt(frame, name, dir, boolean1, boolean2, x, y, cd)
 	local size = UDim2.new(0.2, 0, 0.4, 0)
 
 	if not boolean2 then
-
+        if not desktopscrollingframe.CanvasSize then return end
 		size = UDim2.fromScale(0.2/desktopscrollingframe.CanvasSize.X.Scale, 0.3)
 
 		if boolean1 then
@@ -3901,7 +3910,7 @@ local selectionimage = nil
 function loaddesktopicons()
 	previousframe = nil
 	if exists(desktopscrollingframe) then
-		pcall(desktopscrollingframe.Destroy, selectionimage)
+		pcall(desktopscrollingframe.Destroy, desktopscrollingframe)
 		desktopicons = {}
 		selectedicon = nil
 	end
@@ -3917,7 +3926,7 @@ function loaddesktopicons()
 
 	print("z")
 
-	desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,0.9,0), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,0.9,0), ScrollBarThickness = 5})
+	desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,1,-mainframe.AbsoluteSize.Y*0.1), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,1,-mainframe.AbsoluteSize.Y*0.1), ScrollBarThickness = 5})
 	desktopscrollingframe.Parent = wallpaper
 
 	local desktopfiles = filesystem.Read("Desktop", "/")
@@ -3998,24 +4007,25 @@ function loaddesktopicons()
 			imagelabel.Parent = holderbutton
 			local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tonumber(filename) or tostring(filename), TextStrokeColor3 = Color3.new(0,0,0), TextColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0.25})
 			textlabel.Parent = holderbutton
+			local fileextension = getfileeextension(filename, true)
 
-			if string.find(filename, "%.gui") or string.find(string.lower(tostring(data)), "<woshtml>") then
+			if fileextension == ".gui" or string.find(string.lower(tostring(data)), "<woshtml>") then
 				imagelabel.Image = "rbxassetid://17104255245"
 			end
 
-			if string.find(filename, "%.aud") then
+			if fileextension == ".aud" then
 				imagelabel.Image = "rbxassetid://16137076689"
 			end
 
-			if string.find(filename, "%.img") then
+			if fileextension == ".img" then
 				imagelabel.Image = "rbxassetid://16138716524"
 			end
 
-			if string.find(filename, "%.vid") then
+			if fileextension == ".vid" then
 				imagelabel.Image = "rbxassetid://16137079551"
 			end
 
-			if string.find(filename, "%.lua") then
+			if fileextension == ".lua" then
 				imagelabel.Image = "rbxassetid://16137086052"
 			end
 
@@ -4038,7 +4048,7 @@ function loaddesktopicons()
 				end
 			end
 
-			if string.find(filename, "%.lnk") then
+			if fileextension == ".lnk" then
 				local image2 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.4, 0, 0.4, 0), Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1, Image = "rbxassetid://16180413404", ScaleType = Enum.ScaleType.Fit})
 				image2.Parent = imagelabel
 
@@ -4067,29 +4077,31 @@ function loaddesktopicons()
 
 					if data1 then
 
-						if string.find(file, "%.gui") or string.find(string.lower(tostring(data1)), "<woshtml>") then
-							imagelabel.Image = "rbxassetid://17104255245"
-						end
+						local fileextension = getfileextension(file, true)
 
-						if string.find(file, "%.aud") then
-							imagelabel.Image = "rbxassetid://16137076689"
-						end
+        				if fileextension == ".gui" or string.find(string.lower(tostring(data1)), "<woshtml>") then
+        					imagebutton.Image = "rbxassetid://17104255245"
+        				end
 
-						if string.find(file, "%.img") then
-							imagelabel.Image = "rbxassetid://16138716524"
-						end
+        				if fileextension == ".aud" then
+        					imagebutton.Image = "rbxassetid://16137076689"
+        				end
 
-						if string.find(file, "%.vid") then
-							imagelabel.Image = "rbxassetid://16137079551"
-						end
+        				if fileextension == ".img" then
+        					imagebutton.Image = "rbxassetid://16138716524"
+        				end
 
-						if string.find(file, "%.lua") then
-							imagelabel.Image = "rbxassetid://16137086052"
-						end
+        				if fileextension == ".vid" then
+        					imagebutton.Image = "rbxassetid://16137079551"
+        				end
 
-						if typeof(data1) == "function" then
-							imagelabel.Image = "rbxassetid://17205316410"
-						end
+        				if fileextension == ".lua" then
+        					imagebutton.Image = "rbxassetid://16137086052"
+        				end
+
+        				if typeof(data1) == "function" then
+        					imagebutton.Image = "rbxassetid://17205316410"
+        				end
 
 						if typeof(data1) == "table" then
 							local length = 0
@@ -4139,8 +4151,6 @@ function loaddesktopicons()
 		end
 	end
 end
-
-local iconnections = {}
 
 function terminal()
 	local richtext = false
@@ -4227,25 +4237,23 @@ function terminal()
 		end,
 		getinput = function(func)
 		    assert(type(func) == "function", "The given parameter is not a function")
-		    local getprogram = getfenv().getSelf
-		    local disconnect = function()
+		    local disconnect
+		    disconnect = function()
 		        local found = table.find(iconnections, func)
 		        if found then
 		            table.remove(iconnections, found)
 		        end
 		        found = nil
 	        end
-		    table.insert(iconnections, function()
-		        if coroutine.status(getprogram()) == "dead" then
-		            disconnect()
-		            return
-	            end
-	            func()
-	        end)
+		    table.insert(iconnections, func)
 		    return disconnect
         end,
-		getDir = function() return dir end
-	}
+		getdir = function() return dir, disk end,
+		getWindow = function()
+		    return windowz
+	    end
+    }
+    table.freeze(prglines)
 
 	local function runtext(text)
 		local lowered = text:lower()
@@ -4472,9 +4480,10 @@ function terminal()
 			commandlines.insert(dir..":")
 		elseif lowered:sub(1, 8) == "readlua " then
 			local filename = text:sub(9, string.len(text))
+			print(filename)
 			if filename and filename ~= "" then
 				local output = filesystem.Read(filename, dir, true, disk)
-				local output = output
+				local output = output or ""
 				local err = runprogram(output, filename, "lines", prglines)
 				if err then commandlines.insert(err) end
 			else
@@ -4811,12 +4820,13 @@ function terminal()
 
 	function bootdos()
 		if screen and keyboard and disk and rom then
+		    table.clear(iconnections)
 			background.Parent = window
 			task.wait(1)
 			Beep(1)
-			commandlines:insert(name.." Command line")
+			commandlines.insert(name.." Command line")
 			task.wait(1)
-			commandlines:insert("/:")
+			commandlines.insert("/:")
 			if keyboardevent then keyboardevent:Disconnect() end
 			local exclmarkthings = {
 				["!s"] = function(text)
@@ -4839,11 +4849,12 @@ function terminal()
 				if windowz:IsClosed() then keyboardevent:Disconnect() return end
 				if not windowz:IsFocused() then return end
 				for i, f in iconnections do
-				    f(text, player)
+				    pcall(f, text, player)
 			    end
 				if not cmdsenabled then return end
 				local func = exclmarkthings[string.sub(tostring(text), 1, 2)]
 				if not func then
+				    text = text:gsub("\n", "")
 					commandlines.insert(text)
 					runtext(text)
 				else
@@ -4960,7 +4971,7 @@ local function loaddesktop()
 	end)
 
 	local taskbarheight = mainframe.AbsoluteSize.Y*0.1
-	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 0.9, 0), Size = UDim2.new(1, 0, 0, taskbarheight), BackgroundTransparency = 1, ImageTransparency = 0.25, ZIndex = 2})
+	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 1, -taskbarheight), Size = UDim2.new(1, 0, 0, taskbarheight), BackgroundTransparency = 1, ImageTransparency = 0.25, ZIndex = 2})
 	taskbarholder.Parent = mainframe
 	startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0, taskbarheight, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
 	local textlabel = screen:CreateElement("TextLabel", {BackgroundTransparency = 1, Size = UDim2.new(1,0,1,0), Text = "G", TextScaled = true, TextWrapped = true})
@@ -5079,6 +5090,7 @@ local function loaddesktop()
 			local buttons = {
 				{Text = "Settings", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					settings()
 
 					if func then
@@ -5087,6 +5099,7 @@ local function loaddesktop()
 				end},
 				{Text = "Create/Overwrite file", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					writedisk()
 					pressed = false
 
@@ -5096,6 +5109,7 @@ local function loaddesktop()
 				end},
 				{Text = "Files", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					loaddisk("/", true)
 
 
@@ -5105,6 +5119,7 @@ local function loaddesktop()
 				end},
 				{Text = "Lua executor", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					customprogramthing(screen, {})
 
 
@@ -5114,6 +5129,7 @@ local function loaddesktop()
 				end},
 				{Text = "Mediaplayer", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					mediaplayer()
 
 
@@ -5123,6 +5139,7 @@ local function loaddesktop()
 				end},
 				{Text = "Chat", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					chatthing()
 
 
@@ -5132,6 +5149,7 @@ local function loaddesktop()
 				end},
 				{Text = "Calculator", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					calculator()
 
 
@@ -5141,6 +5159,7 @@ local function loaddesktop()
 				end},
 				{Text = "Terminal", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					terminal()
 
 
@@ -5150,6 +5169,7 @@ local function loaddesktop()
 				end},
 				{Text = "Copy File", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					copyfile()
 
 
@@ -5159,6 +5179,7 @@ local function loaddesktop()
 				end},
 				{Text = "Rename File", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					renamefile()
 
 
@@ -5168,6 +5189,7 @@ local function loaddesktop()
 				end},
 				{Text = "Create Shortcut", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					createshortcut()
 
 
@@ -5177,6 +5199,7 @@ local function loaddesktop()
 				end},
 				{Text = "Move File", Function = function()
 				    startmenu:Destroy()
+				    startmenu = nil
 					movefile()
 
 
@@ -5198,6 +5221,7 @@ local function loaddesktop()
 			shutdown.MouseButton1Up:Connect(function()
 
 				startmenu:Destroy()
+			    startmenu = nil
 				shutdownprompt()
 
 				if func then
@@ -5209,6 +5233,7 @@ local function loaddesktop()
 			restart.MouseButton1Up:Connect(function()
 
 				startmenu:Destroy()
+			    startmenu = nil
 				restartprompt()
 
 				if func then
@@ -5458,14 +5483,15 @@ function bootos()
 		end
 	end
 	if screen and keyboard and speaker and disk and rom then
+	    table.freeze(disks)
 		prevprompt = nil
 		rom:Write("SysDisk")
 		speaker:ClearSounds()
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
-		commandlines:insert(name.." Command line")
+		commandlines.insert(name.." Command line")
 		task.wait(1)
-		commandlines:insert("Welcome")
+		commandlines.insert("Welcome")
 		task.wait(2)
 		screen:ClearElements()
 
@@ -5550,22 +5576,22 @@ function bootos()
 	elseif not screen and regularscreen then
 		regularscreen:ClearElements()
 		local commandlines = commandline.new(false, nil, regularscreen)
-		commandlines:insert(name.." Command line")
+		commandlines.insert(name.." Command line")
 		task.wait(1)
-		commandlines:insert("Regular screen is not supported.")
+		commandlines.insert("Regular screen is not supported.")
 		if not speaker then
-			commandlines:insert("No speaker was found.")
+			commandlines.insert("No speaker was found.")
 		end
 		task.wait(1)
 		if not keyboard then
-			commandlines:insert("No keyboard was found.")
+			commandlines.insert("No keyboard was found.")
 		end
 		task.wait(1)
 		if not disk then
-			commandlines:insert("You need 2 or more disks, 2 or more ports must not be connected to the same disks.")
+			commandlines.insert("You need 2 or more disks, 2 or more ports must not be connected to the same disks.")
 		end
 		if not rom then
-			commandlines:insert([[No empty disk or disk with the file "SysDisk" was found.]])
+			commandlines.insert([[No empty disk or disk with the file "SysDisk" was found.]])
 		end
 		if keyboard then
 			local keyboardevent = keyboard.KeyPressed:Connect(function(key)
@@ -5579,21 +5605,21 @@ function bootos()
 	elseif screen then
 		screen:ClearElements()
 		local commandlines = commandline.new(false, nil, screen)
-		commandlines:insert(name.." Command line")
+		commandlines.insert(name.." Command line")
 		task.wait(1)
 		if not speaker then
-			commandlines:insert("No speaker was found.")
+			commandlines.insert("No speaker was found.")
 		end
 		task.wait(1)
 		if not keyboard then
-			commandlines:insert("No keyboard was found.")
+			commandlines.insert("No keyboard was found.")
 		end
 		task.wait(1)
 		if not disk then
-			commandlines:insert("You need 2 or more disks, 2 or more ports must not be connected to the same disks.")
+			commandlines.insert("You need 2 or more disks, 2 or more ports must not be connected to the same disks.")
 		end
 		if not rom then
-			commandlines:insert([[No empty disk or disk with the file "SysDisk" was found.]])
+			commandlines.insert([[No empty disk or disk with the file "SysDisk" was found.]])
 		end
 		if keyboard then
 			local keyboardevent = keyboard.KeyPressed:Connect(function(key)
