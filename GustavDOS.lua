@@ -680,21 +680,21 @@ local function runprogram(text, name)
 		getinput = function(prg, func)
 			assert(type(func) == "function", "The given parameter is not a function")
 			local disconnect
-			func = function()
+			local f = function(text, player)
 			        if not coroutineprograms[prg] then
 					disconnect()
 			    		return
 		            	end
-				func()
+				func(text, player)
 			end
 			disconnect = function()
-				local found = table.find(iconnections, func)
+				local found = table.find(iconnections, f)
 				if found then
 					table.remove(iconnections, found)
 				end
 				found = nil
 			end
-			table.insert(iconnections, func)
+			table.insert(iconnections, f)
 			return disconnect
 		end,
 		getdir = function() return dir, disk end
