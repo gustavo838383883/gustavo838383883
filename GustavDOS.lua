@@ -838,7 +838,11 @@ function runtext(text)
 		getstuff()
 		dir = "/"
 		if keyboardevent then keyboardevent:Disconnect() end
-		bootos()
+		if not putermode then
+	    		bootos()
+		else
+			pcall(TriggerPort, 2)
+		end
 	elseif lowered:gsub("%s", "") == "shutdown" then
 		if text:sub(9, string.len(text)) == nil or text:sub(9, string.len(text)) == "" then
 			iconnections = {}
