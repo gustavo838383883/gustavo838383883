@@ -12,7 +12,7 @@ end
 local function createfileontable(disk, filename, filedata, directory)
 	local returntable = nil
 	local directory = directory
-	if directory:sub(-1, -1) == "/" then directory = directory:sub(1, -2) end
+	if directory:sub(-1, -1) == "/" then directory = directory:sub(1, -2) aend
 	local split = string.split(directory, "/")
 
 	if split then
@@ -688,7 +688,7 @@ local function runprogram(text, name)
 				found = nil
 			end
 			table.insert(iconnections, function()
-				if coroutine.status(getprogram()) == "dead" then
+				if not coroutineprograms[getfenv().getSelf()] then
 					disconnect()
 					return
 				end
