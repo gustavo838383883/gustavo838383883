@@ -1114,6 +1114,116 @@ local function getfileextension(filename, boolean, only1)
 		return boolean and result or nospace
 	end
 end
+
+local function getimagefromextension(extension, data)
+    local image = "rbxassetid://16137083118"
+
+    if fileextension == ".gui" or string.find(string.lower(tostring(dataz)), "<woshtml>") then
+		image = "rbxassetid://17104255245"
+	end
+
+	if fileextension == ".aud" then
+		image = "rbxassetid://16137076689"
+	end
+
+	if fileextension == ".img" then
+	    image = "rbxassetid://16138716524"
+	end
+
+	if fileextension == ".vid" then
+		image = "rbxassetid://16137079551"
+	end
+
+	if fileextension == ".lua" then
+		image = "rbxassetid://16137086052"
+	end
+
+	if typeof(dataz) == "function" then
+		image = "rbxassetid://17205316410"
+	end
+
+	if typeof(dataz) == "table" then
+		local length = 0
+
+		for i, v in pairs(data) do
+			length += 1
+		end
+
+
+		if length > 0 then
+			image = "rbxassetid://16137091192"
+		else
+			image = "rbxassetid://16137073439"
+		end
+	end
+
+	if fileextension == ".lnk" then
+		local split = tostring(data):split("/")
+		local file = split[#split]
+		local dir = ""
+
+		local disk = disks[1]
+
+		if tonumber(split[1]) then
+			disk = disks[tonumber(split[1])]
+		end
+
+		for index, value in ipairs(split) do
+			if index < #split and index > 1 then
+				dir = dir.."/"..value
+			end
+		end
+
+		local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, disk)
+
+		if dir == "" and file == "" then
+			data1 = disk:ReadAll()
+		end
+		local fileextension = getfileextension(file, true)
+
+		if fileextension == ".gui" or string.find(string.lower(tostring(data1)), "<woshtml>") then
+			image = "rbxassetid://17104255245"
+		end
+
+		if fileextension == ".aud" then
+			image = "rbxassetid://16137076689"
+		end
+
+		if fileextension == ".img" then
+			image = "rbxassetid://16138716524"
+		end
+
+		if fileextension == ".vid" then
+			image = "rbxassetid://16137079551"
+		end
+
+		if fileextension == ".lua" then
+		    image = "rbxassetid://16137086052"
+		end
+
+		if typeof(data1) == "function" then
+			image = "rbxassetid://17205316410"
+		end
+
+		if typeof(data1) == "table" then
+			local length = 0
+
+			for i, v in pairs(data1) do
+				length += 1
+			end
+
+
+			if length > 0 then
+				image.Image = "rbxassetid://16137091192"
+			else
+				image.Image = "rbxassetid://16137073439"
+			end
+		end
+    end
+
+    return image
+end
+
 local function woshtmlfile(txt, screen, boolean, name)
 	local size = UDim2.new(0.7, 0, 0.7, 0)
 
@@ -1943,111 +2053,13 @@ function loaddisk(directory: string, func: any, boolean1: boolean, cd)
 			local imagebutton = screen:CreateElement("ImageButton", {Size = UDim2.new(0, 25, 0, 25), Position = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1, Image = "rbxassetid://16137083118"})
 			imagebutton.Parent = button
 			local fileextension = getfileextension(filename, true)
+			local fileicon = getimagefromextension(fileextension, dataz)
 
-			if fileextension == ".gui" or string.find(string.lower(tostring(dataz)), "<woshtml>") then
-				imagebutton.Image = "rbxassetid://17104255245"
-			end
-
-			if fileextension == ".aud" then
-				imagebutton.Image = "rbxassetid://16137076689"
-			end
-
-			if fileextension == ".img" then
-				imagebutton.Image = "rbxassetid://16138716524"
-			end
-
-			if fileextension == ".vid" then
-				imagebutton.Image = "rbxassetid://16137079551"
-			end
-
-			if fileextension == ".lua" then
-				imagebutton.Image = "rbxassetid://16137086052"
-			end
-
-			if typeof(dataz) == "function" then
-				imagebutton.Image = "rbxassetid://17205316410"
-			end
-
-			if typeof(dataz) == "table" then
-				local length = 0
-
-				for i, v in pairs(dataz) do
-					length += 1
-				end
-
-
-				if length > 0 then
-					imagebutton.Image = "rbxassetid://16137091192"
-				else
-					imagebutton.Image = "rbxassetid://16137073439"
-				end
-			end
+			imagebutton.Image = fileicon
 
 			if fileextension == ".lnk" then
 				local image2 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.4, 0, 0.4, 0), Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1, Image = "rbxassetid://16180413404", ScaleType = Enum.ScaleType.Fit})
 				image2.Parent = imagebutton
-
-				local split = tostring(dataz):split("/")
-				local file = split[#split]
-				local dir = ""
-
-				local disk = disks[1]
-
-				if tonumber(split[1]) then
-					disk = disks[tonumber(split[1])]
-				end
-
-				for index, value in ipairs(split) do
-					if index < #split and index > 1 then
-						dir = dir.."/"..value
-					end
-				end
-
-				local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, disk)
-
-				if dir == "" and file == "" then
-					data1 = disk:ReadAll()
-				end
-				local fileextension = getfileextension(file, true)
-
-				if fileextension == ".gui" or string.find(string.lower(tostring(data1)), "<woshtml>") then
-					imagebutton.Image = "rbxassetid://17104255245"
-				end
-
-				if fileextension == ".aud" then
-					imagebutton.Image = "rbxassetid://16137076689"
-				end
-
-				if fileextension == ".img" then
-					imagebutton.Image = "rbxassetid://16138716524"
-				end
-
-				if fileextension == ".vid" then
-					imagebutton.Image = "rbxassetid://16137079551"
-				end
-
-				if fileextension == ".lua" then
-					imagebutton.Image = "rbxassetid://16137086052"
-				end
-
-				if typeof(data1) == "function" then
-					imagebutton.Image = "rbxassetid://17205316410"
-				end
-
-				if typeof(data1) == "table" then
-					local length = 0
-
-					for i, v in pairs(data1) do
-						length += 1
-					end
-
-
-					if length > 0 then
-						imagebutton.Image = "rbxassetid://16137091192"
-					else
-						imagebutton.Image = "rbxassetid://16137073439"
-					end
-				end
 			end
 
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start + 25)
@@ -3335,9 +3347,9 @@ local function chatthing()
 				player, data = "Anonymous", text
 			end
 
-			local holdframe = screen:CreateElement("Frame", {BorderSizePixel = 0, BackgroundColor3 = backcolor, BackgroundTransparency = 0.5, Size = UDim2.new(1, 0, 0, 100), Position = UDim2.fromOffset(0, start)})
-			local playerlabel = screen:CreateElement("TextLabel", {Text = player, Size = UDim2.new(1, 0, 0, 50), BackgroundTransparency = 1, TextScaled = true, TextColor3 = if backcolor == Color3.new(0, 0, 0) then Color3.new(1, 1, 1) else Color3.new(0, 0, 0)})
-			local textlabel = screen:CreateElement("TextLabel", {Text = data, Size = UDim2.new(1, 0, 0, 50), BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 50), TextScaled = true, TextColor3 = if backcolor == Color3.new(0, 0, 0) then Color3.new(1, 1, 1) else Color3.new(0, 0, 0)})
+			local holdframe = screen:CreateElement("Frame", {BorderSizePixel = 0, BackgroundColor3 = backcolor, BackgroundTransparency = 0.5, Size = UDim2.new(1, 0, 0, 50), Position = UDim2.fromOffset(0, start)})
+			local playerlabel = screen:CreateElement("TextLabel", {Text = player, Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, TextScaled = true, TextColor3 = if backcolor == Color3.new(0, 0, 0) then Color3.new(1, 1, 1) else Color3.new(0, 0, 0)})
+			local textlabel = screen:CreateElement("TextLabel", {Text = data, Size = UDim2.new(1, 0, 0, 25), BackgroundTransparency = 1, Position = UDim2.fromOffset(0, 25), TextScaled = true, TextColor3 = if backcolor == Color3.new(0, 0, 0) then Color3.new(1, 1, 1) else Color3.new(0, 0, 0)})
 			textlabel.Parent = holdframe
 			playerlabel.Parent = holdframe
 			holdframe.Parent = scrollingframe
@@ -3346,9 +3358,9 @@ local function chatthing()
 			else
 				backcolor = Color3.new(1, 1, 1)
 			end
-			start += 100
+			start += 50
 			scrollingframe.CanvasSize = UDim2.new(0, 0, 0, start)
-			scrollingframe.CanvasPosition = Vector2.new(0, start + 100)
+			scrollingframe.CanvasPosition = Vector2.new(0, start + 50)
 		end)
 	else
 		local textlabel = screen:CreateElement("TextLabel", {Text = "You need a modem.", Size = UDim2.new(1,0,1,0), BackgroundTransparency = 1})
@@ -3628,12 +3640,9 @@ local function calculator()
 	end)
 end
 
-local iconnections = {}
-
 local function restartnow()
 	task.wait(1)
 	screen:ClearElements()
-	table.clear(iconnections)
 	local commandlines = commandline.new(false, nil, screen)
 	commandlines.insert("Restarting...")
 	task.wait(2)
@@ -3650,7 +3659,6 @@ end
 local function shutdownnow()
 	task.wait(1)
 	screen:ClearElements()
-	table.clear(iconnections)
 	local commandlines = commandline.new(false, nil, screen)
 	commandlines.insert("Shutting Down...")
 	task.wait(2)
@@ -4008,117 +4016,13 @@ function loaddesktopicons()
 			local textlabel = screen:CreateElement("TextLabel", {Size = UDim2.fromScale(1, 0.5), Position = UDim2.fromScale(0, 0.5), BackgroundTransparency = 1, TextScaled = true, TextWrapped = true, Text = tonumber(filename) or tostring(filename), TextStrokeColor3 = Color3.new(0,0,0), TextColor3 = Color3.new(1,1,1), TextStrokeTransparency = 0.25})
 			textlabel.Parent = holderbutton
 			local fileextension = getfileeextension(filename, true)
+			local fileicon = getimagefromextension(fileextension, data)
 
-			if fileextension == ".gui" or string.find(string.lower(tostring(data)), "<woshtml>") then
-				imagelabel.Image = "rbxassetid://17104255245"
-			end
-
-			if fileextension == ".aud" then
-				imagelabel.Image = "rbxassetid://16137076689"
-			end
-
-			if fileextension == ".img" then
-				imagelabel.Image = "rbxassetid://16138716524"
-			end
-
-			if fileextension == ".vid" then
-				imagelabel.Image = "rbxassetid://16137079551"
-			end
-
-			if fileextension == ".lua" then
-				imagelabel.Image = "rbxassetid://16137086052"
-			end
-
-			if typeof(data) == "function" then
-				imagelabel.Image = "rbxassetid://17205316410"
-			end
-
-			if typeof(data) == "table" then
-				local length = 0
-
-				for i, v in pairs(data) do
-					length += 1
-				end
-
-
-				if length > 0 then
-					imagelabel.Image = "rbxassetid://16137091192"
-				else
-					imagelabel.Image = "rbxassetid://16137073439"
-				end
-			end
+			imagelabel.Image = fileicon
 
 			if fileextension == ".lnk" then
 				local image2 = screen:CreateElement("ImageLabel", {Size = UDim2.new(0.4, 0, 0.4, 0), Position = UDim2.new(0, 0, 0.6, 0), BackgroundTransparency = 1, Image = "rbxassetid://16180413404", ScaleType = Enum.ScaleType.Fit})
 				image2.Parent = imagelabel
-
-				local split = tostring(data):split("/")
-				if split then
-					local file = split[#split]
-					local dir = ""
-
-					local disk = disks[1]
-
-					if tonumber(split[1]) then
-						disk = disks[tonumber(split[1])]
-					end
-
-					for index, value in ipairs(split) do
-						if index < #split and index > 1 then
-							dir = dir.."/"..value
-						end
-					end
-
-					local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, disk)
-
-					if dir == "" and file == "" then
-						data1 = disk:ReadAll()
-					end
-
-					if data1 then
-
-						local fileextension = getfileextension(file, true)
-
-        				if fileextension == ".gui" or string.find(string.lower(tostring(data1)), "<woshtml>") then
-        					imagebutton.Image = "rbxassetid://17104255245"
-        				end
-
-        				if fileextension == ".aud" then
-        					imagebutton.Image = "rbxassetid://16137076689"
-        				end
-
-        				if fileextension == ".img" then
-        					imagebutton.Image = "rbxassetid://16138716524"
-        				end
-
-        				if fileextension == ".vid" then
-        					imagebutton.Image = "rbxassetid://16137079551"
-        				end
-
-        				if fileextension == ".lua" then
-        					imagebutton.Image = "rbxassetid://16137086052"
-        				end
-
-        				if typeof(data1) == "function" then
-        					imagebutton.Image = "rbxassetid://17205316410"
-        				end
-
-						if typeof(data1) == "table" then
-							local length = 0
-
-							for i, v in pairs(data1) do
-								length += 1
-							end
-
-
-							if length > 0 then
-								imagelabel.Image = "rbxassetid://16137091192"
-							else
-								imagelabel.Image = "rbxassetid://16137073439"
-							end
-						end
-					end
-				end
 			end
 
 			holderbutton.MouseButton1Down:Connect(function()
@@ -4220,6 +4124,7 @@ function terminal()
 	    speaker.Volume = speaker.Volume
 	end
 
+    local iconnections = {}
     local cmdsenabled = true
 
 	local prglines = {
