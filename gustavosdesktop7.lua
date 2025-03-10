@@ -1118,7 +1118,7 @@ end
 local function getimagefromextension(fileextension, data)
     local image = "rbxassetid://16137083118"
 
-    if fileextension == ".gui" or string.find(string.lower(tostring(dataz)), "<woshtml>") then
+    if fileextension == ".gui" or string.find(string.lower(tostring(data)), "<woshtml>") then
 		image = "rbxassetid://17104255245"
 	end
 
@@ -1138,11 +1138,11 @@ local function getimagefromextension(fileextension, data)
 		image = "rbxassetid://16137086052"
 	end
 
-	if typeof(dataz) == "function" then
+	if typeof(data) == "function" then
 		image = "rbxassetid://17205316410"
 	end
 
-	if typeof(dataz) == "table" then
+	if typeof(data) == "table" then
 		local length = 0
 
 		for i, v in pairs(data) do
