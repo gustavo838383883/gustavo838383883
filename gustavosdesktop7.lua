@@ -73,6 +73,7 @@ local disk = nil
 local regularscreen = nil
 local keyboardinput
 local microphoneevent
+local taskbarheight = 0
 local playerthatinputted
 local backgroundimage
 local color
@@ -322,7 +323,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4,
 		textlabel = screen:CreateElement("TextLabel", {Size = UDim2.new(1, -(defaultbuttonsize.X*2), 0, defaultbuttonsize.Y), BackgroundTransparency = 1, Position = UDim2.new(0, defaultbuttonsize.X*2, 0, 0), TextScaled = true, TextWrapped = true, Text = tostring(title)})
 		textlabel.Parent = holderframe
 	end
-	local window = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,1,-(defaultbuttonsize.Y + (defaultbuttonsize.Y/2))), CanvasSize = UDim2.new(1,0,1,-(defaultbuttonsize.Y + (defaultbuttonsize.Y/2))), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
+	local window = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,1,-defaultbuttonsize.Y * 1.5), CanvasSize = UDim2.new(1,0,1,-defaultbuttonsize.Y * 1.5), Position = UDim2.new(0, 0, 0, defaultbuttonsize.Y), BackgroundTransparency = 1})
 	window.Parent = holderframe
 	local resizebutton
 	local maximizepressed = false
@@ -565,7 +566,7 @@ function CreateWindow(udim2, title, boolean, boolean2, boolean3, text, boolean4,
 			end
 			unmaximizedsize = holderframe.Size
 			unmaximizedpos = holderframe.Position
-			holderframe.Size = UDim2.new(1, 0, 0.9, 0)
+			holderframe.Size = UDim2.new(1, 0, 1, -taskbarheight)
 			holderframe.Position = UDim2.new(0, 0, 1, 0)
 			holderframe.Position = UDim2.new(0, 0, 0, 0)
 			maximizetext.Text = "-"
@@ -3934,7 +3935,7 @@ function loaddesktopicons()
 
 	print("z")
 
-	desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,1,-mainframe.AbsoluteSize.Y*0.1), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,1,-mainframe.AbsoluteSize.Y*0.1), ScrollBarThickness = 5})
+	desktopscrollingframe = screen:CreateElement("ScrollingFrame", {Size = UDim2.new(1,0,1,-taskbarheight), BackgroundTransparency = 1, CanvasSize = UDim2.new(0,0,1,-taskbarheight), ScrollBarThickness = 5})
 	desktopscrollingframe.Parent = wallpaper
 
 	local desktopfiles = filesystem.Read("Desktop", "/")
@@ -4875,7 +4876,7 @@ local function loaddesktop()
 		end
 	end)
 
-	local taskbarheight = mainframe.AbsoluteSize.Y*0.1
+	taskbarheight = mainframe.AbsoluteSize.Y*0.1
 	taskbarholder = screen:CreateElement("ImageButton", {Image = "rbxassetid://15619032563", Position = UDim2.new(0, 0, 1, -taskbarheight), Size = UDim2.new(1, 0, 0, taskbarheight), BackgroundTransparency = 1, ImageTransparency = 0.25, ZIndex = 2})
 	taskbarholder.Parent = mainframe
 	startbutton7 = screen:CreateElement("ImageButton", {Image = "rbxassetid://15617867263", BackgroundTransparency = 1, Size = UDim2.new(0, taskbarheight, 1, 0), Position = UDim2.new(0, 0, 0, 0)})
