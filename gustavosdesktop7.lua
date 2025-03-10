@@ -1115,7 +1115,7 @@ local function getfileextension(filename, boolean, only1)
 	end
 end
 
-local function getimagefromextension(extension, data)
+local function getimagefromextension(fileextension, data)
     local image = "rbxassetid://16137083118"
 
     if fileextension == ".gui" or string.find(string.lower(tostring(dataz)), "<woshtml>") then
