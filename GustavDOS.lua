@@ -1152,7 +1152,7 @@ function runtext(text)
 		end
 		commandlines.insert(dir..":")
 		if filename and filename ~= "" then
-			background.CanvasPosition -= Vector2.new(0, 25)
+			background.CanvasPosition -= Vector2.new(0, 24)
 		end
 	elseif lowered:sub(1, 10) == "readvideo " then
 		local filename = text:sub(11, string.len(text))
@@ -1167,7 +1167,7 @@ function runtext(text)
 		end
 		commandlines.insert(dir..":")
 		if filename and filename ~= "" then
-			background.CanvasPosition -= Vector2.new(0, 25)
+			background.CanvasPosition -= Vector2.new(0, 24)
 		end
 	elseif lowered:sub(1, 13) == "displayimage " then
 		local id = text:sub(14, string.len(text))
@@ -1179,7 +1179,7 @@ function runtext(text)
 		end
 		commandlines.insert(dir..":")
 		if id and id ~= "" then
-			background.CanvasPosition -= Vector2.new(0, 25)
+			background.CanvasPosition -= Vector2.new(0, 24)
 		end
 	elseif lowered:sub(1, 13) == "displayvideo " then
 		local id = text:sub(14, string.len(text))
@@ -1193,7 +1193,7 @@ function runtext(text)
 		end
 		commandlines.insert(dir..":")
 		if id and id ~= "" then
-			background.CanvasPosition -= Vector2.new(0, 25)
+			background.CanvasPosition -= Vector2.new(0, 24)
 		end
 	elseif lowered:sub(1, 10) == "readsound " then
 		local filename = text:sub(11, string.len(text))
@@ -1298,7 +1298,7 @@ function runtext(text)
 				local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
 				StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 				commandlines.insert(dir..":")
-				background.CanvasPosition -= Vector2.new(0, 25)
+				background.CanvasPosition -= Vector2.new(0, 24)
 			elseif getfileextension(filename, true) == ".lua" then
 				local err = runprogram(output, filename)
 				if err then commandlines.insert(err) end
@@ -1314,7 +1314,7 @@ function runtext(text)
 					StringToGui(screen, tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
 					commandlines.insert(dir..":")
-					background.CanvasPosition -= Vector2.new(0, 25)
+					background.CanvasPosition -= Vector2.new(0, 24)
 				else
 					local spacesplitted = string.split(tostring(output), "\n")
 					if spacesplitted then
