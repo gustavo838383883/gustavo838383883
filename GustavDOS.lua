@@ -350,206 +350,611 @@ local name = "GustavDOS"
 
 local keyboardevent
 
-local function StringToGui(screen, text, parent)
-	-- big mess from september 2023 that im too lazy to recode
-	local start = UDim2.new(0,0,0,0)
-	local source = text
+-- gui file stuff
+local loadtext
 
-	for name, value in source:gmatch('<backimg(.-)(.-)>') do
-		local link = nil
-		if (string.find(value, 'src="')) then
-			local link = string.sub(value, string.find(value, 'src="') + string.len('src="'), string.len(value))
-			link = string.sub(link, 1, string.find(link, '"') - 1)
-			if true then
+local function converttostring(value)
+	return value:gsub("_quote_", '"'):gsub("_higher_", ">"):gsub("_lower_", "<")
+end
 
-				local url = screen:CreateElement("ImageLabel", { })
-				url.BackgroundTransparency = 1
-				url.Image = "http://www.roblox.com/asset/?id=8552847009"
-				if (link ~= "") then
-					if tonumber(link) then
-						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
-					else
-						url.Image = "rbxthumb://type=Asset&id="..tonumber(string.match(link, "%d+")).."&w=420&h=420"
-					end
-				end
-				url.ScaleType = Enum.ScaleType.Tile
-				url.TileSize = UDim2.new(0, 256, 0, 256)
-				url.Size = UDim2.new(1, 0, 1, 0)
-				url.Position = UDim2.new(0, 0, 0, 0)
-				if (string.find(value, [[tile="]])) then
-					local text = string.sub(value, string.find(value, [[tile="]]) + string.len([[tile="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					local udim2 = string.split(text, ",")
-					url.TileSize = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
-				end
-				if (string.find(value, [[transparency="]])) then
-					local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.ImageTransparency = tonumber(text) or 0
-				end
-				url.Parent = parent
-			end
-		end
-	end
-	for name, value in source:gmatch('<frame(.-)(.-)>') do
-		local link = nil
-		if true then
-
-			local url = screen:CreateElement("Frame", { })
-			url.Size = UDim2.new(0, 50, 0, 50)
-			if (string.find(value, [[rotation="]])) then
-				local text = string.sub(value, string.find(value, [[rotation="]]) + string.len([[rotation="]]), string.len(value))
-				text = string.sub(text, 1, string.find(text, '"') - 1)
-				url.Rotation = tonumber(text)
-			end
-			if (string.find(value, [[transparency="]])) then
-				local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
-				text = string.sub(text, 1, string.find(text, '"') - 1)
-				url.Transparency = tonumber(text) or 0
-			end
-			if (string.find(value, [[zindex="]])) then
-				local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
-				text = string.sub(text, 1, string.find(text, '"') - 1)
-				url.ZIndex = tonumber(text) or 1
-			end
-			if (string.find(value, [[size="]])) then
-				local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
-				text = string.sub(text, 1, string.find(text, '"') - 1)
-				local udim2 = string.split(text, ",")
-				url.Size = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
-			end
-			if (string.find(value, [[color="]])) then
-				local text = string.sub(value, string.find(value, [[color="]]) + string.len([[color="]]), string.len(value))
-				text = string.sub(text, 1, string.find(text, '"') - 1)
-				local color = string.split(text, ",")
-				url.BackgroundColor3 = Color3.new(tonumber(color[1])/255,tonumber(color[2])/255,tonumber(color[3])/255)
-			end
-			url.Position = start
-			if (string.find(value, [[position="]])) then
-				local text = string.sub(value, string.find(value, [[position="]]) + string.len([[position="]]), string.len(value))
-				text = string.sub(text, 1, string.find(text, '"') - 1)
-				local udim2 = string.split(text, ",")
-				url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
-			else
-				start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
-			end
-			url.Parent = parent
-		end
-	end
-	for name, value in source:gmatch('<img(.-)(.-)>') do
-		local link = nil
-		if (string.find(value, 'src="')) then
-			local link = string.sub(value, string.find(value, 'src="') + string.len('src="'), string.len(value))
-			link = string.sub(link, 1, string.find(link, '"') - 1)
-			if true then
-
-				local url = screen:CreateElement("ImageLabel", { })
-				url.BackgroundTransparency = 1
-				url.Image = "http://www.roblox.com/asset/?id=8552847009"
-				if (link ~= "") then
-					if tonumber(link) then
-						url.Image = "rbxthumb://type=Asset&id="..tonumber(link).."&w=420&h=420"
-					else
-						url.Image = "rbxthumb://type=Asset&id="..tonumber(string.match(link, "%d+")).."&w=420&h=420"
-					end
-				end
-				url.Size = UDim2.new(0, 50, 0, 50)
-				if (string.find(value, [[rotation="]])) then
-					local text = string.sub(value, string.find(value, [[rotation="]]) + string.len([[rotation="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.Rotation = tonumber(text)
-				end
-				if (string.find(value, [[transparency="]])) then
-					local text = string.sub(value, string.find(value, [[transparency="]]) + string.len([[transparency="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.ImageTransparency = tonumber(text) or 0
-				end
-				if (string.find(value, [[zindex="]])) then
-					local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.ZIndex = tonumber(text) or 1
-				end
-				if (string.find(value, [[size="]])) then
-					local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					local udim2 = string.split(text, ",")
-					url.Size = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
-				end
-				if (string.find(value, [[fit="]])) then
-					local text = string.sub(value, string.find(value, [[fit="]]) + string.len([[fit="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					if text == "true" then
-						url.ScaleType = Enum.ScaleType.Fit
-					end
-				end
-				url.Position = start
-				if (string.find(value, [[position="]])) then
-					local text = string.sub(value, string.find(value, [[position="]]) + string.len([[position="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					local udim2 = string.split(text, ",")
-					url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
-				else
-					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
-				end
-				url.Parent = parent
-			end
-		end
-	end
-	for name, value in source:gmatch('<txt(.-)(.-)>') do
-		local link = nil
-		if (string.find(value, 'display="')) then
-			local link = string.sub(value, string.find(value, 'display="') + string.len('display="'), string.len(value))
-			link = string.sub(link, 1, string.find(link, '"') - 1)
-			if true then
-
-				local url = screen:CreateElement("TextLabel", { })
-				url.BackgroundTransparency = 1
-				url.Size = UDim2.new(0, 100, 0, 50)
-
-				link = string.gsub(link, "_quote_", '"')
-				link = string.gsub(link, "_higher_", '>')
-				link = string.gsub(link, "_lower_", '<')
-
-				url.Text = tonumber(link) or link
-				url.RichText = true
-				if (string.find(value, [[rotation="]])) then
-					local text = string.sub(value, string.find(value, [[rotation="]]) + string.len([[rotation="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.Rotation = tonumber(text)
-				end
-				if (string.find(value, [[size="]])) then
-					local text = string.sub(value, string.find(value, [[size="]]) + string.len([[size="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					local udim2 = string.split(text, ",")
-					url.Size = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
-				end
-				if (string.find(value, [[color="]])) then
-					local text = string.sub(value, string.find(value, [[color="]]) + string.len([[color="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					local color = string.split(text, ",")
-					url.TextColor3 = Color3.new(tonumber(color[1])/255,tonumber(color[2])/255,tonumber(color[3])/255)
-				end
-				if (string.find(value, [[zindex="]])) then
-					local text = string.sub(value, string.find(value, [[zindex="]]) + string.len([[zindex="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					url.ZIndex = tonumber(text) or 1
-				end
-				url.TextScaled = true
-				url.TextWrapped = true
-				url.Position = start
-				if (string.find(value, [[position="]])) then
-					local text = string.sub(value, string.find(value, [[position="]]) + string.len([[position="]]), string.len(value))
-					text = string.sub(text, 1, string.find(text, '"') - 1)
-					local udim2 = string.split(text, ",")
-					url.Position = UDim2.new(tonumber(udim2[1]),tonumber(udim2[2]),tonumber(udim2[3]),tonumber(udim2[4]))
-				else
-					start = UDim2.new(0,0,start.Y.Scale+url.Size.Y.Scale,start.Y.Offset+url.Size.Y.Offset)
-				end
-				url.Parent = parent
-			end
-		end
+local function strtoimg(str)
+	if str and (str:sub(1, 13) == "rbxassetid://" or str:sub(1, 11) == "rbxassetid://") then
+		return str
+	else
+		return str and (tonumber(str) and "rbxthumb://type=Asset&id="..tonumber(str).."&w=420&h=420" or "rbxthumb://type=Asset&id="..tonumber(string.match(str, "%d+")).."&w=420&h=420") or "http://www.roblox.com/asset/?id=8552847009"
 	end
 end
+
+local function strtoasset(str)
+	if str and (str:sub(1, 13) == "rbxassetid://" or str:sub(1, 11) == "rbxassetid://") then
+		return str
+	else
+		return `rbxassetid://{tonumber(str) or 0}`
+	end
+end
+
+local function addbuttonscript(values, obj, page, scrollingframe, title)
+	if values and values.href then
+		obj.MouseButton1Up:Connect(function()
+			local file, data1, dir, cd = readshortcutfile(values.href)
+			local fileextension = getfileextension(tostring(file))
+			if typeof(data1) == "string" and fileextension == ".gui" then
+				title.Text = string.sub(tostring(file), 1, -#fileextension - 1)
+				loadtext(data1, page, scrollingframe, title)
+			else
+				print(data1, file, dir)
+				readfile(data1, file, dir, cd)
+			end
+	    end)
+
+	    obj.MouseButton2Up:Connect(function()
+	        local file, data1, dir, cd = readshortcutfile(values.href)
+			print(data1, file, dir)
+	        readfile(data1, file, dir, cd)
+        end)
+	end
+end
+
+local enumitems = {
+	AutomaticSize = {},
+	ButtonStyle = {},
+	ScrollingDirection = {},
+	ElasticBehavior = {},
+	ScrollBarInset = {},
+	VerticalScrollBarPosition = {},
+	AspectType = {},
+	DominantAxis = {},
+	ApplyStrokeMode = {},
+	LineJoinMode = {},
+	Font = {},
+	TextXAlignment = {},
+	TextYAlignment = {}
+}
+
+for enumname, dict in enumitems do
+	for i, v in Enum[enumname]:GetEnumItems() do
+		dict[v.Name:lower()] = v
+	end
+end
+
+local defaultproperties = {
+	backimg = {
+		BackgroundTransparency = 1,
+		ScaleType = Enum.ScaleType.Tile,
+		TileSize = UDim2.new(0, 256, 0, 256),
+		Size = UDim2.new(1, 0, 1, 0),
+		Name = "backimg"
+	},
+	frame = {
+		Size = UDim2.new(0, 50, 0, 50),
+		BorderSizePixel = 0,
+	},
+	scrollframe = {
+		Size = UDim2.new(0, 50, 0, 50),
+		BorderSizePixel = 0,
+	},
+	img = {
+		Size = UDim2.new(0, 50, 0, 50),
+		BackgroundTransparency = 1
+	},
+	txt = {
+		Size = UDim2.new(0, 250, 0, 50),
+		TextScaled = true,
+		TextWrapped = true,
+		BackgroundTransparency = 1,
+		TextEditable = false,
+		ClearTextOnFocus = false
+	},
+	button = {
+		Size = UDim2.new(0, 250, 0, 50),
+		TextScaled = true,
+		TextWrapped = true,
+		BorderSizePixel = 0
+	},
+	imagebutton = {
+		Size = UDim2.new(0, 50, 0, 50),
+		BackgroundTransparency = 1
+	}
+}
+
+local guiobjectproperties = {
+	all = {
+		rotation = "Rotation",
+		position = "Position",
+		size = "Size",
+		anchorpoint = "AnchorPoint",
+		automaticsize = "AutomaticSize",
+		zindex = "ZIndex",
+		name = "Name"
+	},
+	UICorner = {
+		radius = "CornerRadius"
+	},
+	UIScale = {
+		scale = "Scale"
+	},
+	UISizeConstraint = {
+		maxsize = "MaxSize",
+		minsize = "MinSize"
+	},
+	UIAspectRatioConstraint = {
+		aspectratio = "AspectRatio",
+		aspecttype = "AspectType",
+		dominantaxis = "DominantAxis"
+	},
+	UIPadding = {
+		bottom = "PaddingBottom",
+		top = "PaddingTop",
+		right = "PaddingRight",
+		left = "PaddingLeft"
+	},
+	UIStroke = {
+		applystrokemode = "ApplyStrokeMode",
+		color = "Color",
+		linejoinmode = "LineJoinMode",
+		thickness = "Thickness",
+		transparency = "Transparency",
+		enabled = "Enabled"
+	},
+	UITextSizeConstraint = {
+		maxsize = "MaxTextSize",
+		minsize = "MinTextSize"
+	},
+	Frame = {
+		transparency = "BackgroundTransparency",
+		color = "BackgroundColor3",
+		bordersize = "BorderSizePixel",
+		bordercolor = "BorderColor3"
+	},
+	ScrollingFrame = {
+		transparency = "BackgroundTransparency",
+		color = "BackgroundColor3",
+		bordersize = "BorderSizePixel",
+		bordercolor = "BorderColor3",
+		canvassize = "CanvasSize",
+		canvasposition = "CanvasPosition",
+		automaticcanvassize = "AutomaticSize",
+		scrollingdirection = "ScrollingDirection",
+		scrollbarthickness = "ScrollBarThickness",
+		scrollingenabled = "ScrollingEnabled",
+		bottomimage = "BottomImage",
+		midimage = "MidImage",
+		topimage = "TopImage",
+		scrollbarimagetransparency = "ScrollBarImageTransparency",
+		scrollbarimagecolor3 = "ScrollBarImageColor3",
+		verticalscrollbarinset = "VerticalScrollBarInset",
+		horizontalscrollbarinset = "HorizontalScrollBarInset",
+		verticalscrollbarposition = "VerticalScrollBarPosition",
+		elasticbehavior = "ElasticBehavior"
+
+	},
+	ImageLabel = {
+		transparency = "ImageTransparency",
+		src = "Image",
+		fit = "ScaleType",
+		color = "ImageColor3",
+		tile = "TileSize"
+	},
+	ImageButton = {
+		transparency = "ImageTransparency",
+		img = "Image",
+		hover = "HoverImage",
+		press = "PressedImage",
+		fit = "ScaleType",
+		color = "ImageColor3",
+	},
+	TextBox = {
+		color = "TextColor3",
+		textscaled = "TextScaled",
+		textwrapped = "TextWrapped",
+		textsize = "TextSize",
+		richtext = "RichText",
+		display = "Text",
+		transparency = "TextTransparency",
+		strokecolor = "TextStrokeColor3",
+		stroketransparency = "TextStrokeTransparency",
+		interactable = "Interactable",
+		font = "Font",
+		xalignment = "TextXAlignment",
+		yalignment = "TextYAlignment",
+	},
+	TextButton = {
+		color = "TextColor3",
+		backgroundcolor = "BackgroundColor3",
+		textscaled = "TextScaled",
+		textwrapped = "TextWrapped",
+		style = "Style",
+		textsize = "TextSize",
+		richtext = "RichText",
+		display = "Text",
+		transparency = "TextTransparency",
+		backgroundtransparency = "BackgroundTransparency",
+		bordersize = "BorderSizePixel",
+		bordercolor = "BorderColor3",
+		autobuttoncolor = "AutoButtonColor",
+		strokecolor = "TextStrokeColor3",
+		stroketransparency = "TextStrokeTransparency",
+		font = "Font",
+		xalignment = "TextXAlignment",
+		yalignment = "TextYAlignment",
+	}
+}
+
+local tags = {
+	page = {
+		func = function(values, obj, page, scrollingframe)
+			if not values then return end
+			if values.size then
+				scrollingframe.CanvasSize = values.size
+			end
+		end,
+		properties = {
+			size = "udim2"
+		}
+	},
+	title = {
+		func = function(values, obj, page, scrollingframe, title)
+			if values and values.display and title then
+				title.Text = values.display
+			end
+		end,
+		properties = {display = "string"}
+	},
+	backimg = {
+		class = "ImageLabel",
+		properties = {
+			transparency = "number",
+			tile = "udim2",
+			color = "color3",
+			src = "string",
+		}
+	},
+	corner = {
+		class = "UICorner",
+		properties = {
+			radius = "udim",
+			name = "string"
+		}
+	},
+	textsizeconstraint = {
+		class = "UITextSizeConstraint",
+		properties = {
+			minsize = "number",
+			maxsize = "number"
+		}
+	},
+	aspectratio = {
+		class = "UIAspectRatioConstraint",
+		properties = {
+			aspectratio = "number",
+			aspecttype = Enum.AspectType,
+			dominantaxis = Enum.DominantAxis,
+			name = "string"
+		}
+	},
+	padding = {
+		class = "UIPadding",
+		properties = {
+			bottom = "udim",
+			top = "udim",
+			right = "udim",
+			left = "udim",
+			name = "string"
+		}
+	},
+	scale = {
+		class = "UIScale",
+		properties = {
+			scale = "number",
+			name = "string"
+		}
+	},
+	sizeconstraint = {
+		class = "UISizeConstraint",
+		properties = {
+			maxsize = "vector2",
+			minsize = "vector2",
+			name = "string"
+		}
+	},
+	stroke = {
+		class = "UIStroke",
+		properties = {
+			applystrokemode = Enum.ApplyStrokeMode,
+			color = "color3",
+			linejoinmode = Enum.LineJoinMode,
+			thickness = "number",
+			transparency = "number",
+			enabled = "boolean",
+			name = "string"
+		}
+	},
+	frame = {
+		class = "Frame",
+		properties = {
+			rotation = "number",
+			transparency = "number",
+			zindex = "number",
+			size = "udim2",
+			position = "udim2",
+			color = "color3",
+			anchorpoint = "vector2",
+			automaticsize = Enum.AutomaticSize,
+			bordersize = "number",
+			bordercolor = "color3",
+			name = "string"
+		}
+	},
+	scrollframe = {
+		class = "ScrollingFrame",
+		properties = {
+			rotation = "number",
+			transparency = "number",
+			zindex = "number",
+			size = "udim2",
+			position = "udim2",
+			color = "color3",
+			anchorpoint = "vector2",
+			automaticsize = Enum.AutomaticSize,
+			automaticcanvassize = Enum.AutomaticSize,
+			canvassize = "udim2",
+			canvasposition = "vector2",
+			name = "string",
+			scrollingdirection = Enum.ScrollingDirection,
+			scrollbarthickness = "number",
+			scrollingenabled = "boolean",
+			bottomimage = "string",
+			topimage = "string",
+			midimage = "string",
+			scrollbartransparency = "number",
+			scrollbarimagecolor3 = "color3",
+			verticalscrollbarinset = Enum.ScrollBarInset,
+			horizontalscrollbarinset = Enum.ScrollBarInset,
+			verticalscrollbarposition = Enum.VerticalScrollBarPosition,
+			elasticbehavior = Enum.ElasticBehavior
+		}
+	},
+	img = {
+		class = "ImageLabel",
+		properties = {
+			rotation = "number",
+			transparency = "number",
+			zindex = "number",
+			size = "udim2",
+			position = "udim2",
+			color = "color3",
+			anchorpoint = "vector2",
+			automaticsize = Enum.AutomaticSize,
+			src = "string",
+			fit = "boolean",
+			name = "string"
+		}
+	},
+	txt = {
+		class = "TextBox",
+		properties = {
+			rotation = "number",
+			transparency = "number",
+			zindex = "number",
+			size = "udim2",
+			position = "udim2",
+			color = "color3",
+			richtext = "boolean",
+			anchorpoint = "vector2",
+			automaticsize = Enum.AutomaticSize,
+			display = "string",
+			textscaled = "boolean",
+			textsize = "number",
+			textwrapped = "boolean",
+			name = "string",
+			strokecolor = "color3",
+			stroketransparency = "number",
+			interactable = "boolean",
+			font = Enum.Font,
+			xalignment = Enum.TextXAlignment,
+			yalignment = Enum.TextYAlignment
+		}
+	},
+	button = {
+		func = function(values, obj, page, scrollingframe, title)
+			addbuttonscript(values, obj, page, scrollingframe, title)
+		end,
+		class = "TextButton",
+		properties = {
+			rotation = "number",
+			transparency = "number",
+			zindex = "number",
+			size = "udim2",
+			position = "udim2",
+			color = "color3",
+			backgroundcolor = "color3",
+			anchorpoint = "vector2",
+			automaticsize = Enum.AutomaticSize,
+			display = "string",
+			richtext = "boolean",
+			href = "string",
+			donate = "string",
+			textscaled = "boolean",
+			textsize = "number",
+			style = Enum.ButtonStyle,
+			textwrapped = "boolean",
+			bordersize = "number",
+			bordercolor = "color3",
+			name = "string",
+			backgroundtransparency = "number",
+			autobuttoncolor = "boolean",
+			strokecolor = "color3",
+			stroketransparency = "number",
+			font = Enum.Font,
+			xalignment = Enum.TextXAlignment,
+			yalignment = Enum.TextYAlignment
+		}
+	},
+	imagebutton = {
+		func = function(values, obj, page, scrollingframe, title)
+			addbuttonscript(values, obj, page, scrollingframe, title)
+		end,
+		class = "ImageButton",
+		properties = {
+			rotation = "number",
+			transparency = "number",
+			zindex = "number",
+			size = "udim2",
+			position = "udim2",
+			color = "color3",
+			anchorpoint = "vector2",
+			automaticsize = Enum.AutomaticSize,
+			fit = "boolean",
+			img = "string",
+			hover = "string",
+			press = "string",
+			href = "string",
+			donate = "string",
+			name = "string"
+		}
+	}
+}
+
+local function strtovalue(str, type)
+	if type == "vector2" then
+		local numbers = str:split(",")
+		return Vector2.new(tonumber(numbers[1]) or 0, tonumber(numbers[2]) or 0)
+	elseif type == "color3" then
+		local numbers = str:split(",")
+		return Color3.fromRGB(tonumber(numbers[1]) or 0, tonumber(numbers[2]) or 0, tonumber(numbers[3]) or 0)
+	elseif type == "udim" then
+		local numbers = str:split(",")
+		return UDim.new((tonumber(numbers[1]) or 0),(tonumber(numbers[2]) or 0))
+	elseif type == "udim2" then
+		local numbers = str:split(",")
+		return UDim2.new((tonumber(numbers[1]) or 0),(tonumber(numbers[2]) or 0), (tonumber(numbers[3]) or 0), (tonumber(numbers[4]) or 0))
+	elseif type == "number" then
+		return tonumber(str) or 0
+	elseif type == "boolean" then
+		if str:lower() == "true" then
+			return true
+		else
+			return false
+		end
+	elseif typeof(type) == "Enum" then
+		return enumitems[tostring(type)][str:lower()]
+	else
+		return str
+	end
+end
+
+function loadtext(source, page, scrollingframe, title)
+	page.Parent = resolutionframe
+	page:ClearAllChildren()
+	scrollingframe:ClearAllChildren()
+	scrollingframe.CanvasSize = UDim2.fromScale(0, 0)
+	source = source:gsub("\\<", "_lower_"):gsub("\\>", "_higher_")
+	local start = UDim2.new(0,0,0,0)
+
+	--gtml 2.0
+	local storedelements = {}
+	local backimg
+	for tag, properties in string.gmatch(source, "<%s*(%w+)(%s*[^>]*)>") do
+		if backimg and tag == "backimg" then
+			continue
+		end
+		local values
+		local variablename
+		local parent
+		tag = tag:lower()
+		local info = tags[tag]
+		if info then
+			local ignore = false
+			local obj = nil
+			if properties and properties ~= "" then
+				values = {}
+				properties = properties:gsub('\\"', "_quote_")
+				for key, value in string.gmatch(properties, '(%S*)%s*=%s*(%b"")') do
+					key = key:lower()
+					value = converttostring(value):sub(2, -2)
+					if key == "ignore" then
+						if value:lower() == "true" then
+							ignore = true
+						end
+					elseif key == "variable" then
+						variablename = value
+					elseif key == "parent" and tag ~= "backimg" then
+						if storedelements[value] then
+							parent = storedelements[value]
+						end
+					else
+						if info.properties[key] then
+							values[key] = strtovalue(value, info.properties[key])
+						end
+					end
+				end
+
+			end
+			if ignore then
+				values = nil
+				info = nil
+				continue
+			end
+			if info.class then
+				obj = Instance.new(info.class)
+				if defaultproperties[tag] then
+					for key, value in defaultproperties[tag] do
+						obj[key] = value
+					end
+				end
+				if obj:IsA("GuiObject") and not parent and tag ~= "backimg" then
+					obj.Position = start
+					if (values and not values.position) or not values then
+						start += UDim2.new(0,0,0, obj.AbsoluteSize.Y)
+					end
+				end
+				if values then
+					for key, value in values do
+						local property = guiobjectproperties[info.class][key] or guiobjectproperties.all[key]
+						if property and value ~= nil then
+							if key == "fit" and property == "ScaleType" and value then
+								value = Enum.ScaleType.Fit
+							elseif property == "Video" or property == "SoundId" then
+								value = strtoasset(value)
+							elseif property:sub(-6, -1) == "Image" then
+								value = strtoimg(value)
+							end
+							obj[property] = value
+						end
+					end
+				end
+				obj.Parent = parent or (tag ~= "backimg" and page or scrollingframe)
+			end
+			if info.func then
+				info.func(values, obj, page, scrollingframe, title)
+			end
+			if variablename and obj then
+				storedelements[variablename] = obj
+			end
+			if tag == "backimg" then
+				backimg = obj
+			end
+		end
+	end
+	if backimg then
+		page.Parent = backimg
+	end
+	storedelements = nil
+end
+
+local function StringToGui(text, parent, title)
+	local scrollingframe = Instance.new("ScrollingFrame")
+	scrollingframe.Size = UDim2.fromScale(1, 1)
+	scrollingframe.ScrollBarThickness = 5
+	scrollingframe.BackgroundTransparency = 1
+	scrollingframe.Parent = parent
+	local page = Instance.new("Frame")
+	page.Size = UDim2.fromScale(1, 1)
+	page.BackgroundTransparency = 1
+	page.Parent = scrollingframe
+	loadtext(text, page, scrollingframe, title)
+end
+-- end gui file stuff
 
 local usedmicros = {}
 
@@ -673,14 +1078,35 @@ local runtext
 local cmdsenabled = true
 local iconnections = {}
 
+local programglobals = {
+	luaprogram = luaprogram,
+	filesystem = filesystem,
+	screen = screen,
+	keyboard = keyboard
+	modem = modem,
+	speaker = speaker,
+	commandline = commandline,
+	disk = disk,
+	shutdownprompt = shutdownprompt,
+	restartprompt = restartprompt,
+	disks = disks,
+	rom = rom,
+	getFileExtension = getfileextension,
+	StringToGui = StringToGui,
+	runtext = runtext
+}
+
 local function runprogram(text, name)
 	if not text then error("no code to run was given in parameter two.") end
 	if typeof(name) ~= "string" then
 		name = "untitled"
 	end
 	local fenv = table.clone(getfenv())
-	fenv["luaprogram"] = luaprogram
-	fenv["filesystem"] = filesystem
+
+	for name, value in pairs(programglobals) do
+		fenv[name] = value
+    	end
+
 	fenv["lines"] = {
 		clear = commandlines.clear,
 		insert = commandlines.insert,
@@ -709,13 +1135,6 @@ local function runprogram(text, name)
 		end,
 		getdir = function() return dir, disk end
 	}
-	fenv["screen"] = screen
-	fenv["keyboard"] = keyboard
-	fenv["modem"] = modem
-	fenv["speaker"] = speaker
-	fenv["disk"] = disk
-	fenv["disks"] = disks
-	fenv["runtext"] = runtext
 	local prg
 	fenv["getSelf"] = function()
         	return prg, name
