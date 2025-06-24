@@ -257,11 +257,11 @@ function commandline.new(scr)
 				vec2 = Vector2.new(vec2.X.Offset + vec2.X.Scale*background.AbsoluteSize.X, vec2.Y.Offset + vec2.Y.Scale*background.AbsoluteSize.Y)
 			end
 			if typeof(vec2) == "Vector2" then
-				textlabel.Size = vec2
+				textlabel.Size = UDim2.fromOffset(vec2.X, vec2.Y)
 				local newsizex = if vec2.X > biggesttextx then vec2.X else 0
 				background.CanvasSize -= UDim2.fromOffset(newsizex, math.max(textlabel.TextBounds.Y, textlabel.TextSize))
 				background.CanvasSize += UDim2.new(0, newsizex, 0, vec2.Y)
-				if udim2.X.Offset > background.AbsoluteSize.X then
+				if vec2.X > background.AbsoluteSize.X then
 					background.CanvasSize += UDim2.new(0, vec2.X - background.AbsoluteSize.X, 0, 0)
 				end
 				lines.number -= UDim2.new(0,0,0,math.max(textlabel.TextBounds.Y, textlabel.TextSize))
@@ -401,7 +401,9 @@ local function addbuttonscript(values, obj, page, scrollingframe, title)
 		obj.MouseButton1Up:Connect(function()
 			local fileextension = getfileextension(tostring(file))
 			if typeof(data1) == "string" and fileextension == ".gui" then
-				title.Text = string.sub(tostring(file), 1, -#fileextension - 1)
+				if title then
+					title.Text = string.sub(tostring(file), 1, -#fileextension - 1)
+				end
 				loadtext(data1, page, scrollingframe, title)
 			else
 				disk = cd
@@ -1565,7 +1567,7 @@ function runtext(text)
 			local output = filesystem.Read(filename, dir, true, disk)
 			if string.find(string.lower(tostring(output)), "<woshtml>") then
 				local textlabel = commandlines.insert(tostring(output), UDim2.fromScale(1, 1))
-				StringToGui(screen, tostring(output), textlabel)
+				StringToGui(tostring(output), textlabel)
 				textlabel.TextTransparency = 1
 			else
 				local spacesplitted = string.split(tostring(output), "\n")
@@ -1586,7 +1588,7 @@ function runtext(text)
 		if filename and filename ~= "" then
 			local output = filesystem.Read(filename, dir, true, disk)
 			local textlabel = commandlines.insert(tostring(output), UDim2.fromScale(1, 1))
-			StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+			StringToGui([[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 		else
 			commandlines.insert("No filename specified")
 		end
@@ -1613,7 +1615,7 @@ function runtext(text)
 		local id = text:sub(14, string.len(text))
 		if id and id ~= "" then
 			local textlabel = commandlines.insert(tostring(id), UDim2.fromScale(1, 1))
-			StringToGui(screen, [[<img src="]]..tostring(tonumber(id))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+			StringToGui([[<img src="]]..tostring(tonumber(id))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 		else
 			commandlines.insert("No id specified")
 		end
@@ -1736,7 +1738,7 @@ function runtext(text)
 				commandlines.insert(dir..":")
 			elseif getfileextension(filename, true) == ".img" then
 				local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
-				StringToGui(screen, [[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
+				StringToGui([[<img src="]]..tostring(tonumber(output))..[[" size="1,0,1,0" position="0,0,0,0">]], textlabel)
 				commandlines.insert(dir..":")
 				background.CanvasPosition -= Vector2.new(0, 24)
 			elseif getfileextension(filename, true) == ".lua" then
@@ -1745,13 +1747,13 @@ function runtext(text)
 				commandlines.insert(dir..":")
 			elseif getfileextension(filename, true) == ".gui" then
 				local textlabel = commandlines.insert(tostring(output), UDim2.fromScale(1, 1))
-				StringToGui(screen, output, textlabel)
+				StringToGui(output, textlabel)
 				textlabel.TextTransparency = 1
 				commandlines.insert(dir..":")
 			else
 				if string.find(string.lower(tostring(output)), "<woshtml>") then
 					local textlabel = commandlines.insert(tostring(output), UDim2.fromOffset(background.AbsoluteSize.X, background.AbsoluteSize.Y))
-					StringToGui(screen, tostring(output):lower(), textlabel)
+					StringToGui(tostring(output):lower(), textlabel)
 					textlabel.TextTransparency = 1
 					commandlines.insert(dir..":")
 					background.CanvasPosition -= Vector2.new(0, 24)
@@ -1838,7 +1840,10 @@ function bootos()
 	end
 	if screen and keyboard and disk and rom then
 		table.clear(iconnections)
-		table.freeze(disks)
+		disks = table.freeze(disks)
+
+		disk:Write("test.gui", '<button href="/test2.gui" display="test2">')
+		disk:Write("test2.gui", '<button href="/test.gui" display="test">')
 		rom:Write("SysDisk", true)
 		if speaker then
 			speaker:ClearSounds()
