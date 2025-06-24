@@ -349,6 +349,7 @@ local filesystem = {
 local name = "GustavDOS"
 
 local keyboardevent
+local runtext
 
 -- gui file stuff
 local loadtext
@@ -375,23 +376,45 @@ end
 
 local function addbuttonscript(values, obj, page, scrollingframe, title)
 	if values and values.href then
+		local split = tostring(values.href):split("/")
+		local file = split[#split]
+		local dir = ""
+
+		local cd = disks[1]
+
+		if tonumber(split[1]) then
+			cd = disks[tonumber(split[1])]
+		end
+
+		for index, value in ipairs(split) do
+			if index < #split and index > 1 then
+				dir = dir.."/"..value
+			end
+		end
+
+		local data1 = filesystem.Read(file, if dir == "" then "/" else dir, true, cd)
+
+		if dir == "" and file == "" then
+			data1 = cd:ReadAll()
+		end
+
 		obj.MouseButton1Up:Connect(function()
-			local file, data1, dir, cd = readshortcutfile(values.href)
 			local fileextension = getfileextension(tostring(file))
 			if typeof(data1) == "string" and fileextension == ".gui" then
 				title.Text = string.sub(tostring(file), 1, -#fileextension - 1)
 				loadtext(data1, page, scrollingframe, title)
 			else
-				print(data1, file, dir)
-				readfile(data1, file, dir, cd)
+				disk = cd
+				runtext("dir "..dir)
+				runtext(tostring(file))
 			end
-	    end)
+		end)
 
-	    obj.MouseButton2Up:Connect(function()
-	        local file, data1, dir, cd = readshortcutfile(values.href)
-			print(data1, file, dir)
-	        readfile(data1, file, dir, cd)
-        end)
+		obj.MouseButton2Up:Connect(function()
+			disk = cd
+			runtext("dir "..dir)
+			runtext(tostring(file))
+		end)
 	end
 end
 
@@ -844,9 +867,10 @@ local function strtovalue(str, type)
 end
 
 function loadtext(source, page, scrollingframe, title)
-	page.Parent = resolutionframe
+	page.Parent = scrollingframe.Parent
 	page:ClearAllChildren()
 	scrollingframe:ClearAllChildren()
+	page.Parent = scrollingframe
 	scrollingframe.CanvasSize = UDim2.fromScale(0, 0)
 	source = source:gsub("\\<", "_lower_"):gsub("\\>", "_higher_")
 	local start = UDim2.new(0,0,0,0)
@@ -1037,7 +1061,7 @@ local coroutineprograms = {}
 
 local function getprograms()
 	local t = {}
-	
+
 	for i, v in ipairs(coroutineprograms) do
 		if coroutine.status(v.coroutine) == "dead" then
 			table.remove(coroutineprograms, i)
@@ -1045,7 +1069,7 @@ local function getprograms()
 		end
 		table.insert(t, v.name)
 	end
-	
+
 	return t
 end
 
@@ -1054,13 +1078,13 @@ local function stopprogram(i)
 	if not program then
 		return false
 	end
-	
+
 	if coroutine.status(program.coroutine) ~= "dead" then
 		coroutine.close(program.coroutine)
 	end
-	
+
 	table.remove(coroutineprograms, i)
-	
+
 	return true
 end
 
@@ -1074,7 +1098,6 @@ local function stopprogrambyname(name)
 end
 
 local luaprogram
-local runtext
 local cmdsenabled = true
 local iconnections = {}
 
@@ -1087,8 +1110,6 @@ local programglobals = {
 	speaker = speaker,
 	commandline = commandline,
 	disk = disk,
-	shutdownprompt = shutdownprompt,
-	restartprompt = restartprompt,
 	disks = disks,
 	rom = rom,
 	getFileExtension = getfileextension,
@@ -1105,7 +1126,7 @@ local function runprogram(text, name)
 
 	for name, value in pairs(programglobals) do
 		fenv[name] = value
-    	end
+	end
 
 	fenv["lines"] = {
 		clear = commandlines.clear,
@@ -1137,8 +1158,8 @@ local function runprogram(text, name)
 	}
 	local prg
 	fenv["getSelf"] = function()
-        	return prg, name
-    	end
+		return prg, name
+	end
 	local func, b = loadstring(text)
 	if func then
 		setfenv(func, fenv)
@@ -1258,7 +1279,7 @@ function runtext(text)
 		dir = "/"
 		if keyboardevent then keyboardevent:Disconnect() end
 		if not putermode then
-	    		bootos()
+			bootos()
 		else
 			pcall(TriggerPort, 3)
 		end
@@ -1272,7 +1293,7 @@ function runtext(text)
 				speaker:ClearSounds()
 			end
 			if not putermode then
-    				if not back then
+				if not back then
 					Microcontroller:Shutdown()
 				else
 					back()
@@ -1855,7 +1876,7 @@ function bootos()
 		keyboardevent = keyboard.TextInputted:Connect(function(text, player)			
 			for i, f in iconnections do
 				pcall(f, text, player)
-		    	end
+			end
 			if not cmdsenabled then return end
 			local func = exclmarkthings[string.sub(tostring(text), 1, 2)]
 			if not func then
