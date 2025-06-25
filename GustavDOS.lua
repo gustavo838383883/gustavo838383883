@@ -1886,7 +1886,7 @@ function bootos()
 		if keyboardevent then keyboardevent:Disconnect() end
 		keyboardevent = keyboard.TextInputted:Connect(function(text, player)			
 			for i, f in iconnections do
-				pcall(f, text, player)
+				pcall(task.spawn, f, text, player)
 			end
 			if not cmdsenabled then return end
 			local func = exclmarkthings[string.sub(tostring(text), 1, 2)]
