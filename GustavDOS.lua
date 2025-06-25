@@ -1167,7 +1167,10 @@ local function runprogram(text, name)
 		setfenv(func, fenv)
 		prg = coroutine.create(func)
 		table.insert(coroutineprograms, {name = name, coroutine = prg})
-		coroutine.resume(prg)
+		local success, error = coroutine.resume(prg)
+		if not success then
+			b = error
+		end
 	end
 	return b
 end
