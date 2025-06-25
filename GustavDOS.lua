@@ -1168,7 +1168,7 @@ local function runprogram(text, name)
 		prg = coroutine.create(func)
 		table.insert(coroutineprograms, {name = name, coroutine = prg})
 		local success, error = coroutine.resume(prg)
-		if not success then
+		if error then
 			b = error
 		end
 	end
