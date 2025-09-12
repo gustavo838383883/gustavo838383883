@@ -126,7 +126,7 @@ local function findbombsnear(square)
 	bigsquare.Parent = square
 
 	local colliding = GetTouchingGuiObjects(bigsquare, bombs)
-	
+
 	for index, value in ipairs(colliding) do
 		found += 1
 	end
@@ -138,7 +138,7 @@ local function findbombsnear(square)
 	end
 
 	bombs = {}
-	
+
 	return found
 end
 
@@ -153,13 +153,13 @@ local function youwon()
 		sound:Play()
 		task.wait(2)
 		sound:Destroy()
-	end)
+	end))
 end
 
 local function shownear(square)
 	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5)})
 	bigsquare.Parent = square
-	
+
 	local colliding = GetTouchingGuiObjects(bigsquare, guis)
 
 	local previ = 0
@@ -174,7 +174,7 @@ local function shownear(square)
 					textlabl = val
 				end
 			end
-			
+
 			Trigger(1, value, textlabl)
 		end
 	end
@@ -192,7 +192,7 @@ local function died()
 		sound:Play()
 		task.wait(2)
 		sound:Destroy()
-	end)
+	end))
 end
 
 local textcolors = {
@@ -264,7 +264,7 @@ local function placeflagfunc(square, flag)
 			sound:Play()
 			task.wait(1)
 			sound:Destroy()
-		end)
+		end))
 	end
 
 	return flag
@@ -328,7 +328,7 @@ local function restartgamenow()
 	end
 
 	donttrigger = false
-	
+
 	bombpositions = {}
 
 	function startgame(square)
@@ -367,7 +367,7 @@ local function createlist(frame, content, func)
 	if scrollframe.CanvasSize.Y.Scale == 0.5 then
 		scrollframe.CanvasSize = UDim2.fromScale(0, 1)
 	end
-	
+
 	for index, value in ipairs(content) do
 		local button1 = normalcreatenicebutton(UDim2.fromScale(1, (0.5/scrollframe.CanvasSize.Y.Scale)), UDim2.fromScale(0, ((0.5/scrollframe.CanvasSize.Y.Scale) * index) - (0.5/scrollframe.CanvasSize.Y.Scale)), tostring(value), scrollframe)
 
@@ -375,7 +375,7 @@ local function createlist(frame, content, func)
 			func(value)
 		end)
 	end
-	
+
 	return frame1
 end
 
@@ -421,7 +421,7 @@ function restartgame()
 	local changesize, changetext = normalcreatenicebutton(UDim2.fromScale(0.25, 0.2), UDim2.fromScale(0, 0.6), tempsize, windowa)
 
 	local list = nil
-	
+
 	changesize.MouseButton1Up:Connect(function()
 		if list then
 			list:Destroy()
@@ -445,6 +445,7 @@ function restartgame()
 	end)
 end
 
+Beep(1)
 restartgame()
 
 while true do
@@ -458,15 +459,15 @@ while true do
 	end
 
 	if not donttrigger and not firstclick then
-	
+
 		local clickednumber = 0
-				
+
 		for index, value in ipairs(guis) do
 			if value.Image == "rbxassetid://15625805069" and not table.find(bombpositions, value.Position) then
 				clickednumber += 1
 			end
 		end
-		
+
 		if clickednumber == #guis - bombnumber then
 			donttrigger = true
 			youwon()
