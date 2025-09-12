@@ -36,29 +36,7 @@ local function GetTouchingGuiObjects(gui, folder)
 		for i, ui in pairs(folder) do
 
 			if ui.Visible then
-				local x = ui.AbsolutePosition.X
-				local y = ui.AbsolutePosition.Y
-				local y_axis = false
-				local x_axis = false
-				local guiposx = gui.AbsolutePosition.X + gui.AbsoluteSize.X
-				local number = ui.AbsoluteSize.X + gui.AbsoluteSize.X
-
-				if x - guiposx >= -number then
-					if x - guiposx <= 0 then
-						x_axis = true
-					end
-				end
-
-				local guiposy = gui.AbsolutePosition.Y + gui.AbsoluteSize.Y
-				local number2 = ui.AbsoluteSize.Y + gui.AbsoluteSize.Y
-
-				if y - guiposy >= -number2 then
-					if y - guiposy <= 0 then
-						y_axis = true
-					end
-				end
-
-				if x_axis and y_axis then
+				if (ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) >= -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) <= 0 and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) >= -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) <= 0) then
 					table.insert(instances, ui)
 				end
 			end
@@ -127,9 +105,7 @@ local function findbombsnear(square)
 
 	local colliding = GetTouchingGuiObjects(bigsquare, bombs)
 
-	for index, value in ipairs(colliding) do
-		found += 1
-	end
+	found = #colliding
 
 	bigsquare:Destroy()
 
