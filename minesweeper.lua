@@ -122,7 +122,7 @@ local function findbombsnear(square)
 		table.insert(bombs, bomb)
 	end
 
-	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5), BackgroundTransparency = 1})
+	local bigsquare = screen:CreateElement("Frame", {Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5), BackgroundTransparency = 1})
 	bigsquare.Parent = square
 
 	local colliding = GetTouchingGuiObjects(bigsquare, bombs)
