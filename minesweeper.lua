@@ -219,6 +219,7 @@ function Trigger(mode, square, txtlabel)
 		end
 	elseif not found then
 		local returnval = findbombsnear(square)
+		print(returnval)
 		if returnval > 0 then
 			txtlabel.Text = returnval
 			local textcolor = textcolors[returnval]
