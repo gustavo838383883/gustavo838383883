@@ -103,6 +103,8 @@ local function findbombsnear(square)
 	local bigsquare = screen:CreateElement("Frame", {Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5), BackgroundTransparency = 1})
 	bigsquare.Parent = square
 
+	task.wait()
+
 	local colliding = GetTouchingGuiObjects(bigsquare, bombs)
 
 	found = #colliding
@@ -135,6 +137,8 @@ end
 local function shownear(square)
 	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5)})
 	bigsquare.Parent = square
+
+	task.wait()
 
 	local colliding = GetTouchingGuiObjects(bigsquare, guis)
 
