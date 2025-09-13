@@ -126,6 +126,7 @@ local function youwon()
 		local sound = speaker:LoadSound("rbxassetid://12222253")
 		sound.Volume = 1
 		sound:Play()
+		speaker.Volume = speaker.Volume
 		task.wait(2)
 		sound:Destroy()
 	end))
@@ -162,6 +163,7 @@ local function died()
 		local sound = speaker:LoadSound("rbxassetid://3802269741")
 		sound.Volume = 1
 		sound:Play()
+		speaker.Volume = speaker.Volume
 		task.wait(2)
 		sound:Destroy()
 	end))
@@ -235,6 +237,7 @@ local function placeflagfunc(square, flag)
 			local sound = speaker:LoadSound("rbxassetid://4831091467")
 			sound.Volume = 1
 			sound:Play()
+			speaker.Volume = speaker.Volume
 			task.wait(1)
 			sound:Destroy()
 		end))
@@ -418,7 +421,6 @@ function restartgame()
 	end)
 end
 
-Beep(1)
 restartgame()
 
 while true do
