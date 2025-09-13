@@ -33,20 +33,19 @@ local function GetTouchingGuiObjects(gui, folder)
 
 		local instances = {}
 
-		for i, ui in pairs(folder) do
+		for i, ui in folder do
 
 			if ui.Visible then
 				if (ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) >= -ui.AbsoluteSize.X - gui.AbsoluteSize.X and ui.AbsolutePosition.X - (gui.AbsolutePosition.X + gui.AbsoluteSize.X) <= 0 and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) >= -ui.AbsoluteSize.Y - gui.AbsoluteSize.Y and ui.AbsolutePosition.Y - (gui.AbsolutePosition.Y + gui.AbsoluteSize.Y) <= 0) then
 					table.insert(instances, ui)
 				end
 			end
-
-			return instances
 		end
+		return instances
 	end
 end
 
-local window = CreateWindow(UDim2.fromScale(0.5, 0.7), "Minesweeper", false, false, false, "Minesweeper", false, false)
+local window, winfunc = CreateWindow(UDim2.fromScale(0.5, 0.7), "Minesweeper", false, false, false, "Minesweeper", false, false)
 
 local smilebutton, t = createnicebutton2(UDim2.fromScale(0.15, 0.15), UDim2.fromScale(0.5, 0), "", window)
 
@@ -88,32 +87,26 @@ local Trigger
 local bombpositions = {}
 local donttrigger = false
 
+local function createfakebigsquare(square)
+	return {Visible = true, ClassName = "Frame", AbsoluteSize = square.AbsoluteSize*2, AbsolutePosition = square.AbsolutePosition - square.AbsoluteSize/2}
+end
+
 local function findbombsnear(square)
 	local found = 0
 
 	local bombs = {}
 
 	for index, value in ipairs(bombpositions) do
-		local bomb = screen:CreateElement("Frame", {Size = UDim2.fromScale(squaresize, squaresize), Position = value, BackgroundTransparency = 1})
-		bomb.Parent = squareholder
-
-		table.insert(bombs, bomb)
+		print(squareholder.AbsolutePosition + Vector2.new(squareholder.AbsoluteSize.X*value.X.Scale, squareholder.AbsoluteSize.Y*value.Y.Scale))
+		print(square.AbsolutePosition, "ME")
+		table.insert(bombs, {Visible = true, ClassName = "Frame", AbsoluteSize = square.AbsoluteSize, AbsolutePosition = squareholder.AbsolutePosition + Vector2.new(squareholder.AbsoluteSize.X*value.X.Scale, squareholder.AbsoluteSize.Y*value.Y.Scale)})
 	end
 
-	local bigsquare = screen:CreateElement("Frame", {Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5), BackgroundTransparency = 1})
-	bigsquare.Parent = square
-
-	task.wait()
+	local bigsquare = createfakebigsquare(square)
 
 	local colliding = GetTouchingGuiObjects(bigsquare, bombs)
 
 	found = #colliding
-
-	bigsquare:Destroy()
-
-	for i, val in ipairs(bombs) do
-		val:Destroy()
-	end
 
 	bombs = {}
 
@@ -121,7 +114,7 @@ local function findbombsnear(square)
 end
 
 local function youwon()
-	local windowb = CreateWindow(UDim2.fromScale(0.5, 0.5), "You won", true, true, false, nil, true, false)
+	local windowb = CreateWindow(UDim2.fromScale(0.5, 0.5), "Message", true, true, false, nil, true, false)
 
 	screen:CreateElement("TextLabel", {Text = "You won!", Size = UDim2.fromScale(1, 1), TextScaled = true, BackgroundTransparency = 1}).Parent = windowb
 
@@ -135,10 +128,7 @@ local function youwon()
 end
 
 local function shownear(square)
-	local bigsquare = screen:CreateElement("Frame", {BackgroundTransparency = 1, Size = UDim2.fromScale(2, 2), Position = UDim2.fromScale(-0.5, -0.5)})
-	bigsquare.Parent = square
-
-	task.wait()
+	local bigsquare = createfakebigsquare(square)
 
 	local colliding = GetTouchingGuiObjects(bigsquare, guis)
 
@@ -158,8 +148,6 @@ local function shownear(square)
 			Trigger(1, value, textlabl)
 		end
 	end
-
-	bigsquare:Destroy()
 end
 
 local function died()
@@ -431,6 +419,9 @@ restartgame()
 
 while true do
 	task.wait(1)
+	if winfunc:IsClosed() then
+		break
+	end
 	if not donttrigger and not firstclick then
 		if starttime then
 			curtime.Text = math.floor(tick() - starttime)
