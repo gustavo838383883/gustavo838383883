@@ -1,3 +1,7 @@
+if not createnicebutton then
+	error("This is supposed to run in GustavOS")
+end
+
 local normalcreatenicebutton = createnicebutton
 local clicksound = getsystemsoundid("clicksound")
 
