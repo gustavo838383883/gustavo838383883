@@ -1837,9 +1837,8 @@ function bootos()
 
 			disks = diskstable2
 		end
-		if not disk then
-			disk = rom
-		end
+	else
+		disk = rom
 	end
 	if not screen then
 		if regularscreen then screen = regularscreen end
