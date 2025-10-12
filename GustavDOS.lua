@@ -1839,6 +1839,7 @@ function bootos()
 		end
 	else
 		disk = rom
+        disks = {disk}
 	end
 	if not screen then
 		if regularscreen then screen = regularscreen end
