@@ -468,7 +468,7 @@ local function boot()
 						if code then
 							loadmicro(microcontroller, code, lines)
 						else
-							lines.insert("Invalid number")
+							lines.insert("Invalid file")
 						end
 
 					else
