@@ -211,6 +211,9 @@ while true do
 				volumeframe:Destroy()
 				volumeframe = nil
 				volumebar = nil
+			else
+				volumeframe = nil
+				volumebar = nil
 			end
 		end
 	end
