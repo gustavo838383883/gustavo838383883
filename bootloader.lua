@@ -280,7 +280,7 @@ local function boot()
 					inputfunc = function(text)
 						data = text
 
-						lines.insert(data:gsub("\n", ""))
+						lines.insert(#data < 250 and data:gsub("\n", "") or "Large text")
 
 						if text:gsub("\n", "") == "" then return end
 
