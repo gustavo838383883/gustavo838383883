@@ -62,7 +62,7 @@ local function destroyoldvolumegui()
 	for i, c in ipairs(screencanvas:GetChildren()) do
 		if i-previ > 5 then
 			previ = i
-			task.wait(0.2)
+			task.wait()
 		end
 		if c.ClassName ~= "Frame" or not matches(c, volumeframedict) then continue end
 		if #c:GetChildren() == 4 then
