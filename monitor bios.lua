@@ -124,7 +124,7 @@ if hasvolumecontrol then
 end
 
 local function isscreenempty()
-	local screencontents = screencanvas:GetDescendants()
+	local screencontents = screencanvas:GetChildren()
 
 	if #screencontents > 1 then
 		return false
