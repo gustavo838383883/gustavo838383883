@@ -50,8 +50,8 @@ end
 
 local function matches(gui, dict)
 	for p, v in pairs(dict) do
-		if gui[p] ~=v then
-			return dalse
+		if gui[p] ~= v then
+			return false
 		end
 	end
 	return true
