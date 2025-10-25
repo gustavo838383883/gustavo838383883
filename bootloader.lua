@@ -164,10 +164,9 @@ local name = "Bootloader"
 
 local function loadmicro(micro, text, lines)
 	if micro then
+		micro:Shutdown()
 		micro.Code = tostring(text)
 		screen:ClearElements()
-
-		micro:Shutdown()
 
 		micropolysilicon.PolysiliconMode = 0
 
@@ -177,6 +176,8 @@ local function loadmicro(micro, text, lines)
 		lines.insert("No microcontroller found.")
 	end
 end
+
+pcall(microcontroller.Shutdown, microcontroller)
 
 local function boot()
 	micropolysilicon.PolysiliconMode = 1
@@ -222,7 +223,6 @@ local function boot()
 				task.wait(2)
 				if not inputentered then
 					loadmicro(microcontroller, autobootcode, lines)
-					Microcontroller:Shutdown()
 				end
 			end
 			
