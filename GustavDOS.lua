@@ -1848,8 +1848,6 @@ function bootos()
 		table.clear(iconnections)
 		disks = table.freeze(disks)
 
-		disk:Write("test.gui", '<button href="/test2.gui" display="test2">')
-		disk:Write("test2.gui", '<button href="/test.gui" display="test">')
 		rom:Write("SysDisk", true)
 		if speaker then
 			speaker:ClearSounds()
@@ -1911,10 +1909,10 @@ function bootos()
 		end
 		task.wait(1)
 		if not disk then
-			commandlines.insert("You need 2 or more disks, 2 or more ports must not be connected to the same disks.")
+			commandlines.insert("You need atleast one disк.")
 		end
 		if not rom then
-			commandlines.insert([[No empty disk or disk with the file "GDOSLibrary" was found.]])
+			commandlines.insert([[No empty disk or disk with the file "SysDisк" was found.]])
 		end
 		if keyboard then
 			local keyboardevent = keyboard.KeyPressed:Connect(function(key)
