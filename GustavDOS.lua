@@ -1346,6 +1346,13 @@ function runtext(text)
 			end
 		end
 		commandlines.insert(dir..":")
+	elseif lowered:sub(1, 11) == "copystorage"  then
+			copydir = ""
+			copydisk = disk
+			copyname = "Disk "..table.find(disks, disk).." Copy"
+			copydata = JSONDecode(JSONEncode(disk:ReadAll()))
+			commandlines.insert("Copied, use the paste command to paste the file.")			
+			commandlines.insert(dir..":")
 	elseif lowered:sub(1, 5) == "paste" then
 		if copydir ~= "" and copyname ~= "" then
 			local file = filesystem.Read(copyname, copydir, true, copydisk)
@@ -1698,6 +1705,7 @@ function runtext(text)
 		commandlines.insert("readvideo id")
 		commandlines.insert("cd table/folder or ./ for parent table/folder")
 		commandlines.insert("copy filename")
+		commandlines.insert("copystorage")
 		commandlines.insert("paste")
 		commandlines.insert("rename filename/new filename (with the /)")
 		commandlines.insert("Put !s before the command to replace the new lines with spaces instead of removing them.")
