@@ -1354,7 +1354,7 @@ function runtext(text)
 			commandlines.insert("Copied, use the paste command to paste the file.")			
 			commandlines.insert(dir..":")
 	elseif lowered:sub(1, 5) == "paste" then
-		if copydir ~= "" and copyname ~= "" then
+		if copyname then
 			local file = filesystem.Read(copyname, copydir, true, copydisk)
 
 			if not file then
