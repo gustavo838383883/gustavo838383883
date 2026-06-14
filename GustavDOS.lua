@@ -304,15 +304,15 @@ local filesystem = {
 			end
 			if not split or split[2] == "" then
 				if disk:Read(filename) == filedata then
-					value = "Success i think"
+					value = "Success?"
 				else
 					value = "Failed"
 				end
 			else
 				if disk:Read(split[2]) == returntable and disk:Read(split[2]) then
-					value = "Success i think"
+					value = "Success?"
 				else
-					value = "Failed i think"
+					value = "Failed?"
 				end
 			end
 		else
